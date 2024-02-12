@@ -141,7 +141,7 @@ class NutrisiController extends Controller
         Storage::disk('nutrisi')->delete('/'.$nutrisi->foto);
         GaleriNutrisi::where('id_nutrisi',$request->input('id_nutrisi'))->delete();
         if (!Nutrisi::where('id_nutrisi',$request->input('id_nutrisi'))->delete()) {
-            return response()->json(['status' => 'error', 'message' => 'Gagal menghapus data Product'], 500);
+            return response()->json(['status' => 'error', 'message' => 'Gagal menghapus data Nutrisi'], 500);
         }
         return response()->json(['status' => 'success', 'message' => 'Data Nutrisi berhasil dihapus']);
     }
