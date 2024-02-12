@@ -41,6 +41,34 @@ return [
             'throw' => false,
         ],
 
+        'digital_literasi' => [
+            'driver' => 'local',
+            'root' => storage_path('app/digital_literasi'),
+            'url' => env('APP_URL').'/public/digital',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+        'emosi_mental' => [
+            'driver' => 'local',
+            'root' => storage_path('app/emosi_mental'),
+            'url' => env('APP_URL').'/public/emotal',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+        'pengasuhan' => [
+            'driver' => 'local',
+            'root' => storage_path('app/pengasuhan'),
+            'url' => env('APP_URL').'/public/pengasuhan',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+        'nutrisi' => [
+            'driver' => 'local',
+            'root' => storage_path('app/nutrisi'),
+            'url' => env('APP_URL').'/public/nutrisi',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
