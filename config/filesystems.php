@@ -41,14 +41,14 @@ return [
             'throw' => false,
         ],
 
-        'digital_literasi' => [
+        'disi' => [
             'driver' => 'local',
             'root' => storage_path('app/digital_literasi'),
-            'url' => env('APP_URL').'/public/digital',
+            'url' => env('APP_URL').'/public/disi',
             'visibility' => 'public',
             'throw' => false,
         ],
-        'emosi_mental' => [
+        'emotal' => [
             'driver' => 'local',
             'root' => storage_path('app/emosi_mental'),
             'url' => env('APP_URL').'/public/emotal',
