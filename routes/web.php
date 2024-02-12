@@ -1,18 +1,11 @@
 <?php
-use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Route;   
 
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\Services\EventController;
-use App\Http\Controllers\Services\PentasController;
-use App\Http\Controllers\Services\SenimanController;
-use App\Http\Controllers\Services\SewaController;
-use App\Http\Controllers\Services\TempatController;
-use App\Http\Controllers\Services\DownloadController;
 
 use App\Http\Controllers\Page\HomeController AS ShowHomeController;
 use App\Http\Controllers\Page\AdminController AS ShowAdminController;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Services\PreviewController;
 
 Route::group(['middleware'=>['auth','authorized']],function(){
     //artikel route

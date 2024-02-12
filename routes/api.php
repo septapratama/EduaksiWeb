@@ -32,4 +32,9 @@ Route::group(['prefix'=>'/mobile','middleware'=>'authorized'],function(){
         Route::put('/update', [MasyarakatController::class,'updateUser']);
         Route::post('/logout', [MasyarakatController::class,'logout']);
     });
+    Route::group(['prefix'=>'/artikel'],function(){
+        Route::group(['prefix'=>'/nutrisi'],function(){
+            Route::post('/',[]);
+        });
+    });
 });
