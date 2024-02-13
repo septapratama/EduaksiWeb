@@ -49,5 +49,21 @@ Route::group(['prefix'=>'/mobile','middleware'=>'authorized'],function(){
         // Route::post('/tambah',[]);
         // Route::put('/update',[]);
         // Route::delete('/delete',[]);
+        Route::get('/',[]);
+    });
+    Route::group(['prefix'=>'/disi'],function(){
+        Route::get('/',[]);
+    });
+    Route::group(['prefix'=>'/pengasuhan'],function(){
+        Route::get('/',[]);
+    });
+    Route::group(['prefix'=>'/nutrisi'],function(){
+        Route::get('/',[]);
+    });
+    Route::group(['prefix'=>'/pencatatan'],function(){
+        Route::get('/',[]);
+        Route::post('/tambah',[]);
+        Route::put('/update',[]);
+        Route::delete('/delete',[]);
     });
 });
