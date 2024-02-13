@@ -32,9 +32,22 @@ Route::group(['prefix'=>'/mobile','middleware'=>'authorized'],function(){
         Route::put('/update', [MasyarakatController::class,'updateUser']);
         Route::post('/logout', [MasyarakatController::class,'logout']);
     });
-    Route::group(['prefix'=>'/artikel'],function(){
-        Route::group(['prefix'=>'/nutrisi'],function(){
-            Route::post('/',[]);
-        });
+    Route::group(['prefix'=>'/emotal'],function(){
+        Route::get('/',[]);
+    });
+    Route::group(['prefix'=>'/disi'],function(){
+        Route::get('/',[]);
+    });
+    Route::group(['prefix'=>'/pengasuhan'],function(){
+        Route::get('/',[]);
+    });
+    Route::group(['prefix'=>'/nutrisi'],function(){
+        Route::get('/',[]);
+    });
+    Route::group(['prefix'=>'/pencatatan'],function(){
+        Route::get('/',[]);
+        Route::post('/tambah',[]);
+        Route::put('/update',[]);
+        Route::delete('/delete',[]);
     });
 });
