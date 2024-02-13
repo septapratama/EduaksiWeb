@@ -3,8 +3,10 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Services\DisiController;
+use App\Http\Controllers\Services\EmotalController;
 
 use App\Http\Controllers\Page\DisiController AS ShowDisiController;
+use App\Http\Controllers\Page\EmotalController AS ShowEmotalController;
 use App\Http\Controllers\Page\HomeController AS ShowHomeController;
 use App\Http\Controllers\Page\AdminController AS ShowAdminController;
 use App\Http\Controllers\Auth\LoginController;
@@ -16,25 +18,19 @@ Route::group(['middleware'=>['auth','authorized']],function(){
             // Route::get('/',[]);
         });
     });
-    Route::group(['prefix'=>'/emotal'],function(){
-        // Route::get('/',[,'show']);
-        // Route::get('/tambah',[,'show']);
-        // Route::get('/edit',[,'show']);
-    });
     Route::group(['prefix'=>'/disi'],function(){
         Route::get('/',[ShowDisiController::class, 'showMain']);
         Route::get('/tambah',[ShowDisiController::class, 'showTambah']);
         Route::get('/edit',[ShowDisiController::class, 'showEdit']);
     });
+    Route::group(['prefix'=>'/emotal'],function(){
+        Route::get('/',[ShowEmotalController::class, 'showMain']);
+        Route::get('/tambah',[ShowEmotalController::class, 'showTambah']);
+        Route::get('/edit',[ShowEmotalController::class, 'showEdit']);
+    });
     Route::group(['prefix'=>'/nutrisi'],function(){
-        // Route::get('/',[,'show']);
-        // Route::get('/tambah',[,'show']);
-        // Route::get('/edit',[,'show']);
     });
     Route::group(['prefix'=>'/pengasuhan'],function(){
-        // Route::get('/',[,'show']);
-        // Route::get('/tambah',[,'show']);
-        // Route::get('/edit',[,'show']);
     });
     //admin route
     Route::group(['prefix'=>'/admin'],function(){
