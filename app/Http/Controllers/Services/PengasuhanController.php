@@ -1,5 +1,6 @@
 <?php
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Services;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
@@ -139,7 +140,7 @@ class PengasuhanController extends Controller
             unlink($fileToDelete);
         }
         Storage::disk('pengasuhan')->delete('/'.$pengasuhan->foto);
-        GaleriPengasuhan::where('id_pengasuhan',$request->input('id_pengasuhan'))->delete();
+        // GaleriPengasuhan::where('id_pengasuhan',$request->input('id_pengasuhan'))->delete();
         if (!Pengasuhan::where('id_pengasuhan',$request->input('id_pengasuhan'))->delete()) {
             return response()->json(['status' => 'error', 'message' => 'Gagal menghapus data Pengasuhan'], 500);
         }

@@ -1,10 +1,11 @@
 <?php
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Services;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use App\Models\GaleriEmosiMental;
-use App\Models\EmosiMental;
+use App\Models\Emotal;
 class EmotalController extends Controller
 {
     public function tambahEmotal(Request $request){
@@ -43,7 +44,7 @@ class EmotalController extends Controller
         }
         $fotoName = $file->hashName();
         Storage::disk('emotal')->put('foto/' . $fotoName, file_get_contents($file));
-        $ins = EmosiMental::insert([
+        $ins = Emotal::insert([
             'judul' => $request->input('judul'),
             'deskripsi' => $request->input('deskripsi'),
             'link_video' => $request->input('link_video'),
@@ -83,7 +84,7 @@ class EmotalController extends Controller
             }
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
-        $emosiMental = EmosiMental::select('foto')->where('id_emotal',$request->input('id_emotal'))->limit(1)->get()[0];
+        $emosiMental = Emotal::select('foto')->where('id_emotal',$request->input('id_emotal'))->limit(1)->get()[0];
         if (!$emosiMental) {
             return response()->json(['status' =>'error','message'=>'Data Emotal tidak ditemukan'], 400);
         }
@@ -128,7 +129,7 @@ class EmotalController extends Controller
             }
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
-        $emosiMental = EmosiMental::find($request->input('id_emotal'));
+        $emosiMental = Emotal::find($request->input('id_emotal'));
         if (!$emosiMental) {
             return response()->json(['status' => 'error', 'message' => 'Data Emotal tidak ditemukan'], 400);
         }
@@ -139,8 +140,8 @@ class EmotalController extends Controller
             unlink($fileToDelete);
         }
         Storage::disk('emotal')->delete('/'.$emosiMental->foto);
-        GaleriEmosiMental::where('id_emotal',$request->input('id_emotal'))->delete();
-        if (!EmosiMental::where('id_emotal',$request->input('id_emotal'))->delete()) {
+        // GaleriEmosiMental::where('id_emotal',$request->input('id_emotal'))->delete();
+        if (!Emotal::where('id_emotal',$request->input('id_emotal'))->delete()) {
             return response()->json(['status' => 'error', 'message' => 'Gagal menghapus data Emotal'], 500);
         }
         return response()->json(['status' => 'success', 'message' => 'Data Emotal berhasil dihapus']);

@@ -2,7 +2,9 @@
 use Illuminate\Support\Facades\Route;   
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Services\DisiController;
 
+use App\Http\Controllers\Page\DisiController AS ShowDisiController;
 use App\Http\Controllers\Page\HomeController AS ShowHomeController;
 use App\Http\Controllers\Page\AdminController AS ShowAdminController;
 use App\Http\Controllers\Auth\LoginController;
@@ -11,7 +13,7 @@ Route::group(['middleware'=>['auth','authorized']],function(){
     //artikel route
     Route::group(['prefix'=>'/artikel'],function(){
         Route::group(['prefix'=>'/pengasuhan'],function(){
-            Route::get('/',[ShowSewaController::class,'showSewa']);
+            // Route::get('/',[]);
         });
     });
     Route::group(['prefix'=>'/emotal'],function(){
@@ -20,9 +22,9 @@ Route::group(['middleware'=>['auth','authorized']],function(){
         // Route::get('/edit',[,'show']);
     });
     Route::group(['prefix'=>'/disi'],function(){
-        // Route::get('/',[,'show']);
-        // Route::get('/tambah',[,'show']);
-        // Route::get('/edit',[,'show']);
+        Route::get('/',[ShowDisiController::class, 'showMain']);
+        Route::get('/tambah',[ShowDisiController::class, 'showTambah']);
+        Route::get('/edit',[ShowDisiController::class, 'showEdit']);
     });
     Route::group(['prefix'=>'/nutrisi'],function(){
         // Route::get('/',[,'show']);
@@ -92,5 +94,5 @@ Route::group(['middleware'=>['auth','authorized']],function(){
     Route::get('/admin',[ShowAdminController::class,'showAdmin']);
     Route::get('/dashboard',[ShowAdminController::class,'showDashboard']);
     Route::get('/profile',[ShowAdminController::class,'showProfile']);
-    Route::get('/',[ShowHomeController::class,'showHome'])->withoutMiddleware('authorized');
+    // Route::get('/',[ShowHomeController::class,'showHome'])->withoutMiddleware('authorized');
 });

@@ -1,10 +1,11 @@
 <?php
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Services;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use App\Models\GaleriDigitalLiterasi;
-use App\Models\DigitalLiterasi;
+use App\Models\Disi;
 class DisiController extends Controller
 {
     public function tambahDisi(Request $request){
@@ -43,7 +44,7 @@ class DisiController extends Controller
         }
         $fotoName = $file->hashName();
         Storage::disk('disi')->put('foto/' . $fotoName, file_get_contents($file));
-        $ins = DigitalLiterasi::insert([
+        $ins = Disi::insert([
             'judul' => $request->input('judul'),
             'deskripsi' => $request->input('deskripsi'),
             'link_video' => $request->input('link_video'),
@@ -83,7 +84,7 @@ class DisiController extends Controller
             }
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
-        $disi = DigitalLiterasi::select('foto')->where('id_disi',$request->input('id_disi'))->limit(1)->get()[0];
+        $disi = Disi::select('foto')->where('id_disi',$request->input('id_disi'))->limit(1)->get()[0];
         if (!$disi) {
             return response()->json(['status' =>'error','message'=>'Data Disi tidak ditemukan'], 400);
         }
@@ -128,7 +129,7 @@ class DisiController extends Controller
             }
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
-        $disi = DigitalLiterasi::find($request->input('id_disi'));
+        $disi = Disi::find($request->input('id_disi'));
         if (!$disi) {
             return response()->json(['status' => 'error', 'message' => 'Data Disi tidak ditemukan'], 400);
         }
@@ -139,8 +140,8 @@ class DisiController extends Controller
             unlink($fileToDelete);
         }
         Storage::disk('disi')->delete('/'.$disi->foto);
-        GaleriDigitalLiterasi::where('id_disi',$request->input('id_disi'))->delete();
-        if (!DigitalLiterasi::where('id_disi',$request->input('id_disi'))->delete()) {
+        // GaleriDigitalLiterasi::where('id_disi',$request->input('id_disi'))->delete();
+        if (!Disi::where('id_disi',$request->input('id_disi'))->delete()) {
             return response()->json(['status' => 'error', 'message' => 'Gagal menghapus data Disi'], 500);
         }
         return response()->json(['status' => 'success', 'message' => 'Data Disi berhasil dihapus']);

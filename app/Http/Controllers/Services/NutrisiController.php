@@ -1,5 +1,6 @@
 <?php
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Services;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
@@ -139,7 +140,7 @@ class NutrisiController extends Controller
             unlink($fileToDelete);
         }
         Storage::disk('nutrisi')->delete('/'.$nutrisi->foto);
-        GaleriNutrisi::where('id_nutrisi',$request->input('id_nutrisi'))->delete();
+        // GaleriNutrisi::where('id_nutrisi',$request->input('id_nutrisi'))->delete();
         if (!Nutrisi::where('id_nutrisi',$request->input('id_nutrisi'))->delete()) {
             return response()->json(['status' => 'error', 'message' => 'Gagal menghapus data Nutrisi'], 500);
         }
