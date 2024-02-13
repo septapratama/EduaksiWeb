@@ -10,10 +10,11 @@ return new class extends Migration
     {
         Schema::create('nutrisi', function (Blueprint $table) {
             $table->id('id_nutrisi');
-            $table->string('judul',100);
+            $table->string('judul');
             $table->longText('deskripsi');
             $table->string('link_video');
             $table->string('rentang_usia');
+            $table->text('foto');
             $table->timestamps();
         });
     }

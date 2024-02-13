@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class DigitalLiterasi extends Model
+class Disi extends Model
 {
     use HasFactory;
     protected $table = "digital_literasi";
-    protected $primaryKey = "id_digital";
+    protected $primaryKey = "id_disi";
     public $incrementing = true;
     public $timestamps = true;
     protected $fillable = [

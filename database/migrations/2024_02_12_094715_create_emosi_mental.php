@@ -9,11 +9,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('emosi_mental', function (Blueprint $table) {
-            $table->id('id_emosi_mental');
-            $table->string('judul',100);
+            $table->id('id_emotal');
+            $table->string('judul');
             $table->longText('deskripsi');
             $table->string('link_video');
             $table->string('rentang_usia');
+            $table->text('foto');
             $table->timestamps();
         });
     }
