@@ -4,9 +4,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
-use App\Models\GaleriNutrisi;
-use App\Models\Nutrisi;
-class NutrisiController extends Controller
+use App\Models\GaleriPengasuhan;
+use App\Models\Pengasuhan;
+class PengasuhanController extends Controller
 {
     public function showMain(Request $request){
         $dataShow = [

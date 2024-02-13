@@ -5,10 +5,12 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Services\DisiController;
 use App\Http\Controllers\Services\EmotalController;
 use App\Http\Controllers\Services\NutrisiController;
+use App\Http\Controllers\Services\PengasuhanController;
 
 use App\Http\Controllers\Page\DisiController AS ShowDisiController;
 use App\Http\Controllers\Page\EmotalController AS ShowEmotalController;
 use App\Http\Controllers\Page\NutrisiController AS ShowNutrisiController;
+use App\Http\Controllers\Page\PengasuhanController AS ShowPengasuhanController;
 use App\Http\Controllers\Page\HomeController AS ShowHomeController;
 use App\Http\Controllers\Page\AdminController AS ShowAdminController;
 use App\Http\Controllers\Auth\LoginController;
@@ -36,6 +38,9 @@ Route::group(['middleware'=>['auth','authorized']],function(){
         Route::get('/edit',[ShowNutrisiController::class, 'showEdit']);
     });
     Route::group(['prefix'=>'/pengasuhan'],function(){
+        Route::get('/',[ShowPengasuhanController::class, 'showMain']);
+        Route::get('/tambah',[ShowPengasuhanController::class, 'showTambah']);
+        Route::get('/edit',[ShowPengasuhanController::class, 'showEdit']);
     });
     //admin route
     Route::group(['prefix'=>'/admin'],function(){
