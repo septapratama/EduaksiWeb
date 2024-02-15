@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use App\Models\GaleriPengasuhan;
 use App\Models\Pengasuhan;
+<<<<<<< HEAD
 use Exception;
 class PengasuhanController extends Controller
 {
@@ -70,6 +71,10 @@ class PengasuhanController extends Controller
             file_put_contents(self::$jsonFile,json_encode($jsonData, JSON_PRETTY_PRINT));
         }
     }
+=======
+class PengasuhanController extends Controller
+{
+>>>>>>> 232e5e39cf66ed80177d83bd2d42a0be4394b069
     public function tambahPengasuhan(Request $request){
         $validator = Validator::make($request->only('judul', 'deskripsi', 'link_video', 'rentang_usia', 'foto'), [
             'judul' => 'required|min:6|max:50',
@@ -116,11 +121,14 @@ class PengasuhanController extends Controller
         if(!$ins){
             return response()->json(['status'=>'error','message'=>'Gagal menambahkan data Pengasuhan'], 500);
         }
+<<<<<<< HEAD
         // $this->dataCacheFile([
         //     'id_pengasuhan' => $ins,
         //     'nama_kategori_seniman'=>$request->input('nama'),
         //     'singkatan_kategori'=>strtoupper($request->input('singkatan'))
         // ],'tambah');
+=======
+>>>>>>> 232e5e39cf66ed80177d83bd2d42a0be4394b069
         return response()->json(['status'=>'success','message'=>'Data Pengasuhan berhasil ditambahkan']);
     }
     public function editPengasuhan(Request $request){
@@ -180,11 +188,14 @@ class PengasuhanController extends Controller
         if(!$edit){
             return response()->json(['status' =>'error','message'=>'Gagal memperbarui data Pengasuhan'], 500);
         }
+<<<<<<< HEAD
         $this->dataCacheFile([
             'id_pengasuhan' => $request->input('id_pengasuhan'),
             'nama_kategori_seniman' => $request->input('nama'),
             'singkatan_kategori' => strtoupper($request->input('singkatan'))
         ],'update');
+=======
+>>>>>>> 232e5e39cf66ed80177d83bd2d42a0be4394b069
         return response()->json(['status' =>'success','message'=>'Data Pengasuhan berhasil di perbarui']);
     }
     public function deletePengasuhan(Request $request){
@@ -216,7 +227,10 @@ class PengasuhanController extends Controller
         if (!Pengasuhan::where('id_pengasuhan',$request->input('id_pengasuhan'))->delete()) {
             return response()->json(['status' => 'error', 'message' => 'Gagal menghapus data Pengasuhan'], 500);
         }
+<<<<<<< HEAD
         $this->dataCacheFile(['id_pengasuhan' => $request->input('id_pengasuhan')],'hapus');
+=======
+>>>>>>> 232e5e39cf66ed80177d83bd2d42a0be4394b069
         return response()->json(['status' => 'success', 'message' => 'Data Pengasuhan berhasil dihapus']);
     }
 }

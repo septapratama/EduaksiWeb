@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use App\Models\GaleriNutrisi;
 use App\Models\Nutrisi;
+<<<<<<< HEAD
 use Exception;
 class NutrisiController extends Controller
 {
@@ -70,6 +71,10 @@ class NutrisiController extends Controller
             file_put_contents(self::$jsonFile,json_encode($jsonData, JSON_PRETTY_PRINT));
         }
     }
+=======
+class NutrisiController extends Controller
+{
+>>>>>>> 232e5e39cf66ed80177d83bd2d42a0be4394b069
     public function tambahNutrisi(Request $request){
         $validator = Validator::make($request->only('judul', 'deskripsi', 'link_video', 'rentang_usia', 'foto'), [
             'judul' => 'required|min:6|max:50',
@@ -116,11 +121,14 @@ class NutrisiController extends Controller
         if(!$ins){
             return response()->json(['status'=>'error','message'=>'Gagal menambahkan data Nutrisi'], 500);
         }
+<<<<<<< HEAD
         $this->dataCacheFile([
             'id_nutrisi' => $ins,
             'nama_kategori_seniman'=>$request->input('nama'),
             'singkatan_kategori'=>strtoupper($request->input('singkatan'))
         ],'tambah');
+=======
+>>>>>>> 232e5e39cf66ed80177d83bd2d42a0be4394b069
         return response()->json(['status'=>'success','message'=>'Data Nutrisi berhasil ditambahkan']);
     }
     public function editNutrisi(Request $request){
@@ -180,11 +188,14 @@ class NutrisiController extends Controller
         if(!$edit){
             return response()->json(['status' =>'error','message'=>'Gagal memperbarui data Nutrisi'], 500);
         }
+<<<<<<< HEAD
         $this->dataCacheFile([
             'id_nutrisi' => $request->input('id_nutrisi'),
             'nama_kategori_seniman' => $request->input('nama'),
             'singkatan_kategori' => strtoupper($request->input('singkatan'))
         ],'update');
+=======
+>>>>>>> 232e5e39cf66ed80177d83bd2d42a0be4394b069
         return response()->json(['status' =>'success','message'=>'Data Nutrisi berhasil di perbarui']);
     }
     public function deleteNutrisi(Request $request){
@@ -216,7 +227,10 @@ class NutrisiController extends Controller
         if (!Nutrisi::where('id_nutrisi',$request->input('id_nutrisi'))->delete()) {
             return response()->json(['status' => 'error', 'message' => 'Gagal menghapus data Nutrisi'], 500);
         }
+<<<<<<< HEAD
         $this->dataCacheFile(['id_nutrisi' => $request->input('id_nutrisi')],'hapus');
+=======
+>>>>>>> 232e5e39cf66ed80177d83bd2d42a0be4394b069
         return response()->json(['status' => 'success', 'message' => 'Data Nutrisi berhasil dihapus']);
     }
 }

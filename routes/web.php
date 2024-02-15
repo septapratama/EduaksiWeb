@@ -19,7 +19,11 @@ Route::group(['middleware'=>['auth','authorized']],function(){
     //artikel route
     Route::group(['prefix'=>'/artikel'],function(){
         Route::group(['prefix'=>'/pengasuhan'],function(){
+<<<<<<< HEAD
             // Route::get('/',[]);0
+=======
+            // Route::get('/',[]);
+>>>>>>> 232e5e39cf66ed80177d83bd2d42a0be4394b069
         });
     });
     Route::group(['prefix'=>'/disi'],function(){

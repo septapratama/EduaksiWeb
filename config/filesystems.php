@@ -30,11 +30,14 @@ return [
 
     'disks' => [
 
+<<<<<<< HEAD
         'database' => [
             'driver' => 'local',
             'root' => storage_path('app/database'),
             'throw' => false,
         ],
+=======
+>>>>>>> 232e5e39cf66ed80177d83bd2d42a0be4394b069
         'admin' => [
             'driver' => 'local',
             'root' => storage_path('app/admin'),

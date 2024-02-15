@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use App\Models\GaleriDigitalLiterasi;
 use App\Models\Disi;
+<<<<<<< HEAD
 use Exception;
 class DisiController extends Controller
 {
@@ -70,6 +71,10 @@ class DisiController extends Controller
             file_put_contents(self::$jsonFile,json_encode($jsonData, JSON_PRETTY_PRINT));
         }
     }
+=======
+class DisiController extends Controller
+{
+>>>>>>> 232e5e39cf66ed80177d83bd2d42a0be4394b069
     public function tambahDisi(Request $request){
         $validator = Validator::make($request->only('judul', 'deskripsi', 'link_video', 'rentang_usia', 'foto'), [
             'judul' => 'required|min:6|max:50',
@@ -116,11 +121,14 @@ class DisiController extends Controller
         if(!$ins){
             return response()->json(['status'=>'error','message'=>'Gagal menambahkan data Disi'], 500);
         }
+<<<<<<< HEAD
         $this->dataCacheFile([
             'id_disi' => $ins,
             'nama_kategori_seniman'=>$request->input('nama'),
             'singkatan_kategori'=>strtoupper($request->input('singkatan'))
         ],'tambah');
+=======
+>>>>>>> 232e5e39cf66ed80177d83bd2d42a0be4394b069
         return response()->json(['status'=>'success','message'=>'Data Disi berhasil ditambahkan']);
     }
     public function editDisi(Request $request){
@@ -180,11 +188,14 @@ class DisiController extends Controller
         if(!$edit){
             return response()->json(['status' =>'error','message'=>'Gagal memperbarui data Disi'], 500);
         }
+<<<<<<< HEAD
         $this->dataCacheFile([
             'id_disi' => $request->input('id_disi'),
             'nama_kategori_seniman' => $request->input('nama'),
             'singkatan_kategori' => strtoupper($request->input('singkatan'))
         ],'update');
+=======
+>>>>>>> 232e5e39cf66ed80177d83bd2d42a0be4394b069
         return response()->json(['status' =>'success','message'=>'Data Disi berhasil di perbarui']);
     }
     public function deleteDisi(Request $request){
@@ -216,7 +227,10 @@ class DisiController extends Controller
         if (!Disi::where('id_disi',$request->input('id_disi'))->delete()) {
             return response()->json(['status' => 'error', 'message' => 'Gagal menghapus data Disi'], 500);
         }
+<<<<<<< HEAD
         $this->dataCacheFile(['id_disi' => $request->input('id_disi')],'hapus');
+=======
+>>>>>>> 232e5e39cf66ed80177d83bd2d42a0be4394b069
         return response()->json(['status' => 'success', 'message' => 'Data Disi berhasil dihapus']);
     }
 }
