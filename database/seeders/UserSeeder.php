@@ -13,6 +13,7 @@ class UserSeeder extends Seeder
     {
         for($i = 1; $i <= 10; $i++){
             User::insert([
+                'uuid' =>  Str::uuid(),
                 'nama_lengkap'=>'User'.$i,
                 'jenis_kelamin'=>['laki-laki', 'perempuan'][rand(0, 1)],
                 'no_telpon'=>'0852'.mt_rand(10000000,99999999),

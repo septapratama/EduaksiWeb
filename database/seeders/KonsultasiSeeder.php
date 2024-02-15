@@ -12,6 +12,7 @@ class KonsultasiSeeder extends Seeder
     {
         for($i = 1; $i <= 5; $i++){
             Konsultasi::insert([
+                'uuid' =>  Str::uuid(),
                 'nama_lengkap'=>'Konsultasi'.$i,
                 'jenis_kelamin'=>['laki-laki', 'perempuan'][rand(0, 1)],
                 'no_telpon'=>'0852'.mt_rand(10000000,99999999),

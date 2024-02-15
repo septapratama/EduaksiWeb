@@ -10,6 +10,7 @@ return new class extends Migration
     {
         Schema::create('pengasuhan', function (Blueprint $table) {
             $table->id('id_pengasuhan');
+            $table->uuid('uuid');
             $table->string('judul');
             $table->longText('deskripsi');
             $table->string('link_video')->nullable();

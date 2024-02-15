@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\Services;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use App\Models\GaleriPengasuhan;
@@ -24,6 +25,9 @@ class PengasuhanController extends Controller
                 mkdir($directory, 0755, true);
             }
             $pengasuhanData = json_decode(Pengasuhan::get(),true);
+            foreach ($pengasuhanData as &$item) {
+                unset($item['id_pengasuhan']);
+            }
             if (!file_put_contents(self::$jsonFile,json_encode($pengasuhanData, JSON_PRETTY_PRINT))) {
                 throw new Exception('Gagal menyimpan file sistem');
             }
@@ -33,7 +37,7 @@ class PengasuhanController extends Controller
             $jsonData = json_decode(file_get_contents(self::$jsonFile), true);
             $result = null;
             foreach($jsonData as $key => $item){
-                if (isset($item['id_pengasuhan']) && $item['id_pengasuhan'] == $data['id_pengasuhan']) {
+                if (isset($item['uuid']) && $item['uuid'] == $data['id_pengasuhan']) {
                     $result = $jsonData[$key];
                 }
             }
@@ -42,18 +46,20 @@ class PengasuhanController extends Controller
             }
             return $result;
         }else if($con == 'tambah'){
-            //tambah Pengasuhan
-            $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
-            $new[$data['id_pengasuhan']] = $data;
-            $jsonData = array_merge($jsonData, $new);
-            file_put_contents(self::$jsonFile,json_encode($jsonData, JSON_PRETTY_PRINT));
+            if($fileExist){
+                //tambah Pengasuhan
+                $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
+                $new[] = $data;
+                $jsonData = array_merge($jsonData, $new);
+                file_put_contents(self::$jsonFile,json_encode($jsonData, JSON_PRETTY_PRINT));
+            }
         }else if($con == 'update'){
             //update Pengasuhan
             $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
             foreach($jsonData as $key => $item){
-                if (isset($item['id_pengasuhan']) && $item['id_pengasuhan'] == $data['id_pengasuhan']) {
+                if (isset($item['uuid']) && $item['uuid'] == $data['id_pengasuhan']) {
                     $newData = [
-                        'id_pengasuhan' => $data['id_pengasuhan'],
+                        'uuid' => $data['id_pengasuhan'],
                         'judul' => $data['judul'],
                         'deskripsi' => $data['deskripsi'],
                         'link_video' => $data['link_video'],
@@ -70,7 +76,7 @@ class PengasuhanController extends Controller
             //hapus Pengasuhan
             $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
             foreach($jsonData as $key => $item){
-                if (isset($item['id_pengasuhan']) && $item['id_pengasuhan'] == $data['id_pengasuhan']) {
+                if (isset($item['uuid']) && $item['uuid'] == $data['id_pengasuhan']) {
                     unset($jsonData[$key]);
                 }
             }
@@ -115,7 +121,9 @@ class PengasuhanController extends Controller
         $fotoName = $file->hashName();
         Storage::disk('pengasuhan')->put($fotoName, file_get_contents($file));
         $now = Carbon::now();
+        $uuid = Str::uuid();
         $ins = Pengasuhan::insertGetId([
+            'uuid' => $uuid,
             'judul' => $request->input('judul'),
             'deskripsi' => $request->input('deskripsi'),
             'link_video' => $request->input('link_video'),
@@ -128,7 +136,7 @@ class PengasuhanController extends Controller
             return response()->json(['status'=>'error','message'=>'Gagal menambahkan data Pengasuhan'], 500);
         }
         $this->dataCacheFile([
-            'id_pengasuhan' => $ins,
+            'uuid' => $uuid,
             'judul' => $request->input('judul'),
             'deskripsi' => $request->input('deskripsi'),
             'link_video' => $request->input('link_video'),
@@ -167,7 +175,7 @@ class PengasuhanController extends Controller
             }
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
-        $pengasuhan = Pengasuhan::select('foto')->where('id_pengasuhan',$request->input('id_pengasuhan'))->limit(1)->get()[0];
+        $pengasuhan = Pengasuhan::select('foto')->where('uuid',$request->input('id_pengasuhan'))->limit(1)->get()[0];
         if (!$pengasuhan) {
             return response()->json(['status' =>'error','message'=>'Data Pengasuhan tidak ditemukan'], 400);
         }
@@ -187,7 +195,7 @@ class PengasuhanController extends Controller
             Storage::disk('pengasuhan')->put($fotoName, file_get_contents($file));
         }
         $now = Carbon::now();
-        $edit = $pengasuhan->where('id_pengasuhan',$request->input('id_pengasuhan'))->update([
+        $edit = $pengasuhan->where('uuid',$request->input('id_pengasuhan'))->update([
             'judul' => $request->input('judul'),
             'deskripsi' => $request->input('deskripsi'),
             'link_video' => $request->input('link_video'),
@@ -223,7 +231,7 @@ class PengasuhanController extends Controller
             }
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
-        $pengasuhan = Pengasuhan::find($request->input('id_pengasuhan'));
+        $pengasuhan = Pengasuhan::select('foto')->where('uuid',$request->input('id_pengasuhan'))->limit(1)->get()[0];
         if (!$pengasuhan) {
             return response()->json(['status' => 'error', 'message' => 'Data Pengasuhan tidak ditemukan'], 400);
         }
@@ -235,7 +243,7 @@ class PengasuhanController extends Controller
         }
         Storage::disk('pengasuhan')->delete('/'.$pengasuhan->foto);
         // GaleriPengasuhan::where('id_pengasuhan',$request->input('id_pengasuhan'))->delete();
-        if (!Pengasuhan::where('id_pengasuhan',$request->input('id_pengasuhan'))->delete()) {
+        if (!Pengasuhan::where('uuid',$request->input('id_pengasuhan'))->delete()) {
             return response()->json(['status' => 'error', 'message' => 'Gagal menghapus data Pengasuhan'], 500);
         }
         $this->dataCacheFile(['id_pengasuhan' => $request->input('id_pengasuhan')],'hapus');

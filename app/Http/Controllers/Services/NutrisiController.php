@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\Services;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use App\Models\GaleriNutrisi;
@@ -24,6 +25,9 @@ class NutrisiController extends Controller
                 mkdir($directory, 0755, true);
             }
             $nutrisiData = json_decode(Nutrisi::get(),true);
+            foreach ($nutrisiData as &$item) {
+                unset($item['id_nutrisi']);
+            }
             if (!file_put_contents(self::$jsonFile,json_encode($nutrisiData, JSON_PRETTY_PRINT))) {
                 throw new Exception('Gagal menyimpan file sistem');
             }
@@ -33,7 +37,7 @@ class NutrisiController extends Controller
             $jsonData = json_decode(file_get_contents(self::$jsonFile), true);
             $result = null;
             foreach($jsonData as $key => $item){
-                if (isset($item['id_nutrisi']) && $item['id_nutrisi'] == $data['id_nutrisi']) {
+                if (isset($item['uuid']) && $item['uuid'] == $data['id_nutrisi']) {
                     $result = $jsonData[$key];
                 }
             }
@@ -42,18 +46,20 @@ class NutrisiController extends Controller
             }
             return $result;
         }else if($con == 'tambah'){
-            //tambah Nutrisi
-            $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
-            $new[$data['id_nutrisi']] = $data;
-            $jsonData = array_merge($jsonData, $new);
-            file_put_contents(self::$jsonFile,json_encode($jsonData, JSON_PRETTY_PRINT));
+            if($fileExist){
+                //tambah Nutrisi
+                $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
+                $new[] = $data;
+                $jsonData = array_merge($jsonData, $new);
+                file_put_contents(self::$jsonFile,json_encode($jsonData, JSON_PRETTY_PRINT));
+            }
         }else if($con == 'update'){
             //update Nutrisi
             $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
             foreach($jsonData as $key => $item){
-                if (isset($item['id_nutrisi']) && $item['id_nutrisi'] == $data['id_nutrisi']) {
+                if (isset($item['uuid']) && $item['uuid'] == $data['id_nutrisi']) {
                     $newData = [
-                        'id_nutrisi' => $data['id_nutrisi'],
+                        'uuid' => $data['id_nutrisi'],
                         'judul' => $data['judul'],
                         'deskripsi' => $data['deskripsi'],
                         'link_video' => $data['link_video'],
@@ -70,7 +76,7 @@ class NutrisiController extends Controller
             //hapus Nutrisi
             $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
             foreach($jsonData as $key => $item){
-                if (isset($item['id_nutrisi']) && $item['id_nutrisi'] == $data['id_nutrisi']) {
+                if (isset($item['uuid']) && $item['uuid'] == $data['id_nutrisi']) {
                     unset($jsonData[$key]);
                 }
             }
@@ -115,7 +121,9 @@ class NutrisiController extends Controller
         $fotoName = $file->hashName();
         Storage::disk('nutrisi')->put($fotoName, file_get_contents($file));
         $now = Carbon::now();
-        $ins = Nutrisi::insertGetId([
+        $uuid = Str::uuid();
+        $ins = Nutrisi::insert([
+            'uuid' => $uuid,
             'judul' => $request->input('judul'),
             'deskripsi' => $request->input('deskripsi'),
             'link_video' => $request->input('link_video'),
@@ -128,7 +136,7 @@ class NutrisiController extends Controller
             return response()->json(['status'=>'error','message'=>'Gagal menambahkan data Nutrisi'], 500);
         }
         $this->dataCacheFile([
-            'id_nutrisi' => $ins,
+            'uuid' => $uuid,
             'judul' => $request->input('judul'),
             'deskripsi' => $request->input('deskripsi'),
             'link_video' => $request->input('link_video'),
@@ -167,7 +175,7 @@ class NutrisiController extends Controller
             }
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
-        $nutrisi = Nutrisi::select('foto')->where('id_nutrisi',$request->input('id_nutrisi'))->limit(1)->get()[0];
+        $nutrisi = Nutrisi::select('foto')->where('uuid',$request->input('id_nutrisi'))->limit(1)->get()[0];
         if (!$nutrisi) {
             return response()->json(['status' =>'error','message'=>'Data Nutrisi tidak ditemukan'], 400);
         }
@@ -187,7 +195,7 @@ class NutrisiController extends Controller
             Storage::disk('nutrisi')->put($fotoName, file_get_contents($file));
         }
         $now = Carbon::now();
-        $edit = $nutrisi->where('id_nutrisi',$request->input('id_nutrisi'))->update([
+        $edit = $nutrisi->where('uuid',$request->input('id_nutrisi'))->update([
             'judul' => $request->input('judul'),
             'deskripsi' => $request->input('deskripsi'),
             'link_video' => $request->input('link_video'),
@@ -223,7 +231,7 @@ class NutrisiController extends Controller
             }
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
-        $nutrisi = Nutrisi::find($request->input('id_nutrisi'));
+        $nutrisi = Nutrisi::select('foto')->where('uuid',$request->input('id_nutrisi'))->limit(1)->get()[0];
         if (!$nutrisi) {
             return response()->json(['status' => 'error', 'message' => 'Data Nutrisi tidak ditemukan'], 400);
         }
@@ -235,7 +243,7 @@ class NutrisiController extends Controller
         }
         Storage::disk('nutrisi')->delete('/'.$nutrisi->foto);
         // GaleriNutrisi::where('id_nutrisi',$request->input('id_nutrisi'))->delete();
-        if (!Nutrisi::where('id_nutrisi',$request->input('id_nutrisi'))->delete()) {
+        if (!Nutrisi::where('uuid',$request->input('id_nutrisi'))->delete()) {
             return response()->json(['status' => 'error', 'message' => 'Gagal menghapus data Nutrisi'], 500);
         }
         $this->dataCacheFile(['id_nutrisi' => $request->input('id_nutrisi')],'hapus');
