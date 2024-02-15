@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use App\Models\GaleriPengasuhan;
 use App\Models\Pengasuhan;
+use Carbon\Carbon;
 use Exception;
 class PengasuhanController extends Controller
 {
@@ -18,6 +19,10 @@ class PengasuhanController extends Controller
         //check if file exist
         if (!$fileExist) {
             //if file is delete will make new json file
+            $directory = dirname(self::$jsonFile);
+            if (!is_dir($directory)) {
+                mkdir($directory, 0755, true);
+            }
             $pengasuhanData = json_decode(Pengasuhan::get(),true);
             if (!file_put_contents(self::$jsonFile,json_encode($pengasuhanData, JSON_PRETTY_PRINT))) {
                 throw new Exception('Gagal menyimpan file sistem');
@@ -49,8 +54,11 @@ class PengasuhanController extends Controller
                 if (isset($item['id_pengasuhan']) && $item['id_pengasuhan'] == $data['id_pengasuhan']) {
                     $newData = [
                         'id_pengasuhan' => $data['id_pengasuhan'],
-                        'nama_kategori' => $data['nama_kategori_seniman'],
-                        'singkatan_kategori' => $data['singkatan_kategori']
+                        'judul' => $data['judul'],
+                        'deskripsi' => $data['deskripsi'],
+                        'link_video' => $data['link_video'],
+                        'rentang_usia' => $data['rentang_usia'],
+                        'foto' => $data['foto'],
                     ];
                     $jsonData[$key] = $newData;
                     break;
@@ -105,22 +113,30 @@ class PengasuhanController extends Controller
             return response()->json(['status'=>'error','message'=>'Format Foto tidak valid. Gunakan format jpeg, png, jpg'], 400);
         }
         $fotoName = $file->hashName();
-        Storage::disk('pengasuhan')->put('foto/' . $fotoName, file_get_contents($file));
-        $ins = Pengasuhan::insert([
+        Storage::disk('pengasuhan')->put($fotoName, file_get_contents($file));
+        $now = Carbon::now();
+        $ins = Pengasuhan::insertGetId([
             'judul' => $request->input('judul'),
             'deskripsi' => $request->input('deskripsi'),
             'link_video' => $request->input('link_video'),
             'rentang_usia' => $request->input('rentang_usia'),
-            'foto' => $fotoName
+            'foto' => $fotoName,
+            'created_at' => $now,
+            'updated_at' => $now,
         ]);
         if(!$ins){
             return response()->json(['status'=>'error','message'=>'Gagal menambahkan data Pengasuhan'], 500);
         }
-        // $this->dataCacheFile([
-        //     'id_pengasuhan' => $ins,
-        //     'nama_kategori_seniman'=>$request->input('nama'),
-        //     'singkatan_kategori'=>strtoupper($request->input('singkatan'))
-        // ],'tambah');
+        $this->dataCacheFile([
+            'id_pengasuhan' => $ins,
+            'judul' => $request->input('judul'),
+            'deskripsi' => $request->input('deskripsi'),
+            'link_video' => $request->input('link_video'),
+            'rentang_usia' => $request->input('rentang_usia'),
+            'foto' => $fotoName,
+            'created_at' => $now,
+            'updated_at' => $now,
+        ],'tambah');
         return response()->json(['status'=>'success','message'=>'Data Pengasuhan berhasil ditambahkan']);
     }
     public function editPengasuhan(Request $request){
@@ -166,24 +182,30 @@ class PengasuhanController extends Controller
             if (file_exists($fileToDelete) && !is_dir($fileToDelete)) {
                 unlink($fileToDelete);
             }
-            Storage::disk('pengasuhan')->delete('foto/'. $pengasuhan['foto']);
+            Storage::disk('pengasuhan')->delete($pengasuhan['foto']);
             $fotoName = $file->hashName();
-            Storage::disk('pengasuhan')->put('foto/' . $fotoName, file_get_contents($file));
+            Storage::disk('pengasuhan')->put($fotoName, file_get_contents($file));
         }
+        $now = Carbon::now();
         $edit = $pengasuhan->where('id_pengasuhan',$request->input('id_pengasuhan'))->update([
             'judul' => $request->input('judul'),
             'deskripsi' => $request->input('deskripsi'),
             'link_video' => $request->input('link_video'),
             'rentang_usia' => $request->input('rentang_usia'),
             'foto' => $request->hasFile('foto') ? $fotoName : $pengasuhan['foto'],
+            'updated_at' => $now,
         ]);
         if(!$edit){
             return response()->json(['status' =>'error','message'=>'Gagal memperbarui data Pengasuhan'], 500);
         }
         $this->dataCacheFile([
             'id_pengasuhan' => $request->input('id_pengasuhan'),
-            'nama_kategori_seniman' => $request->input('nama'),
-            'singkatan_kategori' => strtoupper($request->input('singkatan'))
+            'judul' => $request->input('judul'),
+            'deskripsi' => $request->input('deskripsi'),
+            'link_video' => $request->input('link_video'),
+            'rentang_usia' => $request->input('rentang_usia'),
+            'foto' => $request->hasFile('foto') ? $fotoName : $pengasuhan['foto'],
+            'updated_at' => $now,
         ],'update');
         return response()->json(['status' =>'success','message'=>'Data Pengasuhan berhasil di perbarui']);
     }
