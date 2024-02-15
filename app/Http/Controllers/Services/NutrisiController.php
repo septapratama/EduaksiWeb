@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use App\Models\GaleriNutrisi;
 use App\Models\Nutrisi;
+use Carbon\Carbon;
 use Exception;
 class NutrisiController extends Controller
 {
@@ -13,18 +14,22 @@ class NutrisiController extends Controller
     public function __construct(){
         self::$jsonFile = storage_path('app/database/nutrisi.json');
     }
-    private function dataCacheFile($data, $con){
+    public function dataCacheFile($data, $con){
         $fileExist = file_exists(self::$jsonFile);
         //check if file exist
         if (!$fileExist) {
             //if file is delete will make new json file
+            $directory = dirname(self::$jsonFile);
+            if (!is_dir($directory)) {
+                mkdir($directory, 0755, true);
+            }
             $nutrisiData = json_decode(Nutrisi::get(),true);
             if (!file_put_contents(self::$jsonFile,json_encode($nutrisiData, JSON_PRETTY_PRINT))) {
                 throw new Exception('Gagal menyimpan file sistem');
             }
         }
         if($con == 'get'){
-            //get kategori seniman
+            //get Nutrisi
             $jsonData = json_decode(file_get_contents(self::$jsonFile), true);
             $result = null;
             foreach($jsonData as $key => $item){
@@ -33,24 +38,27 @@ class NutrisiController extends Controller
                 }
             }
             if($result === null){
-                throw new Exception('Data kategori tidak ditemukan');
+                throw new Exception('Data Nutrisi tidak ditemukan');
             }
             return $result;
         }else if($con == 'tambah'){
-            //tambah kategori seniman
+            //tambah Nutrisi
             $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
             $new[$data['id_nutrisi']] = $data;
             $jsonData = array_merge($jsonData, $new);
             file_put_contents(self::$jsonFile,json_encode($jsonData, JSON_PRETTY_PRINT));
         }else if($con == 'update'){
-            //update kategori seniman
+            //update Nutrisi
             $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
             foreach($jsonData as $key => $item){
                 if (isset($item['id_nutrisi']) && $item['id_nutrisi'] == $data['id_nutrisi']) {
                     $newData = [
                         'id_nutrisi' => $data['id_nutrisi'],
-                        'nama_kategori' => $data['nama_kategori_seniman'],
-                        'singkatan_kategori' => $data['singkatan_kategori']
+                        'judul' => $data['judul'],
+                        'deskripsi' => $data['deskripsi'],
+                        'link_video' => $data['link_video'],
+                        'rentang_usia' => $data['rentang_usia'],
+                        'foto' => $data['foto'],
                     ];
                     $jsonData[$key] = $newData;
                     break;
@@ -59,7 +67,7 @@ class NutrisiController extends Controller
             $jsonData = array_values($jsonData);
             file_put_contents(self::$jsonFile,json_encode($jsonData, JSON_PRETTY_PRINT));
         }else if($con == 'hapus'){
-            //hapus kategori seniman
+            //hapus Nutrisi
             $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
             foreach($jsonData as $key => $item){
                 if (isset($item['id_nutrisi']) && $item['id_nutrisi'] == $data['id_nutrisi']) {
@@ -105,21 +113,29 @@ class NutrisiController extends Controller
             return response()->json(['status'=>'error','message'=>'Format Foto tidak valid. Gunakan format jpeg, png, jpg'], 400);
         }
         $fotoName = $file->hashName();
-        Storage::disk('nutrisi')->put('foto/' . $fotoName, file_get_contents($file));
-        $ins = Nutrisi::insert([
+        Storage::disk('nutrisi')->put($fotoName, file_get_contents($file));
+        $now = Carbon::now();
+        $ins = Nutrisi::insertGetId([
             'judul' => $request->input('judul'),
             'deskripsi' => $request->input('deskripsi'),
             'link_video' => $request->input('link_video'),
             'rentang_usia' => $request->input('rentang_usia'),
-            'foto' => $fotoName
+            'foto' => $fotoName,
+            'created_at' => $now,
+            'updated_at' => $now,
         ]);
         if(!$ins){
             return response()->json(['status'=>'error','message'=>'Gagal menambahkan data Nutrisi'], 500);
         }
         $this->dataCacheFile([
             'id_nutrisi' => $ins,
-            'nama_kategori_seniman'=>$request->input('nama'),
-            'singkatan_kategori'=>strtoupper($request->input('singkatan'))
+            'judul' => $request->input('judul'),
+            'deskripsi' => $request->input('deskripsi'),
+            'link_video' => $request->input('link_video'),
+            'rentang_usia' => $request->input('rentang_usia'),
+            'foto' => $fotoName,
+            'created_at' => $now,
+            'updated_at' => $now,
         ],'tambah');
         return response()->json(['status'=>'success','message'=>'Data Nutrisi berhasil ditambahkan']);
     }
@@ -166,24 +182,30 @@ class NutrisiController extends Controller
             if (file_exists($fileToDelete) && !is_dir($fileToDelete)) {
                 unlink($fileToDelete);
             }
-            Storage::disk('nutrisi')->delete('foto/'. $nutrisi['foto']);
+            Storage::disk('nutrisi')->delete($nutrisi['foto']);
             $fotoName = $file->hashName();
-            Storage::disk('nutrisi')->put('foto/' . $fotoName, file_get_contents($file));
+            Storage::disk('nutrisi')->put($fotoName, file_get_contents($file));
         }
+        $now = Carbon::now();
         $edit = $nutrisi->where('id_nutrisi',$request->input('id_nutrisi'))->update([
             'judul' => $request->input('judul'),
             'deskripsi' => $request->input('deskripsi'),
             'link_video' => $request->input('link_video'),
             'rentang_usia' => $request->input('rentang_usia'),
             'foto' => $request->hasFile('foto') ? $fotoName : $nutrisi['foto'],
+            'updated_at' => $now,
         ]);
         if(!$edit){
             return response()->json(['status' =>'error','message'=>'Gagal memperbarui data Nutrisi'], 500);
         }
         $this->dataCacheFile([
             'id_nutrisi' => $request->input('id_nutrisi'),
-            'nama_kategori_seniman' => $request->input('nama'),
-            'singkatan_kategori' => strtoupper($request->input('singkatan'))
+            'judul' => $request->input('judul'),
+            'deskripsi' => $request->input('deskripsi'),
+            'link_video' => $request->input('link_video'),
+            'rentang_usia' => $request->input('rentang_usia'),
+            'foto' => $request->hasFile('foto') ? $fotoName : $nutrisi['foto'],
+            'updated_at' => $now,
         ],'update');
         return response()->json(['status' =>'success','message'=>'Data Nutrisi berhasil di perbarui']);
     }

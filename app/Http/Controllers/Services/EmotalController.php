@@ -14,7 +14,7 @@ class EmotalController extends Controller
     public function __construct(){
         self::$jsonFile = storage_path('app/database/emotal.json');
     }
-    private function dataCacheFile($data, $con){
+    public function dataCacheFile($data, $con){
         $fileExist = file_exists(self::$jsonFile);
         //check if file exist
         if (!$fileExist) {
@@ -29,7 +29,7 @@ class EmotalController extends Controller
             }
         }
         if($con == 'get'){
-            //get kategori seniman
+            //get Emosi Mental
             $jsonData = json_decode(file_get_contents(self::$jsonFile), true);
             $result = null;
             foreach($jsonData as $key => $item){
@@ -38,17 +38,17 @@ class EmotalController extends Controller
                 }
             }
             if($result === null){
-                throw new Exception('Data kategori tidak ditemukan');
+                throw new Exception('Data Emosi Mental tidak ditemukan');
             }
             return $result;
         }else if($con == 'tambah'){
-            //tambah kategori seniman
+            //tambah Emosi Mental
             $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
             $new[$data['id_emotal']] = $data;
             $jsonData = array_merge($jsonData, $new);
             file_put_contents(self::$jsonFile,json_encode($jsonData, JSON_PRETTY_PRINT));
         }else if($con == 'update'){
-            //update kategori seniman
+            //update Emosi Mental
             $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
             foreach($jsonData as $key => $item){
                 if (isset($item['id_emotal']) && $item['id_emotal'] == $data['id_emotal']) {
@@ -67,7 +67,7 @@ class EmotalController extends Controller
             $jsonData = array_values($jsonData);
             file_put_contents(self::$jsonFile,json_encode($jsonData, JSON_PRETTY_PRINT));
         }else if($con == 'hapus'){
-            //hapus kategori seniman
+            //hapus Emosi Mental
             $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
             foreach($jsonData as $key => $item){
                 if (isset($item['id_emotal']) && $item['id_emotal'] == $data['id_emotal']) {

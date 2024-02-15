@@ -13,7 +13,7 @@ class PengasuhanController extends Controller
     public function __construct(){
         self::$jsonFile = storage_path('app/database/pengasuhan.json');
     }
-    private function dataCacheFile($data, $con){
+    public function dataCacheFile($data, $con){
         $fileExist = file_exists(self::$jsonFile);
         //check if file exist
         if (!$fileExist) {
@@ -24,7 +24,7 @@ class PengasuhanController extends Controller
             }
         }
         if($con == 'get'){
-            //get kategori seniman
+            //get Pengasuhan
             $jsonData = json_decode(file_get_contents(self::$jsonFile), true);
             $result = null;
             foreach($jsonData as $key => $item){
@@ -33,17 +33,17 @@ class PengasuhanController extends Controller
                 }
             }
             if($result === null){
-                throw new Exception('Data kategori tidak ditemukan');
+                throw new Exception('Data Pengasuhan tidak ditemukan');
             }
             return $result;
         }else if($con == 'tambah'){
-            //tambah kategori seniman
+            //tambah Pengasuhan
             $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
             $new[$data['id_pengasuhan']] = $data;
             $jsonData = array_merge($jsonData, $new);
             file_put_contents(self::$jsonFile,json_encode($jsonData, JSON_PRETTY_PRINT));
         }else if($con == 'update'){
-            //update kategori seniman
+            //update Pengasuhan
             $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
             foreach($jsonData as $key => $item){
                 if (isset($item['id_pengasuhan']) && $item['id_pengasuhan'] == $data['id_pengasuhan']) {
@@ -59,7 +59,7 @@ class PengasuhanController extends Controller
             $jsonData = array_values($jsonData);
             file_put_contents(self::$jsonFile,json_encode($jsonData, JSON_PRETTY_PRINT));
         }else if($con == 'hapus'){
-            //hapus kategori seniman
+            //hapus Pengasuhan
             $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
             foreach($jsonData as $key => $item){
                 if (isset($item['id_pengasuhan']) && $item['id_pengasuhan'] == $data['id_pengasuhan']) {
