@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use App\Models\GaleriEmosiMental;
 use App\Models\Emotal;
-<<<<<<< HEAD
 use Exception;
 class EmotalController extends Controller
 {
@@ -71,10 +70,6 @@ class EmotalController extends Controller
             file_put_contents(self::$jsonFile,json_encode($jsonData, JSON_PRETTY_PRINT));
         }
     }
-=======
-class EmotalController extends Controller
-{
->>>>>>> 232e5e39cf66ed80177d83bd2d42a0be4394b069
     public function tambahEmotal(Request $request){
         $validator = Validator::make($request->only('judul', 'deskripsi', 'link_video', 'rentang_usia', 'foto'), [
             'judul' => 'required|min:6|max:50',
@@ -121,14 +116,11 @@ class EmotalController extends Controller
         if(!$ins){
             return response()->json(['status'=>'error','message'=>'Gagal menambahkan data Emotal'], 500);
         }
-<<<<<<< HEAD
         $this->dataCacheFile([
             'id_emotal' => $ins,
             'nama_kategori_seniman'=>$request->input('nama'),
             'singkatan_kategori'=>strtoupper($request->input('singkatan'))
         ],'tambah');
-=======
->>>>>>> 232e5e39cf66ed80177d83bd2d42a0be4394b069
         return response()->json(['status'=>'success','message'=>'Data Emotal berhasil ditambahkan']);
     }
     public function editEmotal(Request $request){
@@ -188,14 +180,11 @@ class EmotalController extends Controller
         if(!$edit){
             return response()->json(['status' =>'error','message'=>'Gagal memperbarui data Emotal'], 500);
         }
-<<<<<<< HEAD
         $this->dataCacheFile([
             'id_emotal' => $request->input('id_emotal'),
             'nama_kategori_seniman' => $request->input('nama'),
             'singkatan_kategori' => strtoupper($request->input('singkatan'))
         ],'update');
-=======
->>>>>>> 232e5e39cf66ed80177d83bd2d42a0be4394b069
         return response()->json(['status' =>'success','message'=>'Data Emotal berhasil di perbarui']);
     }
     public function deleteEmotal(Request $request){
@@ -227,10 +216,7 @@ class EmotalController extends Controller
         if (!Emotal::where('id_emotal',$request->input('id_emotal'))->delete()) {
             return response()->json(['status' => 'error', 'message' => 'Gagal menghapus data Emotal'], 500);
         }
-<<<<<<< HEAD
         $this->dataCacheFile(['id_emotal' => $request->input('id_emotal')],'hapus');
-=======
->>>>>>> 232e5e39cf66ed80177d83bd2d42a0be4394b069
         return response()->json(['status' => 'success', 'message' => 'Data Emotal berhasil dihapus']);
     }
 }
