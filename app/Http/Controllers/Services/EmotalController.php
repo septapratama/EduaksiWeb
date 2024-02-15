@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use App\Models\GaleriEmosiMental;
 use App\Models\Emotal;
+use Carbon\Carbon;
 use Exception;
 class EmotalController extends Controller
 {
@@ -18,6 +19,10 @@ class EmotalController extends Controller
         //check if file exist
         if (!$fileExist) {
             //if file is delete will make new json file
+            $directory = dirname(self::$jsonFile);
+            if (!is_dir($directory)) {
+                mkdir($directory, 0755, true);
+            }
             $emotalData = json_decode(Emotal::get(),true);
             if (!file_put_contents(self::$jsonFile,json_encode($emotalData, JSON_PRETTY_PRINT))) {
                 throw new Exception('Gagal menyimpan file sistem');
@@ -49,8 +54,11 @@ class EmotalController extends Controller
                 if (isset($item['id_emotal']) && $item['id_emotal'] == $data['id_emotal']) {
                     $newData = [
                         'id_emotal' => $data['id_emotal'],
-                        'nama_kategori' => $data['nama_kategori_seniman'],
-                        'singkatan_kategori' => $data['singkatan_kategori']
+                        'judul' => $data['judul'],
+                        'deskripsi' => $data['deskripsi'],
+                        'link_video' => $data['link_video'],
+                        'rentang_usia' => $data['rentang_usia'],
+                        'foto' => $data['foto'],
                     ];
                     $jsonData[$key] = $newData;
                     break;
@@ -105,21 +113,29 @@ class EmotalController extends Controller
             return response()->json(['status'=>'error','message'=>'Format Foto tidak valid. Gunakan format jpeg, png, jpg'], 400);
         }
         $fotoName = $file->hashName();
-        Storage::disk('emotal')->put('foto/' . $fotoName, file_get_contents($file));
-        $ins = Emotal::insert([
+        Storage::disk('emotal')->put($fotoName, file_get_contents($file));
+        $now = Carbon::now();
+        $ins = Emotal::insertGetId([
             'judul' => $request->input('judul'),
             'deskripsi' => $request->input('deskripsi'),
             'link_video' => $request->input('link_video'),
             'rentang_usia' => $request->input('rentang_usia'),
-            'foto' => $fotoName
+            'foto' => $fotoName,
+            'created_at' => $now,
+            'updated_at' => $now,
         ]);
         if(!$ins){
             return response()->json(['status'=>'error','message'=>'Gagal menambahkan data Emotal'], 500);
         }
         $this->dataCacheFile([
             'id_emotal' => $ins,
-            'nama_kategori_seniman'=>$request->input('nama'),
-            'singkatan_kategori'=>strtoupper($request->input('singkatan'))
+            'judul' => $request->input('judul'),
+            'deskripsi' => $request->input('deskripsi'),
+            'link_video' => $request->input('link_video'),
+            'rentang_usia' => $request->input('rentang_usia'),
+            'foto' => $fotoName,
+            'created_at' => $now,
+            'updated_at' => $now,
         ],'tambah');
         return response()->json(['status'=>'success','message'=>'Data Emotal berhasil ditambahkan']);
     }
@@ -166,24 +182,30 @@ class EmotalController extends Controller
             if (file_exists($fileToDelete) && !is_dir($fileToDelete)) {
                 unlink($fileToDelete);
             }
-            Storage::disk('emotal')->delete('foto/'. $emosiMental['foto']);
+            Storage::disk('emotal')->delete($emosiMental['foto']);
             $fotoName = $file->hashName();
-            Storage::disk('emotal')->put('foto/' . $fotoName, file_get_contents($file));
+            Storage::disk('emotal')->put($fotoName, file_get_contents($file));
         }
+        $now = Carbon::now();
         $edit = $emosiMental->where('id_emotal',$request->input('id_emotal'))->update([
             'judul' => $request->input('judul'),
             'deskripsi' => $request->input('deskripsi'),
             'link_video' => $request->input('link_video'),
             'rentang_usia' => $request->input('rentang_usia'),
             'foto' => $request->hasFile('foto') ? $fotoName : $emosiMental['foto'],
+            'updated_at' => $now,
         ]);
         if(!$edit){
             return response()->json(['status' =>'error','message'=>'Gagal memperbarui data Emotal'], 500);
         }
         $this->dataCacheFile([
             'id_emotal' => $request->input('id_emotal'),
-            'nama_kategori_seniman' => $request->input('nama'),
-            'singkatan_kategori' => strtoupper($request->input('singkatan'))
+            'judul' => $request->input('judul'),
+            'deskripsi' => $request->input('deskripsi'),
+            'link_video' => $request->input('link_video'),
+            'rentang_usia' => $request->input('rentang_usia'),
+            'foto' => $request->hasFile('foto') ? $fotoName : $emosiMental['foto'],
+            'updated_at' => $now,
         ],'update');
         return response()->json(['status' =>'success','message'=>'Data Emotal berhasil di perbarui']);
     }

@@ -16,13 +16,13 @@ class DisiController extends Controller
     }
     public function dataCacheFile($data, $con){
         $fileExist = file_exists(self::$jsonFile);
-        $directory = dirname(self::$jsonFile);
-            if (!is_dir($directory)) {
-                mkdir($directory, 0755, true);
-            }
         //check if file exist
         if (!$fileExist) {
             //if file is delete will make new json file
+            $directory = dirname(self::$jsonFile);
+            if (!is_dir($directory)) {
+                mkdir($directory, 0755, true);
+            }
             $disiData = json_decode(Disi::get(),true);
             if (!file_put_contents(self::$jsonFile,json_encode($disiData, JSON_PRETTY_PRINT))) {
                 throw new Exception('Gagal menyimpan file sistem');
