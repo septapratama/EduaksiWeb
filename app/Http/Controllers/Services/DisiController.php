@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use App\Models\GaleriDigitalLiterasi;
 use App\Models\Disi;
+use Carbon\Carbon;
 use Exception;
 class DisiController extends Controller
 {
@@ -13,8 +14,12 @@ class DisiController extends Controller
     public function __construct(){
         self::$jsonFile = storage_path('app/database/disi.json');
     }
-    private function dataCacheFile($data, $con){
+    public function dataCacheFile($data, $con){
         $fileExist = file_exists(self::$jsonFile);
+        $directory = dirname(self::$jsonFile);
+            if (!is_dir($directory)) {
+                mkdir($directory, 0755, true);
+            }
         //check if file exist
         if (!$fileExist) {
             //if file is delete will make new json file
@@ -24,7 +29,7 @@ class DisiController extends Controller
             }
         }
         if($con == 'get'){
-            //get kategori seniman
+            //get Digital literasi
             $jsonData = json_decode(file_get_contents(self::$jsonFile), true);
             $result = null;
             foreach($jsonData as $key => $item){
@@ -33,24 +38,27 @@ class DisiController extends Controller
                 }
             }
             if($result === null){
-                throw new Exception('Data kategori tidak ditemukan');
+                throw new Exception('Data Digital literasi tidak ditemukan');
             }
             return $result;
         }else if($con == 'tambah'){
-            //tambah kategori seniman
+            //tambah Digital literasi
             $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
             $new[$data['id_disi']] = $data;
             $jsonData = array_merge($jsonData, $new);
             file_put_contents(self::$jsonFile,json_encode($jsonData, JSON_PRETTY_PRINT));
         }else if($con == 'update'){
-            //update kategori seniman
+            //update Digital literasi
             $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
             foreach($jsonData as $key => $item){
                 if (isset($item['id_disi']) && $item['id_disi'] == $data['id_disi']) {
                     $newData = [
                         'id_disi' => $data['id_disi'],
-                        'nama_kategori' => $data['nama_kategori_seniman'],
-                        'singkatan_kategori' => $data['singkatan_kategori']
+                        'judul' => $data['judul'],
+                        'deskripsi' => $data['deskripsi'],
+                        'link_video' => $data['link_video'],
+                        'rentang_usia' => $data['rentang_usia'],
+                        'foto' => $data['foto'],
                     ];
                     $jsonData[$key] = $newData;
                     break;
@@ -59,7 +67,7 @@ class DisiController extends Controller
             $jsonData = array_values($jsonData);
             file_put_contents(self::$jsonFile,json_encode($jsonData, JSON_PRETTY_PRINT));
         }else if($con == 'hapus'){
-            //hapus kategori seniman
+            //hapus Digital literasi
             $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
             foreach($jsonData as $key => $item){
                 if (isset($item['id_disi']) && $item['id_disi'] == $data['id_disi']) {
@@ -105,21 +113,29 @@ class DisiController extends Controller
             return response()->json(['status'=>'error','message'=>'Format Foto tidak valid. Gunakan format jpeg, png, jpg'], 400);
         }
         $fotoName = $file->hashName();
-        Storage::disk('disi')->put('foto/' . $fotoName, file_get_contents($file));
-        $ins = Disi::insert([
+        Storage::disk('disi')->put($fotoName, file_get_contents($file));
+        $now = Carbon::now();
+        $ins = Disi::insertGetId([
             'judul' => $request->input('judul'),
             'deskripsi' => $request->input('deskripsi'),
             'link_video' => $request->input('link_video'),
             'rentang_usia' => $request->input('rentang_usia'),
-            'foto' => $fotoName
+            'foto' => $fotoName,
+            'created_at' => $now,
+            'updated_at' => $now,
         ]);
         if(!$ins){
             return response()->json(['status'=>'error','message'=>'Gagal menambahkan data Disi'], 500);
         }
         $this->dataCacheFile([
             'id_disi' => $ins,
-            'nama_kategori_seniman'=>$request->input('nama'),
-            'singkatan_kategori'=>strtoupper($request->input('singkatan'))
+            'judul' => $request->input('judul'),
+            'deskripsi' => $request->input('deskripsi'),
+            'link_video' => $request->input('link_video'),
+            'rentang_usia' => $request->input('rentang_usia'),
+            'foto' => $fotoName,
+            'created_at' => $now,
+            'updated_at' => $now,
         ],'tambah');
         return response()->json(['status'=>'success','message'=>'Data Disi berhasil ditambahkan']);
     }
@@ -166,24 +182,30 @@ class DisiController extends Controller
             if (file_exists($fileToDelete) && !is_dir($fileToDelete)) {
                 unlink($fileToDelete);
             }
-            Storage::disk('disi')->delete('foto/'. $disi['foto']);
+            Storage::disk('disi')->delete($disi['foto']);
             $fotoName = $file->hashName();
-            Storage::disk('disi')->put('foto/' . $fotoName, file_get_contents($file));
+            Storage::disk('disi')->put($fotoName, file_get_contents($file));
         }
+        $now = Carbon::now();
         $edit = $disi->where('id_disi',$request->input('id_disi'))->update([
             'judul' => $request->input('judul'),
             'deskripsi' => $request->input('deskripsi'),
             'link_video' => $request->input('link_video'),
             'rentang_usia' => $request->input('rentang_usia'),
             'foto' => $request->hasFile('foto') ? $fotoName : $disi['foto'],
+            'updated_at' => $now,
         ]);
         if(!$edit){
             return response()->json(['status' =>'error','message'=>'Gagal memperbarui data Disi'], 500);
         }
         $this->dataCacheFile([
             'id_disi' => $request->input('id_disi'),
-            'nama_kategori_seniman' => $request->input('nama'),
-            'singkatan_kategori' => strtoupper($request->input('singkatan'))
+            'judul' => $request->input('judul'),
+            'deskripsi' => $request->input('deskripsi'),
+            'link_video' => $request->input('link_video'),
+            'rentang_usia' => $request->input('rentang_usia'),
+            'foto' => $request->hasFile('foto') ? $fotoName : $disi['foto'],
+            'updated_at' => $now,
         ],'update');
         return response()->json(['status' =>'success','message'=>'Data Disi berhasil di perbarui']);
     }

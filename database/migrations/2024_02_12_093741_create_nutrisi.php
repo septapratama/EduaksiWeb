@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id('id_nutrisi');
             $table->string('judul');
             $table->longText('deskripsi');
-            $table->string('link_video');
+            $table->string('link_video')->nullable();
             $table->string('rentang_usia');
             $table->text('foto');
             $table->timestamps();
