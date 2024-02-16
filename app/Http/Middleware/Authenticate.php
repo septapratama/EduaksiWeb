@@ -25,7 +25,7 @@ class Authenticate
             $authPage = ['/login'];
             if(in_array($currentPath,$authPage) && $request->isMethod("get")){
                 if (in_array(ltrim($path), $authPage)) {
-                    $response = redirect('/page/dashboard');
+                    $response = redirect('/dashboard');
                 } else { 
                     $response = redirect($path);
                 }
