@@ -82,6 +82,9 @@ Route::group(['middleware'=>['auth','authorized']],function(){
     Route::get('/login', function () {
         return view('admin.login');
     })->withoutMiddleware('authorized');
+    Route::get('/template', function () {
+        return view('admin.testing');
+    })->withoutMiddleware('authorized');
     Route::get('/admin',[ShowAdminController::class,'showAdmin']);
     Route::get('/dashboard',[ShowAdminController::class,'showDashboard']);
     Route::get('/profile',[ShowAdminController::class,'showProfile']);

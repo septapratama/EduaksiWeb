@@ -79,7 +79,7 @@ class AdminController extends Controller
         $dataShow = [
             'userAuth' => $request->input('user_auth'),
         ];
-        return view('page.dashboard',$dataShow);
+        return view('page.admin.dashboard',$dataShow);
     }
     public function showProfile(Request $request){
         $userAuth = $request->input('user_auth');
