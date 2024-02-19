@@ -10,9 +10,10 @@ return new class extends Migration
     {
         Schema::create('digital_literasi', function (Blueprint $table) {
             $table->id('id_disi');
+            $table->uuid('uuid');
             $table->string('judul');
             $table->longText('deskripsi');
-            $table->string('link_video');
+            $table->string('link_video')->nullable();
             $table->string('rentang_usia');
             $table->text('foto');
             $table->timestamps();

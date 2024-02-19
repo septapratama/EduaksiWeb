@@ -10,9 +10,10 @@ return new class extends Migration
     {
         Schema::create('emosi_mental', function (Blueprint $table) {
             $table->id('id_emotal');
+            $table->uuid('uuid');
             $table->string('judul');
             $table->longText('deskripsi');
-            $table->string('link_video');
+            $table->string('link_video')->nullable();
             $table->string('rentang_usia');
             $table->text('foto');
             $table->timestamps();

@@ -11,8 +11,23 @@ class AdminSeeder extends Seeder
 {
     public function run(): void
     {
+        User::insert([
+            'uuid' =>  Str::uuid(),
+            'nama_lengkap'=>'Admin utama',
+            'jenis_kelamin'=>['laki-laki', 'perempuan'][rand(0, 1)],
+            'no_telpon'=>'0851'.mt_rand(10000000,99999999),
+            'alamat'=>'Jalan surabaya',
+            'role'=>'admin',
+            'email'=>"Admin@gmail.com",
+            'password'=>Hash::make('Admin@1234567890'),
+            'foto'=>Str::random(5),
+            'verifikasi'=>true,
+            'created_at'=>Carbon::now(),
+            'updated_at'=>Carbon::now()
+        ]);
         for($i = 1; $i <= 3; $i++){
             User::insert([
+                'uuid' =>  Str::uuid(),
                 'nama_lengkap'=>'Admin '.$i,
                 'jenis_kelamin'=>['laki-laki', 'perempuan'][rand(0, 1)],
                 'no_telpon'=>'0851'.mt_rand(10000000,99999999),

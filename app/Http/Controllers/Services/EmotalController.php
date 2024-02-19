@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\Services;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use App\Models\GaleriEmosiMental;
@@ -13,44 +14,56 @@ class EmotalController extends Controller
     public function __construct(){
         self::$jsonFile = storage_path('app/database/emotal.json');
     }
-    private function dataCacheFile($data, $con){
+    public function dataCacheFile($data, $con){
         $fileExist = file_exists(self::$jsonFile);
         //check if file exist
         if (!$fileExist) {
             //if file is delete will make new json file
+            $directory = dirname(self::$jsonFile);
+            if (!is_dir($directory)) {
+                mkdir($directory, 0755, true);
+            }
             $emotalData = json_decode(Emotal::get(),true);
+            foreach ($emotalData as &$item) {
+                unset($item['id_emotal']);
+            }
             if (!file_put_contents(self::$jsonFile,json_encode($emotalData, JSON_PRETTY_PRINT))) {
                 throw new Exception('Gagal menyimpan file sistem');
             }
         }
         if($con == 'get'){
-            //get kategori seniman
+            //get Emosi Mental
             $jsonData = json_decode(file_get_contents(self::$jsonFile), true);
             $result = null;
             foreach($jsonData as $key => $item){
-                if (isset($item['id_emotal']) && $item['id_emotal'] == $data['id_emotal']) {
+                if (isset($item['uuid']) && $item['uuid'] == $data['id_emotal']) {
                     $result = $jsonData[$key];
                 }
             }
             if($result === null){
-                throw new Exception('Data kategori tidak ditemukan');
+                throw new Exception('Data Emosi Mental tidak ditemukan');
             }
             return $result;
         }else if($con == 'tambah'){
-            //tambah kategori seniman
-            $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
-            $new[$data['id_emotal']] = $data;
-            $jsonData = array_merge($jsonData, $new);
-            file_put_contents(self::$jsonFile,json_encode($jsonData, JSON_PRETTY_PRINT));
+            if($fileExist){
+                //tambah Emosi Mental
+                $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
+                $new[] = $data;
+                $jsonData = array_merge($jsonData, $new);
+                file_put_contents(self::$jsonFile,json_encode($jsonData, JSON_PRETTY_PRINT));
+            }
         }else if($con == 'update'){
-            //update kategori seniman
+            //update Emosi Mental
             $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
             foreach($jsonData as $key => $item){
-                if (isset($item['id_emotal']) && $item['id_emotal'] == $data['id_emotal']) {
+                if (isset($item['uuid']) && $item['uuid'] == $data['id_emotal']) {
                     $newData = [
-                        'id_emotal' => $data['id_emotal'],
-                        'nama_kategori' => $data['nama_kategori_seniman'],
-                        'singkatan_kategori' => $data['singkatan_kategori']
+                        'uuid' => $data['id_emotal'],
+                        'judul' => $data['judul'],
+                        'deskripsi' => $data['deskripsi'],
+                        'link_video' => $data['link_video'],
+                        'rentang_usia' => $data['rentang_usia'],
+                        'foto' => $data['foto'],
                     ];
                     $jsonData[$key] = $newData;
                     break;
@@ -59,10 +72,10 @@ class EmotalController extends Controller
             $jsonData = array_values($jsonData);
             file_put_contents(self::$jsonFile,json_encode($jsonData, JSON_PRETTY_PRINT));
         }else if($con == 'hapus'){
-            //hapus kategori seniman
+            //hapus Emosi Mental
             $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
             foreach($jsonData as $key => $item){
-                if (isset($item['id_emotal']) && $item['id_emotal'] == $data['id_emotal']) {
+                if (isset($item['uuid']) && $item['uuid'] == $data['id_emotal']) {
                     unset($jsonData[$key]);
                 }
             }
@@ -105,21 +118,31 @@ class EmotalController extends Controller
             return response()->json(['status'=>'error','message'=>'Format Foto tidak valid. Gunakan format jpeg, png, jpg'], 400);
         }
         $fotoName = $file->hashName();
-        Storage::disk('emotal')->put('foto/' . $fotoName, file_get_contents($file));
+        Storage::disk('emotal')->put($fotoName, file_get_contents($file));
+        $now = Carbon::now();
+        $uuid = Str::uuid();
         $ins = Emotal::insert([
+            'uuid' => $uuid,
             'judul' => $request->input('judul'),
             'deskripsi' => $request->input('deskripsi'),
             'link_video' => $request->input('link_video'),
             'rentang_usia' => $request->input('rentang_usia'),
-            'foto' => $fotoName
+            'foto' => $fotoName,
+            'created_at' => $now,
+            'updated_at' => $now,
         ]);
         if(!$ins){
             return response()->json(['status'=>'error','message'=>'Gagal menambahkan data Emotal'], 500);
         }
         $this->dataCacheFile([
-            'id_emotal' => $ins,
-            'nama_kategori_seniman'=>$request->input('nama'),
-            'singkatan_kategori'=>strtoupper($request->input('singkatan'))
+            'uuid' => $uuid,
+            'judul' => $request->input('judul'),
+            'deskripsi' => $request->input('deskripsi'),
+            'link_video' => $request->input('link_video'),
+            'rentang_usia' => $request->input('rentang_usia'),
+            'foto' => $fotoName,
+            'created_at' => $now,
+            'updated_at' => $now,
         ],'tambah');
         return response()->json(['status'=>'success','message'=>'Data Emotal berhasil ditambahkan']);
     }
@@ -151,7 +174,7 @@ class EmotalController extends Controller
             }
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
-        $emosiMental = Emotal::select('foto')->where('id_emotal',$request->input('id_emotal'))->limit(1)->get()[0];
+        $emosiMental = Emotal::select('foto')->where('uuid',$request->input('id_emotal'))->limit(1)->get()[0];
         if (!$emosiMental) {
             return response()->json(['status' =>'error','message'=>'Data Emotal tidak ditemukan'], 400);
         }
@@ -166,24 +189,30 @@ class EmotalController extends Controller
             if (file_exists($fileToDelete) && !is_dir($fileToDelete)) {
                 unlink($fileToDelete);
             }
-            Storage::disk('emotal')->delete('foto/'. $emosiMental['foto']);
+            Storage::disk('emotal')->delete($emosiMental['foto']);
             $fotoName = $file->hashName();
-            Storage::disk('emotal')->put('foto/' . $fotoName, file_get_contents($file));
+            Storage::disk('emotal')->put($fotoName, file_get_contents($file));
         }
-        $edit = $emosiMental->where('id_emotal',$request->input('id_emotal'))->update([
+        $now = Carbon::now();
+        $edit = $emosiMental->where('uuid',$request->input('id_emotal'))->update([
             'judul' => $request->input('judul'),
             'deskripsi' => $request->input('deskripsi'),
             'link_video' => $request->input('link_video'),
             'rentang_usia' => $request->input('rentang_usia'),
             'foto' => $request->hasFile('foto') ? $fotoName : $emosiMental['foto'],
+            'updated_at' => $now,
         ]);
         if(!$edit){
             return response()->json(['status' =>'error','message'=>'Gagal memperbarui data Emotal'], 500);
         }
         $this->dataCacheFile([
             'id_emotal' => $request->input('id_emotal'),
-            'nama_kategori_seniman' => $request->input('nama'),
-            'singkatan_kategori' => strtoupper($request->input('singkatan'))
+            'judul' => $request->input('judul'),
+            'deskripsi' => $request->input('deskripsi'),
+            'link_video' => $request->input('link_video'),
+            'rentang_usia' => $request->input('rentang_usia'),
+            'foto' => $request->hasFile('foto') ? $fotoName : $emosiMental['foto'],
+            'updated_at' => $now,
         ],'update');
         return response()->json(['status' =>'success','message'=>'Data Emotal berhasil di perbarui']);
     }
@@ -201,7 +230,7 @@ class EmotalController extends Controller
             }
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
-        $emosiMental = Emotal::find($request->input('id_emotal'));
+        $emosiMental = Emotal::select('foto')->where('uuid',$request->input('id_emotal'))->limit(1)->get()[0];
         if (!$emosiMental) {
             return response()->json(['status' => 'error', 'message' => 'Data Emotal tidak ditemukan'], 400);
         }
@@ -213,7 +242,7 @@ class EmotalController extends Controller
         }
         Storage::disk('emotal')->delete('/'.$emosiMental->foto);
         // GaleriEmosiMental::where('id_emotal',$request->input('id_emotal'))->delete();
-        if (!Emotal::where('id_emotal',$request->input('id_emotal'))->delete()) {
+        if (!Emotal::where('uuid',$request->input('id_emotal'))->delete()) {
             return response()->json(['status' => 'error', 'message' => 'Gagal menghapus data Emotal'], 500);
         }
         $this->dataCacheFile(['id_emotal' => $request->input('id_emotal')],'hapus');

@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 use App\Http\Controllers\Auth\JwtController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Validator;
@@ -116,6 +117,7 @@ class AdminController extends Controller
         $fileData = Crypt::encrypt(file_get_contents($file));
         Storage::disk('admin')->put('foto/' . $fotoName, $fileData);
         $ins = User::insert([
+            'uuid' =>  Str::uuid(),
             'nama_lengkap'=>$request->input('nama_lengkap'),
             'no_telpon'=>$request->input('no_telpon'),
             'jenis_kelamin'=>$request->input('jenis_kelamin'),
