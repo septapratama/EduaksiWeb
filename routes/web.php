@@ -33,16 +33,27 @@ use App\Http\Controllers\Auth\LoginController;
             return view('page.Disi.edit');
         });
     });
+    Route::group(['prefix'=>'/emotal'],function(){
+        Route::get('/',function(){
+            return view('page.Emotal.data');
+        });
+        Route::get('/tambah',function(){
+            return view('page.Emotal.tambah');
+        });
+        Route::get('/edit',function(){
+            return view('page.Emotal.edit');
+        });
+    });
     // Route::group(['prefix'=>'/disi'],function(){
     //     Route::get('/',[ShowDisiController::class, 'showMain']);
     //     Route::get('/tambah',[ShowDisiController::class, 'showTambah']);
     //     Route::get('/edit',[ShowDisiController::class, 'showEdit']);
     // });
-    Route::group(['prefix'=>'/emotal'],function(){
-        Route::get('/',[ShowEmotalController::class, 'showMain']);
-        Route::get('/tambah',[ShowEmotalController::class, 'showTambah']);
-        Route::get('/edit',[ShowEmotalController::class, 'showEdit']);
-    });
+    // Route::group(['prefix'=>'/emotal'],function(){
+    //     Route::get('/',[ShowEmotalController::class, 'showMain']);
+    //     Route::get('/tambah',[ShowEmotalController::class, 'showTambah']);
+    //     Route::get('/edit',[ShowEmotalController::class, 'showEdit']);
+    // });
     Route::group(['prefix'=>'/nutrisi'],function(){
         Route::get('/',[ShowNutrisiController::class, 'showMain']);
         Route::get('/tambah',[ShowNutrisiController::class, 'showTambah']);

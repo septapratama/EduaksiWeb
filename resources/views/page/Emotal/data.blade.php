@@ -7,7 +7,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Disi | EduAksi</title>
+    <title>Data Emotal | EduAksi</title>
     <link rel="shortcut icon" type="image/png" href="{{ asset($tPath.'assets/images/logos/favicon.png') }}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
@@ -43,20 +43,20 @@ $tPath = app()->environment('local') ? '' : '/public/';
             <!--  Header End -->
             <div class="container-fluid">
                 <div class="pagetitle">
-                    <h1>Kelola Disi</h1>
+                    <h1>Kelola Emotal</h1>
                     <nav>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="/dashboard">Beranda</a></li>
-                            <li class="breadcrumb-item">Kelola Disi</li>
+                            <li class="breadcrumb-item">Kelola Emotal</li>
                         </ol>
                     </nav>
                 </div>
                 <div class="d-flex align-items-stretch">
                     <div class="card w-100">
                         <div class="card-body p-4">
-                            <a href="/disi/tambah" class="btn btn-success"><img
+                            <a href="/emotal/tambah" class="btn btn-success"><img
                                     src="{{ asset($tPath.'img/icon/tambah.svg') }}" alt="" width="30" height="30">Tambah
-                                Disi</a>
+                                Emotal</a>
                             <div class="table-responsive">
                                 <table class="table text-nowrap mb-0 align-middle">
                                     <thead class="text-dark fs-4">
@@ -88,7 +88,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
                                                 <p class="mb-0 fw-normal">4-6 Tahun</p>
                                             </td>
                                             <td class="border-bottom-0">
-                                                <a href="/disi/edit" class="btn btn-warning m-1"><img
+                                                <a href="/emotal/edit" class="btn btn-warning m-1"><img
                                                         src="{{ asset($tPath.'img/icon/edit.svg') }}" alt="">Edit</a>
                                                 <button type="button" class="btn btn-danger m-1"><img
                                                         src="{{ asset($tPath.'img/icon/delete.svg') }}"
@@ -107,7 +107,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
                                                 <p class="mb-0 fw-normal">1-3 Tahun</p>
                                             </td>
                                             <td class="border-bottom-0">
-                                                <a href="/disi/edit" class="btn btn-warning m-1"><img
+                                                <a href="/emotal/edit" class="btn btn-warning m-1"><img
                                                         src="{{ asset($tPath.'img/icon/edit.svg') }}" alt="">Edit</a>
                                                 <button type="button" class="btn btn-danger m-1"><img
                                                         src="{{ asset($tPath.'img/icon/delete.svg') }}"
@@ -126,7 +126,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
                                                 <p class="mb-0 fw-normal">4-6 Tahun</p>
                                             </td>
                                             <td class="border-bottom-0">
-                                                <a href="/disi/edit" class="btn btn-warning m-1"><img
+                                                <a href="/emotal/edit" class="btn btn-warning m-1"><img
                                                         src="{{ asset($tPath.'img/icon/edit.svg') }}" alt="">Edit</a>
                                                 <button type="button" class="btn btn-danger m-1"><img
                                                         src="{{ asset($tPath.'img/icon/delete.svg') }}"
@@ -145,7 +145,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
                                                 <p class="mb-0 fw-normal">10-12 Tahun</p>
                                             </td>
                                             <td class="border-bottom-0">
-                                                <a href="/disi/edit" class="btn btn-warning m-1"><img
+                                                <a href="/emotal/edit" class="btn btn-warning m-1"><img
                                                         src="{{ asset($tPath.'img/icon/edit.svg') }}" alt="">Edit</a>
                                                 <button type="button" class="btn btn-danger m-1"><img
                                                         src="{{ asset($tPath.'img/icon/delete.svg') }}"
