@@ -1,6 +1,10 @@
 <?php
 namespace App\Http\Controllers\Page;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Services\DisiController;
+use App\Http\Controllers\Services\EmotalController;
+use App\Http\Controllers\Services\NutrisiController;
+use App\Http\Controllers\Services\PengasuhanController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
@@ -77,6 +81,10 @@ class AdminController extends Controller
     }
     public function showDashboard(Request $request){
         $dataShow = [
+            'jumlah_disi' => app()->make(DisiController::class)->dataCacheFile(null, 'get_total'),
+            'jumlah_emotal' => app()->make(EmotalController::class)->dataCacheFile(null, 'get_total'),
+            'jumlah_nutrisi' => app()->make(NutrisiController::class)->dataCacheFile(null, 'get_total'),
+            'jumlah_pengasuhan' => app()->make(PengasuhanController::class)->dataCacheFile(null, 'get_total'),
             'userAuth' => $request->input('user_auth'),
         ];
         return view('page.admin.dashboard',$dataShow);

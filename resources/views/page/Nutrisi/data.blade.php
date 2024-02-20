@@ -76,82 +76,29 @@ $tPath = app()->environment('local') ? '' : '/public/';
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @php $no = 1; @endphp
+                                        @foreach ($dataNutrisi as $data)
                                         <tr>
                                             <td class="border-bottom-0">
-                                                <h6 class="fw-semibold mb-0">1</h6>
+                                                <h6 class="fw-semibold mb-0">{{ $no++ }}</h6>
                                             </td>
                                             <td class="border-bottom-0">
-                                                <span class="fw-normal">Lorem ipsum dolor, sit amet consectetur
+                                                <span class="fw-normal">{{ $data['judul'] }}
                                                 </span>
                                             </td>
                                             <td class="border-bottom-0">
-                                                <p class="mb-0 fw-normal">4-6 Tahun</p>
+                                                <p class="mb-0 fw-normal">{{ $data['rentang_usia']}}</p>
                                             </td>
                                             <td class="border-bottom-0">
-                                                <a href="/nutrisi/edit" class="btn btn-warning m-1"><img
+                                                <a href="/disi/edit/{{ $data['uuid'] }}"
+                                                    class="btn btn-warning m-1"><img
                                                         src="{{ asset($tPath.'img/icon/edit.svg') }}" alt="">Edit</a>
                                                 <button type="button" class="btn btn-danger m-1"><img
                                                         src="{{ asset($tPath.'img/icon/delete.svg') }}"
                                                         alt="">Hapus</button>
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td class="border-bottom-0">
-                                                <h6 class="fw-semibold mb-0">2</h6>
-                                            </td>
-                                            <td class="border-bottom-0">
-                                                <span class="fw-normal">Lorem ipsum dolor, sit amet consectetur
-                                                </span>
-                                            </td>
-                                            <td class="border-bottom-0">
-                                                <p class="mb-0 fw-normal">1-3 Tahun</p>
-                                            </td>
-                                            <td class="border-bottom-0">
-                                                <a href="/nutrisi/edit" class="btn btn-warning m-1"><img
-                                                        src="{{ asset($tPath.'img/icon/edit.svg') }}" alt="">Edit</a>
-                                                <button type="button" class="btn btn-danger m-1"><img
-                                                        src="{{ asset($tPath.'img/icon/delete.svg') }}"
-                                                        alt="">Hapus</button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="border-bottom-0">
-                                                <h6 class="fw-semibold mb-0">3</h6>
-                                            </td>
-                                            <td class="border-bottom-0">
-                                                <span class="fw-normal">Lorem ipsum dolor sit amet, consectetur
-                                                </span>
-                                            </td>
-                                            <td class="border-bottom-0">
-                                                <p class="mb-0 fw-normal">4-6 Tahun</p>
-                                            </td>
-                                            <td class="border-bottom-0">
-                                                <a href="/nutrisi/edit" class="btn btn-warning m-1"><img
-                                                        src="{{ asset($tPath.'img/icon/edit.svg') }}" alt="">Edit</a>
-                                                <button type="button" class="btn btn-danger m-1"><img
-                                                        src="{{ asset($tPath.'img/icon/delete.svg') }}"
-                                                        alt="">Hapus</button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="border-bottom-0">
-                                                <h6 class="fw-semibold mb-0">4</h6>
-                                            </td>
-                                            <td class="border-bottom-0">
-                                                <span class="fw-normal">Lorem ipsum dolor sit amet consectetur
-                                                </span>
-                                            </td>
-                                            <td class="border-bottom-0">
-                                                <p class="mb-0 fw-normal">10-12 Tahun</p>
-                                            </td>
-                                            <td class="border-bottom-0">
-                                                <a href="/nutrisi/edit" class="btn btn-warning m-1"><img
-                                                        src="{{ asset($tPath.'img/icon/edit.svg') }}" alt="">Edit</a>
-                                                <button type="button" class="btn btn-danger m-1"><img
-                                                        src="{{ asset($tPath.'img/icon/delete.svg') }}"
-                                                        alt="">Hapus</button>
-                                            </td>
-                                        </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>

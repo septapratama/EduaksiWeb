@@ -13,7 +13,7 @@ class DisiController extends Controller
     public function __construct(){
         self::$jsonFile = storage_path('app/database/disi.json');
     }
-    private function dataCacheFile($data, $con){
+    public function dataCacheFile($data = null, $con, $limit = null, $col = null){
         $fileExist = file_exists(self::$jsonFile);
         //check if file exist
         if (!$fileExist) {
@@ -23,8 +23,7 @@ class DisiController extends Controller
                 throw new Exception('Gagal menyimpan file sistem');
             }
         }
-        if($con == 'get'){
-            //get disi data
+        if($con == 'get_id'){
             $jsonData = json_decode(file_get_contents(self::$jsonFile), true);
             $result = null;
             foreach($jsonData as $key => $item){
@@ -37,20 +36,35 @@ class DisiController extends Controller
             }
             return $result;
         }else if($con == 'get_total'){
-            //get disi data
             $jsonData = json_decode(file_get_contents(self::$jsonFile), true);
             $result = null;
             $result = count($jsonData);
             if($result === null){
-                throw new Exception('Data disi tidak ditemukan');
+                return 0;
             }
             return $result;
+        }else if($con == 'get_limit'){
+            $jsonData = json_decode(file_get_contents(self::$jsonFile), true);
+            if(is_array($jsonData)) {
+                if($limit !== null && is_int($limit) && $limit > 0) {
+                    $jsonData = array_slice($jsonData, 0, $limit);
+                }
+                if(is_array($col)) {
+                    foreach($jsonData as &$entry) {
+                        $entry = array_intersect_key($entry, array_flip($col));
+                    }
+                }
+                return $jsonData;
+            }
+            return null;
         }else if($con == 'tambah'){
-            //tambah disi data
-            $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
-            $new[$data['id_disi']] = $data;
-            $jsonData = array_merge($jsonData, $new);
-            file_put_contents(self::$jsonFile,json_encode($jsonData, JSON_PRETTY_PRINT));
+            if($fileExist){
+                //tambah disi data
+                $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
+                $new[$data['id_disi']] = $data;
+                $jsonData = array_merge($jsonData, $new);
+                file_put_contents(self::$jsonFile,json_encode($jsonData, JSON_PRETTY_PRINT));
+            }
         }else if($con == 'update'){
             //update disi data
             $jsonData = json_decode(file_get_contents(self::$jsonFile),true);

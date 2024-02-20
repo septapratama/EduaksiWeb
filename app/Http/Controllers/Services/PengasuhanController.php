@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use App\Models\GaleriPengasuhan;
 use App\Models\Pengasuhan;
+use Carbon\Carbon;
 use Exception;
 class PengasuhanController extends Controller
 {
@@ -14,7 +15,7 @@ class PengasuhanController extends Controller
     public function __construct(){
         self::$jsonFile = storage_path('app/database/pengasuhan.json');
     }
-    public function dataCacheFile($data, $con){
+    public function dataCacheFile($data = null, $con, $limit = null, $col = null){
         $fileExist = file_exists(self::$jsonFile);
         //check if file exist
         if (!$fileExist) {
@@ -31,8 +32,7 @@ class PengasuhanController extends Controller
                 throw new Exception('Gagal menyimpan file sistem');
             }
         }
-        if($con == 'get'){
-            //get Pengasuhan
+        if($con == 'get_id'){
             $jsonData = json_decode(file_get_contents(self::$jsonFile), true);
             $result = null;
             foreach($jsonData as $key => $item){
@@ -45,14 +45,27 @@ class PengasuhanController extends Controller
             }
             return $result;
         }else if($con == 'get_total'){
-            //get disi data
             $jsonData = json_decode(file_get_contents(self::$jsonFile), true);
             $result = null;
             $result = count($jsonData);
             if($result === null){
-                throw new Exception('Data Pengasuhan tidak ditemukan');
+                return 0;
             }
             return $result;
+        }else if($con == 'get_limit'){
+            $jsonData = json_decode(file_get_contents(self::$jsonFile), true);
+            if(is_array($jsonData)) {
+                if($limit !== null && is_int($limit) && $limit > 0) {
+                    $jsonData = array_slice($jsonData, 0, $limit);
+                }
+                if(is_array($col)) {
+                    foreach($jsonData as &$entry) {
+                        $entry = array_intersect_key($entry, array_flip($col));
+                    }
+                }
+                return $jsonData;
+            }
+            return null;
         }else if($con == 'tambah'){
             if($fileExist){
                 //tambah Pengasuhan
