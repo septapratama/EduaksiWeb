@@ -15,7 +15,7 @@ use App\Http\Controllers\Page\HomeController AS ShowHomeController;
 use App\Http\Controllers\Page\AdminController AS ShowAdminController;
 use App\Http\Controllers\Auth\LoginController;
 
-Route::group(['middleware'=>['auth','authorized']],function(){
+// Route::group(['middleware'=>['auth','authorized']],function(){
     //artikel route
     Route::group(['prefix'=>'/artikel'],function(){
         Route::group(['prefix'=>'/pengasuhan'],function(){
@@ -23,10 +23,21 @@ Route::group(['middleware'=>['auth','authorized']],function(){
         });
     });
     Route::group(['prefix'=>'/disi'],function(){
-        Route::get('/',[ShowDisiController::class, 'showMain']);
-        Route::get('/tambah',[ShowDisiController::class, 'showTambah']);
-        Route::get('/edit',[ShowDisiController::class, 'showEdit']);
+        Route::get('/',function(){
+            return view('page.Disi.data');
+        });
+        Route::get('/tambah',function(){
+            return view('page.Disi.tambah');
+        });
+        Route::get('/edit',function(){
+            return view('page.Disi.edit');
+        });
     });
+    // Route::group(['prefix'=>'/disi'],function(){
+    //     Route::get('/',[ShowDisiController::class, 'showMain']);
+    //     Route::get('/tambah',[ShowDisiController::class, 'showTambah']);
+    //     Route::get('/edit',[ShowDisiController::class, 'showEdit']);
+    // });
     Route::group(['prefix'=>'/emotal'],function(){
         Route::get('/',[ShowEmotalController::class, 'showMain']);
         Route::get('/tambah',[ShowEmotalController::class, 'showTambah']);
@@ -83,10 +94,10 @@ Route::group(['middleware'=>['auth','authorized']],function(){
         return view('page.admin.login');
     })->withoutMiddleware('authorized');
     Route::get('/template', function () {
-        return view('page.admin.testing');
+        return view('page.template');
     })->withoutMiddleware('authorized');
     Route::get('/admin',[ShowAdminController::class,'showAdmin']);
     Route::get('/dashboard',[ShowAdminController::class,'showDashboard']);
     Route::get('/profile',[ShowAdminController::class,'showProfile']);
     // Route::get('/',[ShowHomeController::class,'showHome'])->withoutMiddleware('authorized');
-});
+// });

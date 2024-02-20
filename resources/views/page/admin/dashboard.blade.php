@@ -42,6 +42,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
             @include('page.Components.admin.header')
             <!--  Header End -->
             <div class="container-fluid">
+                @include('page.Components.admin.footer')
             </div>
         </div>
     </div>
