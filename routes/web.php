@@ -44,6 +44,17 @@ use App\Http\Controllers\Auth\LoginController;
             return view('page.Emotal.edit');
         });
     });
+    Route::group(['prefix'=>'/nutrisi'],function(){
+        Route::get('/',function(){
+            return view('page.Nutrisi.data');
+        });
+        Route::get('/tambah',function(){
+            return view('page.Nutrisi.tambah');
+        });
+        Route::get('/edit',function(){
+            return view('page.Nutrisi.edit');
+        });
+    });
     // Route::group(['prefix'=>'/disi'],function(){
     //     Route::get('/',[ShowDisiController::class, 'showMain']);
     //     Route::get('/tambah',[ShowDisiController::class, 'showTambah']);
@@ -54,11 +65,11 @@ use App\Http\Controllers\Auth\LoginController;
     //     Route::get('/tambah',[ShowEmotalController::class, 'showTambah']);
     //     Route::get('/edit',[ShowEmotalController::class, 'showEdit']);
     // });
-    Route::group(['prefix'=>'/nutrisi'],function(){
-        Route::get('/',[ShowNutrisiController::class, 'showMain']);
-        Route::get('/tambah',[ShowNutrisiController::class, 'showTambah']);
-        Route::get('/edit',[ShowNutrisiController::class, 'showEdit']);
-    });
+    // Route::group(['prefix'=>'/nutrisi'],function(){
+    //     Route::get('/',[ShowNutrisiController::class, 'showMain']);
+    //     Route::get('/tambah',[ShowNutrisiController::class, 'showTambah']);
+    //     Route::get('/edit',[ShowNutrisiController::class, 'showEdit']);
+    // });
     Route::group(['prefix'=>'/pengasuhan'],function(){
         Route::get('/',[ShowPengasuhanController::class, 'showMain']);
         Route::get('/tambah',[ShowPengasuhanController::class, 'showTambah']);

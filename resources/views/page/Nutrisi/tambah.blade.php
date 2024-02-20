@@ -7,7 +7,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Emotal | EduAksi</title>
+    <title>Tambah Nutrisi | EduAksi</title>
     <link rel="shortcut icon" type="image/png" href="{{ asset($tPath.'assets/images/logos/favicon.png') }}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
@@ -32,7 +32,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
         data-sidebar-position="fixed" data-header-position="fixed">
         <!-- Sidebar Start -->
         @php
-        $nav = 'emotal';
+        $nav = 'nutrisi';
         @endphp
         @include('page.Components.admin.sidebar')
         <!--  Sidebar End -->
@@ -43,22 +43,21 @@ $tPath = app()->environment('local') ? '' : '/public/';
             <!--  Header End -->
             <div class="container-fluid">
                 <div class="pagetitle">
-                    <h1>Edit Emosi Mental</h1>
+                    <h1>Tambah Nutrisi</h1>
                     <nav>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="/dashboard">Beranda</a></li>
-                            <li class="breadcrumb-item"><a href="/emotal">Kelola Emotal</a></li>
-                            <li class="breadcrumb-item">Edit Emosi Mental</li>
+                            <li class="breadcrumb-item"><a href="/Nutrisi">Kelola Nutrisi</a></li>
+                            <li class="breadcrumb-item">Tambah Nutrisi</li>
                         </ol>
                     </nav>
                 </div>
-                <div class=" d-flex align-items-stretch">
+                <div class="d-flex align-items-stretch">
                     <div class="card w-100">
                         <div class="card-body p-4">
                             <form>
                                 <div class="mb-3">
-                                    <label for="exampleInputEmail1" class="form-label">Judul Digital
-                                        Literasi</label>
+                                    <label for="exampleInputEmail1" class="form-label">Judul Nutrisi</label>
                                     <input type="text" class="form-control" id="exampleInputEmail1"
                                         aria-describedby="emailHelp">
                                 </div>
@@ -74,11 +73,11 @@ $tPath = app()->environment('local') ? '' : '/public/';
                                 </div>
                                 <div class="mb-3">
                                     <label for="exampleInputPassword1" class="form-label">Deskripsi</label>
-                                    <textarea name="deskripsi" id="inpDeskripsi" placeholder="Masukkan Isi Emosi Mental"
+                                    <textarea name="deskripsi" id="inpDeskripsi" placeholder="Masukkan Isi Nutrisi"
                                         class="form-control" style="height:120px"></textarea>
                                 </div>
                                 <div class="mb-3 form-check">
-                                    <a href="/emotal" class="btn btn-danger">Kembali</a>
+                                    <a href="/Nutrisi" class="btn btn-danger">Kembali</a>
                                     <button type="submit" class="btn btn-success">
                                         <img src="{{ asset($tPath.'img/icon/tambah.svg') }}" alt="" width="30"
                                             height="30">Submit</button>
