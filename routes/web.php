@@ -55,6 +55,17 @@ use App\Http\Controllers\Auth\LoginController;
             return view('page.Nutrisi.edit');
         });
     });
+    Route::group(['prefix'=>'/pengasuhan'],function(){
+        Route::get('/',function(){
+            return view('page.Pengasuhan.data');
+        });
+        Route::get('/tambah',function(){
+            return view('page.Pengasuhan.tambah');
+        });
+        Route::get('/edit',function(){
+            return view('page.Pengasuhan.edit');
+        });
+    });
     // Route::group(['prefix'=>'/disi'],function(){
     //     Route::get('/',[ShowDisiController::class, 'showMain']);
     //     Route::get('/tambah',[ShowDisiController::class, 'showTambah']);
@@ -70,11 +81,11 @@ use App\Http\Controllers\Auth\LoginController;
     //     Route::get('/tambah',[ShowNutrisiController::class, 'showTambah']);
     //     Route::get('/edit',[ShowNutrisiController::class, 'showEdit']);
     // });
-    Route::group(['prefix'=>'/pengasuhan'],function(){
-        Route::get('/',[ShowPengasuhanController::class, 'showMain']);
-        Route::get('/tambah',[ShowPengasuhanController::class, 'showTambah']);
-        Route::get('/edit',[ShowPengasuhanController::class, 'showEdit']);
-    });
+    // Route::group(['prefix'=>'/pengasuhan'],function(){
+    //     Route::get('/',[ShowPengasuhanController::class, 'showMain']);
+    //     Route::get('/tambah',[ShowPengasuhanController::class, 'showTambah']);
+    //     Route::get('/edit',[ShowPengasuhanController::class, 'showEdit']);
+    // });
     //only admin route
     Route::group(['prefix'=>'/admin'],function(){
         Route::group(['prefix'=>'/emotal'],function(){
