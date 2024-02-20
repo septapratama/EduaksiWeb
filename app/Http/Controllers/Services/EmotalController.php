@@ -44,6 +44,15 @@ class EmotalController extends Controller
                 throw new Exception('Data Emosi Mental tidak ditemukan');
             }
             return $result;
+        }else if($con == 'get_total'){
+            //get disi data
+            $jsonData = json_decode(file_get_contents(self::$jsonFile), true);
+            $result = null;
+            $result = count($jsonData);
+            if($result === null){
+                throw new Exception('Data emotal tidak ditemukan');
+            }
+            return $result;
         }else if($con == 'tambah'){
             if($fileExist){
                 //tambah Emosi Mental

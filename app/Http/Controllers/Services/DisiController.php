@@ -24,7 +24,7 @@ class DisiController extends Controller
             }
         }
         if($con == 'get'){
-            //get kategori seniman
+            //get disi data
             $jsonData = json_decode(file_get_contents(self::$jsonFile), true);
             $result = null;
             foreach($jsonData as $key => $item){
@@ -33,24 +33,36 @@ class DisiController extends Controller
                 }
             }
             if($result === null){
-                throw new Exception('Data kategori tidak ditemukan');
+                throw new Exception('Data disi tidak ditemukan');
+            }
+            return $result;
+        }else if($con == 'get_total'){
+            //get disi data
+            $jsonData = json_decode(file_get_contents(self::$jsonFile), true);
+            $result = null;
+            $result = count($jsonData);
+            if($result === null){
+                throw new Exception('Data disi tidak ditemukan');
             }
             return $result;
         }else if($con == 'tambah'){
-            //tambah kategori seniman
+            //tambah disi data
             $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
             $new[$data['id_disi']] = $data;
             $jsonData = array_merge($jsonData, $new);
             file_put_contents(self::$jsonFile,json_encode($jsonData, JSON_PRETTY_PRINT));
         }else if($con == 'update'){
-            //update kategori seniman
+            //update disi data
             $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
             foreach($jsonData as $key => $item){
                 if (isset($item['id_disi']) && $item['id_disi'] == $data['id_disi']) {
                     $newData = [
-                        'id_disi' => $data['id_disi'],
-                        'nama_kategori' => $data['nama_kategori_seniman'],
-                        'singkatan_kategori' => $data['singkatan_kategori']
+                        'uuid' => $data['id_emotal'],
+                        'judul' => $data['judul'],
+                        'deskripsi' => $data['deskripsi'],
+                        'link_video' => $data['link_video'],
+                        'rentang_usia' => $data['rentang_usia'],
+                        'foto' => $data['foto'],
                     ];
                     $jsonData[$key] = $newData;
                     break;
@@ -59,7 +71,7 @@ class DisiController extends Controller
             $jsonData = array_values($jsonData);
             file_put_contents(self::$jsonFile,json_encode($jsonData, JSON_PRETTY_PRINT));
         }else if($con == 'hapus'){
-            //hapus kategori seniman
+            //hapus disi data
             $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
             foreach($jsonData as $key => $item){
                 if (isset($item['id_disi']) && $item['id_disi'] == $data['id_disi']) {
