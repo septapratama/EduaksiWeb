@@ -6,8 +6,9 @@ use Illuminate\Http\Request;
 class DisiController extends Controller
 {
     public function showData(Request $request){
+        $dataDisi = app()->make(ServiceDisiController::class)->dataCacheFile(null, 'get_limit',null, ['uuid', 'judul','rentang_usia']);
         $dataShow = [
-            'dataDisi' => app()->make(ServiceDisiController::class)->dataCacheFile(null, 'get_limit',null, ['uuid', 'judul','rentang_usia']),
+            'dataDisi' => $dataDisi,
             'userAuth' => $request->input('user_auth'),
         ];
         return view('page.Disi.data',$dataShow);

@@ -6,8 +6,9 @@ use Illuminate\Http\Request;
 class EmotalController extends Controller
 {
     public function showData(Request $request){
+        $dataEmotal = app()->make(ServiceEmotalController::class)->dataCacheFile(null, 'get_limit',null, ['uuid', 'judul','rentang_usia']);
         $dataShow = [
-            'dataEmotal' => app()->make(ServiceEmotalController::class)->dataCacheFile(null, 'get_limit',null, ['uuid', 'judul', 'deskripsi','rentang_usia']),
+            'dataEmotal' => $dataEmotal,
             'userAuth' => $request->input('user_auth'),
         ];
         return view('page.Emotal.data',$dataShow);

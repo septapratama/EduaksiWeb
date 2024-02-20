@@ -18,7 +18,6 @@ class PengasuhanController extends Controller
     }
     public function showTambah(Request $request){
         $dataShow = [
-            'dataPengasuhan' => app()->make(ServicePengasuhanController::class)->dataCacheFile(null, 'get_id'),
             'userAuth' => $request->input('user_auth'),
         ];
         return view('page.Pengasuhan.tambah',$dataShow);
@@ -26,6 +25,7 @@ class PengasuhanController extends Controller
     public function showEdit(Request $request){
         $dataShow = [
             'userAuth' => $request->input('user_auth'),
+            'dataPengasuhan' => app()->make(ServicePengasuhanController::class)->dataCacheFile(null, 'get_id'),
         ];
         return view('page.Pengasuhan.edit',$dataShow);
     }

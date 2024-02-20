@@ -7,7 +7,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Emotal | EduAksi</title>
+    <title>Data Konsultasi | EduAksi</title>
     <link rel="shortcut icon" type="image/png" href="{{ asset($tPath.'assets/images/logos/favicon.png') }}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
@@ -32,7 +32,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
         data-sidebar-position="fixed" data-header-position="fixed">
         <!-- Sidebar Start -->
         @php
-        $nav = 'emotal';
+        $nav = 'konsultasi';
         @endphp
         @include('page.Components.admin.sidebar')
         <!--  Sidebar End -->
@@ -43,20 +43,20 @@ $tPath = app()->environment('local') ? '' : '/public/';
             <!--  Header End -->
             <div class="container-fluid">
                 <div class="pagetitle">
-                    <h1>Kelola Emotal</h1>
+                    <h1>Kelola Konsultasi</h1>
                     <nav>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="/dashboard">Beranda</a></li>
-                            <li class="breadcrumb-item">Kelola Emotal</li>
+                            <li class="breadcrumb-item">Kelola Konsultasi</li>
                         </ol>
                     </nav>
                 </div>
                 <div class="d-flex align-items-stretch">
                     <div class="card w-100">
                         <div class="card-body p-4">
-                            <a href="/emotal/tambah" class="btn btn-success"><img
+                            <a href="/konsultasi/tambah" class="btn btn-success"><img
                                     src="{{ asset($tPath.'img/icon/tambah.svg') }}" alt="" width="30" height="30">Tambah
-                                Emotal</a>
+                                Konsultasi</a>
                             <div class="table-responsive">
                                 <table class="table text-nowrap mb-0 align-middle">
                                     <thead class="text-dark fs-4">
@@ -65,10 +65,10 @@ $tPath = app()->environment('local') ? '' : '/public/';
                                                 <h6 class="fw-semibold mb-0">No</h6>
                                             </th>
                                             <th class="border-bottom-0">
-                                                <h6 class="fw-semibold mb-0">Judul</h6>
+                                                <h6 class="fw-semibold mb-0">Nama Lengkap</h6>
                                             </th>
                                             <th class="border-bottom-0">
-                                                <h6 class="fw-semibold mb-0">Rentang Usia</h6>
+                                                <h6 class="fw-semibold mb-0">No Telpon</h6>
                                             </th>
                                             <th class="border-bottom-0">
                                                 <h6 class="fw-semibold mb-0">Aksi</h6>
@@ -77,20 +77,20 @@ $tPath = app()->environment('local') ? '' : '/public/';
                                     </thead>
                                     <tbody>
                                         @php $no = 1; @endphp
-                                        @foreach ($dataEmotal as $data)
+                                        @foreach ($dataKonsultasi as $data)
                                         <tr>
                                             <td class="border-bottom-0">
                                                 <h6 class="fw-semibold mb-0">{{ $no++ }}</h6>
                                             </td>
                                             <td class="border-bottom-0">
-                                                <span class="fw-normal">{{ $data['judul'] }}
+                                                <span class="fw-normal">{{ $data['nama_lengkap'] }}
                                                 </span>
                                             </td>
                                             <td class="border-bottom-0">
-                                                <p class="mb-0 fw-normal">{{ $data['rentang_usia']}}</p>
+                                                <p class="mb-0 fw-normal">{{ $data['no_telpon']}}</p>
                                             </td>
                                             <td class="border-bottom-0">
-                                                <a href="/emotal/edit/{{ $data['uuid'] }}"
+                                                <a href="/konsultasi/edit/{{ $data['uuid'] }}"
                                                     class="btn btn-warning m-1"><img
                                                         src="{{ asset($tPath.'img/icon/edit.svg') }}" alt="">Edit</a>
                                                 <button type="button" class="btn btn-danger m-1"><img

@@ -11,6 +11,7 @@ use App\Http\Controllers\Page\DisiController AS ShowDisiController;
 use App\Http\Controllers\Page\EmotalController AS ShowEmotalController;
 use App\Http\Controllers\Page\NutrisiController AS ShowNutrisiController;
 use App\Http\Controllers\Page\PengasuhanController AS ShowPengasuhanController;
+use App\Http\Controllers\Page\KonsultasiController AS ShowKonsultasiController;
 use App\Http\Controllers\Page\HomeController AS ShowHomeController;
 use App\Http\Controllers\Page\AdminController AS ShowAdminController;
 use App\Http\Controllers\Auth\LoginController;
@@ -86,6 +87,11 @@ use App\Http\Controllers\Auth\LoginController;
         Route::get('/tambah',[ShowPengasuhanController::class, 'showTambah']);
         Route::get('/edit',[ShowPengasuhanController::class, 'showEdit']);
     });
+    Route::group(['prefix'=>'/konsultasi'],function(){
+        Route::get('/',[ShowKonsultasiController::class, 'showData']);
+        Route::get('/tambah',[ShowKonsultasiController::class, 'showTambah']);
+        Route::get('/edit',[ShowKonsultasiController::class, 'showEdit']);
+    });
     //only admin route
     Route::group(['prefix'=>'/admin'],function(){
         Route::group(['prefix'=>'/emotal'],function(){
@@ -111,7 +117,7 @@ use App\Http\Controllers\Auth\LoginController;
         //page admin
         Route::get('/',[ShowAdminController::class,'showAdmin']);
         Route::get('/tambah',[ShowAdminController::class,'showAdminTambah']);
-        Route::get('/edit/{id}',[ShowAdminController::class,'showAdminEdit']);
+        Route::get('/edit',[ShowAdminController::class,'showAdminEdit']);
         // route for admin
         Route::post('/tambah',[AdminController::class,'tambahAdmin']);
         Route::put('/edit',[AdminController::class,'editAdmin']);
@@ -124,7 +130,7 @@ use App\Http\Controllers\Auth\LoginController;
         });
     });
     Route::get('/login', function () {
-        return view('page.admin.login');
+        return view('page.login');
     })->withoutMiddleware('authorized');
     Route::get('/template', function () {
         return view('page.template');

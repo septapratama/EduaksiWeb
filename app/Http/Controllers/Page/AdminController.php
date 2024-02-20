@@ -63,22 +63,6 @@ class AdminController extends Controller
         }
         return $inpDate;
     }
-    public function showPengguna(Request $request){
-        $dataUser = User::select(
-            'id_user',
-            'nama_lengkap',
-            'no_telpon',
-            'jenis_kelamin',
-            DB::raw('DATE(tanggal_lahir) AS tanggal_lahir'),
-            'email',
-        )->where('role', 'masyarakat')->get();
-        unset($request->input('user_auth')['foto']);
-        $dataShow = [
-            'userAuth' => $request->input('user_auth'),
-            'dataUser' => $dataUser,
-        ];
-        return view('page.pengguna.pengguna',$dataShow);
-    }
     public function showDashboard(Request $request){
         $dataShow = [
             'jumlah_disi' => app()->make(DisiController::class)->dataCacheFile(null, 'get_total'),
@@ -87,7 +71,7 @@ class AdminController extends Controller
             'jumlah_pengasuhan' => app()->make(PengasuhanController::class)->dataCacheFile(null, 'get_total'),
             'userAuth' => $request->input('user_auth'),
         ];
-        return view('page.admin.dashboard',$dataShow);
+        return view('page.dashboard',$dataShow);
     }
     public function showProfile(Request $request){
         $userAuth = $request->input('user_auth');
@@ -100,12 +84,12 @@ class AdminController extends Controller
     //only admin
     public function showAdmin(Request $request){
         $userAuth = $request->input('user_auth');
-        $adminData = User::select('id_user','nama_lengkap', 'no_telpon', 'jenis_kelamin', DB::raw('DATE(tanggal_lahir) AS tanggal_lahir'), 'tempat_lahir' ,'role', 'email')->whereNotIn('role', ['masyarakat', 'super admin'])->get();
+        $adminData = User::select('nama_lengkap', 'no_telpon', 'email')->where('role','admin')->get();
         $dataShow = [
             'userAuth' => $userAuth,
             'adminData' => $adminData ?? '',
         ];
-        return view('page.admin.admin',$dataShow);
+        return view('page.admin.data',$dataShow);
     }
     public function showAdminTambah(Request $request){
         $userAuth = $request->input('user_auth');

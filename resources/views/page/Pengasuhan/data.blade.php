@@ -90,7 +90,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
                                                 <p class="mb-0 fw-normal">{{ $data['rentang_usia']}}</p>
                                             </td>
                                             <td class="border-bottom-0">
-                                                <a href="/disi/edit/{{ $data['uuid'] }}"
+                                                <a href="/pengasuhan/edit/{{ $data['uuid'] }}"
                                                     class="btn btn-warning m-1"><img
                                                         src="{{ asset($tPath.'img/icon/edit.svg') }}" alt="">Edit</a>
                                                 <button type="button" class="btn btn-danger m-1"><img
