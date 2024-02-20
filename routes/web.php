@@ -1,5 +1,5 @@
 <?php
-use Illuminate\Support\Facades\Route;   
+use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Services\DisiController;
@@ -80,10 +80,10 @@ Route::group(['middleware'=>['auth','authorized']],function(){
         });
     });
     Route::get('/login', function () {
-        return view('admin.login');
+        return view('page.admin.login');
     })->withoutMiddleware('authorized');
     Route::get('/template', function () {
-        return view('admin.testing');
+        return view('page.admin.testing');
     })->withoutMiddleware('authorized');
     Route::get('/admin',[ShowAdminController::class,'showAdmin']);
     Route::get('/dashboard',[ShowAdminController::class,'showDashboard']);
