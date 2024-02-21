@@ -132,6 +132,21 @@ Route::group(['middleware'=>['auth','authorized']],function(){
     Route::get('/login', function () {
         return view('page.login');
     })->withoutMiddleware('authorized');
+    Route::get('/disi/edit', function () {
+        return view('page.Disi.edit');
+    })->withoutMiddleware('authorized');
+    Route::get('/emotal/edit', function () {
+        return view('page.Emotal.edit');
+    })->withoutMiddleware('authorized');
+    Route::get('/nutrisi/edit', function () {
+        return view('page.Nutrisi.edit');
+    })->withoutMiddleware('authorized');
+    Route::get('/pengasuhan/edit', function () {
+        return view('page.Pengasuhan.edit');
+    })->withoutMiddleware('authorized');
+    Route::get('/testing', function () {
+        return view('page.testing');
+    })->withoutMiddleware('authorized');
     Route::get('/template', function () {
         return view('page.template');
     })->withoutMiddleware('authorized');

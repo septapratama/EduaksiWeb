@@ -14,36 +14,34 @@ $tPath = app()->environment('local') ? '' : '/public/';
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{{ asset($tPath.'assets/css/styles.min.css') }}" />
     <link rel="stylesheet" href="{{ asset($tPath.'css/popup.css') }}" />
+    <link rel="stylesheet" href="{{ asset($tPath.'css/page/editData.css') }}" />
 </head>
 
 <body>
     @if(app()->environment('local'))
-        <script>
-            var tPath = '';
-        </script>
+    <script>
+    var tPath = '';
+    </script>
     @else
-        <script>
-            var tPath = '/public/';
-        </script>
+    <script>
+    var tPath = '/public/';
+    </script>
     @endif
     <script>
-        const domain = window.location.protocol + '//' + window.location.hostname + ":" + window.location.port;
-        const reff = '/nutrisi';
-        var csrfToken = "{{ csrf_token() }}";
-        var email = "{{ $userAuth['email'] }}";
-        var number = "{{ $userAuth['number'] }}";
+    const domain = window.location.protocol + '//' + window.location.hostname + ":" + window.location.port;
+    const reff = '/nutrisi';
+    var csrfToken = "{{ csrf_token() }}";
+    var email = "{{ $userAuth['email'] }}";
+    var number = "{{ $userAuth['number'] }}";
     </script>
     <!--  Body Wrapper -->
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
         data-sidebar-position="fixed" data-header-position="fixed">
         <!-- Sidebar Start -->
-        @php
-        $nav = 'nutrisi';
-        @endphp
         @include('page.Components.admin.sidebar')
         <!--  Sidebar End -->
         <!--  Main wrapper -->
-        <div class="body-wrapper">
+        <div class="body-wrapper" style="background-color: #efefef;">
             <!--  Header Start -->
             @include('page.Components.admin.header')
             <!--  Header End -->
@@ -58,44 +56,46 @@ $tPath = app()->environment('local') ? '' : '/public/';
                         </ol>
                     </nav>
                 </div>
-                <div class=" d-flex align-items-stretch">
-                    <div class="card w-100">
-                        <div class="card-body p-4">
-                            <form id="editForm">
-                                <div class="mb-3">
-                                    <label for="" class="form-label">Judul Nutrisi</label>
-                                    <input type="text" class="form-control" id="inpJudul" aria-describedby="emailHelp">
-                                </div>
-                                <div class="mb-3">
-                                    <div>
-                                        <label for="" class="form-label">Rentang Usia</label>
-                                        <select class="form-select" aria-label="Default select example" id="inpRentangUsia" disabled>
-                                            <option value="0-3 Tahun" selected="selected">0-3 Tahun</option>
-                                            <option value="4-6 Tahun" selected="selected">4-6 Tahun</option>
-                                            <option value="7-9 Tahun" selected="selected">7-9 Tahun</option>
-                                            <option value="10-12 Tahun" selected="selected">10-12 Tahun</option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label for="" class="form-label">Link Video</label>
-                                        <input type="text" class="form-control" id="inpLinkVideo">
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="" class="form-label">Deskripsi</label>
-                                    <textarea name="deskripsi" id="inpDeskripsi" placeholder="Masukkan Isi Nutrisi" class="form-control" style="height:120px"></textarea>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="" class="form-label">Foto</label>
-                                    <input type="file" class="form-control" id="inpFoto" aria-describedby="emailHelp" accept="image/*">
-                                </div>
-                                <div class="mb-3 form-check">
-                                    <a href="/disi" class="btn btn-danger">Kembali</a>
-                                    <button type="submit" class="btn btn-success"><img src="{{ asset($tPath.'img/icon/tambah.svg') }}" alt="" width="30" height="30">Submit</button>
-                                </div>
-                            </form>
+                <div class="d-flex align-items-stretch" style="background-color: #ffffff; border-radius: 20px;">
+                    <form id="tambahForm">
+                        <div class="crow">
+                            <label for="">Judul Nutrisi</label>
+                            <input type="text">
                         </div>
-                    </div>
+                        <div class="crow">
+                            <div>
+                                <label for="">Rentang Usia</label>
+                                <select class="" aria-label="Default select example" id="inpRentangUsia" disabled>
+                                    <option value="">Pilih Umur</option>
+                                    <option value="0-3 Tahun">0-3 Tahun</option>
+                                    <option value="4-6 Tahun">4-6 Tahun</option>
+                                    <option value="7-9 Tahun">7-9 Tahun</option>
+                                    <option value="10-12 Tahun">10-12 Tahun</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="">Link Video</label>
+                                <input type="text">
+                            </div>
+                        </div>
+                        <div class="crow">
+                            <label for="">Deskripsi</label>
+                            <textarea name="deskripsi" id="inpDeskripsi" placeholder="Masukkan Isi Nutrisi" class=""
+                                style="height:120px"></textarea>
+                        </div>
+                        <div class="img" onclick="handleFileClick()" ondragover="handleDragOver(event)"
+                            ondrop="handleDrop(event)">
+                            <img src="{{ asset($tPath.'assets/images/profile/user-1.jpg') }}" alt="">
+                            <span>Pilih File atau Jatuhkan File</span>
+                            <input type="file" id="inpFoto" hidden onchange="handleFileChange(event)">
+                        </div>
+                        <div class="crow">
+                            <a href="/nutrisi" class="btn btn-danger">Kembali</a>
+                            <button type="submit" class="btn btn-success"><img
+                                    src="{{ asset($tPath.'img/icon/tambah.svg') }}" alt="" width="30"
+                                    height="30"><span>Edit</span></button>
+                        </div>
+                    </form>
                 </div>
                 @include('page.Components.admin.footer')
             </div>

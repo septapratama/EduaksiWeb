@@ -7,37 +7,24 @@ $tPath = app()->environment('local') ? '' : '/public/';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Emosi Mental | EduAksi</title>
+    <title>Tambah Disi | EduAksi</title>
     <link rel="shortcut icon" type="image/png" href="{{ asset($tPath.'assets/images/logos/favicon.png') }}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{{ asset($tPath.'assets/css/styles.min.css') }}" />
     <link rel="stylesheet" href="{{ asset($tPath.'css/popup.css') }}" />
-    <link rel="stylesheet" href="{{ asset($tPath.'css/page/editData.css') }}" />
+    <link rel="stylesheet" href="{{ asset($tPath.'css/testing.css') }}" />
 </head>
 
 <body>
-    @if(app()->environment('local'))
-    <script>
-    var tPath = '';
-    </script>
-    @else
-    <script>
-    var tPath = '/public/';
-    </script>
-    @endif
-    <script>
-    const domain = window.location.protocol + '//' + window.location.hostname + ":" + window.location.port;
-    const reff = '/emotal';
-    var csrfToken = "{{ csrf_token() }}";
-    var email = "{{ $userAuth['email'] }}";
-    var number = "{{ $userAuth['number'] }}";
-    </script>
     <!--  Body Wrapper -->
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
         data-sidebar-position="fixed" data-header-position="fixed">
         <!-- Sidebar Start -->
+        @php
+        $nav = 'disi';
+        @endphp
         @include('page.Components.admin.sidebar')
         <!--  Sidebar End -->
         <!--  Main wrapper -->
@@ -47,26 +34,26 @@ $tPath = app()->environment('local') ? '' : '/public/';
             <!--  Header End -->
             <div class="container-fluid">
                 <div class="pagetitle">
-                    <h1>Edit Emosi Mental</h1>
+                    <h1>Tambah Digital Literasi</h1>
                     <nav>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="/dashboard">Beranda</a></li>
-                            <li class="breadcrumb-item"><a href="/emotal">Kelola Emosi Mental</a></li>
-                            <li class="breadcrumb-item">Edit Emosi Mental</li>
+                            <li class="breadcrumb-item"><a href="/disi">Kelola Disi</a></li>
+                            <li class="breadcrumb-item">Tambah Digital Literasi</li>
                         </ol>
                     </nav>
                 </div>
                 <div class="d-flex align-items-stretch" style="background-color: #ffffff; border-radius: 20px;">
-                    <form id="editForm">
+                    <form id="tambahForm">
                         <div class="crow">
-                            <label for="">Judul Emosi Mental</label>
+                            <label for="">Judul Digital Literasi</label>
                             <input type="text">
                         </div>
                         <div class="crow">
                             <div>
                                 <label for="">Rentang Usia</label>
-                                <select class="" aria-label="Default select example" id="inpRentangUsia" disabled>
-                                    <option value="">Pilih Umur</option>
+                                <select class="" aria-label="Default select example" id="inpRentangUsia">
+                                    <option value="" selected>Pilih Umur</option>
                                     <option value="0-3 Tahun">0-3 Tahun</option>
                                     <option value="4-6 Tahun">4-6 Tahun</option>
                                     <option value="7-9 Tahun">7-9 Tahun</option>
@@ -80,7 +67,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
                         </div>
                         <div class="crow">
                             <label for="">Deskripsi</label>
-                            <textarea name="deskripsi" id="inpDeskripsi" placeholder="Masukkan Isi Emosi Mental"
+                            <textarea name="deskripsi" id="inpDeskripsi" placeholder="Masukkan Isi Digital Literasi"
                                 class="" style="height:120px"></textarea>
                         </div>
                         <div class="img" onclick="handleFileClick()" ondragover="handleDragOver(event)"
@@ -90,10 +77,10 @@ $tPath = app()->environment('local') ? '' : '/public/';
                             <input type="file" id="inpFoto" hidden onchange="handleFileChange(event)">
                         </div>
                         <div class="crow">
-                            <a href="/emotal" class="btn btn-danger">Kembali</a>
+                            <a href="/disi" class="btn btn-danger">Kembali</a>
                             <button type="submit" class="btn btn-success"><img
                                     src="{{ asset($tPath.'img/icon/tambah.svg') }}" alt="" width="30"
-                                    height="30"><span>Edit</span></button>
+                                    height="30"><span>Tambah</span></button>
                         </div>
                     </form>
                 </div>
@@ -111,7 +98,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
     <script src="{{ asset($tPath.'assets/libs/apexcharts/dist/apexcharts.min.js') }}"></script>
     <script src="{{ asset($tPath.'assets/libs/simplebar/dist/simplebar.js') }}"></script>
     <script src="{{ asset($tPath.'assets/js/dashboard.js') }}"></script>
-    <script src="{{ asset($tPath.'js/page/editData.js') }}"></script>
+    <script src="{{ asset($tPath.'js/page/tambahData.js') }}"></script>
     <script src="{{ asset($tPath.'js/popup.js') }}"></script>
 </body>
 
