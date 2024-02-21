@@ -131,7 +131,7 @@ class DisiController extends Controller
             return response()->json(['status'=>'error','message'=>'Format Foto tidak valid. Gunakan format jpeg, png, jpg'], 400);
         }
         $fotoName = $file->hashName();
-        Storage::disk('disi')->put('foto/' . $fotoName, file_get_contents($file));
+        Storage::disk('disi')->put($fotoName, file_get_contents($file));
         $ins = Disi::insert([
             'judul' => $request->input('judul'),
             'deskripsi' => $request->input('deskripsi'),

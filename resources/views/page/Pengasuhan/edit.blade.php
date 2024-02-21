@@ -13,6 +13,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{{ asset($tPath.'assets/css/styles.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset($tPath.'css/popup.css') }}" />
 </head>
 
 <body>
@@ -27,6 +28,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
     @endif
     <script>
         const domain = window.location.protocol + '//' + window.location.hostname + ":" + window.location.port;
+        const reff = '/pengasuhan';
         var csrfToken = "{{ csrf_token() }}";
         var email = "{{ $userAuth['email'] }}";
         var number = "{{ $userAuth['number'] }}";
@@ -59,32 +61,37 @@ $tPath = app()->environment('local') ? '' : '/public/';
                 <div class=" d-flex align-items-stretch">
                     <div class="card w-100">
                         <div class="card-body p-4">
-                            <form>
+                            <form id="editForm">
                                 <div class="mb-3">
-                                    <label for="exampleInputEmail1" class="form-label">Judul Pengasuhan</label>
-                                    <input type="text" class="form-control" id="exampleInputEmail1"
-                                        aria-describedby="emailHelp">
+                                    <label for="" class="form-label">Judul Pengasuhan</label>
+                                    <input type="text" class="form-control" id="inpJudul" aria-describedby="emailHelp">
                                 </div>
                                 <div class="mb-3">
                                     <div>
-                                        <label for="exampleInputPassword1" class="form-label">Rentang Usia</label>
-                                        <input type="text" class="form-control" id="exampleInputEmail1">
+                                        <label for="" class="form-label">Rentang Usia</label>
+                                        <select class="form-select" aria-label="Default select example" id="inpRentangUsia" disabled>
+                                            <option value="0-3 Tahun" selected="selected">0-3 Tahun</option>
+                                            <option value="4-6 Tahun" selected="selected">4-6 Tahun</option>
+                                            <option value="7-9 Tahun" selected="selected">7-9 Tahun</option>
+                                            <option value="10-12 Tahun" selected="selected">10-12 Tahun</option>
+                                        </select>
                                     </div>
                                     <div>
-                                        <label for="exampleInputPassword1" class="form-label">Link Video</label>
-                                        <input type="text" class="form-control" id="exampleInputEmail1">
+                                        <label for="" class="form-label">Link Video</label>
+                                        <input type="text" class="form-control" id="inpLinkVideo">
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="exampleInputPassword1" class="form-label">Deskripsi</label>
-                                    <textarea name="deskripsi" id="inpDeskripsi" placeholder="Masukkan Isi Pengasuhan"
-                                        class="form-control" style="height:120px"></textarea>
+                                    <label for="" class="form-label">Deskripsi</label>
+                                    <textarea name="deskripsi" id="inpDeskripsi" placeholder="Masukkan Isi Pengasuhan" class="form-control" style="height:120px"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="" class="form-label">Foto</label>
+                                    <input type="file" class="form-control" id="inpFoto" aria-describedby="emailHelp" accept="image/*">
                                 </div>
                                 <div class="mb-3 form-check">
-                                    <a href="/pengasuhan" class="btn btn-danger">Kembali</a>
-                                    <button type="submit" class="btn btn-success">
-                                        <img src="{{ asset($tPath.'img/icon/tambah.svg') }}" alt="" width="30"
-                                            height="30">Submit</button>
+                                    <a href="/disi" class="btn btn-danger">Kembali</a>
+                                    <button type="submit" class="btn btn-success"><img src="{{ asset($tPath.'img/icon/tambah.svg') }}" alt="" width="30" height="30">Submit</button>
                                 </div>
                             </form>
                         </div>
@@ -93,13 +100,19 @@ $tPath = app()->environment('local') ? '' : '/public/';
                 @include('page.Components.admin.footer')
             </div>
         </div>
-        <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
-        <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="../assets/js/sidebarmenu.js"></script>
-        <script src="../assets/js/app.min.js"></script>
-        <script src="../assets/libs/apexcharts/dist/apexcharts.min.js"></script>
-        <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
-        <script src="../assets/js/dashboard.js"></script>
+    </div>
+    <div id="preloader" style="display: none;"></div>
+    <div id="greenPopup" style="display:none"></div>
+    <div id="redPopup" style="display:none"></div>
+    <script src="{{ asset($tPath.'assets/libs/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ asset($tPath.'assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset($tPath.'assets/js/sidebarmenu.js') }}"></script>
+    <script src="{{ asset($tPath.'assets/js/app.min.js') }}"></script>
+    <script src="{{ asset($tPath.'assets/libs/apexcharts/dist/apexcharts.min.js') }}"></script>
+    <script src="{{ asset($tPath.'assets/libs/simplebar/dist/simplebar.js') }}"></script>
+    <script src="{{ asset($tPath.'assets/js/dashboard.js') }}"></script>
+    <script src="{{ asset($tPath.'js/page/editData.js') }}"></script>
+    <script src="{{ asset($tPath.'js/popup.js') }}"></script>
 </body>
 
 </html>

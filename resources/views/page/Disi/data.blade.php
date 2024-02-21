@@ -36,7 +36,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
         data-sidebar-position="fixed" data-header-position="fixed">
         <!-- Sidebar Start -->
         @php
-        $nav = 'emotal';
+        $nav = 'disi';
         @endphp
         @include('page.Components.admin.sidebar')
         <!--  Sidebar End -->
@@ -78,7 +78,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
                                                 <h6 class="fw-semibold mb-0">Aksi</h6>
                                             </th>
                                         </tr>
-                                    </thead>
+                                    </thead>    
                                     <tbody>
                                         @php $no = 1; @endphp
                                         @foreach ($dataDisi as $data)
@@ -113,13 +113,13 @@ $tPath = app()->environment('local') ? '' : '/public/';
             </div>
         </div>
     </div>
-    <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
-    <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../assets/js/sidebarmenu.js"></script>
-    <script src="../assets/js/app.min.js"></script>
-    <script src="../assets/libs/apexcharts/dist/apexcharts.min.js"></script>
-    <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
-    <script src="../assets/js/dashboard.js"></script>
+    <script src="{{ asset($tPath.'assets/libs/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ asset($tPath.'assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset($tPath.'assets/js/sidebarmenu.js') }}"></script>
+    <script src="{{ asset($tPath.'assets/js/app.min.js') }}"></script>
+    <script src="{{ asset($tPath.'assets/libs/apexcharts/dist/apexcharts.min.js') }}"></script>
+    <script src="{{ asset($tPath.'assets/libs/simplebar/dist/simplebar.js') }}"></script>
+    <script src="{{ asset($tPath.'assets/js/dashboard.js') }}"></script>
 </body>
 
 </html>

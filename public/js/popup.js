@@ -7,9 +7,7 @@ function showGreenPopup(data, div = null) {
             <div class="bg" onclick="closePopup('green',true)"></div>
             <div class="kotak">
                 <div class="bunder1"></div>
-                <div class="icon"><img src="${
-                    window.location.origin + tPath
-                }/assets/img/check.png" alt=""></div>
+                <div class="icon"><img src="${ window.location.origin + tPath }/img/icon/check.png" alt=""></div>
             </div>
             <span class="closePopup" onclick="closePopup('green',true)">X</span>
             <label>${data.message}</label>
@@ -17,16 +15,14 @@ function showGreenPopup(data, div = null) {
         greenPopup.style.display = "block";
         setTimeout(() => {
             dashboardPage();
-        }, 3000);
+        }, 2000);
     } else {
         let dataa = JSON.stringify(data);
         greenPopup.innerHTML = `
                 <div class="bg" onclick="closePopup('green',true)"></div>
                 <div class="kotak">
                     <div class=v"bunder1"></div>
-                    <div class="icon"><img src="${
-                        window.location.origin + tPath
-                    }/assets/img/check.png" alt=""></div>
+                    <div class="icon"><img src="${ window.location.origin + tPath }/img/icon/check.png" alt=""></div>
                 </div>
                 <span class="closePopup" onclick="closePopup('green',true)">X</span>
                 <label>${data.message}</label>
@@ -34,11 +30,10 @@ function showGreenPopup(data, div = null) {
         greenPopup.style.display = "block";
         setTimeout(() => {
             closePopup("green");
-        }, 3000);
+        }, 1000);
     }
 }
 function showRedPopup(data, div) {
-    console.log("metu popup ");
     if (div == "otp" && !isPopupVisible) {
         redPopup.innerHTML = `
             <div class="bg" onclick="closePopup('red',true)"></div>
@@ -52,10 +47,10 @@ function showRedPopup(data, div) {
         redPopup.style.display = "block";
         showDiv(div);
         isPopupVisible = true;
-        // setTimeout(() => {
-        //     closePopup('red');
-        //     isPopupVisible = false;
-        // }, 1000);
+        setTimeout(() => {
+            closePopup('red');
+            isPopupVisible = false;
+        }, 1000);
     } else if (!isPopupVisible) {
         if (data.message) {
             redPopup.innerHTML = `
@@ -69,10 +64,10 @@ function showRedPopup(data, div) {
             `;
             redPopup.style.display = "block";
             isPopupVisible = true;
-            // setTimeout(() => {
-            //     closePopup('red');
-            //     isPopupVisible = false;
-            // }, 1000);
+            setTimeout(() => {
+                closePopup('red');
+                isPopupVisible = false;
+            }, 1000);
         } else {
             redPopup.innerHTML = `
                 <div class="bg" onclick="closePopup('red',true)"></div>
@@ -85,10 +80,10 @@ function showRedPopup(data, div) {
             `;
             redPopup.style.display = "block";
             isPopupVisible = true;
-            // setTimeout(() => {
-            //     closePopup('red');
-            //     isPopupVisible = false;
-            // }, 1000);
+            setTimeout(() => {
+                closePopup('red');
+                isPopupVisible = false;
+            }, 1000);
         }
     }
 }
