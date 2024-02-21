@@ -158,8 +158,8 @@ class Authenticate
             }
         //if cookie gone
         }else{
-            $page = ['/dashboard','/profile','/pengguna','/admin/tempat'];
-            $pagePrefix = ['/tempat',];
+            $page = ['/dashboard', '/profile', '/disi', '/disi/tambah', '/emotal', '/emotal/tambah', '/nutrisi', '/nutrisi/tambah', '/pengasuhan', '/pengasuhan/tambah', '/admin', '/admin/tambah'];
+            $pagePrefix = ['/disi/edit', '/emotal/edit', '/nutrisi/edit', '/pengasuhan/edit', '/admin/edit'];
             if(Str::startsWith($currentPath, $pagePrefix) || in_array($currentPath,$page)){
                 if($request->hasCookie("token1")){
                     $token1 = $request->cookie('token1');

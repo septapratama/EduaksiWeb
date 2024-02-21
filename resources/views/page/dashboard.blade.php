@@ -16,17 +16,21 @@ $tPath = app()->environment('local') ? '' : '/public/';
 </head>
 
 <body>
-    <!-- @if(app()->environment('local'))
-    <script>
-    var tPath = '';
-    </script>
+@if(app()->environment('local'))
+        <script>
+            var tPath = '';
+        </script>
     @else
-    <script>
-    var tPath = '/public/';
-    </script>
+        <script>
+            var tPath = '/public/';
+        </script>
     @endif
     <script>
-    </script> -->
+        const domain = window.location.protocol + '//' + window.location.hostname + ":" + window.location.port;
+        var csrfToken = "{{ csrf_token() }}";
+        var email = "{{ $userAuth['email'] }}";
+        var number = "{{ $userAuth['number'] }}";
+    </script>
     <!--  Body Wrapper -->
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
         data-sidebar-position="fixed" data-header-position="fixed">
@@ -52,7 +56,6 @@ $tPath = app()->environment('local') ? '' : '/public/';
     <script src="../assets/js/app.min.js"></script>
     <script src="../assets/libs/apexcharts/dist/apexcharts.min.js"></script>
     <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
-    <script src="../assets/js/dashboard.js"></script>
 </body>
 
 </html>

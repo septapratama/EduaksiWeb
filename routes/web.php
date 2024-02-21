@@ -16,7 +16,7 @@ use App\Http\Controllers\Page\HomeController AS ShowHomeController;
 use App\Http\Controllers\Page\AdminController AS ShowAdminController;
 use App\Http\Controllers\Auth\LoginController;
 
-// Route::group(['middleware'=>['auth','authorized']],function(){
+Route::group(['middleware'=>['auth','authorized']],function(){
     //artikel route
     Route::group(['prefix'=>'/artikel'],function(){
         Route::group(['prefix'=>'/pengasuhan'],function(){
@@ -139,4 +139,4 @@ use App\Http\Controllers\Auth\LoginController;
     Route::get('/dashboard',[ShowAdminController::class,'showDashboard']);
     Route::get('/profile',[ShowAdminController::class,'showProfile']);
     // Route::get('/',[ShowHomeController::class,'showHome'])->withoutMiddleware('authorized');
-// });
+});
