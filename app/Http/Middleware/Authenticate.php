@@ -10,7 +10,6 @@ use Closure;
 class Authenticate
 {
     public function handle(Request $request, Closure $next){
-        $userController = app()->make(AdminController::class);
         $jwtController = app()->make(JWTController::class);
         $currentPath = '/'.$request->path();
         $previousUrl = url()->previous();
@@ -180,4 +179,3 @@ class Authenticate
         }
     }
 }
-?>

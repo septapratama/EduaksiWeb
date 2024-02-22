@@ -77,7 +77,6 @@ class AdminController extends Controller
         $userAuth = $request->input('user_auth');
         $dataShow = [
             'userAuth' => $userAuth,
-            'tanggal_lahir' => $this->changeMonth(json_encode(['tanggal_lahir'=>$userAuth['tanggal_lahir']]))['tanggal_lahir']
         ];
         return view('page.profile',$dataShow);
     }

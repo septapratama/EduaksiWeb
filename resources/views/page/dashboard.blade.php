@@ -65,8 +65,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
     var number = "{{ $userAuth['number'] }}";
     </script>
     <!--  Body Wrapper -->
-    <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
-        data-sidebar-position="fixed" data-header-position="fixed">
+    <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full" data-sidebar-position="fixed" data-header-position="fixed">
         <!-- Sidebar Start -->
         @php
         $nav = 'dashboard';
@@ -83,7 +82,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
                     <h1>Beranda</h1>
                     <nav>
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/dashboard">Beranda</a></li>
+                            <li class="breadcrumb-item">Beranda</li>
                         </ol>
                     </nav>
                 </div>

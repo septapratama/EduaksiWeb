@@ -17,19 +17,19 @@ $tPath = app()->environment('local') ? '' : '/public/';
 
 <body>
     @if(app()->environment('local'))
-        <script>
-            var tPath = '';
-        </script>
+    <script>
+    var tPath = '';
+    </script>
     @else
-        <script>
-            var tPath = '/public/';
-        </script>
+    <script>
+    var tPath = '/public/';
+    </script>
     @endif
     <script>
-        const domain = window.location.protocol + '//' + window.location.hostname + ":" + window.location.port;
-        var csrfToken = "{{ csrf_token() }}";
-        var email = "{{ $userAuth['email'] }}";
-        var number = "{{ $userAuth['number'] }}";
+    const domain = window.location.protocol + '//' + window.location.hostname + ":" + window.location.port;
+    var csrfToken = "{{ csrf_token() }}";
+    var email = "{{ $userAuth['email'] }}";
+    var number = "{{ $userAuth['number'] }}";
     </script>
     <!--  Body Wrapper -->
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
@@ -78,7 +78,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
                                                 <h6 class="fw-semibold mb-0">Aksi</h6>
                                             </th>
                                         </tr>
-                                    </thead>    
+                                    </thead>
                                     <tbody>
                                         @php $no = 1; @endphp
                                         @foreach ($dataDisi as $data)
