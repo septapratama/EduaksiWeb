@@ -38,6 +38,9 @@ $tPath = app()->environment('local') ? '' : '/public/';
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
         data-sidebar-position="fixed" data-header-position="fixed">
         <!-- Sidebar Start -->
+        @php
+        $nav = 'pengasuhan';
+        @endphp
         @include('page.Components.admin.sidebar')
         <!--  Sidebar End -->
         <!--  Main wrapper -->
