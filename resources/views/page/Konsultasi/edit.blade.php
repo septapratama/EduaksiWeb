@@ -14,17 +14,18 @@ $tPath = app()->environment('local') ? '' : '/public/';
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{{ asset($tPath.'assets/css/styles.min.css') }}" />
     <link rel="stylesheet" href="{{ asset($tPath.'css/popup.css') }}" />
+    <link rel="stylesheet" href="{{ asset($tPath.'css/page/editKonsultasi.css') }}" />
 </head>
 
 <body>
     @if(app()->environment('local'))
-        <script>
-            var tPath = '';
-        </script>
+    <script>
+    var tPath = '';
+    </script>
     @else
-        <script>
-            var tPath = '/public/';
-        </script>
+    <script>
+    var tPath = '/public/';
+    </script>
     @endif
     <script>
         const domain = window.location.protocol + '//' + window.location.hostname + ":" + window.location.port;
@@ -43,7 +44,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
         @include('page.Components.admin.sidebar')
         <!--  Sidebar End -->
         <!--  Main wrapper -->
-        <div class="body-wrapper">
+        <div class="body-wrapper" style="background-color: #efefef;">
             <!--  Header Start -->
             @include('page.Components.admin.header')
             <!--  Header End -->
@@ -58,44 +59,48 @@ $tPath = app()->environment('local') ? '' : '/public/';
                         </ol>
                     </nav>
                 </div>
-                <div class=" d-flex align-items-stretch">
-                    <div class="card w-100">
-                        <div class="card-body p-4">
-                        <form id="editForm">
-                                <div class="mb-3">
-                                    <label for="" class="form-label">Judul Digital Literasi</label>
-                                    <input type="text" class="form-control" id="inpJudul" aria-describedby="emailHelp">
-                                </div>
-                                <div class="mb-3">
-                                    <div>
-                                        <label for="" class="form-label">Rentang Usia</label>
-                                        <select class="form-select" aria-label="Default select example" id="inpRentangUsia" disabled>
-                                            <option value="0-3 Tahun" selected="selected">0-3 Tahun</option>
-                                            <option value="4-6 Tahun" selected="selected">4-6 Tahun</option>
-                                            <option value="7-9 Tahun" selected="selected">7-9 Tahun</option>
-                                            <option value="10-12 Tahun" selected="selected">10-12 Tahun</option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label for="" class="form-label">Link Video</label>
-                                        <input type="text" class="form-control" id="inpLinkVideo">
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="" class="form-label">Deskripsi</label>
-                                    <textarea name="deskripsi" id="inpDeskripsi" placeholder="Masukkan Isi Digital Literasi" class="form-control" style="height:120px"></textarea>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="" class="form-label">Foto</label>
-                                    <input type="file" class="form-control" id="inpFoto" aria-describedby="emailHelp" accept="image/*">
-                                </div>
-                                <div class="mb-3 form-check">
-                                    <a href="/disi" class="btn btn-danger">Kembali</a>
-                                    <button type="submit" class="btn btn-success"><img src="{{ asset($tPath.'img/icon/tambah.svg') }}" alt="" width="30" height="30">Submit</button>
-                                </div>
-                            </form>
+                <div class="d-flex align-items-stretch" style="background-color: #ffffff; border-radius: 20px;">
+                    <form id="tambahForm">
+                        <div class="crow">
+                            <label for="">Nama Lengkap</label>
+                            <input type="text" id="inpNama">
                         </div>
-                    </div>
+                        <div class="crow">
+                            <div>
+                                <label for="">Jenis Kelamin</label>
+                                <select class="" aria-label="Default select example" id="inpJenisKelamin">
+                                    <option value="" selected>Pilih Kelamin</option>
+                                    <option value="laki-laki">Laki-Laki</option>
+                                    <option value="perempuan">Perempuan</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="">Nomer Telepon</label>
+                                <input type="text" id="inpNomerTelepon">
+                            </div>
+                        </div>
+                        <div class="crow">
+                            <label for="">Email</label>
+                            <input type="text" id="inpEmail">
+                        </div>
+                        <div class="crow">
+                            <label for="">Alamat</label>
+                            <textarea name="deskripsi" id="inpAlamat" placeholder="Masukkan Isi Konsultasi" class=""
+                                style="height:120px"></textarea>
+                        </div>
+                        <div class="img" onclick="handleFileClick()" ondragover="handleDragOver(event)"
+                            ondrop="handleDrop(event)">
+                            <img src="{{ asset($tPath.'img/icon/upload.svg') }}" alt="">
+                            <span>Pilih File atau Jatuhkan File</span>
+                            <input type="file" id="inpFoto" hidden onchange="handleFileChange(event)">
+                        </div>
+                        <div class="crow">
+                            <a href="/konsultasi" class="btn btn-danger">Kembali</a>
+                            <button type="submit" class="btn btn-success"><img
+                                    src="{{ asset($tPath.'img/icon/tambah.svg') }}" alt="" width="30"
+                                    height="30"><span>Edit</span></button>
+                        </div>
+                    </form>
                 </div>
                 @include('page.Components.admin.footer')
             </div>
@@ -111,8 +116,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
     <script src="{{ asset($tPath.'assets/libs/apexcharts/dist/apexcharts.min.js') }}"></script>
     <script src="{{ asset($tPath.'assets/libs/simplebar/dist/simplebar.js') }}"></script>
     <script src="{{ asset($tPath.'assets/js/dashboard.js') }}"></script>
-    <script src="{{ asset($tPath.'js/page/editData.js') }}"></script>
+    <script src="{{ asset($tPath.'js/page/editKonsultasi.js') }}"></script>
     <script src="{{ asset($tPath.'js/popup.js') }}"></script>
 </body>
-
 </html>

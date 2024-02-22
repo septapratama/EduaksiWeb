@@ -3,13 +3,13 @@ namespace App\Http\Controllers\Services;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Konsultasi;
 class KonsultasiController extends Controller
 {
     public function tambahKonsultasi(Request $request){
-        $validator = Validator::make($request->only('id_konsultasi', 'nama_lengkap', 'jenis_kelamin', 'alamat', 'no_telpon', 'email_konsultasi', 'foto'), [
-            'id_konsultasi' => 'required',
+        $validator = Validator::make($request->only('nama_lengkap', 'jenis_kelamin', 'alamat', 'no_telpon', 'email_konsultasi', 'foto'), [
             'nama_lengkap' => 'required|max:50',
             'jenis_kelamin' => 'required|in:laki-laki,perempuan',
             'alamat' => 'required',
@@ -17,7 +17,6 @@ class KonsultasiController extends Controller
             'email_konsultasi'=>'required|email',
             'foto' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120',
         ], [
-            'id_konsultasi.required' => 'ID konsultasi wajib di isi',
             'nama_lengkap.required' => 'Nama lengkap wajib di isi',
             'nama_lengkap.max' => 'Nama lengkap maksimal 50 karakter',
             'jenis_kelamin.required' => 'Jenis kelamin wajib di isi',
@@ -25,7 +24,8 @@ class KonsultasiController extends Controller
             'alamat.required' => 'Alamat wajib di isi',
             'no_telpon.required' => 'Nomor telepon wajib di isi',
             'no_telpon.digits_between' => 'Nomor telepon tidak boleh lebih dari 13 karakter',
-            'email_konsultasi.email'=>'Email yang anda masukkan invalid',
+            'email_konsultasi.required' => 'Email Konsultasi wajib di isi',
+            'email_konsultasi.email'=>'Email Konsultasi invalid',
             'foto.required' => 'Foto konsultasi wajib di isi',
             'foto.image' => 'Foto konsultasi harus berupa gambar',
             'foto.mimes' => 'Format foto tidak valid. Gunakan format jpeg, png, jpg',
@@ -48,8 +48,9 @@ class KonsultasiController extends Controller
             return response()->json(['status'=>'error','message'=>'Format Foto tidak valid. Gunakan format jpeg, png, jpg'], 400);
         }
         $fotoName = $file->hashName();
-        Storage::disk('konsultasi')->put('foto/' . $fotoName, file_get_contents($file));
+        Storage::disk('konsultasi')->put($fotoName, file_get_contents($file));
         $ins = Konsultasi::insert([
+            'uuid' => Str::uuid(),
             'nama_lengkap' => $request->input('nama_lengkap'),
             'jenis_kelamin' => $request->input('jenis_kelamin'),
             'alamat' => $request->input('alamat'),
@@ -108,9 +109,9 @@ class KonsultasiController extends Controller
             if (file_exists($fileToDelete) && !is_dir($fileToDelete)) {
                 unlink($fileToDelete);
             }
-            Storage::disk('konsultasi')->delete('foto/'. $konsultasi['foto']);
+            Storage::disk('konsultasi')->delete($konsultasi['foto']);
             $fotoName = $file->hashName();
-            Storage::disk('konsultasi')->put('foto/' . $fotoName, file_get_contents($file));
+            Storage::disk('konsultasi')->put($fotoName, file_get_contents($file));
         }
         $edit = $konsultasi->where('id_konsultasi',$request->input('id_konsultasi'))->update([
             'nama_lengkap' => $request->input('nama_lengkap'),
@@ -139,17 +140,19 @@ class KonsultasiController extends Controller
             }
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
-        $konsultasi = Konsultasi::find($request->input('id_konsultasi'));
+        $konsultasi = Konsultasi::select('foto')->where('uuid',$request->input('id_konsultasi'))->limit(1)->get()[0];
         if (!$konsultasi) {
             return response()->json(['status' => 'error', 'message' => 'Data Konsultasi tidak ditemukan'], 400);
         }
-        if (app()->environment('local')) {
-            $destinationPath = public_path('img/konsultasi');
-        } else {
-            $destinationPath = base_path('../public_html/public/img/konsultasi/');
+        //delete all photo
+        $destinationPath = storage_path('app/konsultasi/');
+        $fileToDelete = $destinationPath . $konsultasi->foto;
+        if (file_exists($fileToDelete) && !is_dir($fileToDelete)) {
+            unlink($fileToDelete);
         }
-        if (file_exists($destinationPath . $konsultasi->foto_tempat)) {
-            unlink($destinationPath . $konsultasi->foto_tempat);
+        Storage::disk('konsultasi')->delete('/'.$konsultasi->foto);
+        if (!Konsultasi::where('uuid',$request->input('id_pengasuhan'))->delete()) {
+            return response()->json(['status' => 'error', 'message' => 'Gagal menghapus data Pengasuhan'], 500);
         }
         $konsultasi->delete();
         return response()->json(['status' => 'success', 'message' => 'Data Konsultasi berhasil dihapus']);

@@ -1,0 +1,103 @@
+form {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 95%;
+    gap: 10px;
+    padding-top: 25px;
+    padding-bottom: 25px;
+}
+form .crow {
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+form .crow:nth-child(2) {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+form .crow:nth-child(2) div {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+form .crow:nth-child(2) div:nth-child(1) {
+    width: 25%;
+}
+select {
+    width: 100%;
+}
+.img {
+    cursor: pointer;
+    position: absolute;
+    right: 0%;
+    top: 7%;
+    width: 22%;
+    height: 42%;
+    border: 4px dashed #b1b1b1;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.img img {
+    width: 50px;
+    height: 50px;
+}
+form .crow:nth-child(2) div:nth-child(2) {
+    width: 100%;
+}
+form .crow:nth-child(4) {
+    width: 100%;
+    margin-bottom: 10px;
+}
+form .crow:nth-child(4) textarea {
+    min-height: 120px;
+    resize: none;
+}
+form .crow:last-child {
+    width: 100%;
+    position: relative;
+    flex-direction: row;
+    justify-content: right;
+    gap: 20px;
+}
+form .crow:last-child a,
+form .crow:last-child button {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 50px;
+    right: 0px;
+}
+label,
+select {
+    font-size: larger;
+    font-weight: 600;
+    white-space: nowrap;
+}
+option {
+    text-align: center;
+}
+form .crow input,
+form .crow select,
+form .crow textarea {
+    border-width: 1px;
+    border-radius: 10px;
+}
+form .crow input,
+form .crow select {
+    height: 30px;
+}
+form .crow input,
+form .crow textarea {
+    padding-left: 10px;
+}

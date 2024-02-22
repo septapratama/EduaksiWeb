@@ -1,4 +1,5 @@
 <?php
+use App\Http\Controllers\Services\KonsultasiController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AdminController;
@@ -55,6 +56,17 @@ Route::group(['middleware'=>['auth','authorized']],function(){
     //     Route::get('/edit',function(){
     //         return view('page.Nutrisi.edit');
     //     });
+    // });
+    // Route::group(['prefix'=>'/konsultasi'],function(){
+    //     Route::get('/', function () {
+    //         return view('page.Konsultasi.data');
+    //     })->withoutMiddleware('authorized');
+    //     Route::get('/tambah', function () {
+    //         return view('page.Konsultasi.tambah');
+    //     })->withoutMiddleware('authorized');
+    //     Route::get('/edit', function () {
+    //         return view('page.Konsultasi.edit');
+    //     })->withoutMiddleware('authorized');
     // });
     // Route::group(['prefix'=>'/pengasuhan'],function(){
     //     Route::get('/',function(){
@@ -113,6 +125,11 @@ Route::group(['middleware'=>['auth','authorized']],function(){
             Route::post('/tambah', [NutrisiController::class, 'tambahNutrisi']);
             Route::put('/update', [NutrisiController::class, 'editNutrisi']);
             Route::delete('/delete', [NutrisiController::class, 'deleteNutrisi']);
+        });
+        Route::group(['prefix'=>'/konsultasi'],function(){
+            Route::post('/tambah', [KonsultasiController::class, 'tambahKonsultasi']);
+            Route::put('/update', [KonsultasiController::class, 'editKonsultasi']);
+            Route::delete('/delete', [KonsultasiController::class, 'deleteKonsultasi']);
         });
         //page admin
         Route::get('/',[ShowAdminController::class,'showAdmin']);

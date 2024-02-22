@@ -63,7 +63,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
                     <form id="editForm">
                         <div class="crow">
                             <label for="">Judul Digital Literasi</label>
-                            <input type="text">
+                            <input type="text" id="inpJudul">
                         </div>
                         <div class="crow">
                             <div>
@@ -88,7 +88,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
                         </div>
                         <div class="img" onclick="handleFileClick()" ondragover="handleDragOver(event)"
                             ondrop="handleDrop(event)">
-                            <img src="{{ asset($tPath.'assets/images/profile/user-1.jpg') }}" alt="">
+                            <img src="{{ asset($tPath.'img/icon/upload.svg') }}" alt="">
                             <span>Pilih File atau Jatuhkan File</span>
                             <input type="file" id="inpFoto" hidden onchange="handleFileChange(event)">
                         </div>
