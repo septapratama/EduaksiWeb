@@ -13,6 +13,24 @@ $tPath = app()->environment('local') ? '' : '/public/';
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{{ asset($tPath.'assets/css/styles.min.css') }}" />
+    <style>
+        th{
+            white-space: nowrap;
+        }
+        th:nth-child(2) {
+            width: 100%;
+        }
+        td:last-child{
+            position: relative;
+            display: flex;
+            flex-direction: row;
+        }
+        td:last-child a, td:last-child button{
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+    </style>
 </head>
 
 <body>
@@ -26,10 +44,11 @@ $tPath = app()->environment('local') ? '' : '/public/';
     </script>
     @endif
     <script>
-    const domain = window.location.protocol + '//' + window.location.hostname + ":" + window.location.port;
-    var csrfToken = "{{ csrf_token() }}";
-    var email = "{{ $userAuth['email'] }}";
-    var number = "{{ $userAuth['number'] }}";
+        const domain = window.location.protocol + '//' + window.location.hostname + ":" + window.location.port;
+        const reff = '/emotal';
+        var csrfToken = "{{ csrf_token() }}";
+        var email = "{{ $userAuth['email'] }}";
+        var number = "{{ $userAuth['number'] }}";
     </script>
     <!--  Body Wrapper -->
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
@@ -62,7 +81,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
                                     src="{{ asset($tPath.'img/icon/tambah.svg') }}" alt="" width="30" height="30">Tambah
                                 Emotal</a>
                             <div class="table-responsive">
-                                <table class="table text-nowrap mb-0 align-middle">
+                                <table class="table mb-0 align-middle">
                                     <thead class="text-dark fs-4">
                                         <tr>
                                             <th class="border-bottom-0">
@@ -94,12 +113,8 @@ $tPath = app()->environment('local') ? '' : '/public/';
                                                 <p class="mb-0 fw-normal">{{ $data['rentang_usia']}}</p>
                                             </td>
                                             <td class="border-bottom-0">
-                                                <a href="/emotal/edit/{{ $data['uuid'] }}"
-                                                    class="btn btn-warning m-1"><img
-                                                        src="{{ asset($tPath.'img/icon/edit.svg') }}" alt="">Edit</a>
-                                                <button type="button" class="btn btn-danger m-1"><img
-                                                        src="{{ asset($tPath.'img/icon/delete.svg') }}"
-                                                        alt="">Hapus</button>
+                                                <a href="/emotal/edit/{{ $data['uuid'] }}" class="btn btn-warning m-1"><img src="{{ asset($tPath.'img/icon/edit.svg') }}" alt=""><span>Edit</span></a>
+                                                <button type="button" class="btn btn-danger m-1"><img src="{{ asset($tPath.'img/icon/delete.svg') }}" alt=""><span>Hapus</span></button>
                                             </td>
                                         </tr>
                                         @endforeach

@@ -28,11 +28,11 @@ $tPath = app()->environment('local') ? '' : '/public/';
     </script>
     @endif
     <script>
-    const domain = window.location.protocol + '//' + window.location.hostname + ":" + window.location.port;
-    const reff = '/emotal';
-    var csrfToken = "{{ csrf_token() }}";
-    var email = "{{ $userAuth['email'] }}";
-    var number = "{{ $userAuth['number'] }}";
+        const domain = window.location.protocol + '//' + window.location.hostname + ":" + window.location.port;
+        const reff = '/emotal';
+        var csrfToken = "{{ csrf_token() }}";
+        var email = "{{ $userAuth['email'] }}";
+        var number = "{{ $userAuth['number'] }}";
     </script>
     <!--  Body Wrapper -->
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
