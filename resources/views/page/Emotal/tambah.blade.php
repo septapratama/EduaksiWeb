@@ -39,7 +39,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
         data-sidebar-position="fixed" data-header-position="fixed">
         <!-- Sidebar Start -->
         @php
-        $nav = 'emptal';
+        $nav = 'emotal';
         @endphp
         @include('page.Components.admin.sidebar')
         <!--  Sidebar End -->

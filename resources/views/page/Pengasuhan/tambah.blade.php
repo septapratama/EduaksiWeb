@@ -54,7 +54,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
                     <nav>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="/dashboard">Beranda</a></li>
-                            <li class="breadcrumb-item"><a href="/Pengasuhan">Kelola Pengasuhan</a></li>
+                            <li class="breadcrumb-item"><a href="/pengasuhan">Kelola Pengasuhan</a></li>
                             <li class="breadcrumb-item">Tambah Pengasuhan</li>
                         </ol>
                     </nav>
