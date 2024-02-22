@@ -45,7 +45,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
             <!--  Header Start -->
             @include('page.Components.admin.header')
             <!--  Header End -->
-            <div class="container-fluid">
+            <div class="container-fluid" style="background-color: #F6F9FF">
                 <div class="pagetitle">
                     <h1>Kelola Pengasuhan</h1>
                     <nav>
@@ -57,10 +57,9 @@ $tPath = app()->environment('local') ? '' : '/public/';
                 </div>
                 <div class="d-flex align-items-stretch">
                     <div class="card w-100">
-                        <div class="card-body p-4">
+                        <div class="card-body p-4" style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
                             <a href="/pengasuhan/tambah" class="btn btn-success"><img
-                                    src="{{ asset($tPath.'img/icon/tambah.svg') }}" alt="" width="30" height="30">Tambah
-                                Pengasuhan</a>
+                                    src="{{ asset($tPath.'img/icon/tambah.svg') }}" alt="" width="30" height="30">Tambah Pengasuhan</a>
                             <div class="table-responsive">
                                 <table class="table text-nowrap mb-0 align-middle">
                                     <thead class="text-dark fs-4">

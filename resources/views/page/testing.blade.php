@@ -28,7 +28,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
         @include('page.Components.admin.sidebar')
         <!--  Sidebar End -->
         <!--  Main wrapper -->
-        <div class="body-wrapper" style="background-color: #efefef;">
+        <div class="body-wrapper">
             <!--  Header Start -->
             @include('page.Components.admin.header')
             <!--  Header End -->

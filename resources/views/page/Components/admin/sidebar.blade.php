@@ -50,7 +50,7 @@
                 </li>
                 <li class="sidebar-item {{ $nav == 'artikel' ? 'selected' : ''}}">
                     <a class="sidebar-link {{ $nav == 'artikel' ? 'active' : ''}}" href="/artikel" aria-expanded="false">
-                        <img src="{{ asset($tPath.'img/icon/sidebar/article.svg') }}" alt="" width="30" height="30">
+                        <img src="{{ asset($tPath.'img/icon/sidebar/artikel.svg') }}" alt="" width="30" height="30">
                         <span class="hide-menu">Kelola Artikel</span>
                     </a>
                 </li>

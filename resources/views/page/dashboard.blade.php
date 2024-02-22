@@ -15,16 +15,15 @@ $tPath = app()->environment('local') ? '' : '/public/';
     <link rel="stylesheet" href="{{ asset($tPath.'assets/css/styles.min.css') }}" />
     <style>
     #kotak{
-        background-color:blue;
         display: flex;
         flex-wrap: wrap;
-        height: 100%;
+        height: 350px;
         align-content: space-around;
         justify-content: space-around;
     }
     .card{
         width: 47%;
-        height:150px;
+        height:100px;
         display: flex;
         justify-content:center;
         margin-bottom: 0px;
@@ -33,17 +32,18 @@ $tPath = app()->environment('local') ? '' : '/public/';
         position: relative;
         display: flex;
         left:8%;
+        color: black;
+        font-weight: 600;
     }
     .card h5 {
-        font-size: xx-large;
+        font-size: 24px;
         font-weight: 600;
     }
     .card div {
         display: flex;
         gap:3%;
         align-items:center;
-        font-size: x-large;
-        font-weight: 600;
+        font-size: 22px;
     }
     </style>
 </head>
@@ -77,7 +77,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
             <!--  Header Start -->
             @include('page.Components.admin.header')
             <!--  Header End -->
-            <div class="container-fluid">
+            <div class="container-fluid" style="background-color: #F6F9FF">
                 <div class="pagetitle">
                     <h1>Beranda</h1>
                     <nav>
@@ -87,45 +87,45 @@ $tPath = app()->environment('local') ? '' : '/public/';
                     </nav>
                 </div>
                 <div id="kotak">
-                    <div class="card" style="">
+                    <div class="card" style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
                         <h5 class="">Jumlah Disi</h5>
                         <div class="">
-                            <img src="{{ asset($tPath.'img/icon/sidebar/disi.svg') }}" alt="" width="70" height="70">
+                            <img src="{{ asset($tPath.'img/icon/sidebar/disi.svg') }}" alt="" width="40" height="40">
                             <span>1000</span>
                         </div>
                     </div>
-                    <div class="card">
-                        <h5 class="">Jumlah Disi</h5>
+                    <div class="card" style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
+                        <h5 class="">Jumlah Emotal</h5>
                         <div class="">
-                            <img src="{{ asset($tPath.'img/icon/sidebar/disi.svg') }}" alt="" width="70" height="70">
+                            <img src="{{ asset($tPath.'img/icon/sidebar/emotal.svg') }}" alt="" width="40" height="40">
                             <span>1000</span>
                         </div>
                     </div>
-                    <div class="card">
-                        <h5 class="">Jumlah Disi</h5>
+                    <div class="card" style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
+                        <h5 class="">Jumlah Nutrisi</h5>
                         <div class="">
-                            <img src="{{ asset($tPath.'img/icon/sidebar/disi.svg') }}" alt="" width="70" height="70">
+                            <img src="{{ asset($tPath.'img/icon/sidebar/nutrisi.svg') }}" alt="" width="40" height="40">
                             <span>1000</span>
                         </div>
                     </div>
-                    <div class="card">
-                        <h5 class="">Jumlah Disi</h5>
+                    <div class="card" style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
+                        <h5 class="">Jumlah Pengasuhan</h5>
                         <div class="">
-                            <img src="{{ asset($tPath.'img/icon/sidebar/disi.svg') }}" alt="" width="70" height="70">
+                            <img src="{{ asset($tPath.'img/icon/sidebar/pengasuhan.svg') }}" alt="" width="40" height="40">
                             <span>1000</span>
                         </div>
                     </div>
-                    <div class="card">
-                        <h5 class="">Jumlah Disi</h5>
+                    <div class="card" style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
+                        <h5 class="">Jumlah Konsultan</h5>
                         <div class="">
-                            <img src="{{ asset($tPath.'img/icon/sidebar/disi.svg') }}" alt="" width="70" height="70">
+                            <img src="{{ asset($tPath.'img/icon/sidebar/konsultasi.svg') }}" alt="" width="40" height="40">
                             <span>1000</span>
                         </div>
                     </div>
-                    <div class="card">
-                        <h5 class="">Jumlah Disi</h5>
+                    <div class="card" style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
+                        <h5 class="">Jumlah Artikel</h5>
                         <div class="">
-                            <img src="{{ asset($tPath.'img/icon/sidebar/disi.svg') }}" alt="" width="70" height="70">
+                            <img src="{{ asset($tPath.'img/icon/sidebar/artikel.svg') }}" alt="" width="40" height="40">
                             <span>1000</span>
                         </div>
                     </div>
