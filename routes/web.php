@@ -168,9 +168,9 @@ Route::group(['middleware'=>['auth','authorized']],function(){
         return view('page.template');
     })->withoutMiddleware('authorized');
     Route::get('/dashboard',[ShowAdminController::class,'showDashboard']);
-    Route::get('/profile', function () {
-        return view('page.profile');
-    });
     Route::get('/profile',[ShowAdminController::class,'showProfile']);
+    Route::get('/', function () {
+        return view('page.home');
+    })->withoutMiddleware('authorized');
     // Route::get('/',[ShowHomeController::class,'showHome'])->withoutMiddleware('authorized');
 });
