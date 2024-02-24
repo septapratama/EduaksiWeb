@@ -172,8 +172,11 @@ Route::group(['middleware'=>['auth','authorized']],function(){
     Route::get('/', function(){
         return view('page.home');
     })->withoutMiddleware('authorized');
-    Route::get('/daftar-artikel', function(){
+    Route::get('/artikel', function(){
         return view('page.daftar-artikel');
+    })->withoutMiddleware('authorized');
+    Route::get('/artikel/detail', function(){
+        return view('page.detail-artikel');
     })->withoutMiddleware('authorized');
     // Route::get('/',[ShowHomeController::class,'showHome'])->withoutMiddleware('authorized');
 });

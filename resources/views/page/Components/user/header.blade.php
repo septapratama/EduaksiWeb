@@ -5,6 +5,15 @@
             <a href="#beranda">Beranda</a>
             <a href="#artikel">Artikel Terbaru</a>
             <a href="#kategori">Kategori</a>
+        @elseif($nav === 'detail')
+            <a href="/#beranda">Beranda</a>
+            <a href="#artikel">Artikel</a>
+            <a href="#video">video</a>
+            <a href="#rekomendasi">Rekomendasi Artikel</a>
+        @else
+            <a href="/#beranda">Beranda</a>
+            <a href="/#artikel">Artikel Terbaru</a>
+            <a href="/#kategori">Kategori</a>
         @endif
     </li>
 </header>

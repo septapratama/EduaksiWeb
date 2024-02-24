@@ -10,6 +10,9 @@ body{
     color: var(--biru-tua);
     font-family: 'Roboto', sans-serif;
 }
+img{
+    pointer-events: none;
+}
 header{
     top: 0px;
     position:sticky;
@@ -42,7 +45,7 @@ header li a:hover{
 header li a.active{
     color: red;
 }
-section {
+main, section {
     padding-top: 70px; /* Adjusted to the height of the header */
 }
 
@@ -87,6 +90,7 @@ section {
     cursor: pointer;
 }
 #beranda div button img{
+
     width: 40px;
     height: 40px;
 }
@@ -96,6 +100,9 @@ section {
     margin-top: 0px;
 }
 
+section ul a:active{
+    color: var(--biru-tua);
+}
 #artikel{
     display: flex;
     flex-direction: column;
@@ -148,6 +155,7 @@ section {
     flex-direction: column;
     border-radius: 10px;
     cursor: pointer;
+    text-decoration: none;
 }
 #artikel ul .card:hover{
     background-color: var(--biru-tua);
@@ -241,6 +249,7 @@ section {
     flex-direction: column;
     border-radius: 10px;
     cursor: pointer;
+    text-decoration: none;
 }
 #kategori ul .card:hover{
     background-color: var(--biru-tua);

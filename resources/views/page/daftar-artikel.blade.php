@@ -32,72 +32,66 @@ $tPath = app()->environment('local') ? '' : '/public/';
             </select>
         </div>
         <ul>
-            <li class="card">
+            <a href="" class="card">
                 <img src="{{ asset($tPath.'img/artikel/hitler1.jpg') }}" alt="">
                 <span class="tanggal">Minggu, 16 Juli 2023</span>
                 <h3>Kebangkitan dan Kejatuhan Adolf Hitler: Jalan Menuju Kehancuran Seorang Diktator</h3>
                 <p>Digital Literasi</p>
-            </li>
-            <li class="card">
+            </a>
+            <a href="" class="card">
                 <img src="{{ asset($tPath.'img/artikel/hitler2.jpg') }}" alt="">
                 <span class="tanggal">Minggu, 16 Juli 2023</span>
                 <h3>Kebangkitan dan Kejatuhan Adolf Hitler: Jalan Menuju Kehancuran Seorang Diktator</h3>
                 <p>Digital Literasi</p>
-            </li>
-            <li class="card">
+            </a>
+            <a href="" class="card">
                 <img src="{{ asset($tPath.'img/artikel/hitler3.png') }}" alt="">
                 <span class="tanggal">Minggu, 16 Juli 2023</span>
                 <h3>Kebangkitan dan Kejatuhan Adolf Hitler: Jalan Menuju Kehancuran Seorang Diktator</h3>
                 <p>Digital Literasi</p>
-            </li>
-            <li class="card">
+            </a>
+            <a href="" class="card">
                 <img src="{{ asset($tPath.'img/artikel/hitler1.jpg') }}" alt="">
                 <span class="tanggal">Minggu, 16 Juli 2023</span>
                 <h3>Kebangkitan dan Kejatuhan Adolf Hitler: Jalan Menuju Kehancuran Seorang Diktator</h3>
                 <p>Digital Literasi</p>
-            </li>
-            <li class="card">
+            </a>
+            <a href="" class="card">
                 <img src="{{ asset($tPath.'img/artikel/hitler2.jpg') }}" alt="">
                 <span class="tanggal">Minggu, 16 Juli 2023</span>
                 <h3>Kebangkitan dan Kejatuhan Adolf Hitler: Jalan Menuju Kehancuran Seorang Diktator</h3>
                 <p>Digital Literasi</p>
-            </li>
-            <li class="card">
+            </a>
+            <a href="" class="card">
                 <img src="{{ asset($tPath.'img/artikel/hitler3.png') }}" alt="">
                 <span class="tanggal">Minggu, 16 Juli 2023</span>
                 <h3>Kebangkitan dan Kejatuhan Adolf Hitler: Jalan Menuju Kehancuran Seorang Diktator</h3>
                 <p>Digital Literasi</p>
-            </li>
-            <li class="card">
+            </a>
+            <a href="" class="card">
                 <img src="{{ asset($tPath.'img/artikel/hitler1.jpg') }}" alt="">
                 <span class="tanggal">Minggu, 16 Juli 2023</span>
                 <h3>Kebangkitan dan Kejatuhan Adolf Hitler: Jalan Menuju Kehancuran Seorang Diktator</h3>
                 <p>Digital Literasi</p>
-            </li>
-            <li class="card">
+            </a>
+            <a href="" class="card">
                 <img src="{{ asset($tPath.'img/artikel/hitler2.jpg') }}" alt="">
                 <span class="tanggal">Minggu, 16 Juli 2023</span>
                 <h3>Kebangkitan dan Kejatuhan Adolf Hitler: Jalan Menuju Kehancuran Seorang Diktator</h3>
                 <p>Digital Literasi</p>
-            </li>
-            <li class="card">
+            </a>
+            <a href="" class="card">
                 <img src="{{ asset($tPath.'img/artikel/hitler3.png') }}" alt="">
                 <span class="tanggal">Minggu, 16 Juli 2023</span>
                 <h3>Kebangkitan dan Kejatuhan Adolf Hitler: Jalan Menuju Kehancuran Seorang Diktator</h3>
                 <p>Digital Literasi</p>
-            </li>
+            </a>
         </ul>
     </section>
     @include('page.Components.user.footer')
     <script>
-        const navItems = document.querySelectorAll('header li a');
-        navItems.forEach(navItem => {
-            navItem.addEventListener('click',function(){
-                navItems.forEach(item => {
-                    item.classList.remove('active');
-                });
-                this.classList.add('active');
-            })
+        document.body.addEventListener('dragstart', event => {
+            event.preventDefault();
         });
     </script>
 </body>

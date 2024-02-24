@@ -20,7 +20,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
         $nav = 'home';
     @endphp
     @include('page.Components.user.header')
-    <section id="beranda">
+    <main id="beranda">
         <div>
             <h1>EduAksi</h1>
             <span>EduAksi adalah aplikasi yang menyediakan panduan dan dukungan untuk orang tua dalam mendidik anak-anak dengan baik. Mulai dari keamanan online hingga kesehatan, dari emosi hingga pertumbuhan anak, kami hadir untuk membantu. Nikmati fitur kalender anak, kalkulator gizi, dan konsultasi dengan profesional. EduAksi - Solusi Praktis untuk Orang Tua yang Pintar dan Peduli!</span>
@@ -30,68 +30,71 @@ $tPath = app()->environment('local') ? '' : '/public/';
             </button>
         </div>
         <img src="{{ asset($tPath.'img/app.png') }}" alt="">
-    </section>
+    </main>
     <section id="artikel">
         <div>
             <h1>Artikel Terbaru</h1>
-            <a href="/daftar-artikel">
+            <a href="/artikel">
                 <span>Lainnya</span>
                 <img src="{{ asset($tPath.'img/icon/arrow-right.svg') }}" alt="">
             </a>
         </div>
         <ul>
-            <li class="card">
+            <a href="/artikel" class="card">
                 <img src="{{ asset($tPath.'img/artikel/hitler1.jpg') }}" alt="">
                 <span class="tanggal">Minggu, 16 Juli 2023</span>
                 <h3>Kebangkitan dan Kejatuhan Adolf Hitler: Jalan Menuju Kehancuran Seorang Diktator</h3>
                 <p>Digital Literasi</p>
-            </li>
-            <li class="card">
+            </a>
+            <a href="/artikel" class="card">
                 <img src="{{ asset($tPath.'img/artikel/hitler2.jpg') }}" alt="">
                 <span class="tanggal">Minggu, 16 Juli 2023</span>
                 <h3>Kebangkitan dan Kejatuhan Adolf Hitler: Jalan Menuju Kehancuran Seorang Diktator</h3>
                 <p>Digital Literasi</p>
-            </li>
-            <li class="card">
+            </a>
+            <a href="/artikel" class="card">
                 <img src="{{ asset($tPath.'img/artikel/hitler3.png') }}" alt="">
                 <span class="tanggal">Minggu, 16 Juli 2023</span>
                 <h3>Kebangkitan dan Kejatuhan Adolf Hitler: Jalan Menuju Kehancuran Seorang Diktator</h3>
                 <p>Digital Literasi</p>
-            </li>
+            </a>
         </ul>
     </section>
     <section id="kategori">
         <div>
             <h1>Kategori</h1>
-            <a href="/daftar-artikel">
+            <a href="/artikel">
                 <span>Lainnya</span>
                 <img src="{{ asset($tPath.'img/icon/arrow-right.svg') }}" alt="">
             </a>
         </div>
         <ul>
-            <li class="card">
+            <a href="" class="card">
                 <img src="{{ asset($tPath.'img/artikel/hitler1.jpg') }}" alt="">
                 <span class="tanggal">Minggu, 16 Juli 2023</span>
                 <h3>Kebangkitan dan Kejatuhan Adolf Hitler: Jalan Menuju Kehancuran Seorang Diktator</h3>
                 <p>Digital Literasi</p>
-            </li>
-            <li class="card">
+            </a>
+            <a href="" class="card">
                 <img src="{{ asset($tPath.'img/artikel/hitler2.jpg') }}" alt="">
                 <span class="tanggal">Minggu, 16 Juli 2023</span>
                 <h3>Kebangkitan dan Kejatuhan Adolf Hitler: Jalan Menuju Kehancuran Seorang Diktator</h3>
                 <p>Digital Literasi</p>
-            </li>
-            <li class="card">
+            </a>
+            <a href="" class="card">
                 <img src="{{ asset($tPath.'img/artikel/hitler3.png') }}" alt="">
                 <span class="tanggal">Minggu, 16 Juli 2023</span>
                 <h3>Kebangkitan dan Kejatuhan Adolf Hitler: Jalan Menuju Kehancuran Seorang Diktator</h3>
                 <p>Digital Literasi</p>
-            </li>
+            </a>
         </ul>
     </section>
     @include('page.Components.user.footer')
     <script>
-        const navItems = document.querySelectorAll('header li a');
+        const navItems = document.querySelectorAll('header a a');
+        document.body.addEventListener('dragstart', event => {
+            event.preventDefault();
+        });
         navItems.forEach(navItem => {
             navItem.addEventListener('click',function(){
                 navItems.forEach(item => {
