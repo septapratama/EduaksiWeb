@@ -164,13 +164,16 @@ Route::group(['middleware'=>['auth','authorized']],function(){
     Route::get('/testing', function () {
         return view('page.testing');
     })->withoutMiddleware('authorized');
-    Route::get('/template', function () {
+    Route::get('/template', function(){
         return view('page.template');
     })->withoutMiddleware('authorized');
     Route::get('/dashboard',[ShowAdminController::class,'showDashboard']);
     Route::get('/profile',[ShowAdminController::class,'showProfile']);
-    Route::get('/', function () {
+    Route::get('/', function(){
         return view('page.home');
+    })->withoutMiddleware('authorized');
+    Route::get('/daftar-artikel', function(){
+        return view('page.daftar-artikel');
     })->withoutMiddleware('authorized');
     // Route::get('/',[ShowHomeController::class,'showHome'])->withoutMiddleware('authorized');
 });

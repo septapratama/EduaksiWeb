@@ -42,82 +42,31 @@ header li a:hover{
 header li a.active{
     color: red;
 }
-section {
-    padding-top: 70px; /* Adjusted to the height of the header */
-}
 
-#beranda{
-    height: 100vh;
-    display: flex;
-    flex-direction: row;
-}
-#beranda img{
-    width: 500px;
-    height: 500px;
-}
-#beranda div{
-    margin-left:75px;
-    margin-top: 50px;
-    display: flex;
-    flex-direction: column;
-    width: 65%;
-}
-#beranda div h1{
-    color: var(--biru-tua);
-    margin: 0;
-    width: 10%;
-    font-size: 70px;
-}
-#beranda div span{
-    color: var(--biru-tua);
-    margin-top: 50px;
-    font-size: 20px;
-}
-#beranda div button{
-    margin-top: 75px;
-    width:225px;
-    height: 70px;
-    background-color: var(--biru-tua);
-    display: flex;
-    align-items: center;
-    justify-content:center;
-    gap:10px;
-    border-radius: 15px;
-    border-width: 0px;
-    cursor: pointer;
-}
-#beranda div button img{
-    width: 40px;
-    height: 40px;
-}
-#beranda div button span{
-    color: #fff;
-    text-wrap: nowrap;
-    margin-top: 0px;
-}
-
-#artikel{
+#daftar-artikel{
+    margin-top:20px;
     display: flex;
     flex-direction: column;
     margin-bottom: 20px;
 }
-#artikel div, #artikel ul{
+#daftar-artikel div, #daftar-artikel ul{
     display: flex;
+    flex-wrap: wrap;
 }
-#artikel div{
+#daftar-artikel div{
     position: relative;
     left: 50%;
     transform: translateX(-50%);
     width: 90%;
     justify-content: space-between;
 }
-#artikel div h1, #artikel div a{
+#daftar-artikel div h1, #daftar-artikel div a{
     margin: 0px;
 }
-#artikel div h1{
+#daftar-artikel div h1{
     font-size: 26px;
 }
-#artikel div a{
+#daftar-artikel div select{
     position: relative;
     display: flex;
     align-items: center;
@@ -126,21 +75,21 @@ section {
     font-size: 18px;
     font-weight: 600;
     text-decoration: none;
+    border: none;
+    outline: none;
     color: var(--biru-tua);
 }
-#artikel div a img{
-    width: 25px;
-    height: 25px;
-}
-#artikel ul{
+#daftar-artikel ul{
     margin: 0px;
     margin-top: 20px;
     gap:20px;
     position: relative;
     left:50%;
     transform: translateX(-50%);
+    margin-bottom:50px;
 }
-#artikel ul .card{
+#daftar-artikel ul .card{
+    margin-bottom: 5px;
     width:31%;
     left:0%;
     background-color: #fff;
@@ -149,11 +98,11 @@ section {
     border-radius: 10px;
     cursor: pointer;
 }
-#artikel ul .card:hover{
+#daftar-artikel ul .card:hover{
     background-color: var(--biru-tua);
     color: #fff;
 }
-#artikel ul .card img{
+#daftar-artikel ul .card img{
     object-fit: cover;
     position: relative;
     margin-top: 15px;
@@ -163,7 +112,7 @@ section {
     width: 90%;
     height: 60%;
 }
-#artikel ul .card span.tanggal{
+#daftar-artikel ul .card span.tanggal{
     width: 93%;
     text-align: right;
     margin-top: 20px;
@@ -171,18 +120,18 @@ section {
     position: relative;
     right: 0px;
 }
-#artikel ul .card h3, #artikel ul .card p{
+#daftar-artikel ul .card h3, #daftar-artikel ul .card p{
     margin: 0px;
     width: 90%;
     position: relative;
     left: 50%;
     transform: translateX(-50%);
 }
-#artikel ul .card h3{
+#daftar-artikel ul .card h3{
     font-size: 20px;
     margin-top: 20px;
 }
-#artikel ul .card p{
+#daftar-artikel ul .card p{
     font-size: 16px;
     margin-top: 20px;
     margin-bottom: 20px;
