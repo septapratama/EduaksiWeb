@@ -18,6 +18,12 @@ $tPath = app()->environment('local') ? '' : '/public/';
 </head>
 
 <body>
+    <script>
+        var errCards = [];
+        function imgError(errCard){
+            errCards.push(errCard);
+        }
+    </script>
     <section id="daftar-artikel">
         <div>
             <h1>Daftar Artikel</h1>
@@ -30,9 +36,9 @@ $tPath = app()->environment('local') ? '' : '/public/';
             </select>
         </div>
         <ul>
-            <li>
-                <a href="" class="card">
-                    <img src="{{ asset($tPath.'img/artikel/hitler2.jpg') }}" alt="">
+            <li class="card" id="card1">
+                <a href="">
+                    <img src="{{ asset($tPath.'img/artikel/hitler.jpg') }}" alt="" onerror="imgError('card1')">
                     <span class="tanggal">Minggu, 16 Juli 2023</span>
                     <h3>Kebangkitan dan Kejatuhan Adolf Hitler: Jalan Menuju Kehancuran Seorang Diktator</h3>
                     <p>Digital Literasi</p>
@@ -44,9 +50,9 @@ $tPath = app()->environment('local') ? '' : '/public/';
                     <p></p>
                 </div>
             </li>
-            <li >
-                <a href="" class="card">
-                    <img src="{{ asset($tPath.'img/artikel/hitler2.jpg') }}" alt="">
+            <li class="card" id="card2">
+                <a href="">
+                    <img src="{{ asset($tPath.'img/artikel/hitler2.jpg') }}" alt="" onerror="imgError('card2')">
                     <span class="tanggal">Minggu, 16 Juli 2023</span>
                     <h3>Luka Perang Dunia II: Menjelajahi Warisan Rezim Nazi di Eropa</h3>
                     <p>Digital Literasi</p>
@@ -58,9 +64,9 @@ $tPath = app()->environment('local') ? '' : '/public/';
                     <p></p>
                 </div>
             </li>
-            <li>
-                <a href="" class="card">
-                    <img src="{{ asset($tPath.'img/artikel/hitler3.png') }}" alt="">
+            <li class="card" id="card3">
+                <a href="">
+                    <img src="{{ asset($tPath.'img/artikel/hitler3.png') }}" alt="" onerror="imgError('card3')">
                     <span class="tanggal">Minggu, 16 Juli 2023</span>
                     <h3>Melampaui Medan Perang: Dampak Sosial dan Budaya Era Nazi</h3>
                     <p>Digital Literasi</p>
@@ -74,5 +80,31 @@ $tPath = app()->environment('local') ? '' : '/public/';
             </li>
         </ul>
     </section>
+    <script>
+        window.addEventListener('load', function() {
+            var cards = document.querySelectorAll('.card');
+            cards.forEach(function(card) {
+                var image = card.querySelector('img');
+                image.addEventListener('load', function() {
+                    var cardLoading = card.querySelector('.card-loading');
+                    if (cardLoading) {
+                        cardLoading.remove();
+                    }
+                });
+                errCards.find(function(errCard){
+                    if(errCard === card.id){
+                        console.log('Image failed to load:', image.src);
+                    }else{
+                        if (image.complete || image.naturalWidth === 0) {
+                            var cardLoading = card.querySelector('.card-loading');
+                            if (cardLoading) {
+                                cardLoading.remove();
+                            }
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>

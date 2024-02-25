@@ -75,18 +75,19 @@ body{
     border-radius: 10px;
 }
 /* for img */
-#daftar-artikel ul li .card-loading div, #daftar-artikel ul li .card-loading span, #daftar-artikel ul li .card-loading h3, #daftar-artikel ul li .card-loading p {
+.card-loading div,  .card-loading span,  .card-loading h3,  .card-loading p {
     background: linear-gradient(135deg, #b9b9b9 0%, #cdcdcd 52%, #fff 52%, #fff 54%, #cdcdcd 54%, #b9b9b9 100%);
     background-size: 180% 180%;
     background-position: 100% 100%;
-    animation: 2.5s shine cubic-bezier(0.65, 0.05, 0.36, 1) infinite;
+    animation: 2.5s shine ease-in infinite;
+    animation-delay: 0.25s;
 }
 @keyframes shine {
     to {
         background-position: 0% 0%;
     }
 }
-#daftar-artikel ul li .card-loading div{
+.card-loading div{
     margin-top: 15px;
     position: relative;
     left: 50%;
@@ -96,7 +97,7 @@ body{
     height: 255px;
 }
 /* for date */
-#daftar-artikel ul li .card-loading span{
+.card-loading span{
     width: 35%;
     margin-top: 20px;
     font-size: 15px;
@@ -104,18 +105,18 @@ body{
     height: 20px;
 }
 /* for header */
-#daftar-artikel ul li .card-loading h3, #daftar-artikel ul li .card-loading p{
+.card-loading h3,  .card-loading p{
     margin: 0px;
     position: relative;
 }
-#daftar-artikel ul li .card-loading h3{
+.card-loading h3{
     left: 5%;
     width: 80%;
     height: 45px;
     margin-top: 19px;
 }
 /* for category */
-#daftar-artikel ul li .card-loading p{
+.card-loading p{
     left: 5%;
     width: 30%;
     height: 20px;
@@ -123,7 +124,7 @@ body{
     margin-bottom: 20px;
 }
 
-#daftar-artikel ul li .card{
+#daftar-artikel ul li a{
     margin-bottom: 0px;
     background-color: transparent;
     display: flex;
@@ -131,7 +132,7 @@ body{
     cursor: pointer;
     text-decoration: none;
 }
-#daftar-artikel ul li .card img{
+#daftar-artikel ul li a img{
     object-fit: cover;
     margin-top: 15px;
     position: relative;
@@ -141,7 +142,7 @@ body{
     width: 90%;
     height: 60%;
 }
-#daftar-artikel ul li .card span.tanggal{
+#daftar-artikel ul li a span.tanggal{
     width: 93%;
     text-align: right;
     margin-top: 20px;
@@ -149,18 +150,18 @@ body{
     position: relative;
     right: 0px;
 }
-#daftar-artikel ul li .card h3, #daftar-artikel ul li .card p{
+#daftar-artikel ul li a h3, #daftar-artikel ul li a p{
     margin: 0px;
     width: 90%;
     position: relative;
     left: 50%;
     transform: translateX(-50%);
 }
-#daftar-artikel ul li .card h3{
+#daftar-artikel ul li a h3{
     font-size: 20px;
     margin-top: 20px;
 }
-#daftar-artikel ul li .card p{
+#daftar-artikel ul li a p{
     font-size: 16px;
     margin-top: 20px;
     margin-bottom: 20px;
