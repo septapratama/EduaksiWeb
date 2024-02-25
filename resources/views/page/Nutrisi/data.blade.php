@@ -76,9 +76,9 @@ $tPath = app()->environment('local') ? '' : '/public/';
                 <div class="d-flex align-items-stretch">
                     <div class="card w-100">
                         <div class="card-body p-4" style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
-                            <a href="/nutrisi/tambah" class="btn btn-success"><img
+                            {{-- <a href="/nutrisi/tambah" class="btn btn-success"><img
                                     src="{{ asset($tPath.'img/icon/tambah.svg') }}" alt="" width="30" height="30">Tambah
-                                Nutrisi</a>
+                                Nutrisi</a> --}}
                             <div class="table-responsive">
                                 <table class="table mb-0 align-middle">
                                     <thead class="text-dark fs-4">

@@ -7,12 +7,14 @@ use App\Http\Controllers\Services\DisiController;
 use App\Http\Controllers\Services\EmotalController;
 use App\Http\Controllers\Services\NutrisiController;
 use App\Http\Controllers\Services\PengasuhanController;
+use App\Http\Controllers\Services\ArtikelController;
 
 use App\Http\Controllers\Page\DisiController AS ShowDisiController;
 use App\Http\Controllers\Page\EmotalController AS ShowEmotalController;
 use App\Http\Controllers\Page\NutrisiController AS ShowNutrisiController;
 use App\Http\Controllers\Page\PengasuhanController AS ShowPengasuhanController;
 use App\Http\Controllers\Page\KonsultasiController AS ShowKonsultasiController;
+use App\Http\Controllers\Page\ArtikelController AS ShowArtikelController;
 use App\Http\Controllers\Page\HomeController AS ShowHomeController;
 use App\Http\Controllers\Page\AdminController AS ShowAdminController;
 use App\Http\Controllers\Auth\LoginController;
@@ -81,22 +83,22 @@ Route::group(['middleware'=>['auth','authorized']],function(){
     // });
     Route::group(['prefix'=>'/disi'],function(){
         Route::get('/',[ShowDisiController::class, 'showData']);
-        Route::get('/tambah',[ShowDisiController::class, 'showTambah']);
+        // Route::get('/tambah',[ShowDisiController::class, 'showTambah']);
         Route::get('/edit',[ShowDisiController::class, 'showEdit']);
     });
     Route::group(['prefix'=>'/emotal'],function(){
         Route::get('/',[ShowEmotalController::class, 'showData']);
-        Route::get('/tambah',[ShowEmotalController::class, 'showTambah']);
+        // Route::get('/tambah',[ShowEmotalController::class, 'showTambah']);
         Route::get('/edit',[ShowEmotalController::class, 'showEdit']);
     });
     Route::group(['prefix'=>'/nutrisi'],function(){
         Route::get('/',[ShowNutrisiController::class, 'showData']);
-        Route::get('/tambah',[ShowNutrisiController::class, 'showTambah']);
+        // Route::get('/tambah',[ShowNutrisiController::class, 'showTambah']);
         Route::get('/edit',[ShowNutrisiController::class, 'showEdit']);
     });
     Route::group(['prefix'=>'/pengasuhan'],function(){
         Route::get('/',[ShowPengasuhanController::class, 'showData']);
-        Route::get('/tambah',[ShowPengasuhanController::class, 'showTambah']);
+        // Route::get('/tambah',[ShowPengasuhanController::class, 'showTambah']);
         Route::get('/edit',[ShowPengasuhanController::class, 'showEdit']);
     });
     Route::group(['prefix'=>'/konsultasi'],function(){
@@ -104,25 +106,30 @@ Route::group(['middleware'=>['auth','authorized']],function(){
         Route::get('/tambah',[ShowKonsultasiController::class, 'showTambah']);
         Route::get('/edit',[ShowKonsultasiController::class, 'showEdit']);
     });
+    Route::group(['prefix'=>'/artikel'],function(){
+        Route::get('/',[ShowArtikelController::class, 'showData']);
+        Route::get('/tambah',[ShowArtikelController::class, 'showTambah']);
+        Route::get('/edit',[ShowArtikelController::class, 'showEdit']);
+    });
     //only admin route
     Route::group(['prefix'=>'/admin'],function(){
         Route::group(['prefix'=>'/emotal'],function(){
-            Route::post('/tambah', [EmotalController::class, 'tambahEmotal']);
+            // Route::post('/tambah', [EmotalController::class, 'tambahEmotal']);
             Route::put('/update', [EmotalController::class, 'editEmotal']);
             Route::delete('/delete', [EmotalController::class, 'deleteEmotal']);
         });
         Route::group(['prefix'=>'/disi'],function(){
-            Route::post('/tambah', [DisiController::class, 'tambahDisi']);
+            // Route::post('/tambah', [DisiController::class, 'tambahDisi']);
             Route::put('/update', [DisiController::class, 'editDisi']);
             Route::delete('/delete', [DisiController::class, 'deleteDisi']);
         });
         Route::group(['prefix'=>'/pengasuhan'],function(){
-            Route::post('/tambah', [PengasuhanController::class, 'tambahPengasuhan']);
+            // Route::post('/tambah', [PengasuhanController::class, 'tambahPengasuhan']);
             Route::put('/update', [PengasuhanController::class, 'editPengasuhan']);
             Route::delete('/delete', [PengasuhanController::class, 'deletePengasuhan']);
         });
         Route::group(['prefix'=>'/nutrisi'],function(){
-            Route::post('/tambah', [NutrisiController::class, 'tambahNutrisi']);
+            // Route::post('/tambah', [NutrisiController::class, 'tambahNutrisi']);
             Route::put('/update', [NutrisiController::class, 'editNutrisi']);
             Route::delete('/delete', [NutrisiController::class, 'deleteNutrisi']);
         });
@@ -130,6 +137,11 @@ Route::group(['middleware'=>['auth','authorized']],function(){
             Route::post('/tambah', [KonsultasiController::class, 'tambahKonsultasi']);
             Route::put('/update', [KonsultasiController::class, 'editKonsultasi']);
             Route::delete('/delete', [KonsultasiController::class, 'deleteKonsultasi']);
+        });
+        Route::group(['prefix'=>'/artikel'],function(){
+            Route::post('/tambah', [ArtikelController::class, 'tambahArtikel']);
+            Route::put('/update', [ArtikelController::class, 'editArtikel']);
+            Route::delete('/delete', [ArtikelController::class, 'deleteArtikel']);
         });
         //page admin
         Route::get('/',[ShowAdminController::class,'showAdmin']);
@@ -172,10 +184,10 @@ Route::group(['middleware'=>['auth','authorized']],function(){
     Route::get('/', function(){
         return view('page.home');
     })->withoutMiddleware('authorized');
-    Route::get('/artikel', function(){
+    Route::get('/blog', function(){
         return view('page.daftar-artikel');
     })->withoutMiddleware('authorized');
-    Route::get('/artikel/detail', function(){
+    Route::get('/blog/detail', function(){
         return view('page.detail-artikel');
     })->withoutMiddleware('authorized');
     // Route::get('/',[ShowHomeController::class,'showHome'])->withoutMiddleware('authorized');

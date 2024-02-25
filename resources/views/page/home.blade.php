@@ -40,14 +40,14 @@ $tPath = app()->environment('local') ? '' : '/public/';
     <section id="artikel">
         <div>
             <h1>Artikel Terbaru</h1>
-            <a href="/artikel">
+            <a href="/blog">
                 <span>Lainnya</span>
                 <img src="{{ asset($tPath.'img/icon/arrow-right.svg') }}" alt="">
             </a>
         </div>
         <ul>
             <li class="card" id="card1">
-                <a href="">
+                <a href="/blog/detail">
                     <img src="{{ asset($tPath.'img/artikel/hitler.jpg') }}" alt="" onerror="imgError('card1')">
                     <span class="tanggal">Minggu, 16 Juli 2023</span>
                     <h3>Kebangkitan dan Kejatuhan Adolf Hitler: Jalan Menuju Kehancuran Seorang Diktator</h3>
@@ -61,7 +61,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
                 </div>
             </li>
             <li class="card" id="card2">
-                <a href="">
+                <a href="/blog/detail">
                     <img src="{{ asset($tPath.'img/artikel/hitler2.jpg') }}" alt="" onerror="imgError('card2')">
                     <span class="tanggal">Minggu, 16 Juli 2023</span>
                     <h3>Luka Perang Dunia II: Menjelajahi Warisan Rezim Nazi di Eropa</h3>
@@ -75,7 +75,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
                 </div>
             </li>
             <li class="card" id="card3">
-                <a href="">
+                <a href="/blog/detail">
                     <img src="{{ asset($tPath.'img/artikel/hitler3.png') }}" alt="" onerror="imgError('card3')">
                     <span class="tanggal">Minggu, 16 Juli 2023</span>
                     <h3>Melampaui Medan Perang: Dampak Sosial dan Budaya Era Nazi</h3>
@@ -93,14 +93,14 @@ $tPath = app()->environment('local') ? '' : '/public/';
     <section id="kategori">
         <div>
             <h1>Kategori</h1>
-            <a href="/artikel">
+            <a href="/blog">
                 <span>Lainnya</span>
                 <img src="{{ asset($tPath.'img/icon/arrow-right.svg') }}" alt="">
             </a>
         </div>
         <ul>
             <li class="card" id="card1">
-                <a href="">
+                <a href="/blog/detail">
                     <img src="{{ asset($tPath.'img/artikel/hitler.jpg') }}" alt="" onerror="imgError('card1')">
                     <span class="tanggal">Minggu, 16 Juli 2023</span>
                     <h3>Kebangkitan dan Kejatuhan Adolf Hitler: Jalan Menuju Kehancuran Seorang Diktator</h3>
@@ -114,7 +114,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
                 </div>
             </li>
             <li class="card" id="card2">
-                <a href="">
+                <a href="/blog/detail">
                     <img src="{{ asset($tPath.'img/artikel/hitler2.jpg') }}" alt="" onerror="imgError('card2')">
                     <span class="tanggal">Minggu, 16 Juli 2023</span>
                     <h3>Luka Perang Dunia II: Menjelajahi Warisan Rezim Nazi di Eropa</h3>
@@ -128,7 +128,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
                 </div>
             </li>
             <li class="card" id="card3">
-                <a href="">
+                <a href="/blog/detail">
                     <img src="{{ asset($tPath.'img/artikel/hitler3.png') }}" alt="" onerror="imgError('card3')">
                     <span class="tanggal">Minggu, 16 Juli 2023</span>
                     <h3>Melampaui Medan Perang: Dampak Sosial dan Budaya Era Nazi</h3>
