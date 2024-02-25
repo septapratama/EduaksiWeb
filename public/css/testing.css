@@ -1,103 +1,166 @@
-form {
-    position: relative;
+:root{
+    --biru-tua: #201658;
+}
+body{
+    margin: 0px;
+    user-select: none;
+    color: var(--biru-tua);
+    font-family: 'Roboto', sans-serif;
+}
+#daftar-artikel{
+    margin-top:20px;
     display: flex;
     flex-direction: column;
+    margin-bottom: 20px;
+}
+#daftar-artikel div, #daftar-artikel ul{
+	display: flex;
+    flex-wrap: wrap;
+}
+#daftar-artikel div{
+    position: relative;
     left: 50%;
     transform: translateX(-50%);
-    width: 95%;
-    gap: 15px;
-    padding-top: 25px;
-    padding-bottom: 25px;
+    width: 90%;
+    justify-content: space-between;
 }
-form .crow {
-    width: 75%;
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
+#daftar-artikel div h1, #daftar-artikel div a{
+	margin: 0px;
 }
-form .crow:nth-child(2) {
+#daftar-artikel div h1{
+    font-size: 26px;
+}
+#daftar-artikel div select{
     position: relative;
     display: flex;
-    flex-direction: row;
-    gap: 20px;
-}
-form .crow:nth-child(2) div {
-    display: flex;
-    flex-direction: column;
+    align-items: center;
     gap: 5px;
+    right: 0px;
+    font-size: 18px;
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    outline: none;
+    color: var(--biru-tua);
 }
-form .crow:nth-child(2) div:nth-child(1) {
-    width: 25%;
+#daftar-artikel ul{
+    margin: 0px;
+    margin-top: 20px;
+    gap:20px;
+    position: relative;
+    left:50%;
+    transform: translateX(-50%);
+    margin-bottom:50px;
+    display: flex;
 }
-select {
-    width: 100%;
-}
-.img {
-    cursor: pointer;
-    position: absolute;
-    right: 0%;
-    top: 7%;
-    width: 22%;
-    height: 36%;
-    border: 4px dashed #b1b1b1;
+#daftar-artikel ul li{
+    position: relative;
+    display: flex;
+    width:31%;
+    left:0%;
     border-radius: 10px;
+    background-color: #fff;
+}
+#daftar-artikel ul li:hover{
+    background-color: var(--biru-tua);
+    color: #fff;
+}
+#daftar-artikel ul li .card-loading{
+    position: absolute;
+    background-color: #fff;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-.img img {
-    width: 50px;
-    height: 50px;
-}
-form .crow:nth-child(2) div:nth-child(2) {
     width: 100%;
+    height: 100%;
+    border-radius: 10px;
 }
-form .crow:nth-child(3) {
-    width: 100%;
-    margin-bottom: 10px;
+/* for img */
+#daftar-artikel ul li .card-loading div, #daftar-artikel ul li .card-loading span, #daftar-artikel ul li .card-loading h3, #daftar-artikel ul li .card-loading p {
+    background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
+    background-size: 200% 100%;
+    animation: 1.5s shine linear infinite;
 }
-form .crow:nth-child(3) textarea {
-    min-height: 120px;
-    resize: none;
-}
-form .crow:last-child {
-    width: 100%;
+#daftar-artikel ul li .card-loading div{
+    margin-top: 15px;
     position: relative;
-    flex-direction: row;
-    justify-content: right;
-    gap: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 10px;
+    width: 90%;
+    height: 255px;
 }
-form .crow:last-child a,
-form .crow:last-child button {
+/* for date */
+#daftar-artikel ul li .card-loading span{
+    width: 35%;
+    margin-top: 20px;
+    font-size: 15px;
+    margin-left: 60%;
+    height: 20px;
+}
+/* for header */
+#daftar-artikel ul li .card-loading h3, #daftar-artikel ul li .card-loading p{
+    margin: 0px;
     position: relative;
+}
+#daftar-artikel ul li .card-loading h3{
+    left: 5%;
+    width: 80%;
+    height: 45px;
+    margin-top: 19px;
+}
+/* for category */
+#daftar-artikel ul li .card-loading p{
+    left: 5%;
+    width: 30%;
+    height: 20px;
+    margin-top: 25px;
+    margin-bottom: 20px;
+}
+@keyframes shine {
+    to {
+        background-position-x: -200%;
+    }
+}
+
+#daftar-artikel ul li .card{
+    margin-bottom: 0px;
+    background-color: transparent;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100px;
-    height: 50px;
+    flex-direction: column;
+    cursor: pointer;
+    text-decoration: none;
+}
+#daftar-artikel ul li .card img{
+    object-fit: cover;
+    margin-top: 15px;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 10px;
+    width: 90%;
+    height: 60%;
+}
+#daftar-artikel ul li .card span.tanggal{
+    width: 93%;
+    text-align: right;
+    margin-top: 20px;
+    font-size: 15px;
+    position: relative;
     right: 0px;
 }
-label,
-select {
-    font-size: larger;
-    font-weight: 600;
-    white-space: nowrap;
+#daftar-artikel ul li .card h3, #daftar-artikel ul li .card p{
+    margin: 0px;
+    width: 90%;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
 }
-option {
-    text-align: center;
+#daftar-artikel ul li .card h3{
+    font-size: 20px;
+    margin-top: 20px;
 }
-form .crow input,
-form .crow select,
-form .crow textarea {
-    border-width: 1px;
-    border-radius: 10px;
-}
-form .crow input,
-form .crow select {
-    height: 30px;
-}
-form .crow input,
-form .crow textarea {
-    padding-left: 10px;
+#daftar-artikel ul li .card p{
+    font-size: 16px;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }

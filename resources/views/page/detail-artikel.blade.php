@@ -73,7 +73,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
             <a href="" class="card">
                 <img src="{{ asset($tPath.'img/artikel/hitler2.jpg') }}" alt="">
                 <span class="tanggal">Minggu, 16 Juli 2023</span>
-                <h3>Kebangkitan dan Kejatuhan Adolf Hitler: Jalan Menuju Kehancuran Seorang Diktator</h3>
+                <h3>Luka Perang Dunia II: Menjelajahi Warisan Rezim Nazi di Eropa</h3>
                 <p>Digital Literasi</p>
             </a>
             <a href="" class="card">

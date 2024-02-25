@@ -48,6 +48,7 @@ header li a.active{
 section ul a:active{
     color: var(--biru-tua);
 }
+
 #daftar-artikel{
     margin-top:20px;
     display: flex;

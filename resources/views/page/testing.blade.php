@@ -18,88 +18,61 @@ $tPath = app()->environment('local') ? '' : '/public/';
 </head>
 
 <body>
-    <!--  Body Wrapper -->
-    <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
-        data-sidebar-position="fixed" data-header-position="fixed">
-        <!-- Sidebar Start -->
-        @php
-        $nav = 'disi';
-        @endphp
-        @include('page.Components.admin.sidebar')
-        <!--  Sidebar End -->
-        <!--  Main wrapper -->
-        <div class="body-wrapper">
-            <!--  Header Start -->
-            @include('page.Components.admin.header')
-            <!--  Header End -->
-            <div class="container-fluid">
-                <div class="pagetitle">
-                    <h1>Tambah Digital Literasi</h1>
-                    <nav>
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/dashboard">Beranda</a></li>
-                            <li class="breadcrumb-item"><a href="/disi">Kelola Disi</a></li>
-                            <li class="breadcrumb-item">Tambah Digital Literasi</li>
-                        </ol>
-                    </nav>
-                </div>
-                <div class="d-flex align-items-stretch" style="background-color: #ffffff; border-radius: 20px;">
-                    <form id="tambahForm">
-                        <div class="crow">
-                            <label for="">Judul Digital Literasi</label>
-                            <input type="text">
-                        </div>
-                        <div class="crow">
-                            <div>
-                                <label for="">Rentang Usia</label>
-                                <select class="" aria-label="Default select example" id="inpRentangUsia">
-                                    <option value="" selected>Pilih Umur</option>
-                                    <option value="0-3 Tahun">0-3 Tahun</option>
-                                    <option value="4-6 Tahun">4-6 Tahun</option>
-                                    <option value="7-9 Tahun">7-9 Tahun</option>
-                                    <option value="10-12 Tahun">10-12 Tahun</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label for="">Link Video</label>
-                                <input type="text">
-                            </div>
-                        </div>
-                        <div class="crow">
-                            <label for="">Deskripsi</label>
-                            <textarea name="deskripsi" id="inpDeskripsi" placeholder="Masukkan Isi Digital Literasi"
-                                class="" style="height:120px"></textarea>
-                        </div>
-                        <div class="img" onclick="handleFileClick()" ondragover="handleDragOver(event)"
-                            ondrop="handleDrop(event)">
-                            <img src="{{ asset($tPath.'assets/images/profile/user-1.jpg') }}" alt="">
-                            <span>Pilih File atau Jatuhkan File</span>
-                            <input type="file" id="inpFoto" hidden onchange="handleFileChange(event)">
-                        </div>
-                        <div class="crow">
-                            <a href="/disi" class="btn btn-danger">Kembali</a>
-                            <button type="submit" class="btn btn-success"><img
-                                    src="{{ asset($tPath.'img/icon/tambah.svg') }}" alt="" width="30"
-                                    height="30"><span>Tambah</span></button>
-                        </div>
-                    </form>
-                </div>
-                @include('page.Components.admin.footer')
-            </div>
+    <section id="daftar-artikel">
+        <div>
+            <h1>Daftar Artikel</h1>
+            <select class="" aria-label="Default select example" id="inpJenisKelamin">
+                <option value="" selected>Pilih Kategori</option>
+                <option value="disi">Digital Literasi</option>
+                <option value="emotal">Emosi Mental</option>
+                <option value="nutrisi">Nutrisi</option>
+                <option value="pengasuhan">Pengasuhan</option>
+            </select>
         </div>
-    </div>
-    <div id="preloader" style="display: none;"></div>
-    <div id="greenPopup" style="display:none"></div>
-    <div id="redPopup" style="display:none"></div>
-    <script src="{{ asset($tPath.'assets/libs/jquery/dist/jquery.min.js') }}"></script>
-    <script src="{{ asset($tPath.'assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset($tPath.'assets/js/sidebarmenu.js') }}"></script>
-    <script src="{{ asset($tPath.'assets/js/app.min.js') }}"></script>
-    <script src="{{ asset($tPath.'assets/libs/apexcharts/dist/apexcharts.min.js') }}"></script>
-    <script src="{{ asset($tPath.'assets/libs/simplebar/dist/simplebar.js') }}"></script>
-    <script src="{{ asset($tPath.'assets/js/dashboard.js') }}"></script>
-    <script src="{{ asset($tPath.'js/page/tambahData.js') }}"></script>
-    <script src="{{ asset($tPath.'js/popup.js') }}"></script>
+        <ul>
+            <li>
+                <a href="" class="card">
+                    <img src="{{ asset($tPath.'img/artikel/hitler2.jpg') }}" alt="">
+                    <span class="tanggal">Minggu, 16 Juli 2023</span>
+                    <h3>Kebangkitan dan Kejatuhan Adolf Hitler: Jalan Menuju Kehancuran Seorang Diktator</h3>
+                    <p>Digital Literasi</p>
+                </a>
+                <div class="card-loading">
+                    <div></div>
+                    <span></span>
+                    <h3></h3>
+                    <p></p>
+                </div>
+            </li>
+            <li >
+                <a href="" class="card">
+                    <img src="{{ asset($tPath.'img/artikel/hitler2.jpg') }}" alt="">
+                    <span class="tanggal">Minggu, 16 Juli 2023</span>
+                    <h3>Luka Perang Dunia II: Menjelajahi Warisan Rezim Nazi di Eropa</h3>
+                    <p>Digital Literasi</p>
+                </a>
+                <div class="card-loading">
+                    <div></div>
+                    <span></span>
+                    <h3></h3>
+                    <p></p>
+                </div>
+            </li>
+            <li>
+                <a href="" class="card">
+                    <img src="{{ asset($tPath.'img/artikel/hitler3.png') }}" alt="">
+                    <span class="tanggal">Minggu, 16 Juli 2023</span>
+                    <h3>Melampaui Medan Perang: Dampak Sosial dan Budaya Era Nazi</h3>
+                    <p>Digital Literasi</p>
+                </a>
+                <div class="card-loading">
+                    <div></div>
+                    <span></span>
+                    <h3></h3>
+                    <p></p>
+                </div>
+            </li>
+        </ul>
+    </section>
 </body>
-
 </html>
