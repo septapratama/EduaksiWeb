@@ -49,6 +49,55 @@ main, section, #video{
     padding-top: 70px;
 }
 
+/* for skeleton */
+.main-loading, .card-loading div,  .card-loading span,  .card-loading h3,  .card-loading p {
+    background: linear-gradient(135deg, #b9b9b9 0%, #cdcdcd 52%, #fff 52%, #fff 54%, #cdcdcd 54%, #b9b9b9 100%);
+    background-size: 180% 180%;
+    background-position: 100% 100%;
+    animation: 2.5s shine ease-in infinite;
+    animation-delay: 0.25s;
+}
+@keyframes shine {
+    to {
+        background-position: 0% 0%;
+    }
+}
+/* for img card */
+.card-loading div{
+    margin-top: 15px;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 10px;
+    width: 90%;
+    height: 255px;
+}
+/* for date */
+.card-loading span{
+    width: 35%;
+    margin-top: 20px;
+    margin-left: 60%;
+    height: 15px;
+}
+/* for header */
+.card-loading h3,  .card-loading p{
+    margin: 0px;
+    position: relative;
+}
+.card-loading h3{
+    left: 5%;
+    width: 80%;
+    height: 40px;
+    margin-top: 19px;
+}
+/* for category */
+.card-loading p{
+    left: 5%;
+    width: 30%;
+    height: 20px;
+    margin-top: 15px;
+    margin-bottom: 20px;
+}
 main{
     position: relative;
     left: 50%;
@@ -79,6 +128,7 @@ main a img{
     height: 25px;
 }
 main div{
+    position: relative;
     margin-top:20px;
     display: flex;
     flex-direction: column;
@@ -101,7 +151,17 @@ main div span.tanggal{
     font-size: 20px;
     margin:0px;
 }
+/* for img main loading */
+main div .main-loading{
+    position: relative;
+    left:50%;
+    transform: translateX(-50%);
+    width: 90%;
+    height: 600px;
+    border-radius: 20px;
+}
 main div img{
+    display: none;
     position: relative;
     left:50%;
     transform: translateX(-50%);
@@ -187,32 +247,53 @@ section ul a:active{
     position: relative;
     left:50%;
     transform: translateX(-50%);
+    margin-bottom:50px;
+    display: flex;
 }
-#rekomendasi ul .card{
+#rekomendasi ul li{
+    position: relative;
+    display: flex;
     width:31%;
     left:0%;
+    border-radius: 10px;
+    background-color: #fff;
+}
+#rekomendasi ul li:not(:has(.card-loading)):hover {
+    background-color: var(--biru-tua);
+}
+#rekomendasi ul li:hover span,
+#rekomendasi ul li:hover h3,
+#rekomendasi ul li:hover p{
+    color: #fff;
+}
+#rekomendasi ul li .card-loading{
+    position: absolute;
     background-color: #fff;
     display: flex;
     flex-direction: column;
+    width: 100%;
+    height: 100%;
     border-radius: 10px;
+}
+#rekomendasi ul li a{
+    margin-bottom: 0px;
+    background-color: transparent;
+    display: flex;
+    flex-direction: column;
     cursor: pointer;
     text-decoration: none;
 }
-#rekomendasi ul .card:hover{
-    background-color: var(--biru-tua);
-    color: #fff;
-}
-#rekomendasi ul .card img{
+#rekomendasi ul li a img{
     object-fit: cover;
-    position: relative;
     margin-top: 15px;
+    position: relative;
     left: 50%;
     transform: translateX(-50%);
     border-radius: 10px;
     width: 90%;
     height: 60%;
 }
-#rekomendasi ul .card span.tanggal{
+#rekomendasi ul li a span.tanggal{
     width: 93%;
     text-align: right;
     margin-top: 20px;
@@ -220,18 +301,18 @@ section ul a:active{
     position: relative;
     right: 0px;
 }
-#rekomendasi ul .card h3, #rekomendasi ul .card p{
+#rekomendasi ul li a h3, #rekomendasi ul li a p{
     margin: 0px;
     width: 90%;
     position: relative;
     left: 50%;
     transform: translateX(-50%);
 }
-#rekomendasi ul .card h3{
+#rekomendasi ul li a h3{
     font-size: 20px;
     margin-top: 20px;
 }
-#rekomendasi ul .card p{
+#rekomendasi ul li a p{
     font-size: 16px;
     margin-top: 20px;
     margin-bottom: 20px;

@@ -16,6 +16,12 @@ $tPath = app()->environment('local') ? '' : '/public/';
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 </head>
 <body>
+    <script>
+        var errCards = [];
+        function imgError(errCard){
+            errCards.push(errCard);
+        }
+    </script>
     @php
         $nav = 'detail';
     @endphp
@@ -28,7 +34,8 @@ $tPath = app()->environment('local') ? '' : '/public/';
         <div>
             <h1>Melampaui Medan Perang: Dampak Sosial dan Budaya Era Nazi</h1>
             <span class="tanggal">Minggu, 16 Juli 2023</span>
-            <img src="{{ asset($tPath.'img/artikel/hitler3.png') }}" alt="">
+            <img id="imgMain" src="{{ asset($tPath.'img/artikel/hitler3.png') }}" alt="" onerror="imgError('imgMain')">
+            <div class="main-loading"></div>
             <span>
                 <p>
                     Era Nazi di Jerman tidak hanya menandai periode perang dan kehancuran fisik, tetapi juga menyebabkan dampak yang mendalam pada masyarakat dan budaya. Meskipun kebijakan politik dan militer menjadi sorotan utama dalam sejarah Nazi, penting untuk diakui bahwa dampaknya juga merasuk ke dalam struktur sosial dan budaya yang lebih luas. Dalam artikel ini, kita akan mengeksplorasi beberapa aspek dari dampak sosial dan budaya dari masa kekuasaan Nazi.
@@ -64,24 +71,48 @@ $tPath = app()->environment('local') ? '' : '/public/';
             </a>
         </div>
         <ul>
-            <a href="" class="card">
-                <img src="{{ asset($tPath.'img/artikel/hitler1.jpg') }}" alt="">
-                <span class="tanggal">Minggu, 16 Juli 2023</span>
-                <h3>Kebangkitan dan Kejatuhan Adolf Hitler: Jalan Menuju Kehancuran Seorang Diktator</h3>
-                <p>Digital Literasi</p>
-            </a>
-            <a href="" class="card">
-                <img src="{{ asset($tPath.'img/artikel/hitler2.jpg') }}" alt="">
-                <span class="tanggal">Minggu, 16 Juli 2023</span>
-                <h3>Luka Perang Dunia II: Menjelajahi Warisan Rezim Nazi di Eropa</h3>
-                <p>Digital Literasi</p>
-            </a>
-            <a href="" class="card">
-                <img src="{{ asset($tPath.'img/artikel/hitler3.png') }}" alt="">
-                <span class="tanggal">Minggu, 16 Juli 2023</span>
-                <h3>Melampaui Medan Perang: Dampak Sosial dan Budaya Era Nazi</h3>
-                <p>Digital Literasi</p>
-            </a>
+            <li class="card" id="card1">
+                <a href="">
+                    <img src="{{ asset($tPath.'img/artikel/hitler.jpg') }}" alt="" onerror="imgError('card1')">
+                    <span class="tanggal">Minggu, 16 Juli 2023</span>
+                    <h3>Kebangkitan dan Kejatuhan Adolf Hitler: Jalan Menuju Kehancuran Seorang Diktator</h3>
+                    <p>Digital Literasi</p>
+                </a>
+                <div class="card-loading">
+                    <div></div>
+                    <span></span>
+                    <h3></h3>
+                    <p></p>
+                </div>
+            </li>
+            <li class="card" id="card2">
+                <a href="">
+                    <img src="{{ asset($tPath.'img/artikel/hitler2.jpg') }}" alt="" onerror="imgError('card2')">
+                    <span class="tanggal">Minggu, 16 Juli 2023</span>
+                    <h3>Luka Perang Dunia II: Menjelajahi Warisan Rezim Nazi di Eropa</h3>
+                    <p>Digital Literasi</p>
+                </a>
+                <div class="card-loading">
+                    <div></div>
+                    <span></span>
+                    <h3></h3>
+                    <p></p>
+                </div>
+            </li>
+            <li class="card" id="card3">
+                <a href="">
+                    <img src="{{ asset($tPath.'img/artikel/hitler3.png') }}" alt="" onerror="imgError('card3')">
+                    <span class="tanggal">Minggu, 16 Juli 2023</span>
+                    <h3>Melampaui Medan Perang: Dampak Sosial dan Budaya Era Nazi</h3>
+                    <p>Digital Literasi</p>
+                </a>
+                <div class="card-loading">
+                    <div></div>
+                    <span></span>
+                    <h3></h3>
+                    <p></p>
+                </div>
+            </li>
         </ul>
     </section>
     @include('page.Components.user.footer')
@@ -94,6 +125,57 @@ $tPath = app()->environment('local') ? '' : '/public/';
                 });
                 this.classList.add('active');
             })
+        });
+        document.body.addEventListener('dragstart', event => {
+            event.preventDefault();
+        });
+        window.addEventListener('load', function() {
+            //for main
+            const main = document.querySelector('main div');
+            var imgMain = main.querySelector('img');
+            imgMain.addEventListener('load', function() {
+                var mainLoading = main.querySelector('.main-loading');
+                if (mainLoading) {
+                    mainLoading.remove();
+                }
+                imgMain.style.display = 'block';
+            });
+            var hasError = false;
+            errCards.forEach(function(errCard) {
+                if (errCard === imgMain.id) {
+                    hasError = true;
+                }
+            });
+            if (!hasError && (imgMain.complete || imgMain.naturalWidth === 0)) {
+                var mainLoading = main.querySelector('.main-loading');
+                if (mainLoading) {
+                    mainLoading.remove();
+                }
+                imgMain.style.display = 'block';
+            }
+            //for cards
+            var cards = document.querySelectorAll('.card');
+            cards.forEach(function(card) {
+                var image = card.querySelector('img');
+                image.addEventListener('load', function() {
+                    var cardLoading = card.querySelector('.card-loading');
+                    if (cardLoading) {
+                        cardLoading.remove();
+                    }
+                });
+                var hasError = false;
+                errCards.forEach(function(errCard) {
+                    if (errCard === card.id) {
+                        hasError = true;
+                    }
+                });
+                if (!hasError && (image.complete || image.naturalWidth === 0)) {
+                    var cardLoading = card.querySelector('.card-loading');
+                    if (cardLoading) {
+                        cardLoading.remove();
+                    }
+                }
+            });
         });
     </script>
 </body>

@@ -81,6 +81,9 @@ $tPath = app()->environment('local') ? '' : '/public/';
         </ul>
     </section>
     <script>
+        document.body.addEventListener('dragstart', event => {
+            event.preventDefault();
+        });
         window.addEventListener('load', function() {
             var cards = document.querySelectorAll('.card');
             cards.forEach(function(card) {
@@ -91,18 +94,18 @@ $tPath = app()->environment('local') ? '' : '/public/';
                         cardLoading.remove();
                     }
                 });
-                errCards.find(function(errCard){
-                    if(errCard === card.id){
-                        console.log('Image failed to load:', image.src);
-                    }else{
-                        if (image.complete || image.naturalWidth === 0) {
-                            var cardLoading = card.querySelector('.card-loading');
-                            if (cardLoading) {
-                                cardLoading.remove();
-                            }
-                        }
+                var hasError = false;
+                errCards.forEach(function(errCard) {
+                    if (errCard === card.id) {
+                        hasError = true;
                     }
                 });
+                if (!hasError && (image.complete || image.naturalWidth === 0)) {
+                    var cardLoading = card.querySelector('.card-loading');
+                    if (cardLoading) {
+                        cardLoading.remove();
+                    }
+                }
             });
         });
     </script>

@@ -61,8 +61,12 @@ body{
     border-radius: 10px;
     background-color: #fff;
 }
-#daftar-artikel ul li:hover{
+#daftar-artikel ul li:not(:has(.card-loading)):hover {
     background-color: var(--biru-tua);
+}
+#daftar-artikel ul li:hover span,
+#daftar-artikel ul li:hover h3,
+#daftar-artikel ul li:hover p {
     color: #fff;
 }
 #daftar-artikel ul li .card-loading{
@@ -74,7 +78,7 @@ body{
     height: 100%;
     border-radius: 10px;
 }
-/* for img */
+/* for loading */
 .card-loading div,  .card-loading span,  .card-loading h3,  .card-loading p {
     background: linear-gradient(135deg, #b9b9b9 0%, #cdcdcd 52%, #fff 52%, #fff 54%, #cdcdcd 54%, #b9b9b9 100%);
     background-size: 180% 180%;
@@ -87,6 +91,7 @@ body{
         background-position: 0% 0%;
     }
 }
+/* for img */
 .card-loading div{
     margin-top: 15px;
     position: relative;
@@ -100,7 +105,6 @@ body{
 .card-loading span{
     width: 35%;
     margin-top: 20px;
-    font-size: 15px;
     margin-left: 60%;
     height: 20px;
 }
@@ -165,4 +169,7 @@ body{
     font-size: 16px;
     margin-top: 20px;
     margin-bottom: 20px;
+}
+@media screen and (min-width: 400px) and (max-width: 768px) {
+    /* Your CSS styles for this range */
 }
