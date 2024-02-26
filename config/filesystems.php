@@ -74,6 +74,13 @@ return [
             'visibility' => 'public',
             'throw' => false,
         ],
+        'artikel' => [
+            'driver' => 'local',
+            'root' => storage_path('app/artikel'),
+            'url' => env('APP_URL').'/public/artikel',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
@@ -81,7 +88,7 @@ return [
             'visibility' => 'public',
             'throw' => false,
         ],
-
+        
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

@@ -15,5 +15,6 @@ class DatabaseSeeder extends Seeder
         $this->call(EmotalSeeder::class);
         $this->call(NutrisiSeeder::class);
         $this->call(PengasuhanSeeder::class);
+        $this->call(ArtikelSeeder::class);
     }
 }
