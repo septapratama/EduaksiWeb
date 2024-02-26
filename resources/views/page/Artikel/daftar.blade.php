@@ -8,9 +8,9 @@ $tPath = app()->environment('local') ? '' : '/public/';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Home | EduAksi</title>
+    <title>Kumpulan Artikel | EduAksi</title>
     <link rel="shortcut icon" type="image/png" href="{{ asset($tPath.'assets/images/logos/favicon.png') }}" />
-    <link rel="stylesheet" href="{{ asset($tPath.'css/page/home.css') }}" />
+    <link rel="stylesheet" href="{{ asset($tPath.'css/page/daftar-artikel.css') }}" />
     {{-- font --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,30 +28,19 @@ $tPath = app()->environment('local') ? '' : '/public/';
     }
     </script>
     @php
-    $nav = 'home';
+    $nav = 'daftar-artikel';
     @endphp
     @include('page.Components.user.header')
-    <main id="beranda">
+    <section id="daftar-artikel">
         <div>
-            <h1>EduAksi</h1>
-            <span>EduAksi adalah aplikasi yang menyediakan panduan dan dukungan untuk orang tua dalam mendidik anak-anak
-                dengan baik. Mulai dari keamanan online hingga kesehatan, dari emosi hingga pertumbuhan anak, kami hadir
-                untuk membantu. Nikmati fitur kalender anak, kalkulator gizi, dan konsultasi dengan profesional. EduAksi
-                - Solusi Praktis untuk Orang Tua yang Pintar dan Peduli!</span>
-            <button type="button">
-                <img src="{{ asset($tPath.'img/icon/download.svg') }}" alt="">
-                <span>Unduh Aplikasi</span>
-            </button>
-        </div>
-        <img src="{{ asset($tPath.'img/app.png') }}" alt="">
-    </main>
-    <section id="artikel">
-        <div>
-            <h1>Artikel Terbaru</h1>
-            <a href="/artikel">
-                <span>Lainnya</span>
-                <img src="{{ asset($tPath.'img/icon/arrow-right.svg') }}" alt="">
-            </a>
+            <h1>Daftar Artikel</h1>
+            <select class="" aria-label="Default select example" id="inpJenisKelamin">
+                <option value="" selected>Pilih Kategori</option>
+                <option value="disi">Digital Literasi</option>
+                <option value="emotal">Emosi Mental</option>
+                <option value="nutrisi">Nutrisi</option>
+                <option value="pengasuhan">Pengasuhan</option>
+            </select>
         </div>
         <ul>
             @php $noArtikel = 1; @endphp
@@ -74,48 +63,10 @@ $tPath = app()->environment('local') ? '' : '/public/';
             @endforeach
         </ul>
     </section>
-    <section id="kategori">
-        <div>
-            <h1>Kategori</h1>
-            <a href="/artikel">
-                <span>Lainnya</span>
-                <img src="{{ asset($tPath.'img/icon/arrow-right.svg') }}" alt="">
-            </a>
-        </div>
-        <ul>
-            @php $noRekomendasi = 1; @endphp
-            @foreach($rekomendasi as $data)
-            <li class="card" id="{{ $noRekomendasi }}">
-                <a href="/artikel/{{ str_replace(' ', '-', $data['judul']) }}">
-                    <img src="{{ asset($tPath.'img/artikel/'.$data['foto']) }}" alt=""
-                        onerror="imgError('{{ $noRekomendasi++ }}')">
-                    <span class="tanggal">{{ $data['created_at'] }}</span>
-                    <h3>{{ $data['judul'] }}</h3>
-                    <p>Digital Literasi</p>
-                </a>
-                <div class="card-loading">
-                    <div></div>
-                    <span></span>
-                    <h3></h3>
-                    <p></p>
-                </div>
-            </li>
-            @endforeach
-        </ul>
-    </section>
     @include('page.Components.user.footer')
     <script>
-    const navItems = document.querySelectorAll('header a a');
     document.body.addEventListener('dragstart', event => {
         event.preventDefault();
-    });
-    navItems.forEach(navItem => {
-        navItem.addEventListener('click', function() {
-            navItems.forEach(item => {
-                item.classList.remove('active');
-            });
-            this.classList.add('active');
-        })
     });
     window.addEventListener('load', function() {
         var cards = document.querySelectorAll('.card');

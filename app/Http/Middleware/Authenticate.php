@@ -20,8 +20,8 @@ class Authenticate
             $tokenDecode1 = json_decode(base64_decode($token1),true);
             $email = $tokenDecode1['email'];
             $number = $tokenDecode1['number'];
-            $authPage = ['/login'];
-            if(in_array($currentPath,$authPage) && $request->isMethod("get")){
+            $authPage = ['/login','/','/artikel'];
+            if ((in_array($currentPath, $authPage) || strpos($currentPath, '/artikel/') === 0) && $request->isMethod('get')) {
                 if (in_array(ltrim($path), $authPage)) {
                     $response = redirect('/dashboard');
                 } else { 

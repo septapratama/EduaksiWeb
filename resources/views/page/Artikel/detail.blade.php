@@ -8,9 +8,9 @@ $tPath = app()->environment('local') ? '' : '/public/';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Home | EduAksi</title>
+    <title>{{ $dataArtikel['judul'] }} | EduAksi</title>
     <link rel="shortcut icon" type="image/png" href="{{ asset($tPath.'assets/images/logos/favicon.png') }}" />
-    <link rel="stylesheet" href="{{ asset($tPath.'css/page/home.css') }}" />
+    <link rel="stylesheet" href="{{ asset($tPath.'css/page/detail-artikel.css') }}" />
     {{-- font --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,26 +28,36 @@ $tPath = app()->environment('local') ? '' : '/public/';
     }
     </script>
     @php
-    $nav = 'home';
+    $nav = 'detail';
     @endphp
     @include('page.Components.user.header')
-    <main id="beranda">
+    <main id="artikel">
+        <a href="/artikel">
+            <img src="{{ asset($tPath.'img/icon/arrow-left.svg') }}" alt="">
+            <span>Kembali</span>
+        </a>
         <div>
-            <h1>EduAksi</h1>
-            <span>EduAksi adalah aplikasi yang menyediakan panduan dan dukungan untuk orang tua dalam mendidik anak-anak
-                dengan baik. Mulai dari keamanan online hingga kesehatan, dari emosi hingga pertumbuhan anak, kami hadir
-                untuk membantu. Nikmati fitur kalender anak, kalkulator gizi, dan konsultasi dengan profesional. EduAksi
-                - Solusi Praktis untuk Orang Tua yang Pintar dan Peduli!</span>
-            <button type="button">
-                <img src="{{ asset($tPath.'img/icon/download.svg') }}" alt="">
-                <span>Unduh Aplikasi</span>
-            </button>
+            <h1>{{ $dataArtikel['judul'] }}</h1>
+            <span class="tanggal">{{ $dataArtikel['created_at'] }}</span>
+            <img id="imgMain" src="{{ asset($tPath.'img/artikel/' . $dataArtikel['foto']) }}" alt=""
+                onerror="imgError('imgMain')">
+            <div class="main-loading"></div>
+            <span>
+                {!! $dataArtikel['deskripsi'] !!}
+            </span>
+            @if(isset($dataArtikel['link_video']) && !empty($dataArtikel['link_video']))
+            <div id="video">
+                <h3>Video Terkait</h3>
+                <iframe src="{{ $dataArtikel['link_video'] }}" title="YouTube video player" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen style="border-radius: 15px;"></iframe>
+            </div>
+            @endif
         </div>
-        <img src="{{ asset($tPath.'img/app.png') }}" alt="">
     </main>
-    <section id="artikel">
+    <section id="rekomendasi">
         <div>
-            <h1>Artikel Terbaru</h1>
+            <h1>Rekomendasi Artikel</h1>
             <a href="/artikel">
                 <span>Lainnya</span>
                 <img src="{{ asset($tPath.'img/icon/arrow-right.svg') }}" alt="">
@@ -74,41 +84,9 @@ $tPath = app()->environment('local') ? '' : '/public/';
             @endforeach
         </ul>
     </section>
-    <section id="kategori">
-        <div>
-            <h1>Kategori</h1>
-            <a href="/artikel">
-                <span>Lainnya</span>
-                <img src="{{ asset($tPath.'img/icon/arrow-right.svg') }}" alt="">
-            </a>
-        </div>
-        <ul>
-            @php $noRekomendasi = 1; @endphp
-            @foreach($rekomendasi as $data)
-            <li class="card" id="{{ $noRekomendasi }}">
-                <a href="/artikel/{{ str_replace(' ', '-', $data['judul']) }}">
-                    <img src="{{ asset($tPath.'img/artikel/'.$data['foto']) }}" alt=""
-                        onerror="imgError('{{ $noRekomendasi++ }}')">
-                    <span class="tanggal">{{ $data['created_at'] }}</span>
-                    <h3>{{ $data['judul'] }}</h3>
-                    <p>Digital Literasi</p>
-                </a>
-                <div class="card-loading">
-                    <div></div>
-                    <span></span>
-                    <h3></h3>
-                    <p></p>
-                </div>
-            </li>
-            @endforeach
-        </ul>
-    </section>
     @include('page.Components.user.footer')
     <script>
-    const navItems = document.querySelectorAll('header a a');
-    document.body.addEventListener('dragstart', event => {
-        event.preventDefault();
-    });
+    const navItems = document.querySelectorAll('header li a');
     navItems.forEach(navItem => {
         navItem.addEventListener('click', function() {
             navItems.forEach(item => {
@@ -117,7 +95,34 @@ $tPath = app()->environment('local') ? '' : '/public/';
             this.classList.add('active');
         })
     });
+    document.body.addEventListener('dragstart', event => {
+        event.preventDefault();
+    });
     window.addEventListener('load', function() {
+        //for main
+        const main = document.querySelector('main div');
+        var imgMain = main.querySelector('img');
+        imgMain.addEventListener('load', function() {
+            var mainLoading = main.querySelector('.main-loading');
+            if (mainLoading) {
+                mainLoading.remove();
+            }
+            imgMain.style.display = 'block';
+        });
+        var hasError = false;
+        errCards.forEach(function(errCard) {
+            if (errCard === imgMain.id) {
+                hasError = true;
+            }
+        });
+        if (!hasError && (imgMain.complete || imgMain.naturalWidth === 0)) {
+            var mainLoading = main.querySelector('.main-loading');
+            if (mainLoading) {
+                mainLoading.remove();
+            }
+            imgMain.style.display = 'block';
+        }
+        //for cards
         var cards = document.querySelectorAll('.card');
         cards.forEach(function(card) {
             var image = card.querySelector('img');

@@ -6,8 +6,114 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Konsultasi;
+use Exception;
 class KonsultasiController extends Controller
 {
+    private static $jsonFile;
+    public function __construct(){
+        self::$jsonFile = storage_path('app/database/konsultasi.json');
+    }
+    public function dataCacheFile($data = null, $con, $limit = null, $col = null){
+        $fileExist = file_exists(self::$jsonFile);
+        //check if file exist
+        if (!$fileExist) {
+            //if file is delete will make new json file
+            $konsultanData = json_decode(Konsultasi::get(),true);
+            if (!file_put_contents(self::$jsonFile,json_encode($konsultanData, JSON_PRETTY_PRINT))) {
+                throw new Exception('Gagal menyimpan file sistem');
+            }
+        }
+        if($con == 'get_id'){
+            $jsonData = json_decode(file_get_contents(self::$jsonFile), true);
+            $result = null;
+            foreach($jsonData as $key => $item){
+                if (isset($item['id_artikel']) && $item['id_artikel'] == $data['id_artikel']) {
+                    $result = $jsonData[$key];
+                }
+            }
+            if($result === null){
+                throw new Exception('Data disi tidak ditemukan');
+            }
+            return $result;
+        }else if($con == 'get_total'){
+            $jsonData = json_decode(file_get_contents(self::$jsonFile), true);
+            $result = null;
+            $result = count($jsonData);
+            if($result === null){
+                return 0;
+            }
+            return $result;
+        }else if($con == 'get_limit'){
+            $jsonData = json_decode(file_get_contents(self::$jsonFile), true);
+            if(!empty($data) && !is_null($data)) {
+                $result = null;
+                if (count($data) > 1) {
+                    return 'error array key more than 1';
+                }
+                foreach ($jsonData as $key => $item){
+                    $keys = array_keys($data)[0];
+                    if (isset($item[$keys]) && $item[$keys] == $data[$keys]) {
+                        $result = $jsonData[$key];
+                        break;
+                    }
+                }
+                if ($result === null) {
+                    throw new Exception('Data artikel tidak ditemukan');
+                }
+                $jsonData = [];
+                $jsonData[] = $result;
+            }
+            if(is_array($jsonData)) {
+                if ($limit !== null && is_int($limit) && $limit > 0){
+                    $jsonData = array_slice($jsonData, 0, $limit);
+                }
+                if (is_array($col)) {
+                    foreach ($jsonData as &$entry) {
+                        $entry = array_intersect_key($entry, array_flip($col));
+                    }
+                }
+                return $jsonData;
+            }
+            return null;
+        }else if($con == 'tambah'){
+            if($fileExist){
+                //tambah disi data
+                $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
+                $new[$data['id_artikel']] = $data;
+                $jsonData = array_merge($jsonData, $new);
+                file_put_contents(self::$jsonFile,json_encode($jsonData, JSON_PRETTY_PRINT));
+            }
+        }else if($con == 'update'){
+            //update disi data
+            $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
+            foreach($jsonData as $key => $item){
+                if (isset($item['id_artikel']) && $item['id_artikel'] == $data['id_artikel']) {
+                    $newData = [
+                        'uuid' => $data['id_artikel'],
+                        'judul' => $data['judul'],
+                        'deskripsi' => $data['deskripsi'],
+                        'link_video' => $data['link_video'],
+                        'rentang_usia' => $data['rentang_usia'],
+                        'foto' => $data['foto'],
+                    ];
+                    $jsonData[$key] = $newData;
+                    break;
+                }
+            }
+            $jsonData = array_values($jsonData);
+            file_put_contents(self::$jsonFile,json_encode($jsonData, JSON_PRETTY_PRINT));
+        }else if($con == 'hapus'){
+            //hapus disi data
+            $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
+            foreach($jsonData as $key => $item){
+                if (isset($item['id_artikel']) && $item['id_artikel'] == $data['id_artikel']) {
+                    unset($jsonData[$key]);
+                }
+            }
+            $jsonData = array_values($jsonData);
+            file_put_contents(self::$jsonFile,json_encode($jsonData, JSON_PRETTY_PRINT));
+        }
+    }
     public function tambahKonsultasi(Request $request){
         $validator = Validator::make($request->only('nama_lengkap', 'jenis_kelamin', 'alamat', 'no_telpon', 'email_konsultasi', 'foto'), [
             'nama_lengkap' => 'required|max:50',

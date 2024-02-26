@@ -5,15 +5,11 @@ use App\Http\Controllers\Services\DisiController;
 use App\Http\Controllers\Services\EmotalController;
 use App\Http\Controllers\Services\NutrisiController;
 use App\Http\Controllers\Services\PengasuhanController;
+use App\Http\Controllers\Services\KonsultasiController;
+use App\Http\Controllers\Services\ArtikelController;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\Events;
-use App\Models\Seniman;
-use App\Models\SewaTempat;
-use App\Models\SuratAdvis;
-use App\Models\Perpanjangan;
 use DateTime;
 class AdminController extends Controller
 {
@@ -69,6 +65,8 @@ class AdminController extends Controller
             'jumlah_emotal' => app()->make(EmotalController::class)->dataCacheFile(null, 'get_total'),
             'jumlah_nutrisi' => app()->make(NutrisiController::class)->dataCacheFile(null, 'get_total'),
             'jumlah_pengasuhan' => app()->make(PengasuhanController::class)->dataCacheFile(null, 'get_total'),
+            'jumlah_konsultan' => app()->make(KonsultasiController::class)->dataCacheFile(null, 'get_total'),
+            'jumlah_artikel' => app()->make(ArtikelController::class)->dataCacheFile(null, 'get_total'),
             'userAuth' => $request->input('user_auth'),
         ];
         return view('page.dashboard',$dataShow);

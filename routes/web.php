@@ -20,98 +20,48 @@ use App\Http\Controllers\Page\AdminController AS ShowAdminController;
 use App\Http\Controllers\Auth\LoginController;
 
 Route::group(['middleware'=>['auth','authorized']],function(){
-    //artikel route
+    //artikel public route
     Route::group(['prefix'=>'/artikel'],function(){
-        Route::group(['prefix'=>'/pengasuhan'],function(){
-            // Route::get('/',[]);0
-        });
+        Route::get('/',[ShowHomeController::class,'showArtikel'])->withoutMiddleware('authorized');
+        Route::get('/{any}',[ShowHomeController::class,'showDetailArtikel'])->withoutMiddleware('authorized');
     });
-    // Route::group(['prefix'=>'/disi'],function(){
-    //     Route::get('/',function(){
-    //         return view('page.Disi.data');
-    //     });
-    //     Route::get('/tambah',function(){
-    //         return view('page.Disi.tambah');
-    //     });
-    //     Route::get('/edit',function(){
-    //         return view('page.Disi.edit');
-    //     });
-    // });
-    // Route::group(['prefix'=>'/emotal'],function(){
-    //     Route::get('/',function(){
-    //         return view('page.Emotal.data');
-    //     });
-    //     Route::get('/tambah',function(){
-    //         return view('page.Emotal.tambah');
-    //     });
-    //     Route::get('/edit',function(){
-    //         return view('page.Emotal.edit');
-    //     });
-    // });
-    // Route::group(['prefix'=>'/nutrisi'],function(){
-    //     Route::get('/',function(){
-    //         return view('page.Nutrisi.data');
-    //     });
-    //     Route::get('/tambah',function(){
-    //         return view('page.Nutrisi.tambah');
-    //     });
-    //     Route::get('/edit',function(){
-    //         return view('page.Nutrisi.edit');
-    //     });
-    // });
-    // Route::group(['prefix'=>'/konsultasi'],function(){
-    //     Route::get('/', function () {
-    //         return view('page.Konsultasi.data');
-    //     })->withoutMiddleware('authorized');
-    //     Route::get('/tambah', function () {
-    //         return view('page.Konsultasi.tambah');
-    //     })->withoutMiddleware('authorized');
-    //     Route::get('/edit', function () {
-    //         return view('page.Konsultasi.edit');
-    //     })->withoutMiddleware('authorized');
-    // });
-    // Route::group(['prefix'=>'/pengasuhan'],function(){
-    //     Route::get('/',function(){
-    //         return view('page.Pengasuhan.data');
-    //     });
-    //     Route::get('/tambah',function(){
-    //         return view('page.Pengasuhan.tambah');
-    //     });
-    //     Route::get('/edit',function(){
-    //         return view('page.Pengasuhan.edit');
-    //     });
-    // });
+    //disi only admin route
     Route::group(['prefix'=>'/disi'],function(){
         Route::get('/',[ShowDisiController::class, 'showData']);
         // Route::get('/tambah',[ShowDisiController::class, 'showTambah']);
         Route::get('/edit',[ShowDisiController::class, 'showEdit']);
     });
+    //emotal only admin route
     Route::group(['prefix'=>'/emotal'],function(){
         Route::get('/',[ShowEmotalController::class, 'showData']);
         // Route::get('/tambah',[ShowEmotalController::class, 'showTambah']);
         Route::get('/edit',[ShowEmotalController::class, 'showEdit']);
     });
+    //nutrisi only admin route
     Route::group(['prefix'=>'/nutrisi'],function(){
         Route::get('/',[ShowNutrisiController::class, 'showData']);
         // Route::get('/tambah',[ShowNutrisiController::class, 'showTambah']);
         Route::get('/edit',[ShowNutrisiController::class, 'showEdit']);
     });
+    //pengasuhan only admin route
     Route::group(['prefix'=>'/pengasuhan'],function(){
         Route::get('/',[ShowPengasuhanController::class, 'showData']);
         // Route::get('/tambah',[ShowPengasuhanController::class, 'showTambah']);
         Route::get('/edit',[ShowPengasuhanController::class, 'showEdit']);
     });
+    //konsultasi only admin route
     Route::group(['prefix'=>'/konsultasi'],function(){
         Route::get('/',[ShowKonsultasiController::class, 'showData']);
         Route::get('/tambah',[ShowKonsultasiController::class, 'showTambah']);
         Route::get('/edit',[ShowKonsultasiController::class, 'showEdit']);
     });
-    Route::group(['prefix'=>'/artikel'],function(){
+    //article only admin route
+    Route::group(['prefix'=>'/article'],function(){
         Route::get('/',[ShowArtikelController::class, 'showData']);
         Route::get('/tambah',[ShowArtikelController::class, 'showTambah']);
         Route::get('/edit',[ShowArtikelController::class, 'showEdit']);
     });
-    //only admin route
+    //API only admin route
     Route::group(['prefix'=>'/admin'],function(){
         Route::group(['prefix'=>'/emotal'],function(){
             // Route::post('/tambah', [EmotalController::class, 'tambahEmotal']);
@@ -138,7 +88,7 @@ Route::group(['middleware'=>['auth','authorized']],function(){
             Route::put('/update', [KonsultasiController::class, 'editKonsultasi']);
             Route::delete('/delete', [KonsultasiController::class, 'deleteKonsultasi']);
         });
-        Route::group(['prefix'=>'/artikel'],function(){
+        Route::group(['prefix'=>'/article'],function(){
             Route::post('/tambah', [ArtikelController::class, 'tambahArtikel']);
             Route::put('/update', [ArtikelController::class, 'editArtikel']);
             Route::delete('/delete', [ArtikelController::class, 'deleteArtikel']);
@@ -181,14 +131,5 @@ Route::group(['middleware'=>['auth','authorized']],function(){
     })->withoutMiddleware('authorized');
     Route::get('/dashboard',[ShowAdminController::class,'showDashboard']);
     Route::get('/profile',[ShowAdminController::class,'showProfile']);
-    Route::get('/', function(){
-        return view('page.home');
-    })->withoutMiddleware('authorized');
-    Route::get('/blog', function(){
-        return view('page.daftar-artikel');
-    })->withoutMiddleware('authorized');
-    Route::get('/blog/detail', function(){
-        return view('page.detail-artikel');
-    })->withoutMiddleware('authorized');
-    // Route::get('/',[ShowHomeController::class,'showHome'])->withoutMiddleware('authorized');
+    Route::get('/',[ShowHomeController::class,'showHome'])->withoutMiddleware('authorized');
 });

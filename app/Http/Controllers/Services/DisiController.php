@@ -45,12 +45,30 @@ class DisiController extends Controller
             return $result;
         }else if($con == 'get_limit'){
             $jsonData = json_decode(file_get_contents(self::$jsonFile), true);
+            if(!empty($data) && !is_null($data)) {
+                $result = null;
+                if (count($data) > 1) {
+                    return 'error array key more than 1';
+                }
+                foreach ($jsonData as $key => $item){
+                    $keys = array_keys($data)[0];
+                    if (isset($item[$keys]) && $item[$keys] == $data[$keys]) {
+                        $result = $jsonData[$key];
+                        break;
+                    }
+                }
+                if ($result === null) {
+                    throw new Exception('Data artikel tidak ditemukan');
+                }
+                $jsonData = [];
+                $jsonData[] = $result;
+            }
             if(is_array($jsonData)) {
-                if($limit !== null && is_int($limit) && $limit > 0) {
+                if ($limit !== null && is_int($limit) && $limit > 0){
                     $jsonData = array_slice($jsonData, 0, $limit);
                 }
-                if(is_array($col)) {
-                    foreach($jsonData as &$entry) {
+                if (is_array($col)) {
+                    foreach ($jsonData as &$entry) {
                         $entry = array_intersect_key($entry, array_flip($col));
                     }
                 }

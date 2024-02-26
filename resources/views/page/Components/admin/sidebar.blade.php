@@ -13,7 +13,8 @@
         <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
             <ul id="sidebarnav">
                 <li class="sidebar-item {{ $nav == 'dashboard' ? 'selected' : ''}}">
-                    <a class="sidebar-link {{ $nav == 'dashboard' ? 'active' : ''}}" href="/dashboard" aria-expanded="false">
+                    <a class="sidebar-link {{ $nav == 'dashboard' ? 'active' : ''}}" href="/dashboard"
+                        aria-expanded="false">
                         <img src="{{ asset($tPath.'img/icon/sidebar/dashboard.svg') }}" alt="" width="30" height="30">
                         <span class="hide-menu">Dashboard</span>
                     </a>
@@ -31,31 +32,35 @@
                     </a>
                 </li>
                 <li class="sidebar-item {{ $nav == 'nutrisi' ? 'selected' : ''}}">
-                    <a class="sidebar-link {{ $nav == 'nutrisi' ? 'active' : ''}}" href="/nutrisi" aria-expanded="false">
+                    <a class="sidebar-link {{ $nav == 'nutrisi' ? 'active' : ''}}" href="/nutrisi"
+                        aria-expanded="false">
                         <img src="{{ asset($tPath.'img/icon/sidebar/nutrisi.svg') }}" alt="" width="30" height="30">
                         <span class="hide-menu">Kelola Nutrisi</span>
                     </a>
                 </li>
                 <li class="sidebar-item {{ $nav == 'pengasuhan' ? 'selected' : ''}}">
-                    <a class="sidebar-link {{ $nav == 'pengasuhan' ? 'active' : ''}}" href="/pengasuhan" aria-expanded="false">
+                    <a class="sidebar-link {{ $nav == 'pengasuhan' ? 'active' : ''}}" href="/pengasuhan"
+                        aria-expanded="false">
                         <img src="{{ asset($tPath.'img/icon/sidebar/pengasuhan.svg') }}" alt="" width="30" height="30">
                         <span class="hide-menu">Kelola Pengasuhan</span>
                     </a>
                 </li>
                 <li class="sidebar-item {{ $nav == 'konsultasi' ? 'selected' : ''}}">
-                    <a class="sidebar-link {{ $nav == 'konsultasi' ? 'active' : ''}}" href="/konsultasi" aria-expanded="false">
+                    <a class="sidebar-link {{ $nav == 'konsultasi' ? 'active' : ''}}" href="/konsultasi"
+                        aria-expanded="false">
                         <img src="{{ asset($tPath.'img/icon/sidebar/konsultasi.svg') }}" alt="" width="30" height="30">
                         <span class="hide-menu">Kelola Konsultasi</span>
                     </a>
                 </li>
                 <li class="sidebar-item {{ $nav == 'artikel' ? 'selected' : ''}}">
-                    <a class="sidebar-link {{ $nav == 'artikel' ? 'active' : ''}}" href="/artikel" aria-expanded="false">
+                    <a class="sidebar-link {{ $nav == 'artikel' ? 'active' : ''}}" href="/article"
+                        aria-expanded="false">
                         <img src="{{ asset($tPath.'img/icon/sidebar/artikel.svg') }}" alt="" width="30" height="30">
                         <span class="hide-menu">Kelola Artikel</span>
                     </a>
                 </li>
                 <li class="sidebar-item {{ $nav == 'admin' ? 'selected' : ''}}">
-                    <a class="sidebar-link {{ $nav == 'admin' ? 'active' : ''}}"" href="/admin" aria-expanded="false">
+                    <a class="sidebar-link {{ $nav == 'admin' ? 'active' : ''}}"" href=" /admin" aria-expanded="false">
                         <img src="{{ asset($tPath.'img/icon/sidebar/admin.svg') }}" alt="" width="30" height="30">
                         <span class="hide-menu">Kelola Admin</span>
                     </a>
