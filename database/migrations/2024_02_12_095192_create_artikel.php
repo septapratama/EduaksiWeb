@@ -13,6 +13,7 @@ return new class extends Migration
             $table->uuid('uuid');
             $table->string('judul');
             $table->longText('deskripsi');
+            $table->enum('kategori', ['disi', 'emotal', 'nutrisi', 'pengasuhan']);
             $table->string('link_video')->nullable();
             $table->text('foto');
             $table->timestamps();

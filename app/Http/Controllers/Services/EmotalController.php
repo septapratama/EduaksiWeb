@@ -5,7 +5,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
-use App\Models\GaleriEmosiMental;
 use App\Models\Emotal;
 use Carbon\Carbon;
 use Exception;

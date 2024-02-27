@@ -3,9 +3,10 @@ namespace App\Http\Controllers\Services;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
-use App\Models\GaleriDigitalLiterasi;
 use App\Models\Artikel;
+use Carbon\Carbon;
 use Exception;
 class ArtikelController extends Controller
 {
@@ -18,8 +19,11 @@ class ArtikelController extends Controller
         //check if file exist
         if (!$fileExist) {
             //if file is delete will make new json file
-            $disiData = json_decode(Artikel::get(),true);
-            if (!file_put_contents(self::$jsonFile,json_encode($disiData, JSON_PRETTY_PRINT))) {
+            $artikelData = json_decode(Artikel::get(),true);
+            foreach ($artikelData as &$item) {
+                unset($item['id_artikel']);
+            }
+            if (!file_put_contents(self::$jsonFile,json_encode($artikelData, JSON_PRETTY_PRINT))) {
                 throw new Exception('Gagal menyimpan file sistem');
             }
         }
@@ -79,7 +83,7 @@ class ArtikelController extends Controller
             if($fileExist){
                 //tambah artikel data
                 $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
-                $new[$data['id_artikel']] = $data;
+                $new[] = $data;
                 $jsonData = array_merge($jsonData, $new);
                 file_put_contents(self::$jsonFile,json_encode($jsonData, JSON_PRETTY_PRINT));
             }
@@ -93,7 +97,7 @@ class ArtikelController extends Controller
                         'judul' => $data['judul'],
                         'deskripsi' => $data['deskripsi'],
                         'link_video' => $data['link_video'],
-                        'rentang_usia' => $data['rentang_usia'],
+                        'kategori' => $data['kategori'],
                         'foto' => $data['foto'],
                     ];
                     $jsonData[$key] = $newData;
@@ -115,18 +119,18 @@ class ArtikelController extends Controller
         }
     }
     public function tambahArtikel(Request $request){
-        $validator = Validator::make($request->only('judul', 'deskripsi', 'link_video', 'rentang_usia', 'foto'), [
+        $validator = Validator::make($request->only('judul', 'deskripsi', 'link_video', 'kategori', 'foto'), [
             'judul' => 'required|min:6|max:50',
             'deskripsi' => 'required',
             'link_video' => 'nullable',
-            'rentang_usia' => 'required',
+            'kategori' => 'required',
             'foto' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120',
         ], [
             'judul.required' => 'Judul wajib di isi',
             'judul.min' => 'Judul minimal 6 karakter',
             'judul.max' => 'Judul maksimal 50 karakter',
             'deskripsi.required' => 'deskripsi artikel wajib di isi',
-            'rentang_usia.required' => 'Rentang usia wajib di isi',
+            'kategori.required' => 'Kategori wajib di isi',
             'foto.required' => 'Foto artikel wajib di isi',
             'foto.image' => 'Foto artikel harus berupa gambar',
             'foto.mimes' => 'Format foto tidak valid. Gunakan format jpeg, png, jpg',
@@ -150,30 +154,38 @@ class ArtikelController extends Controller
         }
         $fotoName = $file->hashName();
         Storage::disk('artikel')->put($fotoName, file_get_contents($file));
+        $now = Carbon::now();
+        $uuid = Str::uuid();
         $ins = Artikel::insert([
+            'uuid' => $uuid,
             'judul' => $request->input('judul'),
             'deskripsi' => $request->input('deskripsi'),
             'link_video' => $request->input('link_video'),
-            'rentang_usia' => $request->input('rentang_usia'),
+            'kategori' => $request->input('kategori'),
             'foto' => $fotoName
         ]);
         if(!$ins){
             return response()->json(['status'=>'error','message'=>'Gagal menambahkan data Artikel'], 500);
         }
         $this->dataCacheFile([
-            'id_artikel' => $ins,
-            'nama_kategori_seniman'=>$request->input('nama'),
-            'singkatan_kategori'=>strtoupper($request->input('singkatan'))
+            'uuid' => $uuid,
+            'judul' => $request->input('judul'),
+            'deskripsi' => $request->input('deskripsi'),
+            'link_video' => $request->input('link_video'),
+            'kategori' => $request->input('kategori'),
+            'foto' => $fotoName,
+            'created_at' => $now,
+            'updated_at' => $now,
         ],'tambah');
         return response()->json(['status'=>'success','message'=>'Data Artikel berhasil ditambahkan']);
     }
     public function editArtikel(Request $request){
-        $validator = Validator::make($request->only('id_artikel','judul', 'deskripsi', 'link_video', 'rentang_usia', 'foto'), [
+        $validator = Validator::make($request->only('id_artikel','judul', 'deskripsi', 'link_video', 'kategori', 'foto'), [
             'id_artikel' => 'required',
             'judul' => 'required|min:6|max:50',
             'deskripsi' => 'required',
             'link_video' => 'nullable',
-            'rentang_usia' => 'required',
+            'kategori' => 'required',
             'foto' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120',
         ], [
             'id_artikel.required' => 'ID artikel wajib di isi',
@@ -181,7 +193,7 @@ class ArtikelController extends Controller
             'judul.min' => 'Judul minimal 6 karakter',
             'judul.max' => 'Judul maksimal 50 karakter',
             'deskripsi.required' => 'deskripsi artikel wajib di isi',
-            'rentang_usia.required' => 'Rentang usia wajib di isi',
+            'kategori.required' => 'Kategori wajib di isi',
             'foto.required' => 'Foto artikel wajib di isi',
             'foto.image' => 'Foto artikel harus berupa gambar',
             'foto.mimes' => 'Format foto tidak valid. Gunakan format jpeg, png, jpg',
@@ -214,20 +226,26 @@ class ArtikelController extends Controller
             $fotoName = $file->hashName();
             Storage::disk('artikel')->put('foto/' . $fotoName, file_get_contents($file));
         }
+        $now = Carbon::now();
         $edit = $artikel->where('id_artikel',$request->input('id_artikel'))->update([
             'judul' => $request->input('judul'),
             'deskripsi' => $request->input('deskripsi'),
             'link_video' => $request->input('link_video'),
-            'rentang_usia' => $request->input('rentang_usia'),
+            'kategori' => $request->input('kategori'),
             'foto' => $request->hasFile('foto') ? $fotoName : $artikel['foto'],
+            'updated_at' => $now,
         ]);
         if(!$edit){
             return response()->json(['status' =>'error','message'=>'Gagal memperbarui data Artikel'], 500);
         }
         $this->dataCacheFile([
             'id_artikel' => $request->input('id_artikel'),
-            'nama_kategori_seniman' => $request->input('nama'),
-            'singkatan_kategori' => strtoupper($request->input('singkatan'))
+            'judul' => $request->input('judul'),
+            'deskripsi' => $request->input('deskripsi'),
+            'link_video' => $request->input('link_video'),
+            'kategori' => $request->input('kategori'),
+            'foto' => $request->hasFile('foto') ? $fotoName : $artikel['foto'],
+            'updated_at' => $now,
         ],'update');
         return response()->json(['status' =>'success','message'=>'Data Artikel berhasil di perbarui']);
     }

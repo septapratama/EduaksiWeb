@@ -29,7 +29,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
     @endif
     <script>
     const domain = window.location.protocol + '//' + window.location.hostname + ":" + window.location.port;
-    const reff = '/artikel';
+    const reff = '/article';
     var csrfToken = "{{ csrf_token() }}";
     var email = "{{ $userAuth['email'] }}";
     var number = "{{ $userAuth['number'] }}";
@@ -67,30 +67,43 @@ $tPath = app()->environment('local') ? '' : '/public/';
                             <input type="text" id="inpJudul">
                         </div>
                         <div class="crow">
-                            <label for="">Link Video</label>
-                            <input type="text">
+                            <div>
+                                <label for="">Kategori</label>
+                                <select class="" aria-label="Default select example" id="inpKategori">
+                                    <option value="" selected>Pilih Kategori</option>
+                                    <option value="disi">Digital Literasi</option>
+                                    <option value="emotal">Emosi Mental</option>
+                                    <option value="nutrisi">Nutrisi</option>
+                                    <option value="pengasuhan">Pengasuhan</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="">Link Video</label>
+                                <input type="text" id="inpLinkVideo">
+                            </div>
                         </div>
-                <div class="crow">
-                    <label for="">Deskripsi</label>
-                    <textarea name="deskripsi" id="inpDeskripsi" placeholder="Masukkan Isi Artikel" class=""
-                        style="height:120px"></textarea>
+                        <div class="crow">
+                            <label for="">Deskripsi</label>
+                            <textarea name="deskripsi" id="inpDeskripsi" placeholder="Masukkan Isi Artikel" class=""
+                                style="height:120px"></textarea>
+                        </div>
+                        <div class="img" onclick="handleFileClick()" ondragover="handleDragOver(event)"
+                            ondrop="handleDrop(event)">
+                            <img src="{{ asset($tPath.'img/icon/upload.svg') }}" alt="">
+                            <span>Pilih File atau Jatuhkan File</span>
+                            <input type="file" id="inpFoto" hidden onchange="handleFileChange(event)">
+                        </div>
+                        <div class="crow">
+                            <a href="/article" class="btn btn-danger">Kembali</a>
+                            <button type="submit" class="btn btn-success"><img
+                                    src="{{ asset($tPath.'img/icon/tambah.svg') }}" alt="" width="30"
+                                    height="30"><span>Tambah</span></button>
+                        </div>
+                    </form>
                 </div>
-                <div class="img" onclick="handleFileClick()" ondragover="handleDragOver(event)"
-                    ondrop="handleDrop(event)">
-                    <img src="{{ asset($tPath.'img/icon/upload.svg') }}" alt="">
-                    <span>Pilih File atau Jatuhkan File</span>
-                    <input type="file" id="inpFoto" hidden onchange="handleFileChange(event)">
-                </div>
-                <div class="crow">
-                    <a href="/article" class="btn btn-danger">Kembali</a>
-                    <button type="submit" class="btn btn-success"><img src="{{ asset($tPath.'img/icon/tambah.svg') }}"
-                            alt="" width="30" height="30"><span>Tambah</span></button>
-                </div>
-                </form>
+                @include('page.Components.admin.footer')
             </div>
-            @include('page.Components.admin.footer')
         </div>
-    </div>
     </div>
     <div id="preloader" style="display: none;"></div>
     <div id="greenPopup" style="display:none"></div>

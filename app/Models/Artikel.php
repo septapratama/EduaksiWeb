@@ -13,6 +13,6 @@ class Artikel extends Model
     public $incrementing = true;
     public $timestamps = true;
     protected $fillable = [
-        'judul','deskripsi','link_video','rentang_usia'
+        'judul','deskripsi','link_video','kategori'
     ];
 }

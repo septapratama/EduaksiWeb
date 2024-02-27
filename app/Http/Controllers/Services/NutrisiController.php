@@ -5,7 +5,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
-use App\Models\GaleriNutrisi;
 use App\Models\Nutrisi;
 use Carbon\Carbon;
 use Exception;

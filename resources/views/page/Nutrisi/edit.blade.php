@@ -59,7 +59,8 @@ $tPath = app()->environment('local') ? '' : '/public/';
                         </ol>
                     </nav>
                 </div>
-                <div class="d-flex align-items-stretch" style="background-color: #ffffff; border-radius: 20px; box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
+                <div class="d-flex align-items-stretch"
+                    style="background-color: #ffffff; border-radius: 20px; box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
                     <form id="tambahForm">
                         <div class="crow">
                             <label for="">Judul Nutrisi</label>
@@ -78,7 +79,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
                             </div>
                             <div>
                                 <label for="">Link Video</label>
-                                <input type="text">
+                                <input type="text" id="inpLinkVideo">
                             </div>
                         </div>
                         <div class="crow">

@@ -28,11 +28,11 @@ $tPath = app()->environment('local') ? '' : '/public/';
     </script>
     @endif
     <script>
-        const domain = window.location.protocol + '//' + window.location.hostname + ":" + window.location.port;
-        const reff = '/disi';
-        var csrfToken = "{{ csrf_token() }}";
-        var email = "{{ $userAuth['email'] }}";
-        var number = "{{ $userAuth['number'] }}";
+    const domain = window.location.protocol + '//' + window.location.hostname + ":" + window.location.port;
+    const reff = '/disi';
+    var csrfToken = "{{ csrf_token() }}";
+    var email = "{{ $userAuth['email'] }}";
+    var number = "{{ $userAuth['number'] }}";
     </script>
     <!--  Body Wrapper -->
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
@@ -59,7 +59,8 @@ $tPath = app()->environment('local') ? '' : '/public/';
                         </ol>
                     </nav>
                 </div>
-                <div class="d-flex align-items-stretch" style="background-color: #ffffff; border-radius: 20px; box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
+                <div class="d-flex align-items-stretch"
+                    style="background-color: #ffffff; border-radius: 20px; box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
                     <form id="tambahForm">
                         <div class="crow">
                             <label for="">Judul Digital Literasi</label>
@@ -78,7 +79,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
                             </div>
                             <div>
                                 <label for="">Link Video</label>
-                                <input type="text">
+                                <input type="text" id="inpLinkVideo">
                             </div>
                         </div>
                         <div class="crow">

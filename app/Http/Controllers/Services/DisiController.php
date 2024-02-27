@@ -2,10 +2,11 @@
 namespace App\Http\Controllers\Services;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
-use App\Models\GaleriDigitalLiterasi;
 use App\Models\Disi;
+use Carbon\Carbon;
 use Exception;
 class DisiController extends Controller
 {
@@ -19,6 +20,9 @@ class DisiController extends Controller
         if (!$fileExist) {
             //if file is delete will make new json file
             $disiData = json_decode(Disi::get(),true);
+            foreach ($disiData as &$item) {
+                unset($item['id_disi']);
+            }
             if (!file_put_contents(self::$jsonFile,json_encode($disiData, JSON_PRETTY_PRINT))) {
                 throw new Exception('Gagal menyimpan file sistem');
             }
@@ -79,7 +83,7 @@ class DisiController extends Controller
             if($fileExist){
                 //tambah disi data
                 $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
-                $new[$data['id_disi']] = $data;
+                $new[] = $data;
                 $jsonData = array_merge($jsonData, $new);
                 file_put_contents(self::$jsonFile,json_encode($jsonData, JSON_PRETTY_PRINT));
             }
@@ -150,6 +154,8 @@ class DisiController extends Controller
         }
         $fotoName = $file->hashName();
         Storage::disk('disi')->put($fotoName, file_get_contents($file));
+        $now = Carbon::now();
+        $uuid = Str::uuid();
         $ins = Disi::insert([
             'judul' => $request->input('judul'),
             'deskripsi' => $request->input('deskripsi'),
@@ -161,9 +167,14 @@ class DisiController extends Controller
             return response()->json(['status'=>'error','message'=>'Gagal menambahkan data Disi'], 500);
         }
         $this->dataCacheFile([
-            'id_disi' => $ins,
-            'nama_kategori_seniman'=>$request->input('nama'),
-            'singkatan_kategori'=>strtoupper($request->input('singkatan'))
+            'uuid' => $uuid,
+            'judul' => $request->input('judul'),
+            'deskripsi' => $request->input('deskripsi'),
+            'link_video' => $request->input('link_video'),
+            'rentang_usia' => $request->input('rentang_usia'),
+            'foto' => $fotoName,
+            'created_at' => $now,
+            'updated_at' => $now,
         ],'tambah');
         return response()->json(['status'=>'success','message'=>'Data Disi berhasil ditambahkan']);
     }
@@ -214,20 +225,26 @@ class DisiController extends Controller
             $fotoName = $file->hashName();
             Storage::disk('disi')->put('foto/' . $fotoName, file_get_contents($file));
         }
+        $now = Carbon::now();
         $edit = $disi->where('id_disi',$request->input('id_disi'))->update([
             'judul' => $request->input('judul'),
             'deskripsi' => $request->input('deskripsi'),
             'link_video' => $request->input('link_video'),
             'rentang_usia' => $request->input('rentang_usia'),
             'foto' => $request->hasFile('foto') ? $fotoName : $disi['foto'],
+            'updated_at' => $now,
         ]);
         if(!$edit){
             return response()->json(['status' =>'error','message'=>'Gagal memperbarui data Disi'], 500);
         }
         $this->dataCacheFile([
             'id_disi' => $request->input('id_disi'),
-            'nama_kategori_seniman' => $request->input('nama'),
-            'singkatan_kategori' => strtoupper($request->input('singkatan'))
+            'judul' => $request->input('judul'),
+            'deskripsi' => $request->input('deskripsi'),
+            'link_video' => $request->input('link_video'),
+            'rentang_usia' => $request->input('rentang_usia'),
+            'foto' => $request->hasFile('foto') ? $fotoName : $disi['foto'],
+            'updated_at' => $now,
         ],'update');
         return response()->json(['status' =>'success','message'=>'Data Disi berhasil di perbarui']);
     }

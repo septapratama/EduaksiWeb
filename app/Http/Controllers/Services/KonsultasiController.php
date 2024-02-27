@@ -2,8 +2,8 @@
 namespace App\Http\Controllers\Services;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Konsultasi;
 use Exception;
@@ -19,6 +19,9 @@ class KonsultasiController extends Controller
         if (!$fileExist) {
             //if file is delete will make new json file
             $konsultanData = json_decode(Konsultasi::get(),true);
+            foreach ($konsultanData as &$item) {
+                unset($item['id_konsultasi']);
+            }
             if (!file_put_contents(self::$jsonFile,json_encode($konsultanData, JSON_PRETTY_PRINT))) {
                 throw new Exception('Gagal menyimpan file sistem');
             }
@@ -79,7 +82,7 @@ class KonsultasiController extends Controller
             if($fileExist){
                 //tambah disi data
                 $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
-                $new[$data['id_artikel']] = $data;
+                $new[] = $data;
                 $jsonData = array_merge($jsonData, $new);
                 file_put_contents(self::$jsonFile,json_encode($jsonData, JSON_PRETTY_PRINT));
             }

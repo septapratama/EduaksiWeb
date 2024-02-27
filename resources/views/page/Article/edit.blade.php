@@ -67,19 +67,19 @@ $tPath = app()->environment('local') ? '' : '/public/';
                             <input type="text" id="inpJudul">
                         </div>
                         <div class="crow">
-                            <!-- <div>
-                                <label for="">Rentang Usia</label>
-                                <select class="" aria-label="Default select example" id="inpRentangUsia" disabled>
-                                    <option value="">Pilih Umur</option>
-                                    <option value="0-3 Tahun">0-3 Tahun</option>
-                                    <option value="4-6 Tahun">4-6 Tahun</option>
-                                    <option value="7-9 Tahun">7-9 Tahun</option>
-                                    <option value="10-12 Tahun">10-12 Tahun</option>
+                            <div>
+                                <label for="">Kategori</label>
+                                <select class="" aria-label="Default select example" id="inpKategori">
+                                    <option value="" selected>Pilih Kategori</option>
+                                    <option value="disi">Digital Literasi</option>
+                                    <option value="emotal">Emosi Mental</option>
+                                    <option value="nutrisi">Nutrisi</option>
+                                    <option value="pengasuhan">Pengasuhan</option>
                                 </select>
-                            </div> -->
+                            </div>
                             <div>
                                 <label for="">Link Video</label>
-                                <input type="text">
+                                <input type="text" id="inpLinkVideo">
                             </div>
                         </div>
                         <div class="crow">

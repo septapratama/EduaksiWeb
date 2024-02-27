@@ -156,7 +156,7 @@ class Authenticate
             }
         //if cookie gone
         }else{
-            $page = ['/dashboard', '/profile', '/disi', '/disi/tambah', '/emotal', '/emotal/tambah', '/nutrisi', '/nutrisi/tambah', '/pengasuhan', '/pengasuhan/tambah', '/admin', '/admin/tambah'];
+            $page = ['/dashboard', '/profile', '/article', '/article/tambah', '/article/edit', '/disi', '/disi/tambah', '/emotal', '/emotal/tambah', '/nutrisi', '/nutrisi/tambah', '/pengasuhan', '/pengasuhan/tambah', '/admin', '/admin/tambah'];
             $pagePrefix = ['/disi/edit', '/emotal/edit', '/nutrisi/edit', '/pengasuhan/edit', '/admin/edit'];
             if(Str::startsWith($currentPath, $pagePrefix) || in_array($currentPath,$page)){
                 if($request->hasCookie("token1")){
