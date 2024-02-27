@@ -21,7 +21,7 @@ class AdminController extends Controller
             abort(404);
         }
         if (empty($userAuth['foto']) || is_null($userAuth['foto'])) {
-            $defaultPhotoPath = $userAuth['jenis_kelamin'] == 'laki-laki' ? 'admin/default_boy.jpg' : 'admin/default_girl.png';
+            $defaultPhotoPath = 'admin/default.jpg';
             return response()->download(storage_path('app/' . $defaultPhotoPath), 'foto.' . pathinfo($defaultPhotoPath, PATHINFO_EXTENSION));
         } else {
             $filePath = storage_path('app/admin/foto/' . $userAuth['foto']);
@@ -31,17 +31,17 @@ class AdminController extends Controller
             abort(404);
         }
     }
-    public function getFotoAdmin(Request $request, $userID){
+    public function getFotoAdmin(Request $request, $uuid){
         $referrer = $request->headers->get('referer');
         if (!$referrer && $request->path() == 'public/download/foto') {
             abort(404);
         }
-        $admin = User::select('jenis_kelamin','foto')->where('id_user',$userID)->limit(1)->get()[0];
+        $admin = User::select('foto')->where('uuid',$uuid)->limit(1)->get()[0];
         if (!$admin) {
             return response()->json(['status' => 'error', 'message' => 'Data Admin tidak ditemukan'], 404);
         }
         if (empty($admin->foto) || is_null($admin->foto)) {
-            $defaultPhotoPath = $admin->jenis_kelamin == 'laki-laki' ? 'admin/default_boy.jpg' : 'admin/default_girl.png';
+            $defaultPhotoPath = 'admin/default.jpg';
             return response()->download(storage_path('app/' . $defaultPhotoPath), 'foto.' . pathinfo($defaultPhotoPath, PATHINFO_EXTENSION));
         } else {
             $filePath = storage_path('app/admin/foto/' . $admin['foto']);
@@ -231,21 +231,13 @@ class AdminController extends Controller
     }
     public function updateProfile(Request $request){
         $userAuth = $request->input('user_auth');
-        $validator = Validator::make($request->only('email_new', 'nama_lengkap', 'jenis_kelamin', 'no_telpon', 'tempat_lahir', 'tanggal_lahir', $userAuth['role'] !== 'super admin' ? 'role' : null, 'foto'),
+        $validator = Validator::make($request->only('email_new', 'nama_lengkap', 'jenis_kelamin', 'no_telpon', 'foto'),
             [
                 'email_new'=>'nullable|email',
                 'nama_lengkap' => 'required|max:50',
                 'jenis_kelamin' => 'required|in:laki-laki,perempuan',
                 'no_telpon' => 'required|digits_between:11,13',
-                'tempat_lahir' => 'required|max:45',
-                'tanggal_lahir' => ['required', 'date', 'before_or_equal:' . now()->toDateString()],
-                function($attribute, $value, $parameters, $validator) use ($userAuth){
-                    if($userAuth['role'] !== 'super admin'){
-                        return ['role' => 'required|in:admin event, admin seniman, admin tempat'];
-                    }
-                    return [];
-                },
-                'foto' => 'required|image|mimes:jpeg,png,jpg|max:5120',
+                'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
             ],[
                 'email_new.email'=>'Email yang anda masukkan invalid',
                 'nama_lengkap.required' => 'Nama admin wajib di isi',
@@ -254,21 +246,6 @@ class AdminController extends Controller
                 'jenis_kelamin.in' => 'Jenis kelamin harus Laki-laki atau Perempuan',
                 'no_telpon.required' => 'Nomor telepon wajib di isi',
                 'no_telpon.digits_between' => 'Nomor telepon tidak boleh lebih dari 13 karakter',
-                'tempat_lahir.required' => 'Nama admin wajib di isi',
-                'tempat_lahir.max' => 'Nama admin maksimal 45 karakter',
-                'tanggal_lahir.required' => 'Tanggal lahir wajib di isi',
-                'tanggal_lahir.date' => 'Format tanggal lahir tidak valid',
-                'tanggal_lahir.before_or_equal' => 'Tanggal Lahir harus Sebelum dari tanggal sekarang',
-                function($attribute, $value, $parameters, $validator) use ($userAuth){
-                    if($userAuth['role'] !== 'super admin'){
-                        return [
-                            'role.required' => 'Role wajib di isi',
-                            'role.in' => 'Role tidak valid'
-                        ];
-                    }
-                    return [];
-                },
-                'foto.required' => 'Foto Admin wajib di isi',
                 'foto.image' => 'Foto Admin harus berupa gambar',
                 'foto.mimes' => 'Format foto admin tidak valid. Gunakan format jpeg, png, jpg',
                 'foto.max' => 'Ukuran foto admin tidak boleh lebih dari 5MB',
@@ -309,9 +286,6 @@ class AdminController extends Controller
             'nama_lengkap' => $request->input('nama_lengkap'),
             'jenis_kelamin' => $request->input('jenis_kelamin'),
             'no_telpon' => $request->input('no_telpon'),
-            'tempat_lahir' => $request->input('tempat_lahir'),
-            'tanggal_lahir' => $request->input('tanggal_lahir'),
-            'role' => $userAuth['role'] !== 'super admin' ? $request->input('role') : $userAuth['role'],
             'foto' => $request->hasFile('foto') ? $fotoName : $user['foto'],
             'updated_at'=> Carbon::now()
         ]);

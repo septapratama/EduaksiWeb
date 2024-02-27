@@ -61,6 +61,12 @@ Route::group(['middleware'=>['auth','authorized']],function(){
         // Route::get('/tambah',[ShowPengasuhanController::class, 'showTambah']);
         Route::get('/edit/{any}',[ShowPengasuhanController::class, 'showEdit']);
     });
+    //download only for admin
+    Route::group(['prefix'=>'/public'],function(){
+        Route::group(['prefix'=>'/download'],function(){
+            Route::get('/foto',[AdminController::class,'getFotoProfile'])->name('download.foto');
+        });
+    });
     //API only admin route
     Route::group(['prefix'=>'/admin'],function(){
         Route::group(['prefix'=>'/article'],function(){

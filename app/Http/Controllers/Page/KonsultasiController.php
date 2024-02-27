@@ -1,19 +1,19 @@
 <?php
 namespace App\Http\Controllers\Page;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Services\KonsultasiController AS ServiceKonsultasiController;
 use App\Models\Konsultasi;
 use Illuminate\Http\Request;
 class KonsultasiController extends Controller
 {
-    public function showData(Request $request){
-        $dataKonsultasi = Konsultasi::select('uuid', 'nama_lengkap','no_telpon')->get();
-        if (!$dataKonsultasi) {
-            return response()->json(['status' =>'error','message'=>'Data Konsultasi tidak ditemukan'], 400);
-        }
+    public function showData(Request $request, $err = null){
         $dataShow = [
-            'dataKonsultasi' => $dataKonsultasi,
+            'dataKonsultasi' => app()->make(ServiceKonsultasiController::class)->dataCacheFile(null, 'get_limit',null, ['uuid', 'nama_lengkap','no_telpon']),
             'userAuth' => $request->input('user_auth'),
         ];
+        if(!is_null($err)){
+            return view('page.Konsultasi.data', ['error' => $err]);
+        }
         return view('page.Konsultasi.data',$dataShow);
     }
     public function showTambah(Request $request){
@@ -23,9 +23,9 @@ class KonsultasiController extends Controller
         return view('page.Konsultasi.tambah',$dataShow);
     }
     public function showEdit(Request $request, $uuid){
-        $konsultasi = Konsultasi::select('uuid', 'nama_lengkap','no_telpon')->where('uuid',$uuid)->limit(1)->get();
+        $konsultasi = app()->make(ServiceKonsultasiController::class)->dataCacheFile(['uuid' => $uuid], 'get_limit', 1, ['uuid', 'nama_lengkap','no_telpon'])[0];
         if (!$konsultasi) {
-            return view('page.Konsultasi.data', ['error'=>'Data Konsultasi tidak ditemukan']);
+            return $this->showData($request, 'Data Konsultasi tidak ditemukan');
         }
         $dataShow = [
             'konsultasi' => $konsultasi,
