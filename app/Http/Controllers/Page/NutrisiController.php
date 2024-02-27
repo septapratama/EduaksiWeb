@@ -18,9 +18,13 @@ class NutrisiController extends Controller
         ];
         return view('page.Nutrisi.tambah',$dataShow);
     }
-    public function showEdit(Request $request){
+    public function showEdit(Request $request, $uuid){
+        $nutrisi = app()->make(ServiceNutrisiController::class)->dataCacheFile(['uuid' => $uuid], 'get_limit', 1, ['uuid', 'judul', 'deskripsi', 'rentang_usia', 'foto', 'link_video'])[0];
+        if (!$nutrisi) {
+            return view('page.Nutrisi.data', ['error' => 'Data Nutrisi tidak ditemukan']);
+        }
         $dataShow = [
-            'dataNutrisi' => app()->make(NutrisiController::class)->dataCacheFile(null, 'get_id'),
+            'nutrisi' => $nutrisi,
             'userAuth' => $request->input('user_auth'),
         ];
         return view('page.Nutrisi.edit',$dataShow);

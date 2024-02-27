@@ -33,6 +33,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
     var csrfToken = "{{ csrf_token() }}";
     var email = "{{ $userAuth['email'] }}";
     var number = "{{ $userAuth['number'] }}";
+    var uuid = "{{ $artikel['uuid'] }}";
     </script>
     <!--  Body Wrapper -->
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
@@ -64,28 +65,33 @@ $tPath = app()->environment('local') ? '' : '/public/';
                     <form id="editForm">
                         <div class="crow">
                             <label for="">Judul Artikel</label>
-                            <input type="text" id="inpJudul">
+                            <input type="text" id="inpJudul" value="{{ $artikel['judul'] }}">
                         </div>
                         <div class="crow">
                             <div>
                                 <label for="">Kategori</label>
                                 <select class="" aria-label="Default select example" id="inpKategori">
-                                    <option value="" selected>Pilih Kategori</option>
-                                    <option value="disi">Digital Literasi</option>
-                                    <option value="emotal">Emosi Mental</option>
-                                    <option value="nutrisi">Nutrisi</option>
-                                    <option value="pengasuhan">Pengasuhan</option>
+                                    <option value="">Pilih Kategori</option>
+                                    <option value="disi" {{ ($artikel['kategori'] == 'disi') ? 'selected' : ''}}>Digital
+                                        Literasi</option>
+                                    <option value="emotal" {{ ($artikel['kategori'] == 'emotal') ? 'selected' : ''}}>
+                                        Emosi Mental</option>
+                                    <option value="nutrisi" {{ ($artikel['kategori'] == 'nutrisi') ? 'selected' : ''}}>
+                                        Nutrisi</option>
+                                    <option value="pengasuhan"
+                                        {{ ($artikel['kategori'] == 'pengasuhan') ? 'selected' : ''}}>Pengasuhan
+                                    </option>
                                 </select>
                             </div>
                             <div>
                                 <label for="">Link Video</label>
-                                <input type="text" id="inpLinkVideo">
+                                <input type="text" id="inpLinkVideo" value="{{ $artikel['link_video'] }}">
                             </div>
                         </div>
                         <div class="crow">
                             <label for="">Deskripsi</label>
                             <textarea name="deskripsi" id="inpDeskripsi" placeholder="Masukkan Isi Artikel" class=""
-                                style="height:120px"></textarea>
+                                style="height:120px">{{ $artikel['deskripsi'] }}</textarea>
                         </div>
                         <div class="img" onclick="handleFileClick()" ondragover="handleDragOver(event)"
                             ondrop="handleDrop(event)">

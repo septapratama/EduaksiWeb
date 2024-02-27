@@ -95,9 +95,9 @@ class NutrisiController extends Controller
             //update Nutrisi
             $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
             foreach($jsonData as $key => $item){
-                if (isset($item['uuid']) && $item['uuid'] == $data['id_nutrisi']) {
+                if (isset($item['uuid']) && $item['uuid'] == $data['uuid']) {
                     $newData = [
-                        'uuid' => $data['id_nutrisi'],
+                        'uuid' => $data['uuid'],
                         'judul' => $data['judul'],
                         'deskripsi' => $data['deskripsi'],
                         'link_video' => $data['link_video'],
@@ -186,21 +186,20 @@ class NutrisiController extends Controller
         return response()->json(['status'=>'success','message'=>'Data Nutrisi berhasil ditambahkan']);
     }
     public function editNutrisi(Request $request){
-        $validator = Validator::make($request->only('id_nutrisi','judul', 'deskripsi', 'link_video', 'rentang_usia', 'foto'), [
-            'id_nutrisi' => 'required',
+        $validator = Validator::make($request->only('uuid','judul', 'deskripsi', 'link_video', 'rentang_usia', 'foto'), [
+            'uuid' => 'required',
             'judul' => 'required|min:6|max:50',
             'deskripsi' => 'required',
             'link_video' => 'nullable',
             'rentang_usia' => 'required',
-            'foto' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
         ], [
-            'id_nutrisi.required' => 'ID nutrisi wajib di isi',
+            'uuid.required' => 'ID nutrisi wajib di isi',
             'judul.required' => 'Judul wajib di isi',
             'judul.min' => 'Judul minimal 6 karakter',
             'judul.max' => 'Judul maksimal 50 karakter',
             'deskripsi.required' => 'deskripsi artikel wajib di isi',
             'rentang_usia.required' => 'Rentang usia wajib di isi',
-            'foto.required' => 'Foto nutrisi wajib di isi',
             'foto.image' => 'Foto nutrisi harus berupa gambar',
             'foto.mimes' => 'Format foto tidak valid. Gunakan format jpeg, png, jpg',
             'foto.max' => 'Ukuran foto tidak boleh lebih dari 5MB',
@@ -213,7 +212,7 @@ class NutrisiController extends Controller
             }
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
-        $nutrisi = Nutrisi::select('foto')->where('uuid',$request->input('id_nutrisi'))->limit(1)->get()[0];
+        $nutrisi = Nutrisi::select('foto')->where('uuid',$request->input('uuid'))->limit(1)->get()[0];
         if (!$nutrisi) {
             return response()->json(['status' =>'error','message'=>'Data Nutrisi tidak ditemukan'], 400);
         }
@@ -233,7 +232,7 @@ class NutrisiController extends Controller
             Storage::disk('nutrisi')->put($fotoName, file_get_contents($file));
         }
         $now = Carbon::now();
-        $edit = $nutrisi->where('uuid',$request->input('id_nutrisi'))->update([
+        $edit = $nutrisi->where('uuid',$request->input('uuid'))->update([
             'judul' => $request->input('judul'),
             'deskripsi' => $request->input('deskripsi'),
             'link_video' => $request->input('link_video'),
@@ -245,7 +244,7 @@ class NutrisiController extends Controller
             return response()->json(['status' =>'error','message'=>'Gagal memperbarui data Nutrisi'], 500);
         }
         $this->dataCacheFile([
-            'id_nutrisi' => $request->input('id_nutrisi'),
+            'uuid' => $request->input('uuid'),
             'judul' => $request->input('judul'),
             'deskripsi' => $request->input('deskripsi'),
             'link_video' => $request->input('link_video'),

@@ -91,9 +91,9 @@ class ArtikelController extends Controller
             //update artikel data
             $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
             foreach($jsonData as $key => $item){
-                if (isset($item['id_artikel']) && $item['id_artikel'] == $data['id_artikel']) {
+                if (isset($item['uuid']) && $item['uuid'] == $data['uuid']) {
                     $newData = [
-                        'uuid' => $data['id_artikel'],
+                        'uuid' => $data['uuid'],
                         'judul' => $data['judul'],
                         'deskripsi' => $data['deskripsi'],
                         'link_video' => $data['link_video'],
@@ -180,15 +180,15 @@ class ArtikelController extends Controller
         return response()->json(['status'=>'success','message'=>'Data Artikel berhasil ditambahkan']);
     }
     public function editArtikel(Request $request){
-        $validator = Validator::make($request->only('id_artikel','judul', 'deskripsi', 'link_video', 'kategori', 'foto'), [
-            'id_artikel' => 'required',
+        $validator = Validator::make($request->only('uuid','judul', 'deskripsi', 'link_video', 'kategori', 'foto'), [
+            'uuid' => 'required',
             'judul' => 'required|min:6|max:50',
             'deskripsi' => 'required',
             'link_video' => 'nullable',
             'kategori' => 'required',
-            'foto' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
         ], [
-            'id_artikel.required' => 'ID artikel wajib di isi',
+            'uuid.required' => 'ID artikel wajib di isi',
             'judul.required' => 'Judul wajib di isi',
             'judul.min' => 'Judul minimal 6 karakter',
             'judul.max' => 'Judul maksimal 50 karakter',
@@ -207,7 +207,7 @@ class ArtikelController extends Controller
             }
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
-        $artikel = Artikel::select('foto')->where('id_artikel',$request->input('id_artikel'))->limit(1)->get()[0];
+        $artikel = Artikel::select('foto')->where('uuid',$request->input('uuid'))->limit(1)->get()[0];
         if (!$artikel) {
             return response()->json(['status' =>'error','message'=>'Data Artikel tidak ditemukan'], 400);
         }
@@ -227,7 +227,7 @@ class ArtikelController extends Controller
             Storage::disk('artikel')->put('foto/' . $fotoName, file_get_contents($file));
         }
         $now = Carbon::now();
-        $edit = $artikel->where('id_artikel',$request->input('id_artikel'))->update([
+        $edit = $artikel->where('uuid',$request->input('uuid'))->update([
             'judul' => $request->input('judul'),
             'deskripsi' => $request->input('deskripsi'),
             'link_video' => $request->input('link_video'),
@@ -239,7 +239,7 @@ class ArtikelController extends Controller
             return response()->json(['status' =>'error','message'=>'Gagal memperbarui data Artikel'], 500);
         }
         $this->dataCacheFile([
-            'id_artikel' => $request->input('id_artikel'),
+            'uuid' => $request->input('uuid'),
             'judul' => $request->input('judul'),
             'deskripsi' => $request->input('deskripsi'),
             'link_video' => $request->input('link_video'),

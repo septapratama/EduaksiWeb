@@ -19,9 +19,13 @@ class DisiController extends Controller
         ];
         return view('page.Disi.tambah',$dataShow);
     }
-    public function showEdit(Request $request, $id){
+    public function showEdit(Request $request, $uuid){
+        $disi = app()->make(ServiceDisiController::class)->dataCacheFile(['uuid' => $uuid], 'get_limit', 1, ['uuid', 'judul', 'deskripsi', 'rentang_usia', 'foto', 'link_video'])[0];
+        if (!$disi) {
+            return view('page.Disi.data', ['error' => 'Data Disi tidak ditemukan']);
+        }
         $dataShow = [
-            'dataDisi' => app()->make(DisiController::class)->dataCacheFile($id, 'get_id'),
+            'disi' => $disi,
             'userAuth' => $request->input('user_auth'),
         ];
         return view('page.Disi.edit',$dataShow);

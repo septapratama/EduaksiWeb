@@ -22,13 +22,13 @@ class KonsultasiController extends Controller
         ];
         return view('page.Konsultasi.tambah',$dataShow);
     }
-    public function showEdit(Request $request, $id){
-        $dataKonsultasi = Konsultasi::select('uuid', 'nama_lengkap','no_telpon')->where('uuid',$id)->limit(1)->get();
-        if (!$dataKonsultasi) {
-            return response()->json(['status' =>'error','message'=>'Data Konsultasi tidak ditemukan'], 400);
+    public function showEdit(Request $request, $uuid){
+        $konsultasi = Konsultasi::select('uuid', 'nama_lengkap','no_telpon')->where('uuid',$uuid)->limit(1)->get();
+        if (!$konsultasi) {
+            return view('page.Konsultasi.data', ['error'=>'Data Konsultasi tidak ditemukan']);
         }
         $dataShow = [
-            'dataKonsultasi' => app()->make(NutrisiController::class)->dataCacheFile(null, 'get_id'),
+            'konsultasi' => $konsultasi,
             'userAuth' => $request->input('user_auth'),
         ];
         return view('page.Konsultasi.edit',$dataShow);

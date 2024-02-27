@@ -19,9 +19,13 @@ class EmotalController extends Controller
         ];
         return view('page.Emotal.tambah',$dataShow);
     }
-    public function showEdit(Request $request){
+    public function showEdit(Request $request, $uuid){
+        $emotal = app()->make(ServiceEmotalController::class)->dataCacheFile(['uuid' => $uuid], 'get_limit', 1, ['uuid', 'judul', 'deskripsi', 'rentang_usia', 'foto', 'link_video'])[0];
+        if (!$emotal) {
+            return view('page.Emotal.data', ['error' => 'Data Emotal tidak ditemukan']);
+        }
         $dataShow = [
-            'dataEmotal' => app()->make(ServiceEmotalController::class)->dataCacheFile(null, 'get_id'),
+            'emotal' => $emotal,
             'userAuth' => $request->input('user_auth'),
         ];
         return view('page.Emotal.edit',$dataShow);

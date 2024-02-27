@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Konsultasi;
+use Carbon\Carbon;
 use Exception;
 class KonsultasiController extends Controller
 {
@@ -30,7 +31,7 @@ class KonsultasiController extends Controller
             $jsonData = json_decode(file_get_contents(self::$jsonFile), true);
             $result = null;
             foreach($jsonData as $key => $item){
-                if (isset($item['id_artikel']) && $item['id_artikel'] == $data['id_artikel']) {
+                if (isset($item['id_konsultasi']) && $item['id_konsultasi'] == $data['id_konsultasi']) {
                     $result = $jsonData[$key];
                 }
             }
@@ -90,9 +91,9 @@ class KonsultasiController extends Controller
             //update disi data
             $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
             foreach($jsonData as $key => $item){
-                if (isset($item['id_artikel']) && $item['id_artikel'] == $data['id_artikel']) {
+                if (isset($item['uuid']) && $item['uuid'] == $data['uuid']) {
                     $newData = [
-                        'uuid' => $data['id_artikel'],
+                        'uuid' => $data['uuid'],
                         'judul' => $data['judul'],
                         'deskripsi' => $data['deskripsi'],
                         'link_video' => $data['link_video'],
@@ -109,7 +110,7 @@ class KonsultasiController extends Controller
             //hapus disi data
             $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
             foreach($jsonData as $key => $item){
-                if (isset($item['id_artikel']) && $item['id_artikel'] == $data['id_artikel']) {
+                if (isset($item['id_konsultasi']) && $item['id_konsultasi'] == $data['id_konsultasi']) {
                     unset($jsonData[$key]);
                 }
             }
@@ -158,23 +159,37 @@ class KonsultasiController extends Controller
         }
         $fotoName = $file->hashName();
         Storage::disk('konsultasi')->put($fotoName, file_get_contents($file));
+        $uuid = Str::uuid();
+        $now = Carbon::now();
         $ins = Konsultasi::insert([
-            'uuid' => Str::uuid(),
+            'uuid' => $uuid,
             'nama_lengkap' => $request->input('nama_lengkap'),
             'jenis_kelamin' => $request->input('jenis_kelamin'),
             'alamat' => $request->input('alamat'),
             'no_telpon' => $request->input('no_telpon'),
             'email' => $request->input('email_konsultasi'),
             'foto' => $fotoName,
+            'created_at' => $now,
+            'updated_at' => $now,
         ]);
         if(!$ins){
             return response()->json(['status'=>'error','message'=>'Gagal menambahkan data Konsultasi'], 500);
         }
+        $this->dataCacheFile([
+            'uuid' => $uuid,
+            'judul' => $request->input('judul'),
+            'deskripsi' => $request->input('deskripsi'),
+            'link_video' => $request->input('link_video'),
+            'rentang_usia' => $request->input('rentang_usia'),
+            'foto' => $fotoName,
+            'created_at' => $now,
+            'updated_at' => $now,
+        ],'tambah');
         return response()->json(['status'=>'success','message'=>'Data Konsultasi berhasil ditambahkan']);
     }
     public function editKonsultasi(Request $request){
-        $validator = Validator::make($request->only('id_konsultasi','nama_lengkap', 'jenis_kelamin', 'alamat', 'no_telpon', 'email_konsultasi', 'foto'), [
-            'id_konsultasi' => 'required',
+        $validator = Validator::make($request->only('uuid','nama_lengkap', 'jenis_kelamin', 'alamat', 'no_telpon', 'email_konsultasi', 'foto'), [
+            'uuid' => 'required',
             'nama_lengkap' => 'required|max:50',
             'jenis_kelamin' => 'required|in:laki-laki,perempuan',
             'alamat' => 'required',
@@ -182,7 +197,7 @@ class KonsultasiController extends Controller
             'email_konsultasi'=>'required|email',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
         ], [
-            'id_konsultasi.required' => 'ID konsultasi wajib di isi',
+            'uuid.required' => 'ID konsultasi wajib di isi',
             'nama_lengkap.required' => 'Nama lengkap wajib di isi',
             'nama_lengkap.max' => 'Nama lengkap maksimal 50 karakter',
             'jenis_kelamin.required' => 'Jenis kelamin wajib di isi',
@@ -203,7 +218,7 @@ class KonsultasiController extends Controller
             }
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
-        $konsultasi = Konsultasi::select('foto')->where('id_konsultasi',$request->input('id_konsultasi'))->limit(1)->get()[0];
+        $konsultasi = Konsultasi::select('foto')->where('uuid',$request->input('uuid'))->limit(1)->get()[0];
         if (!$konsultasi) {
             return response()->json(['status' =>'error','message'=>'Data Konsultasi tidak ditemukan'], 400);
         }
@@ -222,17 +237,28 @@ class KonsultasiController extends Controller
             $fotoName = $file->hashName();
             Storage::disk('konsultasi')->put($fotoName, file_get_contents($file));
         }
-        $edit = $konsultasi->where('id_konsultasi',$request->input('id_konsultasi'))->update([
+        $now = Carbon::now();
+        $edit = $konsultasi->where('uuid',$request->input('uuid'))->update([
             'nama_lengkap' => $request->input('nama_lengkap'),
             'jenis_kelamin' => $request->input('jenis_kelamin'),
             'alamat' => $request->input('alamat'),
             'no_telpon' => $request->input('no_telpon'),
             'email' => $request->input('email_konsultasi'),
             'foto' => $request->hasFile('foto') ? $fotoName : $konsultasi['foto'],
+            'updated_at' => $now,
         ]);
         if(!$edit){
             return response()->json(['status' =>'error','message'=>'Gagal memperbarui data Konsultasi'], 500);
         }
+        $this->dataCacheFile([
+            'uuid' => $request->input('uuid'),
+            'judul' => $request->input('judul'),
+            'deskripsi' => $request->input('deskripsi'),
+            'link_video' => $request->input('link_video'),
+            'rentang_usia' => $request->input('rentang_usia'),
+            'foto' => $request->hasFile('foto') ? $fotoName : $konsultasi['foto'],
+            'updated_at' => $now,
+        ],'update');
         return response()->json(['status' =>'success','message'=>'Data Konsultasi berhasil di perbarui']);
     }
     public function deleteKonsultasi(Request $request){

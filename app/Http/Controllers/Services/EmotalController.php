@@ -95,9 +95,9 @@ class EmotalController extends Controller
             //update Emosi Mental
             $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
             foreach($jsonData as $key => $item){
-                if (isset($item['uuid']) && $item['uuid'] == $data['id_emotal']) {
+                if (isset($item['uuid']) && $item['uuid'] == $data['uuid']) {
                     $newData = [
-                        'uuid' => $data['id_emotal'],
+                        'uuid' => $data['uuid'],
                         'judul' => $data['judul'],
                         'deskripsi' => $data['deskripsi'],
                         'link_video' => $data['link_video'],
@@ -186,21 +186,20 @@ class EmotalController extends Controller
         return response()->json(['status'=>'success','message'=>'Data Emotal berhasil ditambahkan']);
     }
     public function editEmotal(Request $request){
-        $validator = Validator::make($request->only('id_emotal','judul', 'deskripsi', 'link_video', 'rentang_usia', 'foto'), [
-            'id_emotal' => 'required',
+        $validator = Validator::make($request->only('uuid','judul', 'deskripsi', 'link_video', 'rentang_usia', 'foto'), [
+            'uuid' => 'required',
             'judul' => 'required|min:6|max:50',
             'deskripsi' => 'required',
             'link_video' => 'nullable',
             'rentang_usia' => 'required',
-            'foto' => 'required|image|mimes:jpeg,png,jpg,gif|max:5120',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:5120',
         ], [
-            'id_emotal.required' => 'ID emotal wajib di isi',
+            'uuid.required' => 'ID emotal wajib di isi',
             'judul.required' => 'Judul wajib di isi',
             'judul.min' => 'Judul minimal 6 karakter',
             'judul.max' => 'Judul maksimal 50 karakter',
             'deskripsi.required' => 'deskripsi artikel wajib di isi',
             'rentang_usia.required' => 'Rentang usia wajib di isi',
-            'foto.required' => 'Foto emotal wajib di isi',
             'foto.image' => 'Foto emotal harus berupa gambar',
             'foto.mimes' => 'Format foto tidak valid. Gunakan format jpeg, png, jpg',
             'foto.max' => 'Ukuran foto tidak boleh lebih dari 5MB',
@@ -213,7 +212,7 @@ class EmotalController extends Controller
             }
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
-        $emosiMental = Emotal::select('foto')->where('uuid',$request->input('id_emotal'))->limit(1)->get()[0];
+        $emosiMental = Emotal::select('foto')->where('uuid',$request->input('uuid'))->limit(1)->get()[0];
         if (!$emosiMental) {
             return response()->json(['status' =>'error','message'=>'Data Emotal tidak ditemukan'], 400);
         }
@@ -233,7 +232,7 @@ class EmotalController extends Controller
             Storage::disk('emotal')->put($fotoName, file_get_contents($file));
         }
         $now = Carbon::now();
-        $edit = $emosiMental->where('uuid',$request->input('id_emotal'))->update([
+        $edit = $emosiMental->where('uuid',$request->input('uuid'))->update([
             'judul' => $request->input('judul'),
             'deskripsi' => $request->input('deskripsi'),
             'link_video' => $request->input('link_video'),
@@ -245,7 +244,7 @@ class EmotalController extends Controller
             return response()->json(['status' =>'error','message'=>'Gagal memperbarui data Emotal'], 500);
         }
         $this->dataCacheFile([
-            'id_emotal' => $request->input('id_emotal'),
+            'uuid' => $request->input('uuid'),
             'judul' => $request->input('judul'),
             'deskripsi' => $request->input('deskripsi'),
             'link_video' => $request->input('link_video'),

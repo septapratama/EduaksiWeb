@@ -19,9 +19,9 @@ class ArtikelController extends Controller
         ];
         return view('page.Article.tambah',$dataShow);
     }
-    public function showEdit(Request $request, $id){
+    public function showEdit(Request $request, $uuid){
         $dataShow = [
-            'dataArtikel' => app()->make(ServiceArtikelController::class)->dataCacheFile($id, 'get_id'),
+            'artikel' => app()->make(ServiceArtikelController::class)->dataCacheFile(['uuid' => $uuid], 'get_limit', 1, ['uuid', 'judul', 'deskripsi', 'kategori', 'foto', 'link_video'])[0],
             'userAuth' => $request->input('user_auth'),
         ];
         return view('page.Article.edit',$dataShow);

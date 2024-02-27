@@ -71,10 +71,10 @@ $tPath = app()->environment('local') ? '' : '/public/';
                                 <label for="">Rentang Usia</label>
                                 <select class="" aria-label="Default select example" id="inpRentangUsia">
                                     <option value="" selected>Pilih Umur</option>
-                                    <option value="0-3 Tahun">0-3 Tahun</option>
-                                    <option value="4-6 Tahun">4-6 Tahun</option>
-                                    <option value="7-9 Tahun">7-9 Tahun</option>
-                                    <option value="10-12 Tahun">10-12 Tahun</option>
+                                    <option value="0-3 tahun">0-3 Tahun</option>
+                                    <option value="4-6 tahun">4-6 Tahun</option>
+                                    <option value="7-9 tahun">7-9 Tahun</option>
+                                    <option value="10-12 tahun">10-12 Tahun</option>
                                 </select>
                             </div>
                             <div>

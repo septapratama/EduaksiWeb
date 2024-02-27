@@ -1,4 +1,4 @@
-const tambahForm = document.getElementById("tambahForm");
+const editForm = document.getElementById("editForm");
 const inpJudul = document.getElementById("inpJudul");
 const inpRentangUsia = document.getElementById("inpRentangUsia");
 const inpKategori = document.getElementById("inpKategori");
@@ -40,7 +40,7 @@ function handleDrop(event) {
         uploadeFile = file;
     }
 }
-tambahForm.onsubmit = function (event) {
+editForm.onsubmit = function (event) {
     event.preventDefault();
     const judul = inpJudul.value.trim();
     const linkVideo = inpLinkVideo.value.trim();
@@ -53,16 +53,16 @@ tambahForm.onsubmit = function (event) {
         showRedPopup("Deskripsi harus diisi !");
         return;
     }
-    if (!uploadeFile) {
-        showRedPopup("Foto harus dipilih !");
-        return;
-    }
-    if (!allowedFormats.includes(uploadeFile.type)) {
-        showRedPopup("Format Foto harus png, jpeg, jpg !");
-        return;
+    if (uploadeFile) {
+        if (!allowedFormats.includes(uploadeFile.type)) {
+            showRedPopup("Format Foto harus png, jpeg, jpg !");
+            return;
+        }
     }
     showLoading();
     const formData = new FormData();
+    formData.append("_method", 'PUT');
+    formData.append("uuid", uuid);
     formData.append("judul", judul);
     if(reff == '/article'){
         const kategori = inpKategori.value.trim();
@@ -80,10 +80,12 @@ tambahForm.onsubmit = function (event) {
         formData.append("rentang_usia", rentangUsia);
     }
     formData.append("link_video", linkVideo);
+    if (uploadeFile) {
+        formData.append("foto", uploadeFile);
+    }
     formData.append("deskripsi", deskripsi);
-    formData.append("foto", uploadeFile);
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "/admin" + reff + "/tambah");
+    xhr.open("POST", "/admin" + reff + "/update");
     xhr.setRequestHeader("X-CSRF-TOKEN", csrfToken);
     xhr.onload = function () {
         if (xhr.status === 200) {

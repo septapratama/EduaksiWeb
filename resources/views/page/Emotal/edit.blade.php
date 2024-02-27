@@ -33,6 +33,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
     var csrfToken = "{{ csrf_token() }}";
     var email = "{{ $userAuth['email'] }}";
     var number = "{{ $userAuth['number'] }}";
+    var uuid = "{{ $emotal['uuid'] }}";
     </script>
     <!--  Body Wrapper -->
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
@@ -64,28 +65,36 @@ $tPath = app()->environment('local') ? '' : '/public/';
                     <form id="editForm">
                         <div class="crow">
                             <label for="">Judul Emosi Mental</label>
-                            <input type="text" id="inpJudul">
+                            <input type="text" id="inpJudul" value="{{ $emotal['judul'] }}">
                         </div>
                         <div class="crow">
                             <div>
                                 <label for="">Rentang Usia</label>
                                 <select class="" aria-label="Default select example" id="inpRentangUsia" disabled>
                                     <option value="">Pilih Umur</option>
-                                    <option value="0-3 Tahun">0-3 Tahun</option>
-                                    <option value="4-6 Tahun">4-6 Tahun</option>
-                                    <option value="7-9 Tahun">7-9 Tahun</option>
-                                    <option value="10-12 Tahun">10-12 Tahun</option>
+                                    <option value="0-3 tahun"
+                                        {{ ($emotal['rentang_usia'] == '0-3 tahun') ? 'selected' : ''}}>0-3 Tahun
+                                    </option>
+                                    <option value="4-6 tahun"
+                                        {{ ($emotal['rentang_usia'] == '4-6 tahun') ? 'selected' : ''}}>4-6 Tahun
+                                    </option>
+                                    <option value="7-9 tahun"
+                                        {{ ($emotal['rentang_usia'] == '7-9 tahun') ? 'selected' : ''}}>7-9 Tahun
+                                    </option>
+                                    <option value="10-12 tahun"
+                                        {{ ($emotal['rentang_usia'] == '10-12 tahun') ? 'selected' : ''}}>10-12 Tahun
+                                    </option>
                                 </select>
                             </div>
                             <div>
                                 <label for="">Link Video</label>
-                                <input type="text" id="inpLinkVideo">
+                                <input type="text" id="inpLinkVideo" value="{{ $emotal['link_video'] }}">
                             </div>
                         </div>
                         <div class="crow">
                             <label for="">Deskripsi</label>
                             <textarea name="deskripsi" id="inpDeskripsi" placeholder="Masukkan Isi Emosi Mental"
-                                class="" style="height:120px"></textarea>
+                                class="" style="height:120px">{{ $emotal['deskripsi'] }}</textarea>
                         </div>
                         <div class="img" onclick="handleFileClick()" ondragover="handleDragOver(event)"
                             ondrop="handleDrop(event)">

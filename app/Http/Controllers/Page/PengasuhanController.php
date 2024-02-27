@@ -22,10 +22,14 @@ class PengasuhanController extends Controller
         ];
         return view('page.Pengasuhan.tambah',$dataShow);
     }
-    public function showEdit(Request $request){
+    public function showEdit(Request $request, $uuid){
+        $pengasuhan = app()->make(ServicePengasuhanController::class)->dataCacheFile(['uuid' => $uuid], 'get_limit', 1, ['uuid', 'judul', 'deskripsi', 'rentang_usia', 'foto', 'link_video'])[0];
+        if (!$pengasuhan) {
+            return view('page.Pengasuhan.data', ['error' => 'Data Pengasuhan tidak ditemukan']);
+        }
         $dataShow = [
+            'pengasuhan' => $pengasuhan,
             'userAuth' => $request->input('user_auth'),
-            'dataPengasuhan' => app()->make(ServicePengasuhanController::class)->dataCacheFile(null, 'get_id'),
         ];
         return view('page.Pengasuhan.edit',$dataShow);
     }

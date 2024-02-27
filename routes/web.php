@@ -23,75 +23,75 @@ Route::group(['middleware'=>['auth','authorized']],function(){
     //artikel public route
     Route::group(['prefix'=>'/artikel'],function(){
         Route::get('/',[ShowHomeController::class,'showArtikel'])->withoutMiddleware('authorized');
-        Route::get('/{any}',[ShowHomeController::class,'showDetailArtikel'])->withoutMiddleware('authorized');
-    });
-    //disi only admin route
-    Route::group(['prefix'=>'/disi'],function(){
-        Route::get('/',[ShowDisiController::class, 'showData']);
-        // Route::get('/tambah',[ShowDisiController::class, 'showTambah']);
-        Route::get('/edit',[ShowDisiController::class, 'showEdit']);
-    });
-    //emotal only admin route
-    Route::group(['prefix'=>'/emotal'],function(){
-        Route::get('/',[ShowEmotalController::class, 'showData']);
-        // Route::get('/tambah',[ShowEmotalController::class, 'showTambah']);
-        Route::get('/edit',[ShowEmotalController::class, 'showEdit']);
-    });
-    //nutrisi only admin route
-    Route::group(['prefix'=>'/nutrisi'],function(){
-        Route::get('/',[ShowNutrisiController::class, 'showData']);
-        // Route::get('/tambah',[ShowNutrisiController::class, 'showTambah']);
-        Route::get('/edit',[ShowNutrisiController::class, 'showEdit']);
-    });
-    //pengasuhan only admin route
-    Route::group(['prefix'=>'/pengasuhan'],function(){
-        Route::get('/',[ShowPengasuhanController::class, 'showData']);
-        // Route::get('/tambah',[ShowPengasuhanController::class, 'showTambah']);
-        Route::get('/edit',[ShowPengasuhanController::class, 'showEdit']);
-    });
-    //konsultasi only admin route
-    Route::group(['prefix'=>'/konsultasi'],function(){
-        Route::get('/',[ShowKonsultasiController::class, 'showData']);
-        Route::get('/tambah',[ShowKonsultasiController::class, 'showTambah']);
-        Route::get('/edit',[ShowKonsultasiController::class, 'showEdit']);
+        Route::get('/edit/{any}',[ShowHomeController::class,'showDetailArtikel'])->withoutMiddleware('authorized');
     });
     //article only admin route
     Route::group(['prefix'=>'/article'],function(){
         Route::get('/',[ShowArtikelController::class, 'showData']);
         Route::get('/tambah',[ShowArtikelController::class, 'showTambah']);
-        Route::get('/edit',[ShowArtikelController::class, 'showEdit']);
+        Route::get('/edit/{any}',[ShowArtikelController::class, 'showEdit']);
+    });
+    //disi only admin route
+    Route::group(['prefix'=>'/disi'],function(){
+        Route::get('/',[ShowDisiController::class, 'showData']);
+        Route::get('/tambah',[ShowDisiController::class, 'showTambah']);
+        Route::get('/edit/{any}',[ShowDisiController::class, 'showEdit']);
+    });
+    //emotal only admin route
+    Route::group(['prefix'=>'/emotal'],function(){
+        Route::get('/',[ShowEmotalController::class, 'showData']);
+        // Route::get('/tambah',[ShowEmotalController::class, 'showTambah']);
+        Route::get('/edit/{any}',[ShowEmotalController::class, 'showEdit']);
+    });
+    //konsultasi only admin route
+    Route::group(['prefix'=>'/konsultasi'],function(){
+        Route::get('/',[ShowKonsultasiController::class, 'showData']);
+        Route::get('/tambah',[ShowKonsultasiController::class, 'showTambah']);
+        Route::get('/edit/{any}',[ShowKonsultasiController::class, 'showEdit']);
+    });
+    //nutrisi only admin route
+    Route::group(['prefix'=>'/nutrisi'],function(){
+        Route::get('/',[ShowNutrisiController::class, 'showData']);
+        // Route::get('/tambah',[ShowNutrisiController::class, 'showTambah']);
+        Route::get('/edit/{any}',[ShowNutrisiController::class, 'showEdit']);
+    });
+    //pengasuhan only admin route
+    Route::group(['prefix'=>'/pengasuhan'],function(){
+        Route::get('/',[ShowPengasuhanController::class, 'showData']);
+        // Route::get('/tambah',[ShowPengasuhanController::class, 'showTambah']);
+        Route::get('/edit/{any}',[ShowPengasuhanController::class, 'showEdit']);
     });
     //API only admin route
     Route::group(['prefix'=>'/admin'],function(){
-        Route::group(['prefix'=>'/emotal'],function(){
-            // Route::post('/tambah', [EmotalController::class, 'tambahEmotal']);
-            Route::put('/update', [EmotalController::class, 'editEmotal']);
-            Route::delete('/delete', [EmotalController::class, 'deleteEmotal']);
+        Route::group(['prefix'=>'/article'],function(){
+            Route::post('/tambah', [ArtikelController::class, 'tambahArtikel']);
+            Route::put('/update', [ArtikelController::class, 'editArtikel']);
+            Route::delete('/delete', [ArtikelController::class, 'deleteArtikel']);
         });
         Route::group(['prefix'=>'/disi'],function(){
             // Route::post('/tambah', [DisiController::class, 'tambahDisi']);
             Route::put('/update', [DisiController::class, 'editDisi']);
             Route::delete('/delete', [DisiController::class, 'deleteDisi']);
         });
-        Route::group(['prefix'=>'/pengasuhan'],function(){
-            // Route::post('/tambah', [PengasuhanController::class, 'tambahPengasuhan']);
-            Route::put('/update', [PengasuhanController::class, 'editPengasuhan']);
-            Route::delete('/delete', [PengasuhanController::class, 'deletePengasuhan']);
-        });
-        Route::group(['prefix'=>'/nutrisi'],function(){
-            // Route::post('/tambah', [NutrisiController::class, 'tambahNutrisi']);
-            Route::put('/update', [NutrisiController::class, 'editNutrisi']);
-            Route::delete('/delete', [NutrisiController::class, 'deleteNutrisi']);
+        Route::group(['prefix'=>'/emotal'],function(){
+            // Route::post('/tambah', [EmotalController::class, 'tambahEmotal']);
+            Route::put('/update', [EmotalController::class, 'editEmotal']);
+            Route::delete('/delete', [EmotalController::class, 'deleteEmotal']);
         });
         Route::group(['prefix'=>'/konsultasi'],function(){
             Route::post('/tambah', [KonsultasiController::class, 'tambahKonsultasi']);
             Route::put('/update', [KonsultasiController::class, 'editKonsultasi']);
             Route::delete('/delete', [KonsultasiController::class, 'deleteKonsultasi']);
         });
-        Route::group(['prefix'=>'/article'],function(){
-            Route::post('/tambah', [ArtikelController::class, 'tambahArtikel']);
-            Route::put('/update', [ArtikelController::class, 'editArtikel']);
-            Route::delete('/delete', [ArtikelController::class, 'deleteArtikel']);
+        Route::group(['prefix'=>'/nutrisi'],function(){
+            // Route::post('/tambah', [NutrisiController::class, 'tambahNutrisi']);
+            Route::put('/update', [NutrisiController::class, 'editNutrisi']);
+            Route::delete('/delete', [NutrisiController::class, 'deleteNutrisi']);
+        });
+        Route::group(['prefix'=>'/pengasuhan'],function(){
+            // Route::post('/tambah', [PengasuhanController::class, 'tambahPengasuhan']);
+            Route::put('/update', [PengasuhanController::class, 'editPengasuhan']);
+            Route::delete('/delete', [PengasuhanController::class, 'deletePengasuhan']);
         });
         //page admin
         Route::get('/',[ShowAdminController::class,'showAdmin']);

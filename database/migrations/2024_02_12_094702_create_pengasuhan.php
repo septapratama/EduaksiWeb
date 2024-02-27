@@ -14,7 +14,7 @@ return new class extends Migration
             $table->string('judul');
             $table->longText('deskripsi');
             $table->string('link_video')->nullable();
-            $table->string('rentang_usia');
+            $table->enum('rentang_usia',['0-3 tahun', '4-6 tahun', '7-9 tahun', '10-12 tahun']);
             $table->text('foto');
             $table->timestamps();
         });
