@@ -48,7 +48,12 @@ class NutrisiSeeder extends Seeder
     {
         foreach ($this->dataSeeder() as $nutrisi) {
             Nutrisi::insert($nutrisi);
-            Storage::disk('nutrisi')->put($nutrisi['foto'], file_get_contents(database_path('seeders/image/Nutrisi/' . $nutrisi['foto'])));
+            $destinationPath = public_path('img/nutrisi/' . $nutrisi['foto']);
+            $directory = dirname($destinationPath);
+            if (!file_exists($directory)) {
+                mkdir($directory, 0755, true);
+            }
+            copy(database_path('seeders/image/Nutrisi/' . $nutrisi['foto']), $destinationPath);
         }
     }
 }

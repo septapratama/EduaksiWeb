@@ -14,22 +14,26 @@ $tPath = app()->environment('local') ? '' : '/public/';
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{{ asset($tPath.'assets/css/styles.min.css') }}" />
     <style>
-        th{
-            white-space: nowrap;
-        }
-        th:nth-child(2) {
-            width: 100%;
-        }
-        td:last-child{
-            position: relative;
-            display: flex;
-            flex-direction: row;
-        }
-        td:last-child a, td:last-child button{
-            display: flex;
-            align-items: center;
-            gap: 7px;
-        }
+    th {
+        white-space: nowrap;
+    }
+
+    th:nth-child(2) {
+        width: 100%;
+    }
+
+    td:last-child {
+        position: relative;
+        display: flex;
+        flex-direction: row;
+    }
+
+    td:last-child a,
+    td:last-child button {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+    }
     </style>
 </head>
 
@@ -44,11 +48,11 @@ $tPath = app()->environment('local') ? '' : '/public/';
     </script>
     @endif
     <script>
-        const domain = window.location.protocol + '//' + window.location.hostname + ":" + window.location.port;
-        const reff = '/admin';
-        var csrfToken = "{{ csrf_token() }}";
-        var email = "{{ $userAuth['email'] }}";
-        var number = "{{ $userAuth['number'] }}";
+    const domain = window.location.protocol + '//' + window.location.hostname + ":" + window.location.port;
+    const reff = '/admin';
+    var csrfToken = "{{ csrf_token() }}";
+    var email = "{{ $userAuth['email'] }}";
+    var number = "{{ $userAuth['number'] }}";
     </script>
     <!--  Body Wrapper -->
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
@@ -119,8 +123,13 @@ $tPath = app()->environment('local') ? '' : '/public/';
                                                 <p class="mb-0 fw-normal">{{ $data['email']}}</p>
                                             </td>
                                             <td class="border-bottom-0">
-                                                <a href="/admin/edit/{{ $data['uuid'] }}" class="btn btn-warning m-1"><img src="{{ asset($tPath.'img/icon/edit.svg') }}" alt=""><span>Edit</span></a>
-                                                <button type="button" class="btn btn-danger m-1"><img src="{{ asset($tPath.'img/icon/delete.svg') }}" alt=""><span>Hapus</span></button>
+                                                <a href="/admin/edit/{{ $data['uuid'] }}"
+                                                    class="btn btn-warning m-1"><img
+                                                        src="{{ asset($tPath.'img/icon/edit.svg') }}"
+                                                        alt=""><span>Edit</span></a>
+                                                <button type="button" class="btn btn-danger m-1"><img
+                                                        src="{{ asset($tPath.'img/icon/delete.svg') }}"
+                                                        alt=""><span>Hapus</span></button>
                                             </td>
                                         </tr>
                                         @endforeach

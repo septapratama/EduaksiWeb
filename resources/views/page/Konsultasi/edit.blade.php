@@ -28,11 +28,11 @@ $tPath = app()->environment('local') ? '' : '/public/';
     </script>
     @endif
     <script>
-        const domain = window.location.protocol + '//' + window.location.hostname + ":" + window.location.port;
-        const reff = '/konsultasi';
-        var csrfToken = "{{ csrf_token() }}";
-        var email = "{{ $userAuth['email'] }}";
-        var number = "{{ $userAuth['number'] }}";
+    const domain = window.location.protocol + '//' + window.location.hostname + ":" + window.location.port;
+    const reff = '/konsultasi';
+    var csrfToken = "{{ csrf_token() }}";
+    var email = "{{ $userAuth['email'] }}";
+    var number = "{{ $userAuth['number'] }}";
     </script>
     <!--  Body Wrapper -->
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
@@ -59,7 +59,8 @@ $tPath = app()->environment('local') ? '' : '/public/';
                         </ol>
                     </nav>
                 </div>
-                <div class="d-flex align-items-stretch" style="background-color: #ffffff; border-radius: 20px; box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
+                <div class="d-flex align-items-stretch"
+                    style="background-color: #ffffff; border-radius: 20px; box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
                     <form id="tambahForm">
                         <div class="crow">
                             <label for="">Nama Lengkap</label>
@@ -89,10 +90,12 @@ $tPath = app()->environment('local') ? '' : '/public/';
                                 style="height:120px"></textarea>
                         </div>
                         <div class="img" onclick="handleFileClick()" ondragover="handleDragOver(event)"
-                            ondrop="handleDrop(event)">
-                            <img src="{{ asset($tPath.'img/icon/upload.svg') }}" alt="">
+                            ondrop="handleDrop(event)"
+                            style="{{ $konsultasi['foto'] ? '' : 'border: 4px dashed #b1b1b1;'}}">
+                            <img src="{{ asset($tPath.'img/icon/upload.svg') }}" alt="" id="icon">
                             <span>Pilih File atau Jatuhkan File</span>
                             <input type="file" id="inpFoto" hidden onchange="handleFileChange(event)">
+                            <img src="{{ asset($tPath.'img/konsultasi/' . $konsultasi['foto']) }}" alt="" id="file">
                         </div>
                         <div class="crow">
                             <a href="/konsultasi" class="btn btn-danger">Kembali</a>
@@ -119,4 +122,5 @@ $tPath = app()->environment('local') ? '' : '/public/';
     <script src="{{ asset($tPath.'js/page/editKonsultasi.js') }}"></script>
     <script src="{{ asset($tPath.'js/popup.js') }}"></script>
 </body>
+
 </html>

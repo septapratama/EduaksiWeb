@@ -97,10 +97,12 @@ $tPath = app()->environment('local') ? '' : '/public/';
                                 class="" style="height:120px">{{ $emotal['deskripsi'] }}</textarea>
                         </div>
                         <div class="img" onclick="handleFileClick()" ondragover="handleDragOver(event)"
-                            ondrop="handleDrop(event)">
-                            <img src="{{ asset($tPath.'img/icon/upload.svg') }}" alt="">
+                            ondrop="handleDrop(event)"
+                            style="{{ $emotal['foto'] ? '' : 'border: 4px dashed #b1b1b1;'}}">
+                            <img src="{{ asset($tPath.'img/icon/upload.svg') }}" alt="" id="icon">
                             <span>Pilih File atau Jatuhkan File</span>
                             <input type="file" id="inpFoto" hidden onchange="handleFileChange(event)">
+                            <img src="{{ asset($tPath.'img/emosi_mental/' . $emotal['foto']) }}" alt="" id="file">
                         </div>
                         <div class="crow">
                             <a href="/emotal" class="btn btn-danger">Kembali</a>

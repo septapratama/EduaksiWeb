@@ -23,6 +23,13 @@ function handleFileChange(event) {
             return;
         }
         uploadeFile = file;
+        const fileReader = new FileReader();
+        fileReader.onload = function() {
+            document.getElementById('file').src = fileReader.result;
+            document.getElementById('file').style.display = 'block';
+            document.querySelector('div.img').style.border = 'none';
+        };
+        fileReader.readAsDataURL(uploadeFile);
     }
 }
 function handleDragOver(event) {

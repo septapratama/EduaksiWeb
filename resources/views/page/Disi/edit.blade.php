@@ -94,10 +94,11 @@ $tPath = app()->environment('local') ? '' : '/public/';
                                 class="" style="height:120px">{{ $disi['deskripsi'] }}</textarea>
                         </div>
                         <div class="img" onclick="handleFileClick()" ondragover="handleDragOver(event)"
-                            ondrop="handleDrop(event)">
-                            <img src="{{ asset($tPath.'img/icon/upload.svg') }}" alt="">
+                            ondrop="handleDrop(event)" style="{{ $disi['foto'] ? '' : 'border: 4px dashed #b1b1b1;'}}">
+                            <img src="{{ asset($tPath.'img/icon/upload.svg') }}" alt="" id="icon">
                             <span>Pilih File atau Jatuhkan File</span>
                             <input type="file" id="inpFoto" hidden onchange="handleFileChange(event)">
+                            <img src="{{ asset($tPath.'img/digital_literasi/' . $disi['foto']) }}" alt="" id="file">
                         </div>
                         <div class="crow">
                             <a href="/disi" class="btn btn-danger">Kembali</a>

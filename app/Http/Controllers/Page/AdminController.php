@@ -7,7 +7,7 @@ use App\Http\Controllers\Services\NutrisiController;
 use App\Http\Controllers\Services\PengasuhanController;
 use App\Http\Controllers\Services\KonsultasiController;
 use App\Http\Controllers\Services\ArtikelController;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\User;
 use DateTime;
@@ -81,7 +81,7 @@ class AdminController extends Controller
     //only admin
     public function showAdmin(Request $request){
         $userAuth = $request->input('user_auth');
-        $adminData = User::select('nama_lengkap', 'no_telpon', 'email')->where('role','admin')->get();
+        $adminData = User::select('uuid', 'nama_lengkap', 'no_telpon', 'email')->where('role','admin')->get();
         $dataShow = [
             'userAuth' => $userAuth,
             'adminData' => $adminData ?? '',
@@ -95,11 +95,11 @@ class AdminController extends Controller
         ];
         return view('page.admin.tambah',$dataShow);
     }
-    public function showAdminEdit(Request $request, $idUser){
-        $userAuth = $request->input('user_auth');
-        $adminData = User::select('id_user','nama_lengkap', 'no_telpon', 'jenis_kelamin', DB::raw('DATE(tanggal_lahir) AS tanggal_lahir'), 'tempat_lahir' ,'role', 'email')->whereNotIn('role', ['masyarakat', 'super admin'])->whereRaw("BINARY id_user = ?",[$idUser])->limit(1)->get()[0];
+    public function showAdminEdit(Request $request, $uuid){
+        $adminData = User::select('uuid','nama_lengkap', 'jenis_kelamin', 'no_telpon','role', 'email')->whereNotIn('role', ['user'])->whereRaw("BINARY uuid = ?",[$uuid])->limit(1)->get()[0];
+        $adminData['foto'] = Str::random();
         $dataShow = [
-            'userAuth' => $userAuth,
+            'userAuth' => $request->input('user_auth'),
             'adminData' => $adminData ?? '',
         ];
         return view('page.admin.edit',$dataShow);

@@ -112,7 +112,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
                                                 </span>
                                             </td>
                                             <td class="border-bottom-0">
-                                                <a href="/article/{{ $data['uuid'] }}"
+                                                <a href="/article/edit/{{ $data['uuid'] }}"
                                                     class="btn btn-warning m-1"><img
                                                         src="{{ asset($tPath.'img/icon/edit.svg') }}"
                                                         alt=""><span>Edit</span></a>

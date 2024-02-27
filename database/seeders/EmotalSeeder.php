@@ -48,7 +48,12 @@ class EmotalSeeder extends Seeder
     {
         foreach ($this->dataSeeder() as $emotal) {
             Emotal::insert($emotal);
-            Storage::disk('emotal')->put($emotal['foto'], file_get_contents(database_path('seeders/image/Emotal/' . $emotal['foto'])));
+            $destinationPath = public_path('img/emosi_mental/' . $emotal['foto']);
+            $directory = dirname($destinationPath);
+            if (!file_exists($directory)) {
+                mkdir($directory, 0755, true);
+            }
+            copy(database_path('seeders/image/Emotal/' . $emotal['foto']), $destinationPath);
         }
     }
 }

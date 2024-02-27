@@ -40,7 +40,7 @@ Route::group(['middleware'=>['auth','authorized']],function(){
     //emotal only admin route
     Route::group(['prefix'=>'/emotal'],function(){
         Route::get('/',[ShowEmotalController::class, 'showData']);
-        // Route::get('/tambah',[ShowEmotalController::class, 'showTambah']);
+        Route::get('/tambah',[ShowEmotalController::class, 'showTambah']);
         Route::get('/edit/{any}',[ShowEmotalController::class, 'showEdit']);
     });
     //konsultasi only admin route
@@ -52,19 +52,20 @@ Route::group(['middleware'=>['auth','authorized']],function(){
     //nutrisi only admin route
     Route::group(['prefix'=>'/nutrisi'],function(){
         Route::get('/',[ShowNutrisiController::class, 'showData']);
-        // Route::get('/tambah',[ShowNutrisiController::class, 'showTambah']);
+        Route::get('/tambah',[ShowNutrisiController::class, 'showTambah']);
         Route::get('/edit/{any}',[ShowNutrisiController::class, 'showEdit']);
     });
     //pengasuhan only admin route
     Route::group(['prefix'=>'/pengasuhan'],function(){
         Route::get('/',[ShowPengasuhanController::class, 'showData']);
-        // Route::get('/tambah',[ShowPengasuhanController::class, 'showTambah']);
+        Route::get('/tambah',[ShowPengasuhanController::class, 'showTambah']);
         Route::get('/edit/{any}',[ShowPengasuhanController::class, 'showEdit']);
     });
     //download only for admin
     Route::group(['prefix'=>'/public'],function(){
         Route::group(['prefix'=>'/download'],function(){
             Route::get('/foto',[AdminController::class,'getFotoProfile'])->name('download.foto');
+            Route::get('/foto/{id}',[AdminController::class,'getFotoAdmin']);
         });
     });
     //API only admin route
@@ -102,10 +103,10 @@ Route::group(['middleware'=>['auth','authorized']],function(){
         //page admin
         Route::get('/',[ShowAdminController::class,'showAdmin']);
         Route::get('/tambah',[ShowAdminController::class,'showAdminTambah']);
-        Route::get('/edit',[ShowAdminController::class,'showAdminEdit']);
+        Route::get('/edit/{any}',[ShowAdminController::class,'showAdminEdit']);
         // route for admin
         Route::post('/tambah',[AdminController::class,'tambahAdmin']);
-        Route::put('/edit',[AdminController::class,'editAdmin']);
+        Route::put('/update',[AdminController::class,'editAdmin']);
         Route::delete('/delete',[AdminController::class,'hapusAdmin']);
         Route::post('/login',[LoginController::class,'Login']);
         Route::post('/logout',[AdminController::class,'logout']);

@@ -67,8 +67,12 @@ class ArtikelSeeder extends Seeder
     {
         foreach ($this->dataSeeder() as $artikel) {
             Artikel::insert($artikel);
-            Storage::disk('artikel')->put($artikel['foto'], file_get_contents(database_path('seeders/image/Artikel/' . $artikel['foto'])));
-            copy(database_path('seeders/image/Artikel/' . $artikel['foto']), public_path('img/artikel/' . $artikel['foto']));
+            $destinationPath = public_path('img/artikel/' . $artikel['foto']);
+            $directory = dirname($destinationPath);
+            if (!file_exists($directory)) {
+                mkdir($directory, 0755, true);
+            }
+            copy(database_path('seeders/image/Artikel/' . $artikel['foto']), $destinationPath);
         }
     }
 }

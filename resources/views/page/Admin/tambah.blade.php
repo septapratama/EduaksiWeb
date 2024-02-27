@@ -28,11 +28,11 @@ $tPath = app()->environment('local') ? '' : '/public/';
     </script>
     @endif
     <script>
-        const domain = window.location.protocol + '//' + window.location.hostname + ":" + window.location.port;
-        const reff = '/admin';
-        var csrfToken = "{{ csrf_token() }}";
-        var email = "{{ $userAuth['email'] }}";
-        var number = "{{ $userAuth['number'] }}";
+    const domain = window.location.protocol + '//' + window.location.hostname + ":" + window.location.port;
+    const reff = '/admin';
+    var csrfToken = "{{ csrf_token() }}";
+    var email = "{{ $userAuth['email'] }}";
+    var number = "{{ $userAuth['number'] }}";
     </script>
     <!--  Body Wrapper -->
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
@@ -89,16 +89,12 @@ $tPath = app()->environment('local') ? '' : '/public/';
                                 <input type="password" id="inpPassword">
                             </div>
                         </div>
-                        <div class="crow">
-                            <label for="">Alamat</label>
-                            <textarea name="deskripsi" id="inpAlamat" placeholder="Masukkan Isi Admin" class=""
-                                style="height:120px"></textarea>
-                        </div>
                         <div class="img" onclick="handleFileClick()" ondragover="handleDragOver(event)"
                             ondrop="handleDrop(event)">
                             <img src="{{ asset($tPath.'img/icon/upload.svg') }}" alt="">
                             <span>Pilih File atau Jatuhkan File</span>
                             <input type="file" id="inpFoto" hidden onchange="handleFileChange(event)">
+                            <img src="" alt="" id="file" style="display:none">
                         </div>
                         <div class="crow">
                             <a href="/admin" class="btn btn-danger">Kembali</a>
@@ -125,4 +121,5 @@ $tPath = app()->environment('local') ? '' : '/public/';
     <script src="{{ asset($tPath.'js/page/tambahAdmin.js') }}"></script>
     <script src="{{ asset($tPath.'js/popup.js') }}"></script>
 </body>
+
 </html>

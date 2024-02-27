@@ -28,11 +28,11 @@ $tPath = app()->environment('local') ? '' : '/public/';
     </script>
     @endif
     <script>
-        const domain = window.location.protocol + '//' + window.location.hostname + ":" + window.location.port;
-        const reff = '/admin';
-        var csrfToken = "{{ csrf_token() }}";
-        var email = "{{ $userAuth['email'] }}";
-        var number = "{{ $userAuth['number'] }}";
+    const domain = window.location.protocol + '//' + window.location.hostname + ":" + window.location.port;
+    const reff = '/admin';
+    var csrfToken = "{{ csrf_token() }}";
+    var email = "{{ $userAuth['email'] }}";
+    var number = "{{ $userAuth['number'] }}";
     </script>
     <!--  Body Wrapper -->
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
@@ -63,42 +63,42 @@ $tPath = app()->environment('local') ? '' : '/public/';
                     <form id="tambahForm">
                         <div class="crow">
                             <label for="">Nama Lengkap</label>
-                            <input type="text" id="inpNama">
+                            <input type="text" id="inpNama" value="{{ $adminData['nama_lengkap']}}">
                         </div>
                         <div class="crow">
                             <div>
                                 <label for="">Jenis Kelamin</label>
                                 <select class="" aria-label="Default select example" id="inpJenisKelamin">
-                                    <option value="" selected>Pilih Kelamin</option>
-                                    <option value="laki-laki">Laki-Laki</option>
-                                    <option value="perempuan">Perempuan</option>
+                                    <option value="laki-laki"
+                                        {{ ($adminData['jenis_kelamin'] == 'laki-laki') ? 'selected' : ''}}>Laki-Laki
+                                    </option>
+                                    <option value="perempuan"
+                                        {{ ($adminData['jenis_kelamin'] == 'perempuan') ? 'selected' : ''}}>Perempuan
+                                    </option>
                                 </select>
                             </div>
                             <div>
                                 <label for="">Nomer Telepon</label>
-                                <input type="text" id="inpNomerTelepon">
+                                <input type="text" id="inpNomerTelepon" value="{{ $adminData['no_telpon']}}">
                             </div>
                         </div>
                         <div class="crow">
                             <div>
                                 <label for="">Email</label>
-                                <input type="text" id="inpEmail">
+                                <input type="text" id="inpEmail" value="{{ $adminData['email']}}">
                             </div>
                             <div>
                                 <label for="">Password</label>
                                 <input type="password" id="inpPassword">
                             </div>
                         </div>
-                        <div class="crow">
-                            <label for="">Alamat</label>
-                            <textarea name="deskripsi" id="inpAlamat" placeholder="Masukkan Isi Admin" class=""
-                                style="height:120px"></textarea>
-                        </div>
                         <div class="img" onclick="handleFileClick()" ondragover="handleDragOver(event)"
-                            ondrop="handleDrop(event)">
+                            ondrop="handleDrop(event)"
+                            style="{{ $adminData['foto'] ? '' : 'border: 4px dashed #b1b1b1;'}}">
                             <img src="{{ asset($tPath.'img/icon/upload.svg') }}" alt="">
                             <span>Pilih File atau Jatuhkan File</span>
                             <input type="file" id="inpFoto" hidden onchange="handleFileChange(event)">
+                            <img src="{{ '/public/download/foto/'. $adminData['uuid'] }}" alt="" id="file">
                         </div>
                         <div class="crow">
                             <a href="/admin" class="btn btn-danger">Kembali</a>
@@ -125,4 +125,5 @@ $tPath = app()->environment('local') ? '' : '/public/';
     <script src="{{ asset($tPath.'js/page/editAdmin.js') }}"></script>
     <script src="{{ asset($tPath.'js/popup.js') }}"></script>
 </body>
+
 </html>

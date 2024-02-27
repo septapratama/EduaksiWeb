@@ -48,7 +48,12 @@ class DisiSeeder extends Seeder
     {
         foreach ($this->dataSeeder() as $disi) {
             Disi::insert($disi);
-            Storage::disk('disi')->put($disi['foto'], file_get_contents(database_path('seeders/image/Disi/' . $disi['foto'])));
+            $destinationPath = public_path('img/digital_literasi/' . $disi['foto']);
+            $directory = dirname($destinationPath);
+            if (!file_exists($directory)) {
+                mkdir($directory, 0755, true);
+            }
+            copy(database_path('seeders/image/Disi/' . $disi['foto']), $destinationPath);
         }
     }
 }

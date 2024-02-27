@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+Use Illuminate\Support\Facades\Storage;
+Use Illuminate\Support\Facades\Crypt;
 Use Illuminate\Support\Facades\Hash;
 Use Illuminate\Support\Str;
 use App\Models\User;
@@ -20,11 +22,12 @@ class AdminSeeder extends Seeder
             'role'=>'admin',
             'email'=>"Admin@gmail.com",
             'password'=>Hash::make('Admin@1234567890'),
-            'foto'=>Str::random(5),
+            'foto'=>'3.jpeg',
             'verifikasi'=>true,
             'created_at'=>Carbon::now(),
             'updated_at'=>Carbon::now()
         ]);
+        Storage::disk('admin')->put('/foto/3.jpeg', Crypt::encrypt(file_get_contents(database_path('seeders/image/Admin/3.jpeg'))));
         for($i = 1; $i <= 3; $i++){
             User::insert([
                 'uuid' =>  Str::uuid(),
@@ -35,11 +38,16 @@ class AdminSeeder extends Seeder
                 'role'=>'admin',
                 'email'=>"Admin".$i."@gmail.com",
                 'password'=>Hash::make('Admin@1234567890'),
-                'foto'=>Str::random(5),
+                'foto'=>'2.jpg',
                 'verifikasi'=>true,
                 'created_at'=>Carbon::now(),
                 'updated_at'=>Carbon::now()
             ]);
+            Storage::disk('admin')->put('/foto/2.jpg', Crypt::encrypt(file_get_contents(database_path('seeders/image/Admin/2.jpg'))));
+        }
+        $directory = storage_path('app/database');
+        if (!file_exists($directory)) {
+            mkdir($directory, 0755, true);
         }
     }
 }

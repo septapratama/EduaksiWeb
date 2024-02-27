@@ -48,7 +48,12 @@ class PengasuhanSeeder extends Seeder
     {
         foreach ($this->dataSeeder() as $pengasuhan) {
             Pengasuhan::insert($pengasuhan);
-            Storage::disk('pengasuhan')->put($pengasuhan['foto'], file_get_contents(database_path('seeders/image/Pengasuhan/' . $pengasuhan['foto'])));
+            $destinationPath = public_path('img/pengasuhan/' . $pengasuhan['foto']);
+            $directory = dirname($destinationPath);
+            if (!file_exists($directory)) {
+                mkdir($directory, 0755, true);
+            }
+            copy(database_path('seeders/image/Pengasuhan/' . $pengasuhan['foto']), $destinationPath);
         }
     }
 }

@@ -92,6 +92,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
                             <img src="{{ asset($tPath.'img/icon/upload.svg') }}" alt="">
                             <span>Pilih File atau Jatuhkan File</span>
                             <input type="file" id="inpFoto" hidden onchange="handleFileChange(event)">
+                            <img src="" alt="" id="file" style="display:none">
                         </div>
                         <div class="crow">
                             <a href="/article" class="btn btn-danger">Kembali</a>
