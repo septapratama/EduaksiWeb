@@ -156,8 +156,13 @@ class PengasuhanController extends Controller
         if(!($file->isValid() && in_array($file->extension(), ['jpeg', 'png', 'jpg']))){
             return response()->json(['status'=>'error','message'=>'Format Foto tidak valid. Gunakan format jpeg, png, jpg'], 400);
         }
+        if(app()->environment('local')){
+            $destinationPath = public_path('img/pengasuhan');
+        }else{
+            $destinationPath = base_path('../public_html/public/img/pengasuhan/');
+        }
         $fotoName = $file->hashName();
-        Storage::disk('pengasuhan')->put($fotoName, file_get_contents($file));
+        $file->move($destinationPath, $fotoName);
         $now = Carbon::now();
         $uuid = Str::uuid();
         $ins = Pengasuhan::insertGetId([
@@ -222,14 +227,17 @@ class PengasuhanController extends Controller
             if(!($file->isValid() && in_array($file->extension(), ['jpeg', 'png', 'jpg']))){
                 return response()->json(['status'=>'error','message'=>'Format Foto tidak valid. Gunakan format jpeg, png, jpg'], 400);
             }
-            $destinationPath = storage_path('app/pengasuhan/');
+            if(app()->environment('local')){
+                $destinationPath = public_path('img/pengasuhan');
+            }else{
+                $destinationPath = base_path('../public_html/public/img/pengasuhan/');
+            }
             $fileToDelete = $destinationPath . $pengasuhan['foto'];
             if (file_exists($fileToDelete) && !is_dir($fileToDelete)) {
                 unlink($fileToDelete);
             }
-            Storage::disk('pengasuhan')->delete($pengasuhan['foto']);
             $fotoName = $file->hashName();
-            Storage::disk('pengasuhan')->put($fotoName, file_get_contents($file));
+            $file->move($destinationPath, $fotoName);
         }
         $now = Carbon::now();
         $edit = $pengasuhan->where('uuid',$request->input('uuid'))->update([

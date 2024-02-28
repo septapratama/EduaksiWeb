@@ -17,7 +17,6 @@ class UserSeeder extends Seeder
                 'nama_lengkap'=>'User'.$i,
                 'jenis_kelamin'=>['laki-laki', 'perempuan'][rand(0, 1)],
                 'no_telpon'=>'0852'.mt_rand(10000000,99999999),
-                'alamat'=>'Jalan surabaya',
                 'role'=>'user',
                 'email'=>"UserTesting".$i."@gmail.com",
                 'password'=>Hash::make('Admin@1234567890'),

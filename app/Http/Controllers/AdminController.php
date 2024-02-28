@@ -52,14 +52,11 @@ class AdminController extends Controller
         }
     }
     public function tambahAdmin(Request $request){
-        $validator = Validator::make($request->only('email_new','nama_lengkap','jenis_kelamin','no_telpon','tempat_lahir','tanggal_lahir','role','password','foto'), [
-            'email_new'=>'required|email',
+        $validator = Validator::make($request->only('email_admin','nama_lengkap','jenis_kelamin','no_telpon','password','foto'), [
+            'email_admin'=>'required|email',
             'nama_lengkap' => 'required|max:50',
             'jenis_kelamin' => 'required|in:laki-laki,perempuan',
             'no_telpon' => 'required|digits_between:11,13',
-            'tempat_lahir' => 'required|max:45',
-            'tanggal_lahir' => ['required', 'date', 'before_or_equal:' . now()->toDateString()],
-            'role' => 'required|in:admin event,admin seniman,admin tempat',
             'password' => [
                 'required',
                 'string',
@@ -67,28 +64,20 @@ class AdminController extends Controller
                 'max:25',
                 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\p{P}\p{S}])[\p{L}\p{N}\p{P}\p{S}]+$/u',
             ],
-            'foto' => 'required|image|mimes:jpeg,png,jpg|max:5120',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
         ],[
-            'email_new.required'=>'Email wajib di isi',
-            'email_new.email'=>'Email yang anda masukkan invalid',
+            'email_admin.required'=>'Email wajib di isi',
+            'email_admin.email'=>'Email yang anda masukkan invalid',
             'nama_lengkap.required' => 'Nama admin wajib di isi',
             'nama_lengkap.max' => 'Nama admin maksimal 50 karakter',
             'jenis_kelamin.required' => 'Jenis kelamin wajib di isi',
             'jenis_kelamin.in' => 'Jenis kelamin harus Laki-laki atau Perempuan',
             'no_telpon.required' => 'Nomor telepon wajib di isi',
             'no_telpon.digits_between' => 'Nomor telepon tidak boleh lebih dari 13 karakter',
-            'tempat_lahir.required' => 'Nama admin wajib di isi',
-            'tempat_lahir.max' => 'Nama admin maksimal 45 karakter',
-            'tanggal_lahir.required' => 'Tanggal lahir wajib di isi',
-            'tanggal_lahir.date' => 'Format tanggal lahir tidak valid',
-            'tanggal_lahir.before_or_equal' => 'Tanggal Lahir harus Sebelum dari tanggal sekarang',
-            'role.required' => 'Role admin wajib di isi',
-            'role.in' => 'Role admin tidak valid',
             'password.required'=>'Password wajib di isi',
             'password.min'=>'Password minimal 8 karakter',
             'password.max'=>'Password maksimal 25 karakter',
             'password.regex'=>'Password terdiri dari 1 huruf besar, huruf kecil, angka dan karakter unik',
-            'foto.required' => 'Foto Admin wajib di isi',
             'foto.image' => 'Foto Admin harus berupa gambar',
             'foto.mimes' => 'Format foto admin tidak valid. Gunakan format jpeg, png, jpg',
             'foto.max' => 'Ukuran foto admin tidak boleh lebih dari 5MB',
@@ -102,33 +91,29 @@ class AdminController extends Controller
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
         //check email
-        if (User::select("email")->whereRaw("BINARY email = ?",[$request->input('email_new')])->limit(1)->exists()){
+        if (User::select("email")->whereRaw("BINARY email = ?",[$request->input('email_admin')])->limit(1)->exists()){
             return response()->json(['status'=>'error','message'=>'Email sudah digunakan'],400);
         }
         //process file foto
-        if (!$request->hasFile('foto')) {
-            return response()->json(['status'=>'error','message'=>'Foto wajib di isi'], 400);
+        if ($request->hasFile('foto')) {
+            $file = $request->file('foto');
+            if(!($file->isValid() && in_array($file->extension(), ['jpeg', 'png', 'jpg']))){
+                return response()->json(['status'=>'error','message'=>'Format Foto tidak valid. Gunakan format jpeg, png, jpg'], 400);
+            }
+            $fotoName = $file->hashName();
+            $fileData = Crypt::encrypt(file_get_contents($file));
+            Storage::disk('admin')->put('foto/' . $fotoName, $fileData);
         }
-        $file = $request->file('foto');
-        if(!($file->isValid() && in_array($file->extension(), ['pdf', 'jpeg', 'png', 'jpg']))){
-            return response()->json(['status'=>'error','message'=>'Format Foto tidak valid. Gunakan format jpeg, png, jpg'], 400);
-        }
-        $fotoName = $file->hashName();
-        $fileData = Crypt::encrypt(file_get_contents($file));
-        Storage::disk('admin')->put('foto/' . $fotoName, $fileData);
         $ins = User::insert([
             'uuid' =>  Str::uuid(),
-            'nama_lengkap'=>$request->input('nama_lengkap'),
-            'no_telpon'=>$request->input('no_telpon'),
-            'jenis_kelamin'=>$request->input('jenis_kelamin'),
-            'tanggal_lahir'=>$request->input('tanggal_lahir'),
-            // 'tanggal_lahir'=>Carbon::createFromFormat('d-m-Y', $request->input('tanggal_lahir'))->format('Y-m-d'),
-            'tempat_lahir'=>$request->input('tempat_lahir'),
-            'role'=>$request->input('role'),
-            'email'=>$request->input('email'),
-            'password'=>Hash::make($request->input('password')),
-            'foto'=>$fotoName,
-            'verifikasi'=>true,
+            'nama_lengkap' => $request->input('nama_lengkap'),
+            'no_telpon' => $request->input('no_telpon'),
+            'jenis_kelamin' => $request->input('jenis_kelamin'),
+            'role' => 'admin',
+            'email' => $request->input('email_admin'),
+            'password' => Hash::make($request->input('password')),
+            'foto' => $request->hasFile('foto') ? $fotoName : '',
+            'verifikasi' => true,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
@@ -138,15 +123,12 @@ class AdminController extends Controller
         return response()->json(['status'=>'success','message'=>'Data Admin berhasil ditambahkan']);
     }
     public function editAdmin(Request $request){
-        $validator = Validator::make($request->only('email_admin', 'email_new','nama_lengkap','jenis_kelamin','no_telpon','tempat_lahir','tanggal_lahir','role','password','foto'), [
-            'email_admin'=>'required|email',
-            'email_new'=>'required|email',
+        $validator = Validator::make($request->only('email_admin_lama', 'email_admin','nama_lengkap','jenis_kelamin','no_telpon','password','foto'), [
+            'email_admin_lama'=>'required|email',
+            'email_admin'=>'nullable|email',
             'nama_lengkap' => 'required|max:50',
             'jenis_kelamin' => 'required|in:laki-laki,perempuan',
             'no_telpon' => 'required|digits_between:11,13',
-            'tempat_lahir' => 'required|max:45',
-            'tanggal_lahir' => ['required', 'date', 'before_or_equal:' . now()->toDateString()],
-            'role' => 'required|in:admin event,admin seniman,admin tempat',
             'password' => [
                 'nullable',
                 'string',
@@ -156,23 +138,15 @@ class AdminController extends Controller
             ],
             'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
         ],[
-            'email_admin.required'=>'Email wajib di isi',
+            'email_admin_lama.required'=>'Email wajib di isi',
+            'email_admin_lama.email'=>'Email yang anda masukkan invalid',
             'email_admin.email'=>'Email yang anda masukkan invalid',
-            'email_new.required'=>'Email wajib di isi',
-            'email_new.email'=>'Email yang anda masukkan invalid',
             'nama_lengkap.required' => 'Nama admin wajib di isi',
             'nama_lengkap.max' => 'Nama admin maksimal 50 karakter',
             'jenis_kelamin.required' => 'Jenis kelamin wajib di isi',
             'jenis_kelamin.in' => 'Jenis kelamin harus Laki-laki atau Perempuan',
             'no_telpon.required' => 'Nomor telepon wajib di isi',
             'no_telpon.digits_between' => 'Nomor telepon tidak boleh lebih dari 13 karakter',
-            'tempat_lahir.required' => 'Nama admin wajib di isi',
-            'tempat_lahir.max' => 'Nama admin maksimal 45 karakter',
-            'tanggal_lahir.required' => 'Tanggal lahir wajib di isi',
-            'tanggal_lahir.date' => 'Format tanggal lahir tidak valid',
-            'tanggal_lahir.before_or_equal' => 'Tanggal Lahir harus Sebelum dari tanggal sekarang',
-            'role.required' => 'Role admin wajib di isi',
-            'role.in' => 'Role admin tidak valid',
             'password.min'=>'Password minimal 8 karakter',
             'password.max'=>'Password maksimal 25 karakter',
             'password.regex'=>'Password terdiri dari 1 huruf besar, huruf kecil, angka dan karakter unik',
@@ -189,7 +163,7 @@ class AdminController extends Controller
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
         //check data admin
-        $admin = User::select('password','foto')->whereRaw("BINARY email = ?",[$request->input('email_admin')])->limit(1)->get()[0];
+        $admin = User::select('password','foto')->whereRaw("BINARY email = ?",[$request->input('email_admin_lama')])->limit(1)->get()[0];
         if (!$admin) {
             return response()->json(['status' => 'error', 'message' => 'Data Admin tidak ditemukan'], 404);
         }
@@ -210,15 +184,11 @@ class AdminController extends Controller
             Storage::disk('admin')->put('foto/' . $fotoName, $fileData);
         }
         //update admin
-        $updatedAdmin = User::whereRaw("BINARY email = ?",[$request->input('email_admin')])->update([
-            'email'=>$request->input('email_new'),
+        $updatedAdmin = User::whereRaw("BINARY email = ?",[$request->input('email_admin_lama')])->update([
+            'email'=> (empty($request->input('email_admin')) || is_null($request->input('email_admin'))) ? $request->input('email_admin_lama') : $request->input('email_admin'),
             'nama_lengkap'=>$request->input('nama_lengkap'),
             'no_telpon'=>$request->input('no_telpon'),
             'jenis_kelamin'=>$request->input('jenis_kelamin'),
-            'tanggal_lahir'=>$request->input('tanggal_lahir'),
-            // 'tanggal_lahir'=>Carbon::createFromFormat('d-m-Y', $request->input('tanggal_lahir'))->format('Y-m-d'),
-            'tempat_lahir'=>$request->input('tempat_lahir'),
-            'role'=>$request->input('role'),
             'password'=> (empty($request->input('password')) || is_null($request->input('password'))) ? $admin['password']: Hash::make($request->input('password')),
             'foto' => $request->hasFile('foto') ? $fotoName : $admin['foto'],
             'verifikasi'=>true,

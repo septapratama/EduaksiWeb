@@ -33,6 +33,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
     var csrfToken = "{{ csrf_token() }}";
     var email = "{{ $userAuth['email'] }}";
     var number = "{{ $userAuth['number'] }}";
+    var users = {!! json_encode($adminData) !!};
     </script>
     <!--  Body Wrapper -->
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
@@ -60,7 +61,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
                     </nav>
                 </div>
                 <div class="d-flex align-items-stretch" style="background-color: #ffffff; border-radius: 20px;">
-                    <form id="tambahForm">
+                    <form id="editForm">
                         <div class="crow">
                             <label for="">Nama Lengkap</label>
                             <input type="text" id="inpNama" value="{{ $adminData['nama_lengkap']}}">

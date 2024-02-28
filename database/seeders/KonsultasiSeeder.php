@@ -8,18 +8,48 @@ use App\Models\Konsultasi;
 use Carbon\Carbon;
 class KonsultasiSeeder extends Seeder
 {
-    public function run(): void
+    private function dataSeeder() : array
     {
-        for($i = 1; $i <= 5; $i++){
-            Konsultasi::insert([
+        return [
+            [
                 'uuid' =>  Str::uuid(),
-                'nama_lengkap'=>'Konsultasi'.$i,
-                'jenis_kelamin'=>['laki-laki', 'perempuan'][rand(0, 1)],
+                'nama_lengkap'=>'Konsultasi1',
+                'jenis_kelamin'=>'laki-laki',
                 'no_telpon'=>'0852'.mt_rand(10000000,99999999),
                 'alamat'=>'Jalan surabaya',
-                'email'=>"KonsultaTesting".$i."@gmail.com",
-                'foto'=>Str::random(5),
-            ]);
+                'email'=>"KonsultaTesting1@gmail.com",
+                'foto'=>'1.jpg',
+            ],
+            [
+                'uuid' =>  Str::uuid(),
+                'nama_lengkap'=>'Konsultasi2',
+                'jenis_kelamin'=>'perempuan',
+                'no_telpon'=>'0852'.mt_rand(10000000,99999999),
+                'alamat'=>'Jalan surabaya',
+                'email'=>"KonsultaTesting2@gmail.com",
+                'foto'=>'2.jpg',
+            ],
+            [
+                'uuid' =>  Str::uuid(),
+                'nama_lengkap'=>'Konsultasi3',
+                'jenis_kelamin'=>'laki-laki',
+                'no_telpon'=>'0852'.mt_rand(10000000,99999999),
+                'alamat'=>'Jalan surabaya',
+                'email'=>"KonsultaTesting3@gmail.com",
+                'foto'=>'3.jpg',
+            ],
+        ];
+    }
+    public function run(): void
+    {
+        foreach ($this->dataSeeder() as $konsultasi) {
+            Konsultasi::insert($konsultasi);
+            $destinationPath = public_path('img/konsultasi/' . $konsultasi['foto']);
+            $directory = dirname($destinationPath);
+            if (!file_exists($directory)) {
+                mkdir($directory, 0755, true);
+            }
+            copy(database_path('seeders/image/Konsultasi/' . $konsultasi['foto']), $destinationPath);
         }
     }
 }

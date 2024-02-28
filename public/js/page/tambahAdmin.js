@@ -4,7 +4,6 @@ const inpJenisKelamin = document.getElementById("inpJenisKelamin");
 const inpNomerTelepon = document.getElementById("inpNomerTelepon");
 const inpEmail = document.getElementById("inpEmail");
 const inpPassword = document.getElementById("inpPassword");
-const inpAlamat = document.getElementById("inpAlamat");
 const inpFoto = document.getElementById("inpFoto");
 const allowedFormats = ["image/jpeg", "image/png"];
 let uploadeFile = null;
@@ -59,7 +58,6 @@ tambahForm.onsubmit = function(event){
     const nomer = inpNomerTelepon.value.trim();
     const inpEmails = inpEmail.value.trim();
     const password = inpPassword.value.trim();
-    const alamat = inpAlamat.value.trim();
     if(nama === "") {
         showRedPopup("Nama Lengkap harus diisi !");
         return;
@@ -113,17 +111,11 @@ tambahForm.onsubmit = function(event){
         showRedPopup('Password minimal ada 1 karakter unik !');
         return;
     }
-    if(alamat === "") {
-        showRedPopup("Alamat harus diisi !");
-        return;
-    }
-    if (!uploadeFile) {
-        showRedPopup("Foto harus dipilih !");
-        return;
-    }
-    if(!allowedFormats.includes(uploadeFile.type)) {
-        showRedPopup("Format Foto harus png, jpeg, jpg !");
-        return;
+    if (uploadeFile) {
+        if(!allowedFormats.includes(uploadeFile.type)) {
+            showRedPopup("Format Foto harus png, jpeg, jpg !");
+            return;
+        }
     }
     showLoading();
     const formData = new FormData();
@@ -132,8 +124,9 @@ tambahForm.onsubmit = function(event){
     formData.append("no_telpon", nomer);
     formData.append("email_admin", inpEmails);
     formData.append("password", password);
-    formData.append("alamat", alamat);
-    formData.append("foto", uploadeFile);
+    if (uploadeFile) {
+        formData.append("foto", uploadeFile);
+    }
     var xhr = new XMLHttpRequest();
     xhr.open("POST", "/admin/tambah");
     xhr.setRequestHeader("X-CSRF-TOKEN", csrfToken);

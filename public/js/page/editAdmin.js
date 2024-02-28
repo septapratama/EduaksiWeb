@@ -1,10 +1,9 @@
-const tambahForm = document.getElementById("tambahForm");
+const editForm = document.getElementById("editForm");
 const inpNama = document.getElementById("inpNama");
 const inpJenisKelamin = document.getElementById("inpJenisKelamin");
 const inpNomerTelepon = document.getElementById("inpNomerTelepon");
 const inpEmail = document.getElementById("inpEmail");
 const inpPassword = document.getElementById("inpPassword");
-const inpAlamat = document.getElementById("inpAlamat");
 const inpFoto = document.getElementById("inpFoto");
 const allowedFormats = ["image/jpeg", "image/png"];
 let uploadeFile = null;
@@ -52,15 +51,18 @@ function isValidEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
 }
-tambahForm.onsubmit = function(event){
+editForm.onsubmit = function(event){
     event.preventDefault();
     const nama = inpNama.value.trim();
-    const inp_jenis_kelamin = inpJenisKelamin.value.trim();
     const nomer = inpNomerTelepon.value.trim();
+    const inp_jenis_kelamin = inpJenisKelamin.value.trim();
     const inpEmails = inpEmail.value.trim();
     const password = inpPassword.value.trim();
-    const alamat = inpAlamat.value.trim();
-    if(nama === "") {
+    if (nama === users.nama_lengkap && nomer === users.no_telpon && inp_jenis_kelamin === users.jenis_kelamin && inpEmails === users.email && password === '' && uploadeFile === null) {
+        showRedPopup('Data belum diubah');
+        return;
+    }
+    if(nama === "") {  
         showRedPopup("Nama Lengkap harus diisi !");
         return;
     }
@@ -89,53 +91,50 @@ tambahForm.onsubmit = function(event){
         showRedPopup('Format Email salah !');
         return;
     }
-    if (password === '') {
-        showRedPopup('Password harus diisi !');
-        return;
+    if (password !== '') {
+        if (password.length < 8) {
+            showRedPopup('Password minimal 8 karakter !');
+            return;
+        }
+        if (!/[A-Z]/.test(password)) {
+            showRedPopup('Password minimal ada 1 huruf kapital !');
+            return;
+        }
+        if (!/[a-z]/.test(password)) {
+            showRedPopup('Password minimal ada 1 huruf kecil !');
+            return;
+        }
+        if (!/\d/.test(password)) {
+            showRedPopup('Password minimal ada 1 angka !');
+            return;
+        }
+        if (!/[!@#$%^&*]/.test(password)) {
+            showRedPopup('Password minimal ada 1 karakter unik !');
+            return;
+        }
     }
-    if (password.length < 8) {
-        showRedPopup('Password minimal 8 karakter !');
-        return;
-    }
-    if (!/[A-Z]/.test(password)) {
-        showRedPopup('Password minimal ada 1 huruf kapital !');
-        return;
-    }
-    if (!/[a-z]/.test(password)) {
-        showRedPopup('Password minimal ada 1 huruf kecil !');
-        return;
-    }
-    if (!/\d/.test(password)) {
-        showRedPopup('Password minimal ada 1 angka !');
-        return;
-    }
-    if (!/[!@#$%^&*]/.test(password)) {
-        showRedPopup('Password minimal ada 1 karakter unik !');
-        return;
-    }
-    if(alamat === "") {
-        showRedPopup("Alamat harus diisi !");
-        return;
-    }
-    if (!uploadeFile) {
-        showRedPopup("Foto harus dipilih !");
-        return;
-    }
-    if(!allowedFormats.includes(uploadeFile.type)) {
-        showRedPopup("Format Foto harus png, jpeg, jpg !");
-        return;
+    if (uploadeFile) {
+        if (!allowedFormats.includes(uploadeFile.type)) {
+            showRedPopup("Format Foto harus png, jpeg, jpg !");
+            return;
+        }
     }
     showLoading();
     const formData = new FormData();
+    formData.append("_method", 'PUT');
     formData.append("nama_lengkap", nama);
     formData.append("jenis_kelamin", inp_jenis_kelamin);
     formData.append("no_telpon", nomer);
+    formData.append("email_admin_lama", users.email);
     formData.append("email_admin", inpEmails);
-    formData.append("password", password);
-    formData.append("alamat", alamat);
-    formData.append("foto", uploadeFile);
+    if (password !== '') {
+        formData.append("password", password);
+    }
+    if (uploadeFile) {
+        formData.append("foto", uploadeFile);
+    }
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "/admin/edit");
+    xhr.open("POST", "/admin/update");
     xhr.setRequestHeader("X-CSRF-TOKEN", csrfToken);
     xhr.onload = function () {
         if (xhr.status === 200) {

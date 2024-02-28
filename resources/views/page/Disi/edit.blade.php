@@ -34,6 +34,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
     var email = "{{ $userAuth['email'] }}";
     var number = "{{ $userAuth['number'] }}";
     var uuid = "{{ $disi['uuid'] }}";
+    var data = {!! json_encode($disi) !!};
     </script>
     <!--  Body Wrapper -->
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"

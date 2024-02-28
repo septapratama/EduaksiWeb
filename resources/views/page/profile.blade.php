@@ -307,7 +307,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
         var inpEmail = document.querySelector("input[name='email']").value;
         //check data if edit or not
         if (inpNama === users.nama_lengkap && inpTLP === users.no_telpon &&
-            inpJenis === users.jenis_kelamin && inpEmail === users.email) {
+            inpJenis === users.jenis_kelamin && inpEmail === users.email && fileImg === null) {
             showRedPopup('Data belum diubah');
             return;
         }

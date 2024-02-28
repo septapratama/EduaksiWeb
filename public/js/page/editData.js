@@ -52,6 +52,10 @@ editForm.onsubmit = function (event) {
     const judul = inpJudul.value.trim();
     const linkVideo = inpLinkVideo.value.trim();
     const deskripsi = inpDeskripsi.value.trim();
+    if (judul === data.judul && linkVideo === data.link_video && deskripsi === data.deskripsi && uploadeFile === null) {
+        showRedPopup('Data belum diubah');
+        return;
+    }
     if (judul === "") {
         showRedPopup("Judul harus diisi !");
         return;

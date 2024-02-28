@@ -33,6 +33,8 @@ $tPath = app()->environment('local') ? '' : '/public/';
     var csrfToken = "{{ csrf_token() }}";
     var email = "{{ $userAuth['email'] }}";
     var number = "{{ $userAuth['number'] }}";
+    var uuid = "{{ $konsultasi['uuid'] }}";
+    var konsultasi = {!! json_encode($konsultasi) !!};
     </script>
     <!--  Body Wrapper -->
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
@@ -61,33 +63,33 @@ $tPath = app()->environment('local') ? '' : '/public/';
                 </div>
                 <div class="d-flex align-items-stretch"
                     style="background-color: #ffffff; border-radius: 20px; box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
-                    <form id="tambahForm">
+                    <form id="editForm">
                         <div class="crow">
                             <label for="">Nama Lengkap</label>
-                            <input type="text" id="inpNama">
+                            <input type="text" id="inpNama" value="{{ $konsultasi['nama_lengkap']}}">
                         </div>
                         <div class="crow">
                             <div>
                                 <label for="">Jenis Kelamin</label>
                                 <select class="" aria-label="Default select example" id="inpJenisKelamin">
-                                    <option value="" selected>Pilih Kelamin</option>
-                                    <option value="laki-laki">Laki-Laki</option>
-                                    <option value="perempuan">Perempuan</option>
+                                    <option value="">Pilih Kelamin</option>
+                                    <option value="laki-laki" {{ ($konsultasi['jenis_kelamin'] == 'laki-laki') ? 'selected' : ''}}>Laki-Laki</option>
+                                    <option value="perempuan" {{ ($konsultasi['jenis_kelamin'] == 'perempuan') ? 'selected' : ''}}>Perempuan</option>
                                 </select>
                             </div>
                             <div>
                                 <label for="">Nomer Telepon</label>
-                                <input type="text" id="inpNomerTelepon">
+                                <input type="text" id="inpNomerTelepon" value="{{ $konsultasi['no_telpon']}}">
                             </div>
                         </div>
                         <div class="crow">
                             <label for="">Email</label>
-                            <input type="text" id="inpEmail">
+                            <input type="text" id="inpEmail" value="{{ $konsultasi['email']}}">
                         </div>
                         <div class="crow">
                             <label for="">Alamat</label>
-                            <textarea name="deskripsi" id="inpAlamat" placeholder="Masukkan Isi Konsultasi" class=""
-                                style="height:120px"></textarea>
+                            <textarea name="alamat" id="inpAlamat" placeholder="Masukkan Isi Konsultasi" class=""
+                                style="height:120px">{{ $konsultasi['alamat']}}</textarea>
                         </div>
                         <div class="img" onclick="handleFileClick()" ondragover="handleDragOver(event)"
                             ondrop="handleDrop(event)"

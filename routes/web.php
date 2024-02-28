@@ -23,7 +23,7 @@ Route::group(['middleware'=>['auth','authorized']],function(){
     //artikel public route
     Route::group(['prefix'=>'/artikel'],function(){
         Route::get('/',[ShowHomeController::class,'showArtikel'])->withoutMiddleware('authorized');
-        Route::get('/edit/{any}',[ShowHomeController::class,'showDetailArtikel'])->withoutMiddleware('authorized');
+        Route::get('/{any}',[ShowHomeController::class,'showDetailArtikel'])->withoutMiddleware('authorized');
     });
     //article only admin route
     Route::group(['prefix'=>'/article'],function(){
@@ -76,12 +76,12 @@ Route::group(['middleware'=>['auth','authorized']],function(){
             Route::delete('/delete', [ArtikelController::class, 'deleteArtikel']);
         });
         Route::group(['prefix'=>'/disi'],function(){
-            // Route::post('/tambah', [DisiController::class, 'tambahDisi']);
+            Route::post('/tambah', [DisiController::class, 'tambahDisi']);
             Route::put('/update', [DisiController::class, 'editDisi']);
             Route::delete('/delete', [DisiController::class, 'deleteDisi']);
         });
         Route::group(['prefix'=>'/emotal'],function(){
-            // Route::post('/tambah', [EmotalController::class, 'tambahEmotal']);
+            Route::post('/tambah', [EmotalController::class, 'tambahEmotal']);
             Route::put('/update', [EmotalController::class, 'editEmotal']);
             Route::delete('/delete', [EmotalController::class, 'deleteEmotal']);
         });
@@ -91,12 +91,12 @@ Route::group(['middleware'=>['auth','authorized']],function(){
             Route::delete('/delete', [KonsultasiController::class, 'deleteKonsultasi']);
         });
         Route::group(['prefix'=>'/nutrisi'],function(){
-            // Route::post('/tambah', [NutrisiController::class, 'tambahNutrisi']);
+            Route::post('/tambah', [NutrisiController::class, 'tambahNutrisi']);
             Route::put('/update', [NutrisiController::class, 'editNutrisi']);
             Route::delete('/delete', [NutrisiController::class, 'deleteNutrisi']);
         });
         Route::group(['prefix'=>'/pengasuhan'],function(){
-            // Route::post('/tambah', [PengasuhanController::class, 'tambahPengasuhan']);
+            Route::post('/tambah', [PengasuhanController::class, 'tambahPengasuhan']);
             Route::put('/update', [PengasuhanController::class, 'editPengasuhan']);
             Route::delete('/delete', [PengasuhanController::class, 'deletePengasuhan']);
         });

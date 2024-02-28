@@ -156,8 +156,13 @@ class EmotalController extends Controller
         if(!($file->isValid() && in_array($file->extension(), ['jpeg', 'png', 'jpg']))){
             return response()->json(['status'=>'error','message'=>'Format Foto tidak valid. Gunakan format jpeg, png, jpg'], 400);
         }
+        if(app()->environment('local')){
+            $destinationPath = public_path('img/emosi_mental');
+        }else{
+            $destinationPath = base_path('../public_html/public/img/emosi_mental/');
+        }
         $fotoName = $file->hashName();
-        Storage::disk('emotal')->put($fotoName, file_get_contents($file));
+        $file->move($destinationPath, $fotoName);
         $now = Carbon::now();
         $uuid = Str::uuid();
         $ins = Emotal::insert([
@@ -222,14 +227,17 @@ class EmotalController extends Controller
             if(!($file->isValid() && in_array($file->extension(), ['jpeg', 'png', 'jpg']))){
                 return response()->json(['status'=>'error','message'=>'Format Foto tidak valid. Gunakan format jpeg, png, jpg'], 400);
             }
-            $destinationPath = storage_path('app/emotal/');
+            if(app()->environment('local')){
+                $destinationPath = public_path('img/emosi_mental');
+            }else{
+                $destinationPath = base_path('../public_html/public/img/emosi_mental/');
+            }
             $fileToDelete = $destinationPath . $emosiMental['foto'];
             if (file_exists($fileToDelete) && !is_dir($fileToDelete)) {
                 unlink($fileToDelete);
             }
-            Storage::disk('emotal')->delete($emosiMental['foto']);
             $fotoName = $file->hashName();
-            Storage::disk('emotal')->put($fotoName, file_get_contents($file));
+            $file->move($destinationPath, $fotoName);
         }
         $now = Carbon::now();
         $edit = $emosiMental->where('uuid',$request->input('uuid'))->update([

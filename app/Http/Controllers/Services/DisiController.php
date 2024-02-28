@@ -152,11 +152,17 @@ class DisiController extends Controller
         if(!($file->isValid() && in_array($file->extension(), ['jpeg', 'png', 'jpg']))){
             return response()->json(['status'=>'error','message'=>'Format Foto tidak valid. Gunakan format jpeg, png, jpg'], 400);
         }
+        if(app()->environment('local')){
+            $destinationPath = public_path('img/digital_literasi');
+        }else{
+            $destinationPath = base_path('../public_html/public/img/digital_literasi/');
+        }
         $fotoName = $file->hashName();
-        Storage::disk('disi')->put($fotoName, file_get_contents($file));
+        $file->move($destinationPath, $fotoName);
         $now = Carbon::now();
         $uuid = Str::uuid();
         $ins = Disi::insert([
+            'uuid' => $uuid,
             'judul' => $request->input('judul'),
             'deskripsi' => $request->input('deskripsi'),
             'link_video' => $request->input('link_video'),
@@ -215,14 +221,17 @@ class DisiController extends Controller
             if(!($file->isValid() && in_array($file->extension(), ['jpeg', 'png', 'jpg']))){
                 return response()->json(['status'=>'error','message'=>'Format Foto tidak valid. Gunakan format jpeg, png, jpg'], 400);
             }
-            $destinationPath = storage_path('app/disi/');
+            if(app()->environment('local')){
+                $destinationPath = public_path('img/digital_literasi');
+            }else{
+                $destinationPath = base_path('../public_html/public/img/digital_literasi/');
+            }
             $fileToDelete = $destinationPath . $disi['foto'];
             if (file_exists($fileToDelete) && !is_dir($fileToDelete)) {
                 unlink($fileToDelete);
             }
-            Storage::disk('disi')->delete('foto/'. $disi['foto']);
             $fotoName = $file->hashName();
-            Storage::disk('disi')->put('foto/' . $fotoName, file_get_contents($file));
+            $file->move($destinationPath, $fotoName);
         }
         $now = Carbon::now();
         $edit = $disi->where('uuid',$request->input('uuid'))->update([

@@ -156,8 +156,13 @@ class NutrisiController extends Controller
         if(!($file->isValid() && in_array($file->extension(), ['jpeg', 'png', 'jpg']))){
             return response()->json(['status'=>'error','message'=>'Format Foto tidak valid. Gunakan format jpeg, png, jpg'], 400);
         }
+        if(app()->environment('local')){
+            $destinationPath = public_path('img/nutrisi');
+        }else{
+            $destinationPath = base_path('../public_html/public/img/nutrisi/');
+        }
         $fotoName = $file->hashName();
-        Storage::disk('nutrisi')->put($fotoName, file_get_contents($file));
+        $file->move($destinationPath, $fotoName);
         $now = Carbon::now();
         $uuid = Str::uuid();
         $ins = Nutrisi::insert([
@@ -222,14 +227,17 @@ class NutrisiController extends Controller
             if(!($file->isValid() && in_array($file->extension(), ['jpeg', 'png', 'jpg']))){
                 return response()->json(['status'=>'error','message'=>'Format Foto tidak valid. Gunakan format jpeg, png, jpg'], 400);
             }
-            $destinationPath = storage_path('app/nutrisi/');
+            if(app()->environment('local')){
+                $destinationPath = public_path('img/nutrisi');
+            }else{
+                $destinationPath = base_path('../public_html/public/img/nutrisi/');
+            }
             $fileToDelete = $destinationPath . $nutrisi['foto'];
             if (file_exists($fileToDelete) && !is_dir($fileToDelete)) {
                 unlink($fileToDelete);
             }
-            Storage::disk('nutrisi')->delete($nutrisi['foto']);
             $fotoName = $file->hashName();
-            Storage::disk('nutrisi')->put($fotoName, file_get_contents($file));
+            $file->move($destinationPath, $fotoName);
         }
         $now = Carbon::now();
         $edit = $nutrisi->where('uuid',$request->input('uuid'))->update([

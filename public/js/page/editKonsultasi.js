@@ -1,4 +1,4 @@
-const tambahForm = document.getElementById("tambahForm");
+const editForm = document.getElementById("editForm");
 const inpNama = document.getElementById("inpNama");
 const inpJenisKelamin = document.getElementById("inpJenisKelamin");
 const inpNomerTelepon = document.getElementById("inpNomerTelepon");
@@ -24,6 +24,13 @@ function handleFileChange(event) {
             return;
         }
         uploadeFile = file;
+        const fileReader = new FileReader();
+        fileReader.onload = function() {
+            document.getElementById('file').src = fileReader.result;
+            document.getElementById('file').style.display = 'block';
+            document.querySelector('div.img').style.border = 'none';
+        };
+        fileReader.readAsDataURL(uploadeFile);
     }
 }
 function handleDragOver(event) {
@@ -44,13 +51,17 @@ function isValidEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
 }
-tambahForm.onsubmit = function(event){
+editForm.onsubmit = function(event){
     event.preventDefault();
     const nama = inpNama.value.trim();
     const inp_jenis_kelamin = inpJenisKelamin.value.trim();
     const nomer = inpNomerTelepon.value.trim();
     const inpEmails = inpEmail.value.trim();
     const alamat = inpAlamat.value.trim();
+    if (nama === konsultasi.nama_lengkap && inp_jenis_kelamin === konsultasi.jenis_kelamin && nomer === konsultasi.no_telpon && inpEmails === konsultasi.email && uploadeFile === null) {
+        showRedPopup('Data belum diubah');
+        return;
+    }
     if(nama === "") {
         showRedPopup("Nama Lengkap harus diisi !");
         return;
@@ -84,24 +95,26 @@ tambahForm.onsubmit = function(event){
         showRedPopup("Alamat harus diisi !");
         return;
     }
-    if (!uploadeFile) {
-        showRedPopup("Foto harus dipilih !");
-        return;
-    }
-    if(!allowedFormats.includes(uploadeFile.type)) {
-        showRedPopup("Format Foto harus png, jpeg, jpg !");
-        return;
+    if (uploadeFile) {
+        if(!allowedFormats.includes(uploadeFile.type)) {
+            showRedPopup("Format Foto harus png, jpeg, jpg !");
+            return;
+        }
     }
     showLoading();
     const formData = new FormData();
+    formData.append("_method", 'PUT');
+    formData.append("uuid", uuid);
     formData.append("nama_lengkap", nama);
     formData.append("jenis_kelamin", inp_jenis_kelamin);
     formData.append("no_telpon", nomer);
     formData.append("email_konsultasi", inpEmails);
     formData.append("alamat", alamat);
-    formData.append("foto", uploadeFile);
+    if (uploadeFile) {
+        formData.append("foto", uploadeFile);
+    }
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "/admin" + reff + "/tambah");
+    xhr.open("POST", "/admin" + reff + "/update");
     xhr.setRequestHeader("X-CSRF-TOKEN", csrfToken);
     xhr.onload = function () {
         if (xhr.status === 200) {
