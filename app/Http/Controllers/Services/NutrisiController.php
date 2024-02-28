@@ -114,7 +114,7 @@ class NutrisiController extends Controller
             //hapus Nutrisi
             $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
             foreach($jsonData as $key => $item){
-                if (isset($item['uuid']) && $item['uuid'] == $data['id_nutrisi']) {
+                if (isset($item['uuid']) && $item['uuid'] == $data['uuid']) {
                     unset($jsonData[$key]);
                 }
             }
@@ -157,7 +157,7 @@ class NutrisiController extends Controller
             return response()->json(['status'=>'error','message'=>'Format Foto tidak valid. Gunakan format jpeg, png, jpg'], 400);
         }
         if(app()->environment('local')){
-            $destinationPath = public_path('img/nutrisi');
+            $destinationPath = public_path('img/nutrisi/');
         }else{
             $destinationPath = base_path('../public_html/public/img/nutrisi/');
         }
@@ -228,7 +228,7 @@ class NutrisiController extends Controller
                 return response()->json(['status'=>'error','message'=>'Format Foto tidak valid. Gunakan format jpeg, png, jpg'], 400);
             }
             if(app()->environment('local')){
-                $destinationPath = public_path('img/nutrisi');
+                $destinationPath = public_path('img/nutrisi/');
             }else{
                 $destinationPath = base_path('../public_html/public/img/nutrisi/');
             }
@@ -263,10 +263,10 @@ class NutrisiController extends Controller
         return response()->json(['status' =>'success','message'=>'Data Nutrisi berhasil di perbarui']);
     }
     public function deleteNutrisi(Request $request){
-        $validator = Validator::make($request->only('id_nutrisi'), [
-            'id_nutrisi' => 'required',
+        $validator = Validator::make($request->only('uuid'), [
+            'uuid' => 'required',
         ], [
-            'id_nutrisi.required' => 'ID nutrisi wajib di isi',
+            'uuid.required' => 'ID nutrisi wajib di isi',
         ]);
         if ($validator->fails()) {
             $errors = [];
@@ -276,22 +276,24 @@ class NutrisiController extends Controller
             }
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
-        $nutrisi = Nutrisi::select('foto')->where('uuid',$request->input('id_nutrisi'))->limit(1)->get()[0];
+        $nutrisi = Nutrisi::select('foto')->where('uuid',$request->input('uuid'))->limit(1)->get()[0];
         if (!$nutrisi) {
             return response()->json(['status' => 'error', 'message' => 'Data Nutrisi tidak ditemukan'], 400);
         }
         //delete all photo
-        $destinationPath = storage_path('app/nutrisi/');
-        $fileToDelete = $destinationPath . $nutrisi->foto;
+        if(app()->environment('local')){
+            $destinationPath = public_path('img/nutrisi/');
+        }else{
+            $destinationPath = base_path('../public_html/public/img/nutrisi/');
+        }
+        $fileToDelete = $destinationPath . $nutrisi['foto'];
         if (file_exists($fileToDelete) && !is_dir($fileToDelete)) {
             unlink($fileToDelete);
         }
-        Storage::disk('nutrisi')->delete('/'.$nutrisi->foto);
-        // GaleriNutrisi::where('id_nutrisi',$request->input('id_nutrisi'))->delete();
-        if (!Nutrisi::where('uuid',$request->input('id_nutrisi'))->delete()) {
+        if (!Nutrisi::where('uuid',$request->input('uuid'))->delete()) {
             return response()->json(['status' => 'error', 'message' => 'Gagal menghapus data Nutrisi'], 500);
         }
-        $this->dataCacheFile(['id_nutrisi' => $request->input('id_nutrisi')],'hapus');
+        $this->dataCacheFile(['uuid' => $request->input('uuid')],'hapus');
         return response()->json(['status' => 'success', 'message' => 'Data Nutrisi berhasil dihapus']);
     }
 }

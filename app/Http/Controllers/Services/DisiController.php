@@ -110,7 +110,7 @@ class DisiController extends Controller
             //hapus disi data
             $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
             foreach($jsonData as $key => $item){
-                if (isset($item['id_disi']) && $item['id_disi'] == $data['id_disi']) {
+                if (isset($item['uuid']) && $item['uuid'] == $data['uuid']) {
                     unset($jsonData[$key]);
                 }
             }
@@ -153,7 +153,7 @@ class DisiController extends Controller
             return response()->json(['status'=>'error','message'=>'Format Foto tidak valid. Gunakan format jpeg, png, jpg'], 400);
         }
         if(app()->environment('local')){
-            $destinationPath = public_path('img/digital_literasi');
+            $destinationPath = public_path('img/digital_literasi/');
         }else{
             $destinationPath = base_path('../public_html/public/img/digital_literasi/');
         }
@@ -222,7 +222,7 @@ class DisiController extends Controller
                 return response()->json(['status'=>'error','message'=>'Format Foto tidak valid. Gunakan format jpeg, png, jpg'], 400);
             }
             if(app()->environment('local')){
-                $destinationPath = public_path('img/digital_literasi');
+                $destinationPath = public_path('img/digital_literasi/');
             }else{
                 $destinationPath = base_path('../public_html/public/img/digital_literasi/');
             }
@@ -257,10 +257,10 @@ class DisiController extends Controller
         return response()->json(['status' =>'success','message'=>'Data Disi berhasil di perbarui']);
     }
     public function deleteDisi(Request $request){
-        $validator = Validator::make($request->only('id_disi'), [
-            'id_disi' => 'required',
+        $validator = Validator::make($request->only('uuid'), [
+            'uuid' => 'required',
         ], [
-            'id_disi.required' => 'ID disi wajib di isi',
+            'uuid.required' => 'ID disi wajib di isi',
         ]);
         if ($validator->fails()) {
             $errors = [];
@@ -270,22 +270,24 @@ class DisiController extends Controller
             }
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
-        $disi = Disi::find($request->input('id_disi'));
+        $disi = Disi::select('foto')->where('uuid',$request->input('uuid'))->limit(1)->get()[0];
         if (!$disi) {
-            return response()->json(['status' => 'error', 'message' => 'Data Disi tidak ditemukan'], 400);
+            return response()->json(['status' =>'error','message'=>'Data Disi tidak ditemukan'], 400);
         }
         //delete all photo
-        $destinationPath = storage_path('app/disi/');
-        $fileToDelete = $destinationPath . $disi->foto;
+        if(app()->environment('local')){
+            $destinationPath = public_path('img/digital_literasi/');
+        }else{
+            $destinationPath = base_path('../public_html/public/img/digital_literasi/');
+        }
+        $fileToDelete = $destinationPath . $disi['foto'];
         if (file_exists($fileToDelete) && !is_dir($fileToDelete)) {
             unlink($fileToDelete);
         }
-        Storage::disk('disi')->delete('/'.$disi->foto);
-        // GaleriDigitalLiterasi::where('id_disi',$request->input('id_disi'))->delete();
-        if (!Disi::where('id_disi',$request->input('id_disi'))->delete()) {
+        if (!Disi::where('uuid',$request->input('uuid'))->delete()) {
             return response()->json(['status' => 'error', 'message' => 'Gagal menghapus data Disi'], 500);
         }
-        $this->dataCacheFile(['id_disi' => $request->input('id_disi')],'hapus');
+        $this->dataCacheFile(['uuid' => $request->input('uuid')],'hapus');
         return response()->json(['status' => 'success', 'message' => 'Data Disi berhasil dihapus']);
     }
 }

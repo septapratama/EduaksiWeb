@@ -114,7 +114,7 @@ class EmotalController extends Controller
             //hapus Emosi Mental
             $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
             foreach($jsonData as $key => $item){
-                if (isset($item['uuid']) && $item['uuid'] == $data['id_emotal']) {
+                if (isset($item['uuid']) && $item['uuid'] == $data['uuid']) {
                     unset($jsonData[$key]);
                 }
             }
@@ -157,7 +157,7 @@ class EmotalController extends Controller
             return response()->json(['status'=>'error','message'=>'Format Foto tidak valid. Gunakan format jpeg, png, jpg'], 400);
         }
         if(app()->environment('local')){
-            $destinationPath = public_path('img/emosi_mental');
+            $destinationPath = public_path('img/emosi_mental/');
         }else{
             $destinationPath = base_path('../public_html/public/img/emosi_mental/');
         }
@@ -228,7 +228,7 @@ class EmotalController extends Controller
                 return response()->json(['status'=>'error','message'=>'Format Foto tidak valid. Gunakan format jpeg, png, jpg'], 400);
             }
             if(app()->environment('local')){
-                $destinationPath = public_path('img/emosi_mental');
+                $destinationPath = public_path('img/emosi_mental/');
             }else{
                 $destinationPath = base_path('../public_html/public/img/emosi_mental/');
             }
@@ -263,10 +263,10 @@ class EmotalController extends Controller
         return response()->json(['status' =>'success','message'=>'Data Emotal berhasil di perbarui']);
     }
     public function deleteEmotal(Request $request){
-        $validator = Validator::make($request->only('id_emotal'), [
-            'id_emotal' => 'required',
+        $validator = Validator::make($request->only('uuid'), [
+            'uuid' => 'required',
         ], [
-            'id_emotal.required' => 'ID emotal wajib di isi',
+            'uuid.required' => 'ID emotal wajib di isi',
         ]);
         if ($validator->fails()) {
             $errors = [];
@@ -276,22 +276,24 @@ class EmotalController extends Controller
             }
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
-        $emosiMental = Emotal::select('foto')->where('uuid',$request->input('id_emotal'))->limit(1)->get()[0];
+        $emosiMental = Emotal::select('foto')->where('uuid',$request->input('uuid'))->limit(1)->get()[0];
         if (!$emosiMental) {
-            return response()->json(['status' => 'error', 'message' => 'Data Emotal tidak ditemukan'], 400);
+            return response()->json(['status' =>'error','message'=>'Data Emotal tidak ditemukan'], 400);
         }
         //delete all photo
-        $destinationPath = storage_path('app/emotal/');
-        $fileToDelete = $destinationPath . $emosiMental->foto;
+        if(app()->environment('local')){
+            $destinationPath = public_path('img/emosi_mental/');
+        }else{
+            $destinationPath = base_path('../public_html/public/img/emosi_mental/');
+        }
+        $fileToDelete = $destinationPath . $emosiMental['foto'];
         if (file_exists($fileToDelete) && !is_dir($fileToDelete)) {
             unlink($fileToDelete);
         }
-        Storage::disk('emotal')->delete('/'.$emosiMental->foto);
-        // GaleriEmosiMental::where('id_emotal',$request->input('id_emotal'))->delete();
-        if (!Emotal::where('uuid',$request->input('id_emotal'))->delete()) {
+        if (!Emotal::where('uuid',$request->input('uuid'))->delete()) {
             return response()->json(['status' => 'error', 'message' => 'Gagal menghapus data Emotal'], 500);
         }
-        $this->dataCacheFile(['id_emotal' => $request->input('id_emotal')],'hapus');
+        $this->dataCacheFile(['uuid' => $request->input('uuid')],'hapus');
         return response()->json(['status' => 'success', 'message' => 'Data Emotal berhasil dihapus']);
     }
 }

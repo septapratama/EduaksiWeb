@@ -14,6 +14,46 @@ var file, gps;
 // document.querySelector('div.editPopup').addEventListener('click',()=>{
 //     document.querySelector('div.editPopup').style.display = 'none';
 // });
+loginForm.onsubmit = function (event) {
+    event.preventDefault();
+    const email = inpEmail.value;
+    const password = inpPassword.value;
+    if (email.trim() === "") {
+        console.log("email kosong");
+        showRedPopup("Email harus diisi !");
+        return;
+    }
+    if (password.trim() === "") {
+        console.log("password kosong");
+        showRedPopup("Password harus diisi !");
+        return;
+    }
+    showLoading();
+    var xhr = new XMLHttpRequest();
+    var requestBody = {
+        email: email,
+        uuid: uuid,
+    };
+    xhr.open("POST", "/admin" + reff + "/update");
+    xhr.setRequestHeader("X-CSRF-TOKEN", csrfToken);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send(JSON.stringify(requestBody));
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                closeLoading();
+                var response = JSON.parse(xhr.responseText);
+                // console.log(response);
+                showGreenPopup(response);
+            } else {
+                closeLoading();
+                var response = JSON.parse(xhr.responseText);
+                showRedPopup(response);
+            }
+        }
+    };
+    return false;
+};
 inputOtp.forEach((input, index) => {
     input.addEventListener('input', (event) => {
         const value = event.target.value;

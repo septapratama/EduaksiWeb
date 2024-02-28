@@ -110,7 +110,7 @@ class ArtikelController extends Controller
             //hapus artikel data
             $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
             foreach($jsonData as $key => $item){
-                if (isset($item['id_artikel']) && $item['id_artikel'] == $data['id_artikel']) {
+                if (isset($item['uuid']) && $item['uuid'] == $data['uuid']) {
                     unset($jsonData[$key]);
                 }
             }
@@ -152,8 +152,13 @@ class ArtikelController extends Controller
         if(!($file->isValid() && in_array($file->extension(), ['jpeg', 'png', 'jpg']))){
             return response()->json(['status'=>'error','message'=>'Format Foto tidak valid. Gunakan format jpeg, png, jpg'], 400);
         }
+        if(app()->environment('local')){
+            $destinationPath = public_path('img/artikel/');
+        }else{
+            $destinationPath = base_path('../public_html/public/img/artikel/');
+        }
         $fotoName = $file->hashName();
-        Storage::disk('artikel')->put($fotoName, file_get_contents($file));
+        $file->move($destinationPath, $fotoName);
         $now = Carbon::now();
         $uuid = Str::uuid();
         $ins = Artikel::insert([
@@ -217,14 +222,17 @@ class ArtikelController extends Controller
             if(!($file->isValid() && in_array($file->extension(), ['jpeg', 'png', 'jpg']))){
                 return response()->json(['status'=>'error','message'=>'Format Foto tidak valid. Gunakan format jpeg, png, jpg'], 400);
             }
-            $destinationPath = storage_path('app/artikel/');
+            if(app()->environment('local')){
+                $destinationPath = public_path('img/artikel/');
+            }else{
+                $destinationPath = base_path('../public_html/public/img/artikel/');
+            }
             $fileToDelete = $destinationPath . $artikel['foto'];
             if (file_exists($fileToDelete) && !is_dir($fileToDelete)) {
                 unlink($fileToDelete);
             }
-            Storage::disk('artikel')->delete('foto/'. $artikel['foto']);
             $fotoName = $file->hashName();
-            Storage::disk('artikel')->put('foto/' . $fotoName, file_get_contents($file));
+            $file->move($destinationPath, $fotoName);
         }
         $now = Carbon::now();
         $edit = $artikel->where('uuid',$request->input('uuid'))->update([
@@ -250,10 +258,10 @@ class ArtikelController extends Controller
         return response()->json(['status' =>'success','message'=>'Data Artikel berhasil di perbarui']);
     }
     public function deleteArtikel(Request $request){
-        $validator = Validator::make($request->only('id_artikel'), [
-            'id_artikel' => 'required',
+        $validator = Validator::make($request->only('uuid'), [
+            'uuid' => 'required',
         ], [
-            'id_artikel.required' => 'ID artikel wajib di isi',
+            'uuid.required' => 'ID artikel wajib di isi',
         ]);
         if ($validator->fails()) {
             $errors = [];
@@ -263,22 +271,24 @@ class ArtikelController extends Controller
             }
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
-        $artikel = Artikel::find($request->input('id_artikel'));
+        $artikel = Artikel::select('foto')->where('uuid',$request->input('uuid'))->limit(1)->get()[0];
         if (!$artikel) {
             return response()->json(['status' => 'error', 'message' => 'Data Artikel tidak ditemukan'], 400);
         }
         //delete all photo
-        $destinationPath = storage_path('app/artikel/');
-        $fileToDelete = $destinationPath . $artikel->foto;
+        if(app()->environment('local')){
+            $destinationPath = public_path('img/artikel/');
+        }else{
+            $destinationPath = base_path('../public_html/public/img/artikel/');
+        }
+        $fileToDelete = $destinationPath . $artikel['foto'];
         if (file_exists($fileToDelete) && !is_dir($fileToDelete)) {
             unlink($fileToDelete);
         }
-        Storage::disk('artikel')->delete('/'.$artikel->foto);
-        // GaleriDigitalLiterasi::where('id_artikel',$request->input('id_artikel'))->delete();
-        if (!Artikel::where('id_artikel',$request->input('id_artikel'))->delete()) {
+        if (!Artikel::where('uuid',$request->input('uuid'))->delete()) {
             return response()->json(['status' => 'error', 'message' => 'Gagal menghapus data Artikel'], 500);
         }
-        $this->dataCacheFile(['id_artikel' => $request->input('id_artikel')],'hapus');
+        $this->dataCacheFile(['uuid' => $request->input('uuid')],'hapus');
         return response()->json(['status' => 'success', 'message' => 'Data Artikel berhasil dihapus']);
     }
 }

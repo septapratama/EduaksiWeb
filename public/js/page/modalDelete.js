@@ -7,11 +7,9 @@ function showModalDelete(id){
     modalDelete.style.display = 'block';
     animateModalDelete('50%');
 }
-
 function closeModalDelete(){
     animateModalDelete('-50%');
 }
-
 function animateModalDelete(finalTop) {
     let currentTop = parseInt(deleteForm.style.top) || 0;
     let increment = currentTop < parseInt(finalTop) ? 1 : -1;
@@ -27,17 +25,27 @@ function animateModalDelete(finalTop) {
             }
         }
     }
-    let animationInterval = setInterval(frame, 10);
+    let animationInterval = setInterval(frame, 5);
+}
+function showLoading() {
+    document.querySelector("div#preloader").style.display = "block";
+}
+function closeLoading() {
+    document.querySelector("div#preloader").style.display = "none";
 }
 deleteForm.onsubmit = function (event) {
     event.preventDefault();
     showLoading();
     var xhr = new XMLHttpRequest();
     var requestBody = {
-        uuid: uuid,
+        uuid: inpID.value.trim(),
         email: email,
     };
-    xhr.open("POST", "/admin" + reff + "/delete");
+    if(reff == '/admin'){
+        xhr.open("DELETE", "/admin/delete");
+    }else{
+        xhr.open("DELETE", "/admin" + reff + "/delete");
+    }
     xhr.setRequestHeader("X-CSRF-TOKEN", csrfToken);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(JSON.stringify(requestBody));
@@ -47,6 +55,9 @@ deleteForm.onsubmit = function (event) {
                 closeLoading();
                 var response = JSON.parse(xhr.responseText);
                 showGreenPopup(response);
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
             } else {
                 closeLoading();
                 var response = JSON.parse(xhr.responseText);

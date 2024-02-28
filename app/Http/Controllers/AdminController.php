@@ -348,10 +348,10 @@ class AdminController extends Controller
         return response()->json(['status' =>'success','message'=>'Password Admin berhasil di perbarui']);
     }
     public function hapusAdmin(Request $request){
-        $validator = Validator::make($request->only('emailID'), [
-            'emailID' => 'required',
+        $validator = Validator::make($request->only('uuid'), [
+            'uuid' => 'required',
         ], [
-            'emailID.required' => 'Email ID wajib di isi',
+            'uuid.required' => 'Email ID wajib di isi',
         ]);
         if ($validator->fails()) {
             $errors = [];
@@ -362,7 +362,7 @@ class AdminController extends Controller
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
         //check data Admin
-        $admin = User::select('foto')->find($request->input('emailID'));
+        $admin = User::select('foto')->where('uuid',$request->input('uuid'))->limit(1)->get()[0];
         if (!$admin) {
             return response()->json(['status' => 'error', 'message' => 'Data Admin tidak ditemukan'], 404);
         }
@@ -374,7 +374,7 @@ class AdminController extends Controller
         }
         Storage::disk('admin')->delete('foto/'.$admin->foto);
 
-        if (!User::where('id_user',$request->input('emailID'))->delete()) {
+        if (!User::where('uuid',$request->input('uuid'))->delete()) {
             return response()->json(['status' => 'error', 'message' => 'Gagal menghapus data Admin'], 500);
         }
         return response()->json(['status' => 'success', 'message' => 'Data Admin berhasil dihapus']);

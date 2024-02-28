@@ -1,0 +1,171 @@
+#modalDelete {
+    position: fixed;
+    display:none;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+#modalDelete form{
+    background-color: white;
+    position: absolute;
+    width: 40%;
+    height: 26%;
+    top: -50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 50px;
+    align-items: center;
+    animation:none;
+}
+#modalDelete form input{
+    display: none;
+}
+#modalDelete form h1, #modalDelete form p{
+    margin:0;
+}
+#modalDelete form h1{
+    margin-top: 2%;
+    width: 90%;
+    font-size: 30px;
+    font-weight: 700;
+    color:black;
+}
+#modalDelete form i{
+    position: absolute;
+    right:3%;
+    top:5%;
+    color:black;
+    font-size: 20px;
+}
+#modalDelete form p{
+    margin-top: 2%;
+    color:black;
+    width: 90%;
+    font-size: 17px;
+}
+#modalDelete form div{
+    margin-top: 5%;
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+    height: 30%;
+}
+#modalDelete form div button{
+    font-size: 20px;
+    width: 30%;
+    height: 100%;
+    outline: none;
+    border: none;
+    color:white;
+    border-radius: 9px;
+}
+#modalDelete form div button:nth-child(1){
+    background-color: #b1b1b1;
+}
+#modalDelete form div button:nth-child(2){
+    background-color: red;
+}
+@keyframes showModalDelete{
+    to {
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
+@keyframes closeModalDelete{
+    to {
+        top: -50%;
+        transform: translate(-50%, -50%);
+    }
+}
+@media screen and (min-width: 615px) and (max-width: 1000px) {
+    #modalDelete form{
+        height: 22%;
+    }
+    #modalDelete form h1{
+        margin-top: 3%;
+        font-size: 20px;
+    }
+    #modalDelete form i{
+        right:4%;
+        top:5%;
+        font-size: 18px;
+    }
+    #modalDelete form p{
+        margin-top: 1%;
+        font-size: 13px;
+    }
+    #modalDelete form div{
+        margin-top: 8%;
+        width: 90%;
+        height: 25%;
+    }
+    #modalDelete form div button{
+        font-size: 17px;
+    }
+}
+@media screen and (min-width: 400px) and (max-width: 615px) {
+    #modalDelete form{
+        height: 20%;
+    }
+    #modalDelete form h1{
+        width: 80%;
+        margin-top: 5%;
+        font-size: 13px;
+    }
+    #modalDelete form i{
+        right:5%;
+        top:7%;
+        font-size: 13px;
+    }
+    #modalDelete form p{
+        width: 80%;
+        margin-top: 2%;
+        font-size: 11px;
+    }
+    #modalDelete form div{
+        margin-top: 8%;
+        width: 80%;
+        height: 25%;
+    }
+    #modalDelete form div button{
+        font-size: 11px;
+        width: 30%;
+        height: 90%;
+    }
+}
+@media screen and (max-width: 400px) {
+    #modalDelete form{
+        height: 20%;
+    }
+    #modalDelete form h1{
+        width: 80%;
+        margin-top: 5%;
+        font-size: 13px;
+    }
+    #modalDelete form i{
+        right:5%;
+        top:7%;
+        font-size: 13px;
+    }
+    #modalDelete form p{
+        width: 80%;
+        margin-top: 2%;
+        font-size: 11px;
+    }
+    #modalDelete form div{
+        margin-top: 8%;
+        width: 80%;
+        height: 25%;
+    }
+    #modalDelete form div button{
+        font-size: 11px;
+        width: 30%;
+        height: 90%;
+    }
+}

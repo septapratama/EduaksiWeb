@@ -13,23 +13,29 @@ $tPath = app()->environment('local') ? '' : '/public/';
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{{ asset($tPath.'assets/css/styles.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset($tPath.'css/page/modalDelete.css') }}" />
+    <link rel="stylesheet" href="{{ asset($tPath.'css/popup.css') }}" />
     <style>
-        th{
-            white-space: nowrap;
-        }
-        th:nth-child(2) {
-            width: 100%;
-        }
-        td:last-child{
-            position: relative;
-            display: flex;
-            flex-direction: row;
-        }
-        td:last-child a, td:last-child button{
-            display: flex;
-            align-items: center;
-            gap: 7px;
-        }
+    th {
+        white-space: nowrap;
+    }
+
+    th:nth-child(2) {
+        width: 100%;
+    }
+
+    td:last-child {
+        position: relative;
+        display: flex;
+        flex-direction: row;
+    }
+
+    td:last-child a,
+    td:last-child button {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+    }
     </style>
 </head>
 
@@ -44,11 +50,11 @@ $tPath = app()->environment('local') ? '' : '/public/';
     </script>
     @endif
     <script>
-        const domain = window.location.protocol + '//' + window.location.hostname + ":" + window.location.port;
-        const reff = '/konsultasi';
-        var csrfToken = "{{ csrf_token() }}";
-        var email = "{{ $userAuth['email'] }}";
-        var number = "{{ $userAuth['number'] }}";
+    const domain = window.location.protocol + '//' + window.location.hostname + ":" + window.location.port;
+    const reff = '/konsultasi';
+    var csrfToken = "{{ csrf_token() }}";
+    var email = "{{ $userAuth['email'] }}";
+    var number = "{{ $userAuth['number'] }}";
     </script>
     <!--  Body Wrapper -->
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
@@ -76,9 +82,11 @@ $tPath = app()->environment('local') ? '' : '/public/';
                 </div>
                 <div class="d-flex align-items-stretch">
                     <div class="card w-100">
-                        <div class="card-body p-4" style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
+                        <div class="card-body p-4"
+                            style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
                             <a href="/konsultasi/tambah" class="btn btn-success"><img
-                                    src="{{ asset($tPath.'img/icon/tambah.svg') }}" alt="" width="30" height="30">Tambah Konsultasi</a>
+                                    src="{{ asset($tPath.'img/icon/tambah.svg') }}" alt="" width="30" height="30">Tambah
+                                Konsultasi</a>
                             <div class="table-responsive">
                                 <table class="table mb-0 align-middle">
                                     <thead class="text-dark fs-4">
@@ -112,8 +120,14 @@ $tPath = app()->environment('local') ? '' : '/public/';
                                                 <p class="mb-0 fw-normal">{{ $data['no_telpon']}}</p>
                                             </td>
                                             <td class="border-bottom-0">
-                                                <a href="/konsultasi/edit/{{ $data['uuid'] }}" class="btn btn-warning m-1"><img src="{{ asset($tPath.'img/icon/edit.svg') }}" alt=""><span>Edit</span></a>
-                                                <button type="button" class="btn btn-danger m-1"><img src="{{ asset($tPath.'img/icon/delete.svg') }}" alt=""><span>Hapus</span></button>
+                                                <a href="/konsultasi/edit/{{ $data['uuid'] }}"
+                                                    class="btn btn-warning m-1"><img
+                                                        src="{{ asset($tPath.'img/icon/edit.svg') }}"
+                                                        alt=""><span>Edit</span></a>
+                                                <button type="button" class="btn btn-danger m-1"
+                                                    onclick="showModalDelete('{{ $data['uuid'] }}')"><img
+                                                        src="{{ asset($tPath.'img/icon/delete.svg') }}"
+                                                        alt=""><span>Hapus</span></button>
                                             </td>
                                         </tr>
                                         @endforeach
@@ -127,6 +141,10 @@ $tPath = app()->environment('local') ? '' : '/public/';
             </div>
         </div>
     </div>
+    @php
+    $modalDelete = 'konsultasi';
+    @endphp
+    @include('page.Components.admin.modalDelete')
     <div id="preloader" style="display: none;"></div>
     <div id="greenPopup" style="display:none"></div>
     <div id="redPopup" style="display:none"></div>
@@ -137,6 +155,8 @@ $tPath = app()->environment('local') ? '' : '/public/';
     <script src="{{ asset($tPath.'assets/libs/apexcharts/dist/apexcharts.min.js') }}"></script>
     <script src="{{ asset($tPath.'assets/libs/simplebar/dist/simplebar.js') }}"></script>
     <script src="{{ asset($tPath.'assets/js/dashboard.js') }}"></script>
+    <script src="{{ asset($tPath.'js/popup.js') }}"></script>
+    <script src="{{ asset($tPath.'js/page/modalDelete.js') }}"></script>
 </body>
 
 </html>

@@ -19,13 +19,15 @@ $tPath = app()->environment('local') ? '' : '/public/';
 
 <body>
     <script>
-        var errCards = [];
-        function imgError(errCard){
-            errCards.push(errCard);
-        }
+    var errCards = [];
+
+    function imgError(errCard) {
+        errCards.push(errCard);
+    }
     </script>
     <section id="daftar-artikel">
         <div>
+            <button onclick="showModalDelete('fwf')">show modal coyy</button>
             <h1>Daftar Artikel</h1>
             <select class="" aria-label="Default select example" id="inpJenisKelamin">
                 <option value="" selected>Pilih Kategori</option>
@@ -80,34 +82,48 @@ $tPath = app()->environment('local') ? '' : '/public/';
             </li>
         </ul>
     </section>
+    <div id="modalDelete" onclick="closeModalDelete()">
+        <form id="deleteForm">
+            <input type="hidden" name="uuid" id="inpID" class="form-control">
+            <h1>Konfirmasi Hapus Artikel</h1>
+            <i class="fa-solid fa-xmark"></i>
+            <p>Apakah Anda yakin ingin menghapus artikel ini?</p>
+            <div>
+                <button onclick="closeModalDelete()">Batal</button>
+                <button onclick="">Hapus</button>
+            </div>
+        </form>
+    </div>
     <script>
-        document.body.addEventListener('dragstart', event => {
-            event.preventDefault();
-        });
-        window.addEventListener('load', function() {
-            var cards = document.querySelectorAll('.card');
-            cards.forEach(function(card) {
-                var image = card.querySelector('img');
-                image.addEventListener('load', function() {
-                    var cardLoading = card.querySelector('.card-loading');
-                    if (cardLoading) {
-                        cardLoading.remove();
-                    }
-                });
-                var hasError = false;
-                errCards.forEach(function(errCard) {
-                    if (errCard === card.id) {
-                        hasError = true;
-                    }
-                });
-                if (!hasError && (image.complete || image.naturalWidth === 0)) {
-                    var cardLoading = card.querySelector('.card-loading');
-                    if (cardLoading) {
-                        cardLoading.remove();
-                    }
+    document.body.addEventListener('dragstart', event => {
+        event.preventDefault();
+    });
+    window.addEventListener('load', function() {
+        var cards = document.querySelectorAll('.card');
+        cards.forEach(function(card) {
+            var image = card.querySelector('img');
+            image.addEventListener('load', function() {
+                var cardLoading = card.querySelector('.card-loading');
+                if (cardLoading) {
+                    cardLoading.remove();
                 }
             });
+            var hasError = false;
+            errCards.forEach(function(errCard) {
+                if (errCard === card.id) {
+                    hasError = true;
+                }
+            });
+            if (!hasError && (image.complete || image.naturalWidth === 0)) {
+                var cardLoading = card.querySelector('.card-loading');
+                if (cardLoading) {
+                    cardLoading.remove();
+                }
+            }
         });
+    });
     </script>
+    <script src="../js/testing.js"></script>
 </body>
+
 </html>

@@ -114,7 +114,7 @@ class PengasuhanController extends Controller
             //hapus Pengasuhan
             $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
             foreach($jsonData as $key => $item){
-                if (isset($item['uuid']) && $item['uuid'] == $data['id_pengasuhan']) {
+                if (isset($item['uuid']) && $item['uuid'] == $data['uuid']) {
                     unset($jsonData[$key]);
                 }
             }
@@ -157,7 +157,7 @@ class PengasuhanController extends Controller
             return response()->json(['status'=>'error','message'=>'Format Foto tidak valid. Gunakan format jpeg, png, jpg'], 400);
         }
         if(app()->environment('local')){
-            $destinationPath = public_path('img/pengasuhan');
+            $destinationPath = public_path('img/pengasuhan/');
         }else{
             $destinationPath = base_path('../public_html/public/img/pengasuhan/');
         }
@@ -228,7 +228,7 @@ class PengasuhanController extends Controller
                 return response()->json(['status'=>'error','message'=>'Format Foto tidak valid. Gunakan format jpeg, png, jpg'], 400);
             }
             if(app()->environment('local')){
-                $destinationPath = public_path('img/pengasuhan');
+                $destinationPath = public_path('img/pengasuhan/');
             }else{
                 $destinationPath = base_path('../public_html/public/img/pengasuhan/');
             }
@@ -263,10 +263,10 @@ class PengasuhanController extends Controller
         return response()->json(['status' =>'success','message'=>'Data Pengasuhan berhasil di perbarui']);
     }
     public function deletePengasuhan(Request $request){
-        $validator = Validator::make($request->only('id_pengasuhan'), [
-            'id_pengasuhan' => 'required',
+        $validator = Validator::make($request->only('uuid'), [
+            'uuid' => 'required',
         ], [
-            'id_pengasuhan.required' => 'ID pengasuhan wajib di isi',
+            'uuid.required' => 'ID pengasuhan wajib di isi',
         ]);
         if ($validator->fails()) {
             $errors = [];
@@ -276,22 +276,24 @@ class PengasuhanController extends Controller
             }
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
-        $pengasuhan = Pengasuhan::select('foto')->where('uuid',$request->input('id_pengasuhan'))->limit(1)->get()[0];
+        $pengasuhan = Pengasuhan::select('foto')->where('uuid',$request->input('uuid'))->limit(1)->get()[0];
         if (!$pengasuhan) {
             return response()->json(['status' => 'error', 'message' => 'Data Pengasuhan tidak ditemukan'], 400);
         }
         //delete all photo
-        $destinationPath = storage_path('app/pengasuhan/');
-        $fileToDelete = $destinationPath . $pengasuhan->foto;
+        if(app()->environment('local')){
+            $destinationPath = public_path('img/pengasuhan/');
+        }else{
+            $destinationPath = base_path('../public_html/public/img/pengasuhan/');
+        }
+        $fileToDelete = $destinationPath . $pengasuhan['foto'];
         if (file_exists($fileToDelete) && !is_dir($fileToDelete)) {
             unlink($fileToDelete);
         }
-        Storage::disk('pengasuhan')->delete('/'.$pengasuhan->foto);
-        // GaleriPengasuhan::where('id_pengasuhan',$request->input('id_pengasuhan'))->delete();
-        if (!Pengasuhan::where('uuid',$request->input('id_pengasuhan'))->delete()) {
+        if (!Pengasuhan::where('uuid',$request->input('uuid'))->delete()) {
             return response()->json(['status' => 'error', 'message' => 'Gagal menghapus data Pengasuhan'], 500);
         }
-        $this->dataCacheFile(['id_pengasuhan' => $request->input('id_pengasuhan')],'hapus');
+        $this->dataCacheFile(['uuid' => $request->input('uuid')],'hapus');
         return response()->json(['status' => 'success', 'message' => 'Data Pengasuhan berhasil dihapus']);
     }
 }

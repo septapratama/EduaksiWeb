@@ -14,35 +14,40 @@ $tPath = app()->environment('local') ? '' : '/public/';
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{{ asset($tPath.'assets/css/styles.min.css') }}" />
     <style>
-    #kotak{
+    #kotak {
         display: flex;
         flex-wrap: wrap;
         height: 350px;
         align-content: space-around;
         justify-content: space-around;
     }
-    .card{
+
+    .card {
         width: 47%;
-        height:100px;
+        height: 100px;
         display: flex;
-        justify-content:center;
+        justify-content: center;
         margin-bottom: 0px;
     }
-    .card h5, .card div{
+
+    .card h5,
+    .card div {
         position: relative;
         display: flex;
-        left:8%;
+        left: 8%;
         color: black;
         font-weight: 600;
     }
+
     .card h5 {
         font-size: 24px;
         font-weight: 600;
     }
+
     .card div {
         display: flex;
-        gap:3%;
-        align-items:center;
+        gap: 3%;
+        align-items: center;
         font-size: 22px;
     }
     </style>
@@ -65,7 +70,8 @@ $tPath = app()->environment('local') ? '' : '/public/';
     var number = "{{ $userAuth['number'] }}";
     </script>
     <!--  Body Wrapper -->
-    <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full" data-sidebar-position="fixed" data-header-position="fixed">
+    <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+        data-sidebar-position="fixed" data-header-position="fixed">
         <!-- Sidebar Start -->
         @php
         $nav = 'dashboard';
@@ -87,42 +93,50 @@ $tPath = app()->environment('local') ? '' : '/public/';
                     </nav>
                 </div>
                 <div id="kotak">
-                    <div class="card" style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
+                    <div class="card"
+                        style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
                         <h5 class="">Jumlah Disi</h5>
                         <div class="">
                             <img src="{{ asset($tPath.'img/icon/sidebar/disi.svg') }}" alt="" width="40" height="40">
                             <span>{{ $jumlah_disi }}</span>
                         </div>
                     </div>
-                    <div class="card" style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
+                    <div class="card"
+                        style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
                         <h5 class="">Jumlah Emotal</h5>
                         <div class="">
                             <img src="{{ asset($tPath.'img/icon/sidebar/emotal.svg') }}" alt="" width="40" height="40">
                             <span>{{ $jumlah_emotal }}</span>
                         </div>
                     </div>
-                    <div class="card" style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
+                    <div class="card"
+                        style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
                         <h5 class="">Jumlah Nutrisi</h5>
                         <div class="">
                             <img src="{{ asset($tPath.'img/icon/sidebar/nutrisi.svg') }}" alt="" width="40" height="40">
                             <span>{{ $jumlah_nutrisi }}</span>
                         </div>
                     </div>
-                    <div class="card" style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
+                    <div class="card"
+                        style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
                         <h5 class="">Jumlah Pengasuhan</h5>
                         <div class="">
-                            <img src="{{ asset($tPath.'img/icon/sidebar/pengasuhan.svg') }}" alt="" width="40" height="40">
+                            <img src="{{ asset($tPath.'img/icon/sidebar/pengasuhan.svg') }}" alt="" width="40"
+                                height="40">
                             <span>{{ $jumlah_pengasuhan }}</span>
                         </div>
                     </div>
-                    <div class="card" style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
+                    <div class="card"
+                        style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
                         <h5 class="">Jumlah Konsultan</h5>
                         <div class="">
-                            <img src="{{ asset($tPath.'img/icon/sidebar/konsultasi.svg') }}" alt="" width="40" height="40">
+                            <img src="{{ asset($tPath.'img/icon/sidebar/konsultasi.svg') }}" alt="" width="40"
+                                height="40">
                             <span>{{ $jumlah_konsultan }}</span>
                         </div>
                     </div>
-                    <div class="card" style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
+                    <div class="card"
+                        style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
                         <h5 class="">Jumlah Artikel</h5>
                         <div class="">
                             <img src="{{ asset($tPath.'img/icon/sidebar/artikel.svg') }}" alt="" width="40" height="40">
@@ -134,12 +148,13 @@ $tPath = app()->environment('local') ? '' : '/public/';
             </div>
         </div>
     </div>
-    <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
-    <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../assets/js/sidebarmenu.js"></script>
-    <script src="../assets/js/app.min.js"></script>
-    <script src="../assets/libs/apexcharts/dist/apexcharts.min.js"></script>
-    <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
+    <script src="{{ asset($tPath.'assets/libs/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ asset($tPath.'assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset($tPath.'assets/js/sidebarmenu.js') }}"></script>
+    <script src="{{ asset($tPath.'assets/js/app.min.js') }}"></script>
+    <script src="{{ asset($tPath.'assets/libs/apexcharts/dist/apexcharts.min.js') }}"></script>
+    <script src="{{ asset($tPath.'assets/libs/simplebar/dist/simplebar.js') }}"></script>
+    <script src="{{ asset($tPath.'assets/js/dashboard.js') }}"></script>
 </body>
 
 </html>

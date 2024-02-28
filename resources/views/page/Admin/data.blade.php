@@ -13,6 +13,8 @@ $tPath = app()->environment('local') ? '' : '/public/';
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{{ asset($tPath.'assets/css/styles.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset($tPath.'css/page/modalDelete.css') }}" />
+    <link rel="stylesheet" href="{{ asset($tPath.'css/popup.css') }}" />
     <style>
     th {
         white-space: nowrap;
@@ -127,7 +129,8 @@ $tPath = app()->environment('local') ? '' : '/public/';
                                                     class="btn btn-warning m-1"><img
                                                         src="{{ asset($tPath.'img/icon/edit.svg') }}"
                                                         alt=""><span>Edit</span></a>
-                                                <button type="button" class="btn btn-danger m-1"><img
+                                                <button type="button" class="btn btn-danger m-1"
+                                                    onclick="showModalDelete('{{ $data['uuid'] }}')"><img
                                                         src="{{ asset($tPath.'img/icon/delete.svg') }}"
                                                         alt=""><span>Hapus</span></button>
                                             </td>
@@ -143,13 +146,22 @@ $tPath = app()->environment('local') ? '' : '/public/';
             </div>
         </div>
     </div>
-    <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
-    <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../assets/js/sidebarmenu.js"></script>
-    <script src="../assets/js/app.min.js"></script>
-    <script src="../assets/libs/apexcharts/dist/apexcharts.min.js"></script>
-    <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
-    <script src="../assets/js/dashboard.js"></script>
+    @php
+    $modalDelete = 'admin';
+    @endphp
+    @include('page.Components.admin.modalDelete')
+    <div id="preloader" style="display: none;"></div>
+    <div id="greenPopup" style="display:none"></div>
+    <div id="redPopup" style="display:none"></div>
+    <script src="{{ asset($tPath.'assets/libs/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ asset($tPath.'assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset($tPath.'assets/js/sidebarmenu.js') }}"></script>
+    <script src="{{ asset($tPath.'assets/js/app.min.js') }}"></script>
+    <script src="{{ asset($tPath.'assets/libs/apexcharts/dist/apexcharts.min.js') }}"></script>
+    <script src="{{ asset($tPath.'assets/libs/simplebar/dist/simplebar.js') }}"></script>
+    <script src="{{ asset($tPath.'assets/js/dashboard.js') }}"></script>
+    <script src="{{ asset($tPath.'js/popup.js') }}"></script>
+    <script src="{{ asset($tPath.'js/page/modalDelete.js') }}"></script>
 </body>
 
 </html>
