@@ -5,9 +5,7 @@ use App\Models\RefreshToken;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use Firebase\JWT\SignatureInvalidException;
@@ -17,7 +15,6 @@ use UnexpectedValueException;
 use DomainException;
 use InvalidArgumentException;
 use Carbon\Carbon;
-Use Closure;
 class JwtController extends Controller
 {
     //cek jumlah login di database
@@ -79,24 +76,6 @@ class JwtController extends Controller
             return RefreshToken::select("email")->whereRaw("BINARY token = ? AND device = 'website'",[$token])->limit(1)->exists();
         }
     }
-
-    //check total refresh token website
-    // public function checkTotalRefreshWebsite($data){
-    //     $email = $data['email'];
-    //     if(empty($email) || is_null($email)){
-    //         return ['status'=>'error','message'=>'email empty'];
-    //     }else{
-    //         if(RefreshToken::select("email")->where('email','LIKE','%'.$email.'%')->limit(1)->exists()){
-    //             if(RefreshToken::select("email")->where('email','LIKE','%'.$email.'%')->limit(1)->exists()){
-    //             }else{
-    //                 //
-    //             }
-    //             return ['status'=>'success','data'=>true];
-    //         }else{
-    //             return ['status'=>'success','data'=>false];
-    //         }
-    //     }
-    // }
     //get refresh token from database
     public function getRefreshWebsite(Request $request,Response $response){
         $email = $request->input('email');
@@ -131,7 +110,6 @@ class JwtController extends Controller
             return response()->json('error saving token1',401);
         }
     }
-    
     //create token and refresh token 
     public function createJWTWebsite($email, RefreshToken $refreshToken){
         try{
@@ -222,7 +200,6 @@ class JwtController extends Controller
                                         'refresh'=>json_decode(json_encode($Rtoken),true)
                                     ],
                                     'number' => $number['data']+1];
-                            // $json = ['status'=>'success','data'=>json_decode(json_encode($token),true),'number'=>$number['data']+1];
                         }
                         if($refreshToken->save()){
                             return $json;
@@ -285,8 +262,6 @@ class JwtController extends Controller
             return ['status'=>'error','message'=>$e->getMessage()];
         } catch (DomainException $e) {
             return ['status'=>'error','message'=>$e->getMessage()];
-        // } catch (LogicException $e) {
-            // return ['status'=>'error','message'=>$e->getMessage()];
         } catch (\Exception $e) {
             return ['status'=>'error','message'=>$e->getMessage()];
         }
@@ -309,7 +284,6 @@ class JwtController extends Controller
     //update refresh token website
     public function updateRefreshWebsite($email){
         try{
-            // $email = $request->input('email');
             if(empty($email) || is_null($email)){
                 return ['status'=>'error','message'=>'email adios'];
             }else{
@@ -330,30 +304,11 @@ class JwtController extends Controller
         }
     }
 
-    //change refresh token website
-    public function changeRefreshWebsite($email){
-        // try{
-        //     if(empty($email) || is_null($email)){
-        //         return response()->json('email empty',404);
-        //     }else{
-        //         $deleted = DB::table('refresh_token')->where('email', $email)->delete();
-        //         if($deleted){
-        //             return ['status'=>'success','message'=>'success change refresh token'];
-        //         }else{
-        //             return ['status'=>'error','message'=>'failed change refresh token'];
-        //         }
-        //     }
-        // }catch(\Exception $e){
-        //     return ['status'=>'error','message'=>$e->getMessage()];
-        // }
-    }
     //delete refresh token website 
     public function deleteRefreshWebsite($email,$number = null){
         try{
             if(empty($email) || is_null($email)){
                 return ['status'=>'error','message'=>'email empty','code'=>400];
-            // }else if(empty($number) || is_null($number)){
-            //     return ['status'=>'error','message'=>'token empty','code'=>400];
             }else{
                 if($number == null){
                     $deleted = DB::table('refresh_token')->whereRaw("BINARY email = ? AND device = 'website'",[$email])->delete();

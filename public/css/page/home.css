@@ -10,6 +10,11 @@ body{
     color: var(--biru-tua);
     font-family: 'Roboto', sans-serif;
 }
+a:link,
+a:visited {
+    color: var(--biru-tua);
+    text-decoration: none;
+}
 img{
     pointer-events: none;
 }
@@ -46,7 +51,7 @@ header li a.active{
     color: red;
 }
 main, section {
-    padding-top: 70px; /* Adjusted to the height of the header */
+    padding-top: 70px;
 }
 
 #beranda{
@@ -90,7 +95,6 @@ main, section {
     cursor: pointer;
 }
 #beranda div button img{
-
     width: 40px;
     height: 40px;
 }
@@ -103,11 +107,6 @@ main, section {
 section ul a:active{
     color: var(--biru-tua);
 }
-/* #artikel{
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 20px;
-} */
 #artikel div, #artikel ul{
     display: flex;
 }
@@ -140,12 +139,12 @@ section ul a:active{
     height: 25px;
 }
 #artikel ul{
-    margin: 0px;
-    margin-top: 20px;
-    gap:20px;
     position: relative;
     left:50%;
     transform: translateX(-50%);
+    margin: 0px;
+    margin-top: 20px;
+    gap:20px;
     margin-bottom:50px;
     display: flex;
 }
@@ -394,4 +393,411 @@ footer span{
     color: #fff;
     font-size: 15px;
     font-weight: 500;
+}
+@media screen and (min-width: 615px) and (max-width: 1000px) {
+    header{
+        height: 50px;
+        gap:50px;
+        scroll-padding-top: 50px;
+    }
+    header h1{
+        margin-left: 50px;
+        font-size: 30px;
+    }
+    header li{
+        display: flex;
+        gap:25px;
+    }
+    header li a{
+        font-size: 18px;
+    }
+    main, section {
+        padding-top: 50px;
+    }
+
+    #beranda{
+        height: 85vh;
+    }
+    #beranda img{
+        width: 350px;
+        height: 350px;
+    }
+    #beranda div{
+        margin-left:35px;
+        margin-top: 10px;
+        width: 75%;
+    }
+    #beranda div h1{
+        font-size: 45px;
+    }
+    #beranda div span{
+        margin-top: 40px;
+        font-size: 17px;
+    }
+    #beranda div button{
+        margin-top: 30px;
+        width:165px;
+        height: 50px;
+        gap:7px;
+        border-radius: 12px;
+    }
+    #beranda div button img{
+        width: 27px;
+        height: 27px;
+    }
+    #beranda div button span{
+        font-size: 16px;
+        margin-top: 0px;
+    }
+
+    /* for img */
+    .card-loading div{
+        margin-top: 15px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 10px;
+        width: 90%;
+        height: 150px;
+    }
+    /* for date */
+    .card-loading span{
+        width: 35%;
+        margin-top: 12px;
+        margin-left: 59%;
+        height: 15px;
+    }
+    /* for header */
+    .card-loading h3{
+        width: 75%;
+        height: 40px;
+        margin-top: 12px;
+    }
+    /* for category */
+    .card-loading p{
+        height: 18px;
+        margin-top: 15px;
+        margin-bottom: 20px;
+    }
+    #artikel div h1,
+    #kategori div h1{
+        font-size: 22px;
+    }
+    #artikel div a,
+    #kategori div a{
+        font-size: 15px;
+    }
+    #artikel div a img,
+    #kategori div a img{
+        width: 20px;
+        height: 20px;
+    }
+    #artikel ul,
+    #kategori ul{
+        margin-top: 10px;
+    }
+    #artikel ul li a h3, #artikel ul li a p,
+    #kategori ul li a h3, #kategori ul li a p{
+        left: 5%;
+        transform: translateX(0%);
+        width: 75%;
+    }
+    #artikel ul li a span.tanggal,
+    #artikel ul li a span.tanggal{
+        font-size: 12px;
+    }
+    #artikel ul li a h3,
+    #kategori ul li a h3{
+        font-size: 15px;
+    }
+    #artikel ul li a p,
+    #kategori ul li a p{
+        font-size: 13px;
+    }
+    #kategori{
+        margin-top: 30px;
+        margin-bottom: 50px;
+    }
+}
+@media screen and (min-width: 400px) and (max-width: 615px) {
+    header{
+        height: 40px;
+        gap:40px;
+        scroll-padding-top: 40px;
+    }
+    header h1{
+        margin-left: 24px;
+        font-size: 27px;
+    }
+    header li{
+        display: flex;
+        gap:20px;
+    }
+    header li a{
+        font-size: 17px;
+    }
+    main, section {
+        padding-top: 40px;
+    }
+
+    #beranda{
+        height: 100vh;
+        flex-direction :column-reverse;
+        align-items: center;
+    }
+    #beranda img{
+        width: 400px;
+        height: 400px;
+    }
+    #beranda div{
+        margin-left: 0px;
+        margin-top: 10px;
+        width: 90%;
+    }
+    #beranda div h1{
+        font-size: 40px;
+    }
+    #beranda div span{
+        margin-top: 15px;
+        font-size: 16px;
+    }
+    #beranda div button{
+        margin-top: 25px;
+        width:140px;
+        height: 40px;
+        gap:5px;
+        border-radius: 9px;
+    }
+    #beranda div button img{
+        width: 22px;
+        height: 22px;
+    }
+    #beranda div button span{
+        font-size: 14px;
+        margin-top: 0px;
+    }
+
+    /* for img */
+    .card-loading div{
+        margin-top: 15px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 10px;
+        width: 90%;
+        height: 100px;
+    }
+    /* for date */
+    .card-loading span{
+        width: 35%;
+        margin-top: 5px;
+        margin-left: 58%;
+        height: 13px;
+    }
+    /* for header */
+    .card-loading h3{
+        width: 75%;
+        height: 43px;
+        margin-top: 5px;
+    }
+    /* for category */
+    .card-loading p{
+        height: 16px;
+        margin-top: 15px;
+        margin-bottom: 20px;
+    }
+    #artikel div h1,
+    #kategori div h1{
+        font-size: 20px;
+    }
+    #artikel div a,
+    #kategori div a{
+        font-size: 16px;
+    }
+    #artikel div a img,
+    #kategori div a img{
+        width: 20px;
+        height: 20px;
+    }
+    #artikel ul,
+    #kategori ul{
+        width: 94%;
+        padding: 0px;
+    }
+    #artikel ul li a h3, #artikel ul li a p,
+    #kategori ul li a h3, #kategori ul li a p{
+        left: 5%;
+        transform: translateX(0%);
+        width: 75%;
+    }
+    #artikel ul li a span.tanggal,
+    #kategori ul li a span.tanggal{
+        font-size: 11px;
+    }
+    #artikel ul li a h3,
+    #kategori ul li a h3{
+        font-size: 13px;
+    }
+    #artikel ul li a p,
+    #artikel ul li a p{
+        font-size: 11px;
+    }
+    #kategori{
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+    footer{
+        height: 40px;
+    }
+    footer span{
+        font-size: 13px;
+    }
+}
+@media screen and (max-width: 400px) {
+    header{
+        height: 30px;
+        gap:20px;
+        scroll-padding-top: 30px;
+    }
+    header h1{
+        margin-left: 15px;
+        font-size: 24px;
+    }
+    header li{
+        display: flex;
+        gap:10px;
+    }
+    header li a{
+        font-size: 14px;
+    }
+    main, section {
+        padding-top: 30px;
+    }
+
+    #beranda{
+        height: 100vh;
+        flex-direction :column-reverse;
+        align-items: center;
+        padding-top: 0px;
+    }
+    #beranda img{
+        width: 330px;
+        height: 330px;
+    }
+    #beranda div{
+        margin-left: 0px;
+        margin-top: 100px;
+        width: 90%;
+    }
+    #beranda div h1{
+        font-size: 30px;
+    }
+    #beranda div span{
+        margin-top: 7px;
+        font-size: 14px;
+    }
+    #beranda div button{
+        margin-top: 17px;
+        width:140px;
+        height: 40px;
+        gap:5px;
+        border-radius: 9px;
+    }
+    #beranda div button img{
+        width: 22px;
+        height: 22px;
+    }
+    #beranda div button span{
+        font-size: 14px;
+        margin-top: 0px;
+    }
+    
+    /* for img */
+    .card-loading div{
+        margin-top: 6px;
+        border-radius: 6px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 10px;
+        width: 90%;
+        height: 100px;
+    }
+    /* for date */
+    .card-loading span{
+        width: 35%;
+        margin-top: 10px;
+        margin-left: 58%;
+        height: 13px;
+    }
+    /* for header */
+    .card-loading h3{
+        width: 75%;
+        height: 40px;
+        margin-top: 10px;
+    }
+    /* for category */
+    .card-loading p{
+        height: 16px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    #artikel div h1,
+    #kategori div h1{
+        font-size: 17px;
+    }
+    #artikel div a,
+    #kategori div a{
+        font-size: 13px;
+    }
+    #artikel div a img,
+    #kategori div a img{
+        width: 14px;
+        height: 14px;
+    }
+    #artikel ul,
+    #kategori ul{
+        width: 95%;
+        padding: 0px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    #artikel ul li,
+    #kategori ul li{
+        border-radius: 6px;
+    }
+    #artikel ul li a img{
+        margin-top: 6px;
+        border-radius: 6px;
+    }
+    #artikel ul li a h3, #artikel ul li a p,
+    #kategori ul li a h3, #kategori ul li a p{
+        position: relative;
+        left: 5%;
+        transform: translateX(0%);
+        width: 75%;
+    }
+    #artikel ul li a span.tanggal,
+    #kategori ul li a span.tanggal{
+        margin-top: 7px;
+        font-size: 7px;
+    }
+    #artikel ul li a h3,
+    #kategori ul li a h3{
+        margin-top: 7px;
+        font-size: 10px;
+    }
+    #artikel ul li a p,
+    #kategori ul li a p{
+        margin-top: 10px;
+        font-size: 8px;
+        margin-bottom: 10px;
+    }
+    #kategori{
+        margin-top: 10px;
+        margin-bottom: 20px;
+    }
+    footer{
+        height: 25px;
+    }
+    footer span{
+        font-size: 10px;
+    }
 }

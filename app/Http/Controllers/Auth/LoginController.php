@@ -1,21 +1,11 @@
 <?php
 namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\JwtController;
-use App\Http\Controllers\Website\ChangePasswordController;
 use App\Models\User;
 use App\Models\RefreshToken;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Cookie;
-use Laravel\Socialite\Facades\Socialite;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Http\JsonResponse;
-use Exception;
 class LoginController extends Controller
 { 
     public function Login(Request $request){

@@ -225,5 +225,89 @@ footer span{
     font-size: 15px;
     font-weight: 500;
 }
-@media screen and (min-width: 400px) and (max-width: 768px) {
+@media screen and (min-width: 615px) and (max-width: 1000px) {
+    #modalDelete form{
+        height: 22%;
+    }
+    #modalDelete form h1{
+        margin-top: 3%;
+        font-size: 20px;
+    }
+    #modalDelete form i{
+        right:4%;
+        top:5%;
+        font-size: 18px;
+    }
+    #modalDelete form p{
+        margin-top: 1%;
+        font-size: 13px;
+    }
+    #modalDelete form div{
+        margin-top: 8%;
+        width: 90%;
+        height: 25%;
+    }
+    #modalDelete form div button{
+        font-size: 17px;
+    }
+}
+@media screen and (min-width: 400px) and (max-width: 615px) {
+    #modalDelete form{
+        height: 20%;
+    }
+    #modalDelete form h1{
+        width: 80%;
+        margin-top: 5%;
+        font-size: 13px;
+    }
+    #modalDelete form i{
+        right:5%;
+        top:7%;
+        font-size: 13px;
+    }
+    #modalDelete form p{
+        width: 80%;
+        margin-top: 2%;
+        font-size: 11px;
+    }
+    #modalDelete form div{
+        margin-top: 8%;
+        width: 80%;
+        height: 25%;
+    }
+    #modalDelete form div button{
+        font-size: 11px;
+        width: 30%;
+        height: 90%;
+    }
+}
+@media screen and (max-width: 400px) {
+    #modalDelete form{
+        height: 20%;
+    }
+    #modalDelete form h1{
+        width: 80%;
+        margin-top: 5%;
+        font-size: 13px;
+    }
+    #modalDelete form i{
+        right:5%;
+        top:7%;
+        font-size: 13px;
+    }
+    #modalDelete form p{
+        width: 80%;
+        margin-top: 2%;
+        font-size: 11px;
+    }
+    #modalDelete form div{
+        margin-top: 8%;
+        width: 80%;
+        height: 25%;
+    }
+    #modalDelete form div button{
+        font-size: 11px;
+        width: 30%;
+        height: 90%;
+    }
 }
