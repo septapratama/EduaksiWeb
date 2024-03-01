@@ -10,6 +10,11 @@ body{
     color: var(--biru-tua);
     font-family: 'Roboto', sans-serif;
 }
+a:link,
+a:visited {
+    color: var(--biru-tua);
+    text-decoration: none;
+}
 img{
     pointer-events: none;
 }
@@ -94,6 +99,7 @@ section ul a:active{
     transform: translateX(-50%);
     margin-bottom:50px;
     display: flex;
+    justify-content: space-between;
 }
 #daftar-artikel ul li{
     position: relative;
@@ -225,89 +231,281 @@ footer span{
     font-size: 15px;
     font-weight: 500;
 }
-@media screen and (min-width: 615px) and (max-width: 1000px) {
-    #modalDelete form{
-        height: 22%;
+@media screen and (min-width: 625px) and (max-width: 1000px) {
+    header{
+        height: 50px;
+        gap:50px;
+        scroll-padding-top: 50px;
     }
-    #modalDelete form h1{
-        margin-top: 3%;
-        font-size: 20px;
+    header h1{
+        margin-left: 50px;
+        font-size: 30px;
     }
-    #modalDelete form i{
-        right:4%;
-        top:5%;
+    header li{
+        display: flex;
+        gap:25px;
+    }
+    header li a{
         font-size: 18px;
     }
-    #modalDelete form p{
-        margin-top: 1%;
+    main, section {
+        padding-top: 50px;
+    }
+
+    /* for img */
+    .card-loading div{
+        margin-top: 15px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 10px;
+        width: 90%;
+        height: 150px;
+    }
+    /* for date */
+    .card-loading span{
+        width: 35%;
+        margin-top: 12px;
+        margin-left: 59%;
+        height: 15px;
+    }
+    /* for header */
+    .card-loading h3{
+        width: 75%;
+        height: 40px;
+        margin-top: 12px;
+    }
+    /* for category */
+    .card-loading p{
+        height: 18px;
+        margin-top: 15px;
+        margin-bottom: 20px;
+    }
+    #daftar-artikel div h1{
+        font-size: 22px;
+    }
+    #daftar-artikel div a{
+        font-size: 15px;
+    }
+    #daftar-artikel div a img{
+        width: 20px;
+        height: 20px;
+    }
+    #daftar-artikel ul{
+        margin-top: 10px;
+    }
+    #daftar-artikel ul li a h3, #daftar-artikel ul li a p{
+        left: 5%;
+        transform: translateX(0%);
+        width: 75%;
+    }
+    #daftar-artikel ul li a span.tanggal{
+        font-size: 12px;
+    }
+    #daftar-artikel ul li a h3{
+        font-size: 15px;
+    }
+    #daftar-artikel ul li a p{
         font-size: 13px;
     }
-    #modalDelete form div{
-        margin-top: 8%;
-        width: 90%;
-        height: 25%;
-    }
-    #modalDelete form div button{
-        font-size: 17px;
+    #daftar-artikel{
+        margin-top: 30px;
+        margin-bottom: 50px;
     }
 }
-@media screen and (min-width: 400px) and (max-width: 615px) {
-    #modalDelete form{
-        height: 20%;
+@media screen and (min-width: 400px) and (max-width: 625px) {
+    header{
+        height: 40px;
+        gap:40px;
+        scroll-padding-top: 40px;
     }
-    #modalDelete form h1{
-        width: 80%;
-        margin-top: 5%;
-        font-size: 13px;
+    header h1{
+        margin-left: 24px;
+        font-size: 27px;
     }
-    #modalDelete form i{
-        right:5%;
-        top:7%;
-        font-size: 13px;
+    header li{
+        display: flex;
+        gap:20px;
     }
-    #modalDelete form p{
-        width: 80%;
-        margin-top: 2%;
+    header li a{
+        font-size: 17px;
+    }
+    main, section {
+        padding-top: 40px;
+    }
+
+    /* for img */
+    .card-loading div{
+        margin-top: 15px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 10px;
+        width: 90%;
+        height: 100px;
+    }
+    /* for date */
+    .card-loading span{
+        width: 35%;
+        margin-top: 5px;
+        margin-left: 58%;
+        height: 13px;
+    }
+    /* for header */
+    .card-loading h3{
+        width: 75%;
+        height: 43px;
+        margin-top: 5px;
+    }
+    /* for category */
+    .card-loading p{
+        height: 16px;
+        margin-top: 15px;
+        margin-bottom: 20px;
+    }
+    #daftar-artikel div h1{
+        font-size: 20px;
+    }
+    #daftar-artikel div a{
+        font-size: 16px;
+    }
+    #daftar-artikel div a img{
+        width: 20px;
+        height: 20px;
+    }
+    #daftar-artikel ul{
+        width: 94%;
+        padding: 0px;
+        gap:10px;
+    }
+    #daftar-artikel ul li{
+        width:47%;
+    }
+    #daftar-artikel ul li a h3, #daftar-artikel ul li a p{
+        left: 5%;
+        transform: translateX(0%);
+        width: 75%;
+    }
+    #daftar-artikel ul li a span.tanggal{
         font-size: 11px;
     }
-    #modalDelete form div{
-        margin-top: 8%;
-        width: 80%;
-        height: 25%;
+    #daftar-artikel ul li a h3{
+        font-size: 13px;
     }
-    #modalDelete form div button{
+    #daftar-artikel ul li a p{
         font-size: 11px;
-        width: 30%;
-        height: 90%;
+    }
+    #daftar-artikel{
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+    footer{
+        height: 40px;
+    }
+    footer span{
+        font-size: 13px;
     }
 }
 @media screen and (max-width: 400px) {
-    #modalDelete form{
-        height: 20%;
+    header{
+        height: 30px;
+        gap:20px;
+        scroll-padding-top: 30px;
     }
-    #modalDelete form h1{
-        width: 80%;
-        margin-top: 5%;
+    header h1{
+        margin-left: 15px;
+        font-size: 24px;
+    }
+    header li{
+        display: flex;
+        gap:10px;
+    }
+    header li a{
+        font-size: 14px;
+    }
+    main, section {
+        padding-top: 30px;
+    }
+
+    /* for img */
+    .card-loading div{
+        margin-top: 6px;
+        border-radius: 6px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 10px;
+        width: 90%;
+        height: 100px;
+    }
+    /* for date */
+    .card-loading span{
+        width: 35%;
+        margin-top: 10px;
+        margin-left: 58%;
+        height: 13px;
+    }
+    /* for header */
+    .card-loading h3{
+        width: 75%;
+        height: 40px;
+        margin-top: 10px;
+    }
+    /* for category */
+    .card-loading p{
+        height: 16px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    #daftar-artikel div h1{
+        font-size: 17px;
+    }
+    #daftar-artikel div a{
         font-size: 13px;
     }
-    #modalDelete form i{
-        right:5%;
-        top:7%;
-        font-size: 13px;
+    #daftar-artikel div a img{
+        width: 14px;
+        height: 14px;
     }
-    #modalDelete form p{
-        width: 80%;
-        margin-top: 2%;
-        font-size: 11px;
+    #daftar-artikel ul{
+        width: 95%;
+        padding: 0px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        gap:10px;
     }
-    #modalDelete form div{
-        margin-top: 8%;
-        width: 80%;
-        height: 25%;
+    #daftar-artikel ul li{
+        width:47%;
+        border-radius: 6px;
     }
-    #modalDelete form div button{
-        font-size: 11px;
-        width: 30%;
-        height: 90%;
+    #daftar-artikel ul li a img{
+        margin-top: 6px;
+        border-radius: 6px;
+    }
+    #daftar-artikel ul li a h3, #daftar-artikel ul li a p{
+        position: relative;
+        left: 5%;
+        transform: translateX(0%);
+        width: 75%;
+    }
+    #daftar-artikel ul li a span.tanggal{
+        margin-top: 7px;
+        font-size: 7px;
+    }
+    #daftar-artikel ul li a h3{
+        margin-top: 7px;
+        font-size: 10px;
+    }
+    #daftar-artikel ul li a p{
+        margin-top: 10px;
+        font-size: 8px;
+        margin-bottom: 10px;
+    }
+    #daftar-artikel{
+        margin-top: 10px;
+        margin-bottom: 20px;
+    }
+    footer{
+        height: 25px;
+    }
+    footer span{
+        font-size: 10px;
     }
 }

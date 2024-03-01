@@ -13,6 +13,11 @@ body{
 img{
     pointer-events: none;
 }
+a:link,
+a:visited {
+    color: var(--biru-tua);
+    text-decoration: none;
+}
 header{
     top: 0px;
     position:sticky;
@@ -199,6 +204,7 @@ main div div iframe{
     width: 70%;
     height: 100%;
     margin-bottom: 20px;
+    border-radius: 15px;
 }
 
 section ul a:active{
@@ -249,6 +255,7 @@ section ul a:active{
     transform: translateX(-50%);
     margin-bottom:50px;
     display: flex;
+    justify-content: space-between;
 }
 #rekomendasi ul li{
     position: relative;
@@ -331,89 +338,471 @@ footer span{
     font-size: 15px;
     font-weight: 500;
 }
-@media screen and (min-width: 615px) and (max-width: 1000px) {
-    #modalDelete form{
-        height: 22%;
+@media screen and (min-width: 625px) and (max-width: 1000px) {
+    header{
+        height: 50px;
+        gap:60px;
+        scroll-padding-top: 50px;
     }
-    #modalDelete form h1{
-        margin-top: 3%;
-        font-size: 20px;
+    header h1{
+        margin-left: 70px;
+        font-size: 30px;
     }
-    #modalDelete form i{
-        right:4%;
-        top:5%;
+    header li{
+        display: flex;
+        gap:30px;
+    }
+    header li a{
         font-size: 18px;
     }
-    #modalDelete form p{
-        margin-top: 1%;
-        font-size: 13px;
+    main, section {
+        padding-top: 50px;
     }
-    #modalDelete form div{
-        margin-top: 8%;
+
+    main{
+        width: 99%;
+    }
+    main a{
+        gap: 2px;
+        font-size: 18px;
+        font-weight: 600;
+        margin-top:20px;
         width: 90%;
-        height: 25%;
     }
-    #modalDelete form div button{
-        font-size: 17px;
+    main a img{
+        width: 23px;
+        height: 23px;
+    }
+    main div{
+        gap: 15px;
+    }
+    main div h1{
+        width: 70%;
+        font-size: 28px;
+        font-weight: 700;
+    }
+    main div span.tanggal{
+        font-size: 18px;
+        margin:0px;
+    }
+    /* for img main loading */
+    main div .main-loading{
+        width: 90%;
+        height: 600px;
+        border-radius: 20px;
+    }
+    main div img{
+        width: 90%;
+        height: 60%;
+        border-radius: 20px;
+    }
+    main div span{
+        font-size: 18px;
+        font-weight: 400;
+        margin-top:30px;
+        width: 90%;
+        gap:15px;
+    }
+    main div #video{
+        margin-top: 0px;
+        width: 90%;
+        height:500px;
+        padding-top: 0px;
+    }
+    main div div h3{
+        font-size: 25px;
+    }
+    main div div iframe{
+        width: 95%;
+        height: 100%;
+        margin-bottom: 20px;
+    }
+    /* for img */
+    .card-loading div{
+        margin-top: 15px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 10px;
+        width: 90%;
+        height: 150px;
+    }
+    /* for date */
+    .card-loading span{
+        width: 35%;
+        margin-top: 12px;
+        margin-left: 59%;
+        height: 15px;
+    }
+    /* for header */
+    .card-loading h3{
+        width: 75%;
+        height: 40px;
+        margin-top: 12px;
+    }
+    /* for category */
+    .card-loading p{
+        height: 18px;
+        margin-top: 15px;
+        margin-bottom: 20px;
+    }
+    #rekomendasi{
+        margin-top: 20px;
+        margin-bottom: 30px;
+        padding-top: 20px;
+    }
+    #rekomendasi div h1{
+        font-size: 22px;
+    }
+    #rekomendasi div a{
+        font-size: 15px;
+    }
+    #rekomendasi div a img{
+        width: 20px;
+        height: 20px;
+    }
+    #rekomendasi ul{
+        margin-top: 10px;
+    }
+    #rekomendasi ul li a h3, #rekomendasi ul li a p{
+        left: 5%;
+        transform: translateX(0%);
+        width: 85%;
+    }
+    #rekomendasi ul li a span.tanggal{
+        font-size: 12px;
+    }
+    #rekomendasi ul li a h3{
+        font-size: 15px;
+    }
+    #rekomendasi ul li a p{
+        font-size: 13px;
     }
 }
-@media screen and (min-width: 400px) and (max-width: 615px) {
-    #modalDelete form{
-        height: 20%;
+@media screen and (min-width: 400px) and (max-width: 625px) {
+    header{
+        height: 50px;
+        gap:30px;
+        scroll-padding-top: 50px;
     }
-    #modalDelete form h1{
-        width: 80%;
-        margin-top: 5%;
-        font-size: 13px;
+    header h1{
+        margin-left: 25px;
+        font-size: 30px;
     }
-    #modalDelete form i{
-        right:5%;
-        top:7%;
-        font-size: 13px;
+    header li{
+        display: flex;
+        gap:10px;
     }
-    #modalDelete form p{
-        width: 80%;
-        margin-top: 2%;
+    header li a{
+        font-size: 15px;
+    }
+    main, section {
+        padding-top: 50px;
+    }
+
+    main{
+        width: 99%;
+    }
+    main a{
+        gap: 2px;
+        font-size: 18px;
+        font-weight: 600;
+        margin-top:20px;
+        width: 90%;
+    }
+    main a img{
+        width: 23px;
+        height: 23px;
+    }
+    main div{
+        gap: 12px;
+    }
+    main div h1{
+        width: 70%;
+        font-size: 28px;
+        font-weight: 700;
+    }
+    main div span.tanggal{
+        font-size: 18px;
+        margin:0px;
+    }
+    /* for img main loading */
+    main div .main-loading{
+        width: 90%;
+        height: 600px;
+        border-radius: 20px;
+    }
+    main div img{
+        width: 90%;
+        height: 60%;
+        border-radius: 12px;
+    }
+    main div span{
+        font-size: 18px;
+        font-weight: 400;
+        margin-top:20px;
+        width: 90%;
+        gap:12px;
+    }
+    main div #video{
+        margin-top: 0px;
+        width: 90%;
+        height:280px;
+        padding-top: 0px;
+    }
+    main div div h3{
+        font-size: 25px;
+    }
+    main div div iframe{
+        width: 100%;
+        height: 100%;
+        margin-bottom: 0px;
+        border-radius: 10px;
+    }
+    /* for img */
+    .card-loading div{
+        margin-top: 15px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 10px;
+        width: 90%;
+        height: 150px;
+    }
+    /* for date */
+    .card-loading span{
+        width: 35%;
+        margin-top: 12px;
+        margin-left: 59%;
+        height: 15px;
+    }
+    /* for header */
+    .card-loading h3{
+        width: 75%;
+        height: 40px;
+        margin-top: 12px;
+    }
+    /* for category */
+    .card-loading p{
+        height: 18px;
+        margin-top: 15px;
+        margin-bottom: 20px;
+    }
+    #rekomendasi{
+        margin-top: 20px;
+        margin-bottom: 30px;
+        padding-top: 20px;
+    }
+    #rekomendasi div h1{
+        font-size: 20px;
+    }
+    #rekomendasi div a{
+        font-size: 15px;
+    }
+    #rekomendasi div a img{
+        width: 20px;
+        height: 20px;
+    }
+    #rekomendasi ul{
+        margin-top: 10px;
+    }
+    #rekomendasi ul{
+        width: 95%;
+        padding: 0px;
+        gap:10px;
+    }
+    #rekomendasi ul li{
+        border-radius: 8px;
+    }
+    #rekomendasi ul li a img{
+        margin-top: 8px;
+        border-radius: 6px;
+    }
+    #rekomendasi ul li a h3, #rekomendasi ul li a p{
+        left: 5%;
+        transform: translateX(0%);
+        width: 75%;
+    }
+    #rekomendasi ul li a span.tanggal{
+        margin-top: 12px;
         font-size: 11px;
     }
-    #modalDelete form div{
-        margin-top: 8%;
-        width: 80%;
-        height: 25%;
+    #rekomendasi ul li a h3{
+        margin-top: 10px;
+        font-size: 14px;
     }
-    #modalDelete form div button{
-        font-size: 11px;
-        width: 30%;
-        height: 90%;
+    #rekomendasi ul li a p{
+        margin-top: 10px;
+        font-size: 13px;
+        margin-bottom: 12px;
+    }
+    footer{
+        height: 40px;
+    }
+    footer span{
+        font-size: 13px;
     }
 }
 @media screen and (max-width: 400px) {
-    #modalDelete form{
-        height: 20%;
+    header{
+        height: 30px;
+        gap:12px;
+        scroll-padding-top: 30px;
     }
-    #modalDelete form h1{
-        width: 80%;
-        margin-top: 5%;
+    header h1{
+        margin-left: 7px;
+        font-size: 20px;
+    }
+    header li{
+        display: flex;
+        gap:6px;
+    }
+    header li a{
         font-size: 13px;
     }
-    #modalDelete form i{
-        right:5%;
-        top:7%;
+    main, section {
+        padding-top: 30px;
+    }
+
+    main{
+        width: 100%;
+    }
+    main a{
+        gap: 2px;
+        font-size: 16px;
+        font-weight: 600;
+        margin-top:20px;
+        width: 90%;
+    }
+    main a img{
+        width: 18px;
+        height: 18px;
+    }
+    main div{
+        margin-top:20px;
+        gap:10px;
+    }
+    main div h1{
+        width: 80%;
+        font-size: 23px;
+        font-weight: 800;
+    }
+    main div span.tanggal{
+        font-size: 16px;
+        margin:0px;
+    }
+    /* for img main loading */
+    main div .main-loading{
+        width: 90%;
+        height: 600px;
+        border-radius: 20px;
+    }
+    main div img{
+        width: 90%;
+        height: 60%;
+        border-radius: 20px;
+    }
+    main div span{
+        font-size: 15px;
+        font-weight: 400;
+        margin-top: 10px;
+        width: 90%;
+        gap:10px;
+    }
+    main div #video{
+        margin-top: 0px;
+        padding-top: 0px;
+        width: 90%;
+        height:200px;
+    }
+    main div div h3{
+        font-size: 17px;
+    }
+    main div div iframe{
+        width: 95%;
+        height: 100%;
+        margin-bottom: 20px;
+        border-radius: 7px;
+    }
+    /* for img */
+    .card-loading div{
+        margin-top: 6px;
+        border-radius: 6px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 10px;
+        width: 90%;
+        height: 100px;
+    }
+    /* for date */
+    .card-loading span{
+        width: 35%;
+        margin-top: 10px;
+        margin-left: 58%;
+        height: 13px;
+    }
+    /* for header */
+    .card-loading h3{
+        width: 75%;
+        height: 40px;
+        margin-top: 10px;
+    }
+    /* for category */
+    .card-loading p{
+        height: 16px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    #rekomendasi div h1{
+        font-size: 17px;
+    }
+    #rekomendasi div a{
         font-size: 13px;
     }
-    #modalDelete form p{
-        width: 80%;
-        margin-top: 2%;
-        font-size: 11px;
+    #rekomendasi div a img{
+        width: 14px;
+        height: 14px;
     }
-    #modalDelete form div{
-        margin-top: 8%;
-        width: 80%;
-        height: 25%;
+    #rekomendasi ul{
+        width: 95%;
+        padding: 0px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        gap:10px;
+        flex-wrap: wrap;
     }
-    #modalDelete form div button{
+    #rekomendasi ul li{
+        width:47%;
+        border-radius: 6px;
+    }
+    #rekomendasi ul li a img{
+        margin-top: 6px;
+        border-radius: 6px;
+    }
+    #rekomendasi ul li a h3, #rekomendasi ul li a p{
+        left: 5%;
+        transform: translateX(0%);
+        width: 85%;
+    }
+    #rekomendasi ul li a span.tanggal{
+        margin-top: 7px;
+        font-size: 10px;
+    }
+    #rekomendasi ul li a h3{
+        margin-top: 7px;
+        font-size: 14px;
+    }
+    #rekomendasi ul li a p{
+        margin-top: 10px;
         font-size: 11px;
-        width: 30%;
-        height: 90%;
+        margin-bottom: 10px;
+    }
+    #rekomendasi{
+        margin-top: 10px;
+        margin-bottom: 20px;
+    }
+    footer{
+        height: 25px;
+    }
+    footer span{
+        font-size: 10px;
     }
 }

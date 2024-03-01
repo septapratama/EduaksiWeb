@@ -147,6 +147,7 @@ section ul a:active{
     gap:20px;
     margin-bottom:50px;
     display: flex;
+    justify-content: space-between;
 }
 #artikel ul li{
     position: relative;
@@ -312,6 +313,7 @@ section ul a:active{
     transform: translateX(-50%);
     margin-bottom:50px;
     display: flex;
+    justify-content: space-between;
 }
 #kategori ul li{
     position: relative;
@@ -502,7 +504,7 @@ footer span{
         width: 75%;
     }
     #artikel ul li a span.tanggal,
-    #artikel ul li a span.tanggal{
+    #kategori ul li a span.tanggal{
         font-size: 12px;
     }
     #artikel ul li a h3,
@@ -637,7 +639,7 @@ footer span{
         font-size: 13px;
     }
     #artikel ul li a p,
-    #artikel ul li a p{
+    #kategori ul li a p{
         font-size: 11px;
     }
     #kategori{
@@ -763,7 +765,8 @@ footer span{
     #kategori ul li{
         border-radius: 6px;
     }
-    #artikel ul li a img{
+    #artikel ul li a img,
+    #kategori ul li a img{
         margin-top: 6px;
         border-radius: 6px;
     }

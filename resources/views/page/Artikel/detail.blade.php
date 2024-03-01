@@ -50,7 +50,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
                 <h3>Video Terkait</h3>
                 <iframe src="{{ $dataArtikel['link_video'] }}" title="YouTube video player" frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen style="border-radius: 15px;"></iframe>
+                    allowfullscreen></iframe>
             </div>
             @endif
         </div>
