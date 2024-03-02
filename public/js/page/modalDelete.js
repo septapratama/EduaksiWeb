@@ -2,13 +2,16 @@ const modalDelete = document.querySelector('#modalDelete');
 const deleteForm = document.getElementById('deleteForm');
 const inpID = document.getElementById('inpID');
 let isAnimating = false;
+deleteForm.addEventListener('click',function(event){
+    event.stopPropagation();
+});
 function showModalDelete(id){
     inpID.value = id;
     modalDelete.style.display = 'block';
-    animateModalDelete('50%');
+    animateModalDelete('20%');
 }
 function closeModalDelete(){
-    animateModalDelete('-50%');
+    animateModalDelete('-20%');
 }
 function animateModalDelete(finalTop) {
     let currentTop = parseInt(deleteForm.style.top) || 0;
@@ -18,7 +21,7 @@ function animateModalDelete(finalTop) {
         deleteForm.style.top = currentTop + '%';
         if ((increment === 1 && currentTop >= parseInt(finalTop)) || (increment === -1 && currentTop <= parseInt(finalTop))) {
             clearInterval(animationInterval);
-            if (finalTop === '50%') {
+            if (finalTop === '20%') {
                 isAnimating = false;
             } else {
                 modalDelete.style.display = 'none';

@@ -3,12 +3,11 @@ $tPath = app()->environment('local') ? '' : '/public/';
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Konsultasi | EduAksi</title>
-    <link rel="shortcut icon" type="image/png" href="{{ asset($tPath.'assets/images/logos/favicon.png') }}" />
+    <link rel="shortcut icon" type="image/png" href="{{ asset($tPath.'img/icon/icon.png') }}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -19,17 +18,14 @@ $tPath = app()->environment('local') ? '' : '/public/';
     th {
         white-space: nowrap;
     }
-
     th:nth-child(2) {
         width: 100%;
     }
-
     td:last-child {
         position: relative;
         display: flex;
         flex-direction: row;
     }
-
     td:last-child a,
     td:last-child button {
         display: flex;
@@ -38,7 +34,6 @@ $tPath = app()->environment('local') ? '' : '/public/';
     }
     </style>
 </head>
-
 <body>
     @if(app()->environment('local'))
     <script>
@@ -82,11 +77,8 @@ $tPath = app()->environment('local') ? '' : '/public/';
                 </div>
                 <div class="d-flex align-items-stretch">
                     <div class="card w-100">
-                        <div class="card-body p-4"
-                            style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
-                            <a href="/konsultasi/tambah" class="btn btn-success"><img
-                                    src="{{ asset($tPath.'img/icon/tambah.svg') }}" alt="" width="30" height="30">Tambah
-                                Konsultasi</a>
+                        <div class="card-body p-4" style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
+                            <a href="/konsultasi/tambah" class="btn btn-success"><img src="{{ asset($tPath.'img/icon/tambah.svg') }}" alt="" width="30" height="30">Tambah Konsultasi</a>
                             <div class="table-responsive">
                                 <table class="table mb-0 align-middle">
                                     <thead class="text-dark fs-4">
@@ -120,14 +112,8 @@ $tPath = app()->environment('local') ? '' : '/public/';
                                                 <p class="mb-0 fw-normal">{{ $data['no_telpon']}}</p>
                                             </td>
                                             <td class="border-bottom-0">
-                                                <a href="/konsultasi/edit/{{ $data['uuid'] }}"
-                                                    class="btn btn-warning m-1"><img
-                                                        src="{{ asset($tPath.'img/icon/edit.svg') }}"
-                                                        alt=""><span>Edit</span></a>
-                                                <button type="button" class="btn btn-danger m-1"
-                                                    onclick="showModalDelete('{{ $data['uuid'] }}')"><img
-                                                        src="{{ asset($tPath.'img/icon/delete.svg') }}"
-                                                        alt=""><span>Hapus</span></button>
+                                                <a href="/konsultasi/edit/{{ $data['uuid'] }}" class="btn btn-warning m-1"><img src="{{ asset($tPath.'img/icon/edit.svg') }}" alt=""><span>Edit</span></a>
+                                                <button type="button" class="btn btn-danger m-1" onclick="showModalDelete('{{ $data['uuid'] }}')"><img src="{{ asset($tPath.'img/icon/delete.svg') }}" alt=""><span>Hapus</span></button>
                                             </td>
                                         </tr>
                                         @endforeach
@@ -158,5 +144,4 @@ $tPath = app()->environment('local') ? '' : '/public/';
     <script src="{{ asset($tPath.'js/popup.js') }}"></script>
     <script src="{{ asset($tPath.'js/page/modalDelete.js') }}"></script>
 </body>
-
 </html>

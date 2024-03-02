@@ -44,6 +44,14 @@ function handleDrop(event) {
             return;
         }
         uploadeFile = file;
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            document.getElementById('file').src = event.target.result;
+            document.getElementById('file').style.display = 'block';
+            document.querySelector('div.img').style.border = 'none';
+        };
+        reader.readAsDataURL(file);
+        fileImg = file;
     }
 }
 tambahForm.onsubmit = function (event) {

@@ -1,5 +1,4 @@
 <?php
-use App\Http\Controllers\Services\KonsultasiController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AdminController;
@@ -8,6 +7,7 @@ use App\Http\Controllers\Services\EmotalController;
 use App\Http\Controllers\Services\NutrisiController;
 use App\Http\Controllers\Services\PengasuhanController;
 use App\Http\Controllers\Services\ArtikelController;
+use App\Http\Controllers\Services\KonsultasiController;
 
 use App\Http\Controllers\Page\DisiController AS ShowDisiController;
 use App\Http\Controllers\Page\EmotalController AS ShowEmotalController;

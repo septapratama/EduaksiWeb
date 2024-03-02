@@ -14,7 +14,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
 
     <!-- Favicons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link rel="icon" type="image/png" href="{{ asset($tPath.'assets/images/logos/favicon.png') }}" />
+    <link rel="shortcut icon" type="image/png" href="{{ asset($tPath.'img/icon/icon.png') }}" />
 
     <!-- Google Fonts -->
     <!-- <link href="https://fonts.gstatic.com" rel="preconnect"> -->

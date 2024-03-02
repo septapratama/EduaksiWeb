@@ -45,6 +45,12 @@ function handleDrop(event) {
             return;
         }
         uploadeFile = file;
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            document.getElementById('file').src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+        fileImg = file;
     }
 }
 editForm.onsubmit = function (event) {

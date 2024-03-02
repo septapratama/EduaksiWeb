@@ -1,3 +1,7 @@
+:root{
+    --biru-tua: #201658;
+    --abu-abu: #B7C9F2;
+}
 body{
     user-select: none;
 }
@@ -113,4 +117,69 @@ form .crow select {
 form .crow input,
 form .crow textarea {
     padding-left: 10px;
+}
+@media screen and (min-width: 625px) and (max-width: 1000px) {
+    .img {
+        border-radius: 7px;
+    }
+    .img #icon {
+        width: 45px;
+        height: 45px;
+    }
+    .img span{
+        width: 92%;
+        font-size: 13px;
+        text-align: center;
+    }
+    .img #file {
+        border-radius: 7px;
+        width: 100%;
+        height: 100%;
+    }
+}
+@media screen and (min-width: 400px) and (max-width: 625px) {
+    .img {
+        right: 0%;
+        top: 7%;
+        width: 22%;
+        height: 36%;
+        border: 4px dashed #b1b1b1;
+        border-radius: 10px;
+    }
+    .img #icon {
+        width: 20px;
+        height: 20px;
+    }
+    .img span{
+        width: 92%;
+        font-size: 13px;
+        text-align: center;
+    }
+    .img #file {
+        border-radius: 10px;
+        width: 100%;
+        height: 100%;
+    }
+}
+@media screen and (max-width: 400px) {
+    .img {
+        right: 0%;
+        top: 7%;
+        width: 22%;
+        height: 36%;
+        border: 4px dashed #b1b1b1;
+        border-radius: 10px;
+    }
+    .img span{
+        font-size: 10px;
+    }
+    .img #icon {
+        width: 50px;
+        height: 50px;
+    }
+    .img #file {
+        border-radius: 10px;
+        width: 100%;
+        height: 100%;
+    }
 }

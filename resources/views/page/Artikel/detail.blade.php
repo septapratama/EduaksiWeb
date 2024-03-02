@@ -9,7 +9,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{{ $dataArtikel['judul'] }} | EduAksi</title>
-    <link rel="shortcut icon" type="image/png" href="{{ asset($tPath.'assets/images/logos/favicon.png') }}" />
+    <link rel="shortcut icon" type="image/png" href="{{ asset($tPath.'img/icon/icon.png') }}" />
     <link rel="stylesheet" href="{{ asset($tPath.'css/page/detail-artikel.css') }}" />
     {{-- font --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">

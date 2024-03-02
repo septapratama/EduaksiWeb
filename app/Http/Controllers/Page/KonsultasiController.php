@@ -2,7 +2,6 @@
 namespace App\Http\Controllers\Page;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Services\KonsultasiController AS ServiceKonsultasiController;
-use App\Models\Konsultasi;
 use Illuminate\Http\Request;
 class KonsultasiController extends Controller
 {

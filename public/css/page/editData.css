@@ -1,3 +1,7 @@
+:root{
+    --biru-tua: #201658;
+    --abu-abu: #B7C9F2;
+}
 body{
     user-select: none;
 }

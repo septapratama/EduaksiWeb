@@ -3,12 +3,11 @@ $tPath = app()->environment('local') ? '' : '/public/';
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tambah Konsultasi | EduAksi</title>
-    <link rel="shortcut icon" type="image/png" href="{{ asset($tPath.'assets/images/logos/favicon.png') }}" />
+    <link rel="shortcut icon" type="image/png" href="{{ asset($tPath.'img/icon/icon.png') }}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -16,7 +15,6 @@ $tPath = app()->environment('local') ? '' : '/public/';
     <link rel="stylesheet" href="{{ asset($tPath.'css/popup.css') }}" />
     <link rel="stylesheet" href="{{ asset($tPath.'css/page/tambahKonsultasi.css') }}" />
 </head>
-
 <body>
     @if(app()->environment('local'))
     <script>
@@ -59,8 +57,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
                         </ol>
                     </nav>
                 </div>
-                <div class="d-flex align-items-stretch"
-                    style="background-color: #ffffff; border-radius: 20px; box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
+                <div class="d-flex align-items-stretch" style="background-color: #ffffff; border-radius: 20px; box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
                     <form id="tambahForm">
                         <div class="crow">
                             <label for="">Nama Lengkap</label>
@@ -86,11 +83,9 @@ $tPath = app()->environment('local') ? '' : '/public/';
                         </div>
                         <div class="crow">
                             <label for="">Alamat</label>
-                            <textarea name="deskripsi" id="inpAlamat" placeholder="Masukkan Isi Konsultasi" class=""
-                                style="height:120px"></textarea>
+                            <textarea name="deskripsi" id="inpAlamat" placeholder="Masukkan Isi Konsultasi" class="" style="height:120px"></textarea>
                         </div>
-                        <div class="img" onclick="handleFileClick()" ondragover="handleDragOver(event)"
-                            ondrop="handleDrop(event)">
+                        <div class="img" onclick="handleFileClick()" ondragover="handleDragOver(event)" ondrop="handleDrop(event)">
                             <img src="{{ asset($tPath.'img/icon/upload.svg') }}" alt="" id="icon">
                             <span>Pilih File atau Jatuhkan File</span>
                             <input type="file" id="inpFoto" hidden onchange="handleFileChange(event)">
@@ -98,9 +93,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
                         </div>
                         <div class="crow">
                             <a href="/konsultasi" class="btn btn-danger">Kembali</a>
-                            <button type="submit" class="btn btn-success"><img
-                                    src="{{ asset($tPath.'img/icon/tambah.svg') }}" alt="" width="30"
-                                    height="30"><span>Tambah</span></button>
+                            <button type="submit" class="btn btn-success"><img src="{{ asset($tPath.'img/icon/tambah.svg') }}" alt="" width="30" height="30"><span>Tambah</span></button>
                         </div>
                     </form>
                 </div>
@@ -121,5 +114,4 @@ $tPath = app()->environment('local') ? '' : '/public/';
     <script src="{{ asset($tPath.'js/page/tambahKonsultasi.js') }}"></script>
     <script src="{{ asset($tPath.'js/popup.js') }}"></script>
 </body>
-
 </html>

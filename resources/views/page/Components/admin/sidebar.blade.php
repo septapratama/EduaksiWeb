@@ -2,15 +2,16 @@
     <!-- Sidebar scroll-->
     <div>
         <div class="brand-logo d-flex align-items-center justify-content-between">
-            <a href="/dashboard" class="text-nowrap logo-img">
-                <img src="{{ asset($tPath.'assets/images/logos/dark-logo.svg') }}" width="180" alt="" />
+            <a href="/dashboard" class="text-nowrap logo-img" style="display: flex; gap: 10px; align-items:center">
+                <img src="{{ asset($tPath.'img/icon/logo.png') }}" alt="" style="width: 100px; height:50px;"></img>
+                <span class="hide-menu" style="color:black; text-decoration: none; font-size:27px; font-weight:600;">EduAksi</span>
             </a>
             <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
                 <i class="ti ti-x fs-8"></i>
             </div>
         </div>
         <!-- Sidebar navigation-->
-        <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
+        <nav class="sidebar-nav scroll-sidebar" data-simplebar="" style="margin-top: 15px">
             <ul id="sidebarnav">
                 <li class="sidebar-item {{ $nav == 'dashboard' ? 'selected' : ''}}">
                     <a class="sidebar-link {{ $nav == 'dashboard' ? 'active' : ''}}" href="/dashboard"

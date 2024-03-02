@@ -8,7 +8,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Login | EduAksi</title>
-    <link rel="shortcut icon" type="image/png" href="{{ asset($tPath.'assets/images/logos/favicon.png') }}">
+    <link rel="shortcut icon" type="image/png" href="{{ asset($tPath.'img/icon/icon.png') }}" />
     <link rel="stylesheet" href="{{ asset($tPath.'assets/css/styles.min.css') }}">
     <link rel="stylesheet" href="{{ asset($tPath.'css/popup.css') }}">
 </head>
