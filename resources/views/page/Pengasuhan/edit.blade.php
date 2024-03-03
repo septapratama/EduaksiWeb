@@ -107,9 +107,10 @@ $tPath = app()->environment('local') ? '' : '/public/';
                         </div>
                         <div class="crow">
                             <a href="/pengasuhan" class="btn btn-danger">Kembali</a>
-                            <button type="submit" class="btn btn-success"><img
-                                    src="{{ asset($tPath.'img/icon/tambah.svg') }}" alt="" width="30"
-                                    height="30"><span>Edit</span></button>
+                            <button type="submit" class="btn btn-success">
+                                <img src="{{ asset($tPath.'img/icon/edit.svg') }}" alt="">
+                                <span>Edit</span>
+                            </button>
                         </div>
                     </form>
                 </div>

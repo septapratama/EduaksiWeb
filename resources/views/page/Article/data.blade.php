@@ -17,7 +17,6 @@ $tPath = app()->environment('local') ? '' : '/public/';
     <link rel="stylesheet" href="{{ asset($tPath.'css/popup.css') }}" />
     <style>
     #btnTambah{
-        background-color:  #201658;
         padding: 0px;
         display: flex;
         width: 160px;
@@ -206,7 +205,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
                     <div class="card w-100">
                         <div class="card-body p-4"
                             style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
-                            <a href="/artikel/tambah" class="btn btn-success" id="btnTambah">
+                            <a href="/article/tambah" class="btn btn-success" id="btnTambah">
                                 <img src="{{ asset($tPath.'img/icon/tambah.svg') }}" alt="">
                                 <span>Tambah Artikel</span>
                             </a>
@@ -237,7 +236,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
                                                 </span>
                                             </td>
                                             <td class="border-bottom-0">
-                                                <a href="/artikel/edit/{{ $data['uuid'] }}" class="btn btn-warning btn-edit m-1">
+                                                <a href="/article/edit/{{ $data['uuid'] }}" class="btn btn-warning btn-edit m-1">
                                                     <img src="{{ asset($tPath.'img/icon/edit.svg') }}" alt="">
                                                     <span>Edit</span>
                                                 </a>

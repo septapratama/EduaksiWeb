@@ -136,8 +136,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
     var number = "{{ $userAuth['number'] }}";
     </script>
     <!--  Body Wrapper -->
-    <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
-        data-sidebar-position="fixed" data-header-position="fixed">
+    <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full" data-sidebar-position="fixed" data-header-position="fixed">
         <!-- Sidebar Start -->
         @php
         $nav = 'dashboard';
@@ -159,53 +158,47 @@ $tPath = app()->environment('local') ? '' : '/public/';
                     </nav>
                 </div>
                 <div id="kotak">
-                    <div class="card"
-                        style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
+                    <div class="card" style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
                         <h5 class="">Jumlah Disi</h5>
                         <div class="">
-                            <img src="{{ asset($tPath.'img/icon/sidebar/disi.svg') }}" alt="">
+                            <img src="{{ asset($tPath.'img/icon/sidebar/disi_dark.svg') }}" alt="">
                             <span>{{ $jumlah_disi }}</span>
                         </div>
                     </div>
-                    <div class="card"
-                        style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
+                    <div class="card" style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
                         <h5 class="">Jumlah Emotal</h5>
                         <div class="">
-                            <img src="{{ asset($tPath.'img/icon/sidebar/emotal.svg') }}" alt="">
+                            <img src="{{ asset($tPath.'img/icon/sidebar/emotal_dark.svg') }}" alt="">
                             <span>{{ $jumlah_emotal }}</span>
                         </div>
                     </div>
-                    <div class="card"
-                        style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
+                    <div class="card" style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
                         <h5 class="">Jumlah Nutrisi</h5>
                         <div class="">
-                            <img src="{{ asset($tPath.'img/icon/sidebar/nutrisi.svg') }}" alt="">
+                            <img src="{{ asset($tPath.'img/icon/sidebar/nutrisi_dark.svg') }}" alt="">
                             <span>{{ $jumlah_nutrisi }}</span>
                         </div>
                     </div>
-                    <div class="card"
-                        style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
+                    <div class="card" style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
                         <h5 class="">Jumlah Pengasuhan</h5>
                         <div class="">
-                            <img src="{{ asset($tPath.'img/icon/sidebar/pengasuhan.svg') }}" alt="" width="40"
+                            <img src="{{ asset($tPath.'img/icon/sidebar/pengasuhan_dark.svg') }}" alt="" width="40"
                                 height="40">
                             <span>{{ $jumlah_pengasuhan }}</span>
                         </div>
                     </div>
-                    <div class="card"
-                        style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
+                    <div class="card" style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
                         <h5 class="">Jumlah Konsultan</h5>
                         <div class="">
-                            <img src="{{ asset($tPath.'img/icon/sidebar/konsultasi.svg') }}" alt="" width="40"
+                            <img src="{{ asset($tPath.'img/icon/sidebar/konsultasi_dark.svg') }}" alt="" width="40"
                                 height="40">
                             <span>{{ $jumlah_konsultan }}</span>
                         </div>
                     </div>
-                    <div class="card"
-                        style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
+                    <div class="card" style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
                         <h5 class="">Jumlah Artikel</h5>
                         <div class="">
-                            <img src="{{ asset($tPath.'img/icon/sidebar/artikel.svg') }}" alt="">
+                            <img src="{{ asset($tPath.'img/icon/sidebar/artikel_dark.svg') }}" alt="">
                             <span>{{ $jumlah_artikel }}</span>
                         </div>
                     </div>

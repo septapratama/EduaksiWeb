@@ -91,16 +91,17 @@ $tPath = app()->environment('local') ? '' : '/public/';
                         </div>
                         <div class="img" onclick="handleFileClick()" ondragover="handleDragOver(event)"
                             ondrop="handleDrop(event)">
-                            <img src="{{ asset($tPath.'img/icon/upload.svg') }}" alt="">
+                            <img src="{{ asset($tPath.'img/icon/upload.svg') }}" alt="" id="icon">
                             <span>Pilih File atau Jatuhkan File</span>
                             <input type="file" id="inpFoto" hidden onchange="handleFileChange(event)">
                             <img src="" alt="" id="file" style="display:none">
                         </div>
                         <div class="crow">
                             <a href="/admin" class="btn btn-danger">Kembali</a>
-                            <button type="submit" class="btn btn-success"><img
-                                    src="{{ asset($tPath.'img/icon/tambah.svg') }}" alt="" width="30"
-                                    height="30"><span>Tambah</span></button>
+                            <button type="submit" class="btn btn-success">
+                                <img src="{{ asset($tPath.'img/icon/tambah.svg') }}" alt="" width="30" height="30">
+                                <span>Tambah</span>
+                            </button>
                         </div>
                     </form>
                 </div>

@@ -17,7 +17,6 @@ $tPath = app()->environment('local') ? '' : '/public/';
     <link rel="stylesheet" href="{{ asset($tPath.'css/popup.css') }}" />
     <style>
     #btnTambah{
-        background-color:  #201658;
         padding: 0px;
         display: flex;
         width: 150px;
