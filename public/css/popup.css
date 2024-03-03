@@ -4,6 +4,7 @@
     position: fixed;
     right:1%;
     bottom: 1%;
+    z-index: 9999;
 }
 #redPopup .bg, #greenPopup .bg{
     width: 400px; 
