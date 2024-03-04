@@ -82,11 +82,19 @@
 </aside>
 <script>
     const sidebarItems = document.querySelectorAll('.sidebar-item');
-    sidebarItems.forEach(item => {
+    sidebarItems.forEach(function(item){
         if(!item.classList.contains('selected')){
             item.addEventListener('click', function(){
                 item.querySelector('.dark').style.display = 'none';
                 item.querySelector('.white').style.display = 'block';
+                sidebarItems.forEach(function(itemActive){
+                    if(itemActive.classList.contains('selected')){
+                        itemActive.querySelector('.dark').style.display = 'block';
+                        itemActive.querySelector('.white').style.display = 'none';
+                        itemActive.classList.remove('selected');
+                    }
+                });
+                item.classList.add('selected');
             });
         }
     });

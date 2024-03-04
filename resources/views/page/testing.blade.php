@@ -15,6 +15,26 @@ $tPath = app()->environment('local') ? '' : '/public/';
     <link rel="stylesheet" href="{{ asset($tPath.'assets/css/styles.min.css') }}" />
     <link rel="stylesheet" href="{{ asset($tPath.'css/popup.css') }}" />
     <link rel="stylesheet" href="{{ asset($tPath.'css/testing.css') }}" />
+    <style>
+        /* HTML: <div class="loader"></div> */
+        .loader {
+            width: 45px;
+            aspect-ratio: .75;
+            --c: no-repeat linear-gradient(#000 0 0);
+            background: 
+                var(--c) 0%   100%,
+                var(--c) 50%  100%,
+                var(--c) 100% 100%;
+            background-size: 20% 65%;
+            animation: l5 1s infinite linear;
+        }
+        @keyframes l5 {
+            20% {background-position: 0% 50% ,50% 100%,100% 100%}
+            40% {background-position: 0% 0%  ,50% 50% ,100% 100%}
+            60% {background-position: 0% 100%,50% 0%  ,100% 50% }
+            80% {background-position: 0% 100%,50% 100%,100% 0%  }
+        }
+    </style>
 </head>
 
 <body>
@@ -94,6 +114,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
             </div>
         </form>
     </div>
+    <div class="loader"></div>
     <script>
     document.body.addEventListener('dragstart', event => {
         event.preventDefault();
