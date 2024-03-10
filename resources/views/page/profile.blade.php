@@ -29,6 +29,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
     <link rel="stylesheet" href="{{ asset($tPath.'assets/css/styles.min.css') }}" />
     <link rel="stylesheet" href="{{ asset($tPath.'assets1/css/style.css') }}" rel="stylesheet">
     <link href="{{ asset($tPath.'css/popup.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset($tPath.'css/preloader.css') }}" />
     <style>
     div.drag#divImg {
         border: 4px solid black;
@@ -272,7 +273,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
             </div>
         </div>
     </div>
-    <div id="preloader" style="display: none;"></div>
+    @include('page.Components.preloader')
     <div id="greenPopup" style="display:none"></div>
     <div id="redPopup" style="display:none"></div>
     <!-- Vendor JS Files -->

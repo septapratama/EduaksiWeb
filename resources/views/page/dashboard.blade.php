@@ -13,6 +13,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{{ asset($tPath.'assets/css/styles.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset($tPath.'css/preloader.css') }}" />
     <style>
     #kotak {
         display: flex;
@@ -207,6 +208,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
             </div>
         </div>
     </div>
+    @include('page.Components.preloader')
     <script src="{{ asset($tPath.'assets/libs/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ asset($tPath.'assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset($tPath.'assets/js/sidebarmenu.js') }}"></script>

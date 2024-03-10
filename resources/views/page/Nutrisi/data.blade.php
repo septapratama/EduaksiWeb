@@ -15,6 +15,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
     <link rel="stylesheet" href="{{ asset($tPath.'assets/css/styles.min.css') }}" />
     <link rel="stylesheet" href="{{ asset($tPath.'css/page/modalDelete.css') }}" />
     <link rel="stylesheet" href="{{ asset($tPath.'css/popup.css') }}" />
+    <link rel="stylesheet" href="{{ asset($tPath.'css/preloader.css') }}" />
     <style>
     #btnTambah{
         padding: 0px;
@@ -267,7 +268,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
     $modalDelete = 'nutrisi';
     @endphp
     @include('page.Components.admin.modalDelete')
-    <div id="preloader" style="display: none;"></div>
+    @include('page.Components.preloader')
     <div id="greenPopup" style="display:none"></div>
     <div id="redPopup" style="display:none"></div>
     <script src="{{ asset($tPath.'assets/libs/jquery/dist/jquery.min.js') }}"></script>

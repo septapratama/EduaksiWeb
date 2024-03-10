@@ -16,23 +16,53 @@ $tPath = app()->environment('local') ? '' : '/public/';
     <link rel="stylesheet" href="{{ asset($tPath.'css/popup.css') }}" />
     <link rel="stylesheet" href="{{ asset($tPath.'css/testing.css') }}" />
     <style>
-        /* HTML: <div class="loader"></div> */
-        .loader {
-            width: 45px;
-            aspect-ratio: .75;
-            --c: no-repeat linear-gradient(#000 0 0);
-            background: 
-                var(--c) 0%   100%,
-                var(--c) 50%  100%,
-                var(--c) 100% 100%;
-            background-size: 20% 65%;
-            animation: l5 1s infinite linear;
+        div{
+            position: fixed;
+            left:0px;
+            top:0px;
+            width:100%;
+            height:100%;
         }
-        @keyframes l5 {
-            20% {background-position: 0% 50% ,50% 100%,100% 100%}
-            40% {background-position: 0% 0%  ,50% 50% ,100% 100%}
-            60% {background-position: 0% 100%,50% 0%  ,100% 50% }
-            80% {background-position: 0% 100%,50% 100%,100% 0%  }
+        div div:nth-child(1){
+            background-color: rgba(255, 255, 255, 0.6);
+        }
+        .lds-ring {
+            display: inline-block;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+        }
+        .lds-ring div {
+            box-sizing: border-box;
+            display: block;
+            position: absolute;
+            width: 64px;
+            height: 64px;
+            margin: 8px;
+            border: 8px solid black;
+            border-radius: 50%;
+            animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+            border-color: black transparent transparent transparent;
+        }
+        .lds-ring div:nth-child(1) {
+            animation-delay: -0.45s;
+            }
+            .lds-ring div:nth-child(2) {
+            animation-delay: -0.3s;
+        }
+        .lds-ring div:nth-child(3) {
+            animation-delay: -0.15s;
+        }
+        @keyframes lds-ring {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
         }
     </style>
 </head>
@@ -40,81 +70,18 @@ $tPath = app()->environment('local') ? '' : '/public/';
 <body>
     <script>
     var errCards = [];
-
     function imgError(errCard) {
         errCards.push(errCard);
     }
     </script>
-    <section id="daftar-artikel">
+    <div>
+        <div id="bg"></div>
+        <div class="lds-ring">
+            <div></div>
+            <div></div>
+            <div></div>
         <div>
-            <button onclick="showModalDelete('fwf')">show modal coyy</button>
-            <h1>Daftar Artikel</h1>
-            <select class="" aria-label="Default select example" id="inpJenisKelamin">
-                <option value="" selected>Pilih Kategori</option>
-                <option value="disi">Digital Literasi</option>
-                <option value="emotal">Emosi Mental</option>
-                <option value="nutrisi">Nutrisi</option>
-                <option value="pengasuhan">Pengasuhan</option>
-            </select>
-        </div>
-        <ul>
-            <li class="card" id="card1">
-                <a href="">
-                    <img src="{{ asset($tPath.'img/artikel/hitler.jpg') }}" alt="" onerror="imgError('card1')">
-                    <span class="tanggal">Minggu, 16 Juli 2023</span>
-                    <h3>Kebangkitan dan Kejatuhan Adolf Hitler: Jalan Menuju Kehancuran Seorang Diktator</h3>
-                    <p>Digital Literasi</p>
-                </a>
-                <div class="card-loading">
-                    <div></div>
-                    <span></span>
-                    <h3></h3>
-                    <p></p>
-                </div>
-            </li>
-            <li class="card" id="card2">
-                <a href="">
-                    <img src="{{ asset($tPath.'img/artikel/hitler2.jpg') }}" alt="" onerror="imgError('card2')">
-                    <span class="tanggal">Minggu, 16 Juli 2023</span>
-                    <h3>Luka Perang Dunia II: Menjelajahi Warisan Rezim Nazi di Eropa</h3>
-                    <p>Digital Literasi</p>
-                </a>
-                <div class="card-loading">
-                    <div></div>
-                    <span></span>
-                    <h3></h3>
-                    <p></p>
-                </div>
-            </li>
-            <li class="card" id="card3">
-                <a href="">
-                    <img src="{{ asset($tPath.'img/artikel/hitler3.png') }}" alt="" onerror="imgError('card3')">
-                    <span class="tanggal">Minggu, 16 Juli 2023</span>
-                    <h3>Melampaui Medan Perang: Dampak Sosial dan Budaya Era Nazi</h3>
-                    <p>Digital Literasi</p>
-                </a>
-                <div class="card-loading">
-                    <div></div>
-                    <span></span>
-                    <h3></h3>
-                    <p></p>
-                </div>
-            </li>
-        </ul>
-    </section>
-    <div id="modalDelete" onclick="closeModalDelete()">
-        <form id="deleteForm">
-            <input type="hidden" name="uuid" id="inpID" class="form-control">
-            <h1>Konfirmasi Hapus Artikel</h1>
-            <i class="fa-solid fa-xmark"></i>
-            <p>Apakah Anda yakin ingin menghapus artikel ini?</p>
-            <div>
-                <button onclick="closeModalDelete()">Batal</button>
-                <button onclick="">Hapus</button>
-            </div>
-        </form>
     </div>
-    <div class="loader"></div>
     <script>
     document.body.addEventListener('dragstart', event => {
         event.preventDefault();
@@ -144,7 +111,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
         });
     });
     </script>
-    <script src="../js/testing.js"></script>
+    {{-- <script src="../js/testing.js"></script> --}}
 </body>
 
 </html>

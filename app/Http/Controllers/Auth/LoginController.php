@@ -25,7 +25,7 @@ class LoginController extends Controller
                 $errors[$field] = $errorMessages[0];
                 break;
             }
-            return ['status' => 'error', 'message' => implode(', ', $errors),'code'=>400];
+            return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
         $email = $request->input("email");
         // $email = "Admin@gmail.com";

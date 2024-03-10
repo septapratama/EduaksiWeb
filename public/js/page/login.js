@@ -1,9 +1,4 @@
-const domain =
-    window.location.protocol +
-    "//" +
-    window.location.hostname +
-    ":" +
-    window.location.port;
+const domain = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port;
 const popup = document.querySelector("div#popup");
 const redPopup = document.querySelector("div#redPopup");
 const greenPopup = document.querySelector("div#greenPopup");
@@ -16,17 +11,6 @@ function showLoading() {
 function closeLoading() {
     document.querySelector("div#preloader").style.display = "none";
 }
-// function doLogin(e) {
-//     e.preventDefault();
-//     grecaptcha.ready(function() {
-//         grecaptcha.execute('6LfymUQpAAAAAM1Q_faqJrmFCuvAAKXVDWnlbpGI', {
-//             action: 'submit'
-//         }).then(function(token) {
-//             document.getElementById("g-recaptcha-response").value = token;
-//             document.getElementById("sim-online-login-form").submit();
-//         });
-//     });
-// }
 loginForm.onsubmit = function (event) {
     event.preventDefault();
     const email = inpEmail.value;
@@ -56,7 +40,6 @@ loginForm.onsubmit = function (event) {
             if (xhr.status === 200) {
                 closeLoading();
                 var response = JSON.parse(xhr.responseText);
-                // console.log(response);
                 showGreenPopup(response, "dashboard");
             } else {
                 closeLoading();

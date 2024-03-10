@@ -14,6 +14,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{{ asset($tPath.'assets/css/styles.min.css') }}" />
     <link rel="stylesheet" href="{{ asset($tPath.'css/popup.css') }}" />
+    <link rel="stylesheet" href="{{ asset($tPath.'css/preloader.css') }}" />
     <link rel="stylesheet" href="{{ asset($tPath.'css/page/tambahAdmin.css') }}" />
 </head>
 
@@ -109,7 +110,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
             </div>
         </div>
     </div>
-    <div id="preloader" style="display: none;"></div>
+    @include('page.Components.preloader')
     <div id="greenPopup" style="display:none"></div>
     <div id="redPopup" style="display:none"></div>
     <script src="{{ asset($tPath.'assets/libs/jquery/dist/jquery.min.js') }}"></script>
