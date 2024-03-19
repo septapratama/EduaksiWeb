@@ -4,6 +4,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
+use App\Models\User;
 use App\Models\Konsultasi;
 use Exception;
 class KonsultasiController extends Controller
@@ -148,6 +149,16 @@ class KonsultasiController extends Controller
             }
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
+        //check email konsultasi on table user
+        $emKon = User::select('email')->whereRaw("BINARY email = ? AND role = ?",[$request->input('email_konsultasi'), 'admin'])->first();
+        if ($emKon) {
+            return response()->json(['status' => 'error', 'message' => 'Email tidak boleh sama dengan Admin'], 400);
+        }
+        //check email konsultasi on table konsultasi
+        $emKon = Konsultasi::select('email')->whereRaw("BINARY email = ?",[$request->input('email_konsultasi')])->first();
+        if ($emKon) {
+            return response()->json(['status' => 'error', 'message' => 'Email sudah digunakan'], 400);
+        }
         //process file foto
         if (!$request->hasFile('foto')) {
             return response()->json(['status'=>'error','message'=>'Foto konsultasi wajib di isi'], 400);
@@ -217,6 +228,16 @@ class KonsultasiController extends Controller
         $konsultasi = Konsultasi::select('foto')->where('uuid',$request->input('uuid'))->limit(1)->get()[0];
         if (!$konsultasi) {
             return response()->json(['status' =>'error','message'=>'Data Konsultasi tidak ditemukan'], 400);
+        }
+        //check email konsultasi on table user
+        $emKon = User::select('email')->whereRaw("BINARY email = ? AND role = ?",[$request->input('email_konsultasi'), 'admin'])->first();
+        if ($emKon) {
+            return response()->json(['status' => 'error', 'message' => 'Email tidak boleh sama dengan Admin'], 400);
+        }
+        //check email konsultasi on table konsultasi
+        $emKon = Konsultasi::select('email')->whereRaw("BINARY email = ?",[$request->input('email_konsultasi')])->first();
+        if ($emKon) {
+            return response()->json(['status' => 'error', 'message' => 'Email sudah digunakan'], 400);
         }
         //process file foto
         if ($request->hasFile('foto')) {
