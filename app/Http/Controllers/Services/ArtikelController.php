@@ -152,11 +152,7 @@ class ArtikelController extends Controller
         if(!($file->isValid() && in_array($file->extension(), ['jpeg', 'png', 'jpg']))){
             return response()->json(['status'=>'error','message'=>'Format Foto tidak valid. Gunakan format jpeg, png, jpg'], 400);
         }
-        if(app()->environment('local')){
-            $destinationPath = public_path('img/artikel/');
-        }else{
-            $destinationPath = base_path('../public_html/public/img/artikel/');
-        }
+        $destinationPath = public_path('img/artikel/');
         $fotoName = $file->hashName();
         $file->move($destinationPath, $fotoName);
         $now = Carbon::now();
@@ -222,11 +218,7 @@ class ArtikelController extends Controller
             if(!($file->isValid() && in_array($file->extension(), ['jpeg', 'png', 'jpg']))){
                 return response()->json(['status'=>'error','message'=>'Format Foto tidak valid. Gunakan format jpeg, png, jpg'], 400);
             }
-            if(app()->environment('local')){
-                $destinationPath = public_path('img/artikel/');
-            }else{
-                $destinationPath = base_path('../public_html/public/img/artikel/');
-            }
+            $destinationPath = public_path('img/artikel/');
             $fileToDelete = $destinationPath . $artikel['foto'];
             if (file_exists($fileToDelete) && !is_dir($fileToDelete)) {
                 unlink($fileToDelete);
@@ -276,11 +268,7 @@ class ArtikelController extends Controller
             return response()->json(['status' => 'error', 'message' => 'Data Artikel tidak ditemukan'], 400);
         }
         //delete all photo
-        if(app()->environment('local')){
-            $destinationPath = public_path('img/artikel/');
-        }else{
-            $destinationPath = base_path('../public_html/public/img/artikel/');
-        }
+        $destinationPath = public_path('img/artikel/');
         $fileToDelete = $destinationPath . $artikel['foto'];
         if (file_exists($fileToDelete) && !is_dir($fileToDelete)) {
             unlink($fileToDelete);

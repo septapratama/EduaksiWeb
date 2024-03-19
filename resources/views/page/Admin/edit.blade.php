@@ -1,5 +1,5 @@
 <?php
-$tPath = app()->environment('local') ? '' : '/public/';
+$tPath = app()->environment('local') ? '' : '';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -25,7 +25,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
     </script>
     @else
     <script>
-    var tPath = '/public/';
+    var tPath = '';
     </script>
     @endif
     <script>
@@ -100,7 +100,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
                             <img src="{{ asset($tPath.'img/icon/upload.svg') }}" alt="" id="icon">
                             <span>Pilih File atau Jatuhkan File</span>
                             <input type="file" id="inpFoto" hidden onchange="handleFileChange(event)">
-                            <img src="{{ '/public/download/foto/'. $adminData['uuid'] }}" alt="" id="file">
+                            <img src="{{ 'download/foto/'. $adminData['uuid'] }}" alt="" id="file">
                         </div>
                         <div class="crow">
                             <a href="/admin" class="btn btn-danger">Kembali</a>

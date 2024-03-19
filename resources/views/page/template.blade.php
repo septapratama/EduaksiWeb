@@ -1,5 +1,5 @@
 <?php
-$tPath = app()->environment('local') ? '' : '/public/';
+$tPath = app()->environment('local') ? '' : '';
 ?>
 <!doctype html>
 <html lang="en">
@@ -22,7 +22,7 @@ $tPath = app()->environment('local') ? '' : '/public/';
     </script>
     @else
     <script>
-    var tPath = '/public/';
+    var tPath = '';
     </script>
     @endif
     <script>

@@ -156,11 +156,7 @@ class KonsultasiController extends Controller
         if(!($file->isValid() && in_array($file->extension(), ['pdf', 'jpeg', 'png', 'jpg']))){
             return response()->json(['status'=>'error','message'=>'Format Foto tidak valid. Gunakan format jpeg, png, jpg'], 400);
         }
-        if(app()->environment('local')){
-            $destinationPath = public_path('img/konsultasi/');
-        }else{
-            $destinationPath = base_path('../public_html/public/img/konsultasi/');
-        }
+        $destinationPath = public_path('img/konsultasi/');
         $fotoName = $file->hashName();
         $file->move($destinationPath, $fotoName);
         $uuid = Str::uuid();
@@ -228,11 +224,7 @@ class KonsultasiController extends Controller
             if(!($file->isValid() && in_array($file->extension(), ['jpeg', 'png', 'jpg']))){
                 return response()->json(['status'=>'error','message'=>'Format Foto tidak valid. Gunakan format jpeg, png, jpg'], 400);
             }
-            if(app()->environment('local')){
-                $destinationPath = public_path('img/konsultasi/');
-            }else{
-                $destinationPath = base_path('../public_html/public/img/konsultasi/');
-            }
+            $destinationPath = public_path('img/konsultasi/');
             $fileToDelete = $destinationPath . $konsultasi['foto'];
             if (file_exists($fileToDelete) && !is_dir($fileToDelete)) {
                 unlink($fileToDelete);
@@ -281,11 +273,7 @@ class KonsultasiController extends Controller
             return response()->json(['status' => 'error', 'message' => 'Data Konsultasi tidak ditemukan'], 400);
         }
         //delete all photo
-        if(app()->environment('local')){
-            $destinationPath = public_path('img/konsultasi/');
-        }else{
-            $destinationPath = base_path('../public_html/public/img/konsultasi/');
-        }
+        $destinationPath = public_path('img/konsultasi/');
         $fileToDelete = $destinationPath . $konsultasi['foto'];
         if (file_exists($fileToDelete) && !is_dir($fileToDelete)) {
             unlink($fileToDelete);

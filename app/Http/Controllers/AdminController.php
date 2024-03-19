@@ -264,14 +264,15 @@ class AdminController extends Controller
         }
         //update cookie
         $jwtController = new JWTController();
-        $data = $jwtController->createJWTWebsite($request->input('email_new'),new RefreshToken());
+        $email = $request->has('email_new') ? $request->input('email_new') : $request->input('user_auth')['email'];
+        $data = $jwtController->createJWTWebsite($email,new RefreshToken());
         if(is_null($data)){
             return response()->json(['status'=>'error','message'=>'create token error'],500);
         }else{
             if($data['status'] == 'error'){
                 return response()->json(['status'=>'error','message'=>$data['message']],400);
             }else{
-                $data1 = ['email'=>$request->input('email_new'),'number'=>$data['number']];
+                $data1 = ['email'=>$email,'number'=>$data['number']];
                 $encoded = base64_encode(json_encode($data1));
                 return response()->json(['status'=>'success','message'=>'Profile Anda berhasil di perbarui'])
                 ->cookie('token1',$encoded,time()+intval(env('JWT_ACCESS_TOKEN_EXPIRED')))
