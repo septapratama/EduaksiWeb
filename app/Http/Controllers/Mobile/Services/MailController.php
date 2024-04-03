@@ -60,8 +60,8 @@ class MailController extends Controller
         $userController = new MasyarakatController();
         $email = $request->input('email');
         //check email on table user
-        $user = User::select('nama_lengkap')->whereRaw("BINARY email = ?",[$request->input('email')])->limit(1)->get()[0];
-        if (!$user) {
+        $user = User::select('id_user', 'nama_lengkap')->whereRaw("BINARY email = ?",[$request->input('email')])->first();
+        if ($user === null) {
             if($request->path() === 'verify/create/email' && $request->isMethod("get")){
                 return ['status'=>'error','message'=>'email invalid'];
             }else{
@@ -69,16 +69,17 @@ class MailController extends Controller
             }
         }
         //check if user have create verify email
-        $verify = Verifikasi::select('send','updated_at')->whereRaw("BINARY email = ?",[$request->input('email')])->where('deskripsi', 'email')->limit(1)->get()[0];
-        if (!$verify) {
+        $verifyDb = Verifikasi::select('send','updated_at')->whereRaw("BINARY email = ?",[$request->input('email')])->where('deskripsi', 'email')->first();
+        if ($verifyDb === null) {
             $verificationCode = mt_rand(100000, 999999);
             $linkPath = Str::random(50);
             $verificationLink = URL::to('/verify/email/'.$linkPath);
             $verify->email = $email;
-            $verify->code = $verificationCode;
+            $verify->kode_otp = $verificationCode;
             $verify->link = $linkPath;
-            $verify->description = 'email';
+            $verify->deskripsi = 'email';
             $verify->send = 1;
+            $verify->id_user = $user['id_user'];
             if(!$verify->save()){
                 return ['status'=>'error','message'=>'fail create verify email','code'=>400];
             }
@@ -88,15 +89,15 @@ class MailController extends Controller
             return ['status'=>'Success','message'=>'Akun Berhasil Dibuat Silahkan verifikasi email','code'=>200,'data'=>['waktu'=>Carbon::now()->addMinutes(MasyarakatController::getConditionOTP()[0])]];
         }
         //checking if user have create verify email
-        $expTime = MasyarakatController::getConditionOTP()[($verify->send - 1)];
-        if (!Carbon::parse($verify->updated_at)->diffInMinutes(Carbon::now()) <= $expTime) {
+        $expTime = MasyarakatController::getConditionOTP()[($verifyDb->send - 1)];
+        if (!Carbon::parse($verifyDb->updated_at)->diffInMinutes(Carbon::now()) <= $expTime) {
             return ['status'=>'error','message'=>'Kami sudah mengirim email verifikasi ','data'=>true];
         }
         //if after desired time then update code
         $verificationCode = mt_rand(100000, 999999);
         $linkPath = Str::random(50);
         $verificationLink = URL::to('/verify/email/'.$linkPath);
-        if(is_null(DB::table('verifikasi')->whereRaw("BINARY email = ? AND description = 'email'",[$email])->update(['code'=>$verificationCode,'link'=>$linkPath]))){
+        if(is_null(DB::table('verifikasi')->whereRaw("BINARY email = ? AND deskripsi = 'email'",[$email])->update(['code'=>$verificationCode,'link'=>$linkPath]))){
             return ['status'=>'error','message'=>'fail create verify email'];
         }
         $data = ['name'=>$user->nama_lengkap,'email'=>$email,'code'=>$verificationCode,'link'=>urldecode($verificationLink)];
@@ -124,22 +125,23 @@ class MailController extends Controller
         $userController = new MasyarakatController();
         $email = $request->input('email');
         //check email on table user
-        $user = User::select('nama_lengkap')->whereRaw("BINARY email = ?",[$request->input('email')])->limit(1)->get()[0];
+        $user = User::select('id_user', 'nama_lengkap')->whereRaw("BINARY email = ?",[$request->input('email')])->first();
         if (!$user) {
             return response()->json(['status'=>'error','message'=>'Email tidak terdaftar !'],400);
         }
         //check if user have create verify email
-        $verify = Verifikasi::select('send','updated_at')->whereRaw("BINARY email = ?",[$request->input('email')])->where('deskripsi', 'password')->limit(1)->get()[0];
-        if (!$verify) {
+        $verifyDb = Verifikasi::select('send','updated_at')->whereRaw("BINARY email = ?",[$request->input('email')])->where('deskripsi', 'password')->first();
+        if ($verifyDb === null) {
             //if user haven't create email forgot password
             $verificationCode = mt_rand(100000, 999999);
             $linkPath = Str::random(50);
             $verificationLink = URL::to('/verify/password/' . $linkPath);
             $verify->email = $email;
-            $verify->code = $verificationCode;
+            $verify->kode_otp = $verificationCode;
             $verify->link = $linkPath;
-            $verify->description = 'changePass';
+            $verify->deskripsi = 'password';
             $verify->send = 1;
+            $verify->id_user = $user['id_user'];
             if($verify->save()){
                 $data = ['name'=>$user->nama_lengkap,'email'=>$email,'code'=>$verificationCode,'link'=>$verificationLink];
                 dispatch(new SendResetPassword($data));
@@ -150,15 +152,15 @@ class MailController extends Controller
             }
         }
         //checking if user have create verify email
-        $expTime = MasyarakatController::getConditionOTP()[($verify->send - 1)];
-        if (!Carbon::parse($verify->updated_at)->diffInMinutes(Carbon::now()) <= $expTime) {
+        $expTime = MasyarakatController::getConditionOTP()[($verifyDb->send - 1)];
+        if (!Carbon::parse($verifyDb->updated_at)->diffInMinutes(Carbon::now()) <= $expTime) {
             return response()->json(['status'=>'error','message'=>'Kami sudah mengirim Otp silahkan cek mail anda ','data'=>true]);
         }
         //if after desired time then update code
         $verificationCode = mt_rand(100000, 999999);
         $linkPath = Str::random(50);
         $verificationLink = URL::to('/verify/password/' . $linkPath);
-        if(is_null(DB::table('verify')->whereRaw("BINARY email = ? AND description = 'changePass'",[$email])->update(['code'=>$verificationCode,'link'=>$linkPath, 'updated_at' => Carbon::now()]))){
+        if(is_null(DB::table('verify')->whereRaw("BINARY email = ? AND deskripsi = 'password'",[$email])->update(['code'=>$verificationCode,'link'=>$linkPath, 'updated_at' => Carbon::now()]))){
             return response()->json(['status'=>'error','message'=>'fail create forgot password'],500);
         }else{
             $data = ['name'=>$user->nama_lengkap,'email'=>$email,'code'=>$verificationCode,'link'=>$verificationLink];

@@ -7,12 +7,15 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Disi;
 use Carbon\Carbon;
+use Kreait\Firebase\Database;
 use Exception;
 class DisiController extends Controller
 {
     private static $jsonFile;
+    private static $database;
     public function __construct(){
         self::$jsonFile = storage_path('app/database/disi.json');
+        self::$database = app(Database::class);
     }
     public function dataCacheFile($data = null, $con, $limit = null, $col = null){
         $fileExist = file_exists(self::$jsonFile);
@@ -157,6 +160,7 @@ class DisiController extends Controller
         $file->move($destinationPath, $fotoName);
         $now = Carbon::now();
         $uuid = Str::uuid();
+        self::$database->getReference('artikel')->push();
         $ins = Disi::insert([
             'uuid' => $uuid,
             'judul' => $request->input('judul'),

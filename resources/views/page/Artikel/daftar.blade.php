@@ -45,7 +45,7 @@ $tPath = app()->environment('local') ? '' : '';
             @foreach($artikel as $data)
             <li class="card" id="{{ $noArtikel }}">
                 <a href="/artikel/{{ str_replace(' ', '-', $data['judul']) }}">
-                    <img src="{{ asset($tPath.'img/artikel/'.$data['foto']) }}" alt=""
+                    <img src="{{ asset($tPath.'img/artikesl/'.$data['foto']) }}" alt=""
                         onerror="imgError('{{ $noArtikel++ }}')">
                     <span class="tanggal">{{ $data['created_at'] }}</span>
                     <h3>{{ $data['judul'] }}</h3>

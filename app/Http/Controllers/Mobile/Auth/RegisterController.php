@@ -8,7 +8,6 @@ use App\Models\Verifikasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Http\JsonResponse;
 class RegisterController extends Controller
 {
     public function Register(Request $request, User $user, MasyarakatController $userController,MailController $mailController, Verifikasi $verify){
@@ -28,9 +27,7 @@ class RegisterController extends Controller
                 'max:25',
                 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\p{P}\p{S}])[\p{L}\p{N}\p{P}\p{S}]+$/u',
             ],
-            'nama'=>'required',
         ],[
-            'nama.required'=>'nama wajib di isi',
             'email.required'=>'Email wajib di isi',
             'email.email'=>'Email yang anda masukkan invalid',
             'password.required'=>'Password wajib di isi',
@@ -65,6 +62,9 @@ class RegisterController extends Controller
                 return response()->json(['status'=>'success','message'=>$result['message'],'data'=>$result['data']]);
             }
         }
+    }
+    public function RegisterGoogle(Request $request){
+        //
     }
 }
 ?>

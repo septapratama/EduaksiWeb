@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql'),
+    'default' => env('DB_CONNECTION', 'firebase'),
 
     /*
     |--------------------------------------------------------------------------
@@ -92,7 +92,14 @@ return [
             // 'encrypt' => env('DB_ENCRYPT', 'yes'),
             // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
-
+        'firebase' => [
+            'driver' => 'firebase',
+            'credentials' => [
+                'file' => base_path('credentials.json'),
+            ],
+            'project_id' => env('FIREBASE_ID','eduaksi-98b1e'),
+            'database_url' => env('FIREBASE_LINK', 'https://eduaksi-98b1e-default-rtdb.firebaseio.com/'),
+        ],
     ],
 
     /*

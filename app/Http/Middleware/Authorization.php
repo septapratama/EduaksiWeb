@@ -16,6 +16,7 @@ class Authorization
 {
     private $roleAdmin = ['super admin','admin event','admin seniman','admin tempat'];
     public function handle(Request $request, Closure $next){
+        return $next($request);
         $userAuth = $request->input('user_auth');
         $path = '/'.$request->path();
         $checkEmail = function() use ($userAuth, $request){

@@ -13,16 +13,16 @@ Route::group(['prefix'=>'/mobile','middleware'=>'authorized'],function(){
             Route::post('/email','Mail\MailController@createVerifyEmail');
         });
         Route::group(['prefix'=>'/password'],function(){
-            Route::get('/{any?}','UserController@getChangePass')->where('any','.*');
-            Route::post('/','UserController@changePassEmail');
+            Route::get('/{any?}','MasyarakatController@getChangePass')->where('any','.*');
+            Route::post('/','MasyarakatController@changePassEmail');
         });
         Route::group(['prefix'=>'/email'],function(){
-            Route::get('/{any?}','UserController@verifyEmail')->where('any','.*');
-            Route::post('/','UserController@verifyEmail');
+            Route::get('/{any?}','MasyarakatController@verifyEmail')->where('any','.*');
+            Route::post('/','MasyarakatController@verifyEmail');
         });
         Route::group(['prefix'=>'/otp'],function(){
-            Route::post('/password','UserController@getChangePass');
-            Route::post('/email','UserController@verifyEmail');
+            Route::post('/password','MasyarakatController@getChangePass');
+            Route::post('/email','MasyarakatController@verifyEmail');
         });
     });
     Route::group(['prefix'=>'/users'],function(){

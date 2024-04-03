@@ -185,10 +185,8 @@ class MasyarakatController extends Controller
     public function createUser(Request $request, MailController $mailController, Verifikasi $verify){
         $validator = Validator::make($request->only('nama_lengkap','jenis_kelamin','no_telpon','tanggal_lahir','tempat_lahir','email','password','foto'), [
             'nama_lengkap'=>'required',
-            'jenis_kelamin' => 'required|in:laki-laki,perempuan',
-            'no_telpon' => 'required|digits_between:10,13',
-            'tanggal_lahir' => ['required', 'date', 'before_or_equal:' . now()->toDateString()],
-            'tempat_lahir' => 'required',
+            'jenis_kelamin' => 'nullable|in:laki-laki,perempuan',
+            'no_telpon' => 'nullable|digits_between:10,13',
             'email'=>'required | email',
             'password' => [
                 'required',
@@ -197,24 +195,17 @@ class MasyarakatController extends Controller
                 'max:25',
                 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\p{P}\p{S}])[\p{L}\p{N}\p{P}\p{S}]+$/u',
             ],
-            'foto' => 'required|image|mimes:jpeg,png,jpg|max:5120',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
         ],[
             'nama_lengkap.required'=>'Nama Lengkap wajib di isi',
-            'jenis_kelamin.required' => 'Jenis kelamin wajib di isi',
             'jenis_kelamin.in' => 'Jenis kelamin harus Laki-laki atau Perempuan',
-            'no_telpon.required' => 'Nomor telepon wajib di isi',
             'no_telpon.digits_between' => 'Nomor telepon tidak boleh lebih dari 13 karakter',
-            'tanggal_lahir.required' => 'Tanggal lahir wajib di isi',
-            'tanggal_lahir.date' => 'Format tanggal lahir tidak valid',
-            'tanggal_lahir.before_or_equal' => 'Tanggal Lahir harus Sebelum dari tanggal sekarang',
-            'tempat_lahir.required' => 'Tempat lahir wajib di isi',
             'email.required'=>'Email wajib di isi',
             'email.email'=>'Email yang anda masukkan invalid',
             'password.required'=>'Password wajib di isi',
             'password.min'=>'Password minimal 8 karakter',
             'password.max'=>'Password maksimal 25 karakter',
             'password.regex'=>'Password baru wajib terdiri dari 1 huruf besar, huruf kecil, angka dan karakter unik',
-            'foto.required' => 'Foto wajib di isi',
             'foto.image' => 'Foto harus berupa gambar',
             'foto.mimes' => 'Format foto tidak valid. Gunakan format jpeg, png, jpg',
             'foto.max' => 'Ukuran foto tidak boleh lebih dari 5MB',
@@ -228,8 +219,8 @@ class MasyarakatController extends Controller
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
         //check data user
-        $user = User::select('password','foto')->whereRaw("BINARY email = ?",[$request->input('email')])->limit(1)->get()[0];
-        if (!$user) {
+        $user = User::select('password','foto')->whereRaw("BINARY email = ?",[$request->input('email')])->exists();
+        if (User::select('password','foto')->whereRaw("BINARY email = ?",[$request->input('email')])->exists()) {
             return response()->json(['status' => 'error', 'message' => 'Data masyarakat tidak ditemukan'], 404);
         }
         //process file foto
@@ -239,32 +230,26 @@ class MasyarakatController extends Controller
                 return response()->json(['status'=>'error','message'=>'Format Foto tidak valid. Gunakan format jpeg, png, jpg'], 400);
             }
             $destinationPath = storage_path('app/user/');
-            $fileToDelete = $destinationPath . $user['foto'];
-            if (file_exists($fileToDelete) && !is_dir($fileToDelete)) {
-                unlink($fileToDelete);
-            }
-            Storage::disk('user')->delete('/'.$user['foto']);
             $fotoName = $file->hashName();
             $fileData = Crypt::encrypt(file_get_contents($file));
             Storage::disk('user')->put('/' . $fotoName, $fileData);
         }
         //create user
         $insert = User::insert([
-            'email'=>$request->input('email_new'),
-            'nama_lengkap'=>$request->input('nama_lengkap'),
-            'no_telpon'=>$request->input('no_telpon'),
-            'jenis_kelamin'=>$request->input('jenis_kelamin'),
-            // 'tanggal_lahir'=>$request->input('tanggal_lahir'),
-            'tanggal_lahir'=>Carbon::createFromFormat('d-m-Y', $request->input('tanggal_lahir'))->format('Y-m-d'),
-            'tempat_lahir'=>$request->input('tempat_lahir'),
-            'role'=>$request->input('role'),
-            'password'=> (empty($request->input('password')) || is_null($request->input('password'))) ? $user['password']: Hash::make($request->input('password')),
-            'foto' => $request->hasFile('foto') ? $fotoName : $user['foto'],
-            'verifikasi'=>true,
+            'uuid' =>  Str::uuid(),
+            'nama_lengkap' => $request->input('nama_lengkap'),
+            'no_telpon' => $request->has('no_telpon') ? $request->input('no_telpon') : '',
+            'jenis_kelamin' => $request->input('jenis_kelamin', null),
+            'role' => 'user',
+            'email' => $request->input('email'),
+            'password' => Hash::make($request->input('password')),
+            'foto' => $request->hasFile('foto') ? $fotoName : '',
+            'verifikasi' => false,
+            'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
         if (!$insert) {
-            return response()->json(['status' => 'error', 'message' => 'Gagal memperbarui data Masyarakat'], 500);
+            return ['status'=>'error','message'=>'gagal register'];
         }
         $email = $mailController->createVerifyEmail($request,$verify);
         if($email['status'] == 'error'){
@@ -272,7 +257,6 @@ class MasyarakatController extends Controller
         }else{
             return ['status'=>'success','message'=>$email['message'],'data'=>$email['data']];
         }
-        // return response()->json(['status'=>'success','message'=>'Data masyarakat berhasil diperbarui']);
     }
     public function updateUser(Request $request, MailController $mailController, Verifikasi $verify){
         $validator = Validator::make($request->only('nama_lengkap','jenis_kelamin','no_telpon','tanggal_lahir','tempat_lahir','email_new','password','foto'), [

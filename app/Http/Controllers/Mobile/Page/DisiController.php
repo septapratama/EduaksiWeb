@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Controllers\Mobile;
+namespace App\Http\Controllers\Mobile\Page;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
