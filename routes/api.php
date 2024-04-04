@@ -1,10 +1,11 @@
 <?php
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Mobile\MasyarakatController;
 use App\Http\Controllers\Mobile\Page\DisiController;
 use App\Http\Controllers\Mobile\Page\EmotalController;
 use App\Http\Controllers\Mobile\Page\NutrisiController;
+use App\Http\Controllers\Mobile\Page\PengasuhanController;
 use App\Http\Controllers\Mobile\Page\KonsultasiController;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Mobile\MasyarakatController;
 
 use App\Http\Controllers\Mobile\Auth\LoginController AS MobileLoginController;
 use App\Http\Controllers\Mobile\Auth\RegisterController AS MobileRegisterController;
@@ -52,7 +53,9 @@ Route::group(['prefix'=>'/mobile','middleware'=>'authorized'],function(){
         Route::get('/{any}', [NutrisiController::class, 'getNutrisiDetail']);
     });
     Route::group(['prefix'=>'/pengasuhan'],function(){
-        // Route::get('/',[]);
+        Route::get('/', [PengasuhanController::class, 'getPengasuhan']);
+        Route::get('/usia/{Any}', [PengasuhanController::class, 'getPengasuhanUsia']);
+        Route::get('/{any}', [PengasuhanController::class, 'getPengasuhanDetail']);
     });
     Route::group(['prefix'=>'/konsultasi'],function(){
         Route::get('/', [KonsultasiController::class, 'getKonsultasi']);
