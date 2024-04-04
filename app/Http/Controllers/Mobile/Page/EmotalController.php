@@ -1,25 +1,37 @@
 <?php
 namespace App\Http\Controllers\Mobile\Page;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Services\DisiController AS ServiceEmotalController;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use App\Models\EmosiMental;
-use App\Models\GaleriEmosiMental;
 class EmotalController extends Controller
 {
     public function getEmotal(Request $request){
-        $validator = Validator::make($request->only('id_emotal'), [
-            'id_emotal'=>'required',
-        ], [
-            'id_emotal.required' => 'ID Emotal wajib di isi',
-        ]);
-        if ($validator->fails()) {
-            $errors = [];
-            foreach ($validator->errors()->toArray() as $field => $errorMessages) {
-                $errors[$field] = $errorMessages[0];
-                break;
-            }
-            return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
+        $dataEmotal = app()->make(ServiceEmotalController::class)->dataCacheFile(null, 'get_limit',10, ['uuid', 'judul','foto']);
+        shuffle($dataEmotal);
+        foreach($dataEmotal as &$item){
+            $item['id_disi'] = $item['uuid'];
+            unset( $item['uuid']);
         }
+        return response()->json(['status' => 'success', 'data' => $dataEmotal]);
+    }
+    public function getEmotalUsia(Request $request, $usia){
+        $dataEmotal = app()->make(ServiceEmotalController::class)->dataCacheFile($usia, 'get_limit',1, ['uuid', 'judul','foto']);
+        if(is_null($dataEmotal)){
+            return response()->json(['status' => 'error', 'message' => 'Konsultasi tidak ditemukan'], 404);
+        }
+        $dataEmotal = $dataEmotal[0];
+        $dataEmotal['id_disi'] = $dataEmotal['uuid'];
+        unset($dataEmotal['uuid']);
+        return response()->json(['status' => 'success', 'data' => $dataEmotal]);
+    }
+    public function getEmotalDetail(Request $request, $idEmotal){
+        $emotalDetail = app()->make(ServiceEmotalController::class)->dataCacheFile(['uuid' => $idEmotal], 'get_limit', 1, ['uuid', 'judul', 'deskripsi', 'rentang_usia', 'foto', 'link_video']);
+        if(is_null($emotalDetail)){
+            return response()->json(['status' => 'error', 'message' => 'Konsultasi tidak ditemukan'], 404);
+        }
+        $emotalDetail = $emotalDetail[0];
+        $emotalDetail['id_disi'] = $emotalDetail['uuid'];
+        unset($emotalDetail['uuid']);
+        return response()->json(['status' => 'success', 'data' => $emotalDetail]);
     }
 }

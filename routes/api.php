@@ -1,7 +1,7 @@
 <?php
 use App\Http\Controllers\Mobile\Page\DisiController;
+use App\Http\Controllers\Mobile\Page\EmotalController;
 use App\Http\Controllers\Mobile\Page\KonsultasiController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Mobile\MasyarakatController;
 
@@ -41,7 +41,9 @@ Route::group(['prefix'=>'/mobile','middleware'=>'authorized'],function(){
         Route::get('/{any}', [DisiController::class, 'getDisiDetail']);
     });
     Route::group(['prefix'=>'/emotal'],function(){
-        // Route::get('/',[]);
+        Route::get('/', [EmotalController::class, 'getEmotal']);
+        Route::get('/usia/{Any}', [EmotalController::class, 'getEmotalUsia']);
+        Route::get('/{any}', [EmotalController::class, 'getEmotalDetail']);
     });
     Route::group(['prefix'=>'/pengasuhan'],function(){
         // Route::get('/',[]);

@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 class DisiController extends Controller
 {
     public function getDisi(Request $request){
-        $dataDisi = app()->make(ServiceDisiController::class)->dataCacheFile(null, 'get_limit',10, ['uuid', 'nama_lengkap','foto']);
+        $dataDisi = app()->make(ServiceDisiController::class)->dataCacheFile(null, 'get_limit',10, ['uuid', 'judul','foto']);
         shuffle($dataDisi);
         foreach($dataDisi as &$item){
             $item['id_disi'] = $item['uuid'];
@@ -15,7 +15,7 @@ class DisiController extends Controller
         return response()->json(['status' => 'success', 'data' => $dataDisi]);
     }
     public function getDisiUsia(Request $request, $usia){
-        $dataDisi = app()->make(ServiceDisiController::class)->dataCacheFile($usia, 'get_limit',1, ['uuid', 'nama_lengkap','foto']);
+        $dataDisi = app()->make(ServiceDisiController::class)->dataCacheFile($usia, 'get_limit',1, ['uuid', 'judul','foto']);
         if(is_null($dataDisi)){
             return response()->json(['status' => 'error', 'message' => 'Konsultasi tidak ditemukan'], 404);
         }
@@ -25,7 +25,7 @@ class DisiController extends Controller
         return response()->json(['status' => 'success', 'data' => $dataDisi]);
     }
     public function getDisiDetail(Request $request, $idDisi){
-        $disiDetail = app()->make(ServiceDisiController::class)->dataCacheFile(['uuid' => $idDisi], 'get_limit', 1, ['uuid', 'nama_lengkap', 'jenis_kelamin', 'alamat', 'no_telpon', 'email', 'foto']);
+        $disiDetail = app()->make(ServiceDisiController::class)->dataCacheFile(['uuid' => $idDisi], 'get_limit', 1, ['uuid', 'judul', 'deskripsi', 'rentang_usia', 'foto', 'link_video']);
         if(is_null($disiDetail)){
             return response()->json(['status' => 'error', 'message' => 'Konsultasi tidak ditemukan'], 404);
         }
