@@ -1,8 +1,8 @@
 <?php
 namespace App\Http\Controllers\Mobile\Page;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Services\DisiController AS ServiceDisiController;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Services\DisiController AS ServiceDisiController;
 class DisiController extends Controller
 {
     public function getDisi(Request $request){
@@ -17,7 +17,7 @@ class DisiController extends Controller
     public function getDisiUsia(Request $request, $usia){
         $dataDisi = app()->make(ServiceDisiController::class)->dataCacheFile($usia, 'get_limit',1, ['uuid', 'judul','foto']);
         if(is_null($dataDisi)){
-            return response()->json(['status' => 'error', 'message' => 'Konsultasi tidak ditemukan'], 404);
+            return response()->json(['status' => 'error', 'message' => 'Digital Literasi tidak ditemukan'], 404);
         }
         $dataDisi = $dataDisi[0];
         $dataDisi['id_disi'] = $dataDisi['uuid'];
@@ -27,7 +27,7 @@ class DisiController extends Controller
     public function getDisiDetail(Request $request, $idDisi){
         $disiDetail = app()->make(ServiceDisiController::class)->dataCacheFile(['uuid' => $idDisi], 'get_limit', 1, ['uuid', 'judul', 'deskripsi', 'rentang_usia', 'foto', 'link_video']);
         if(is_null($disiDetail)){
-            return response()->json(['status' => 'error', 'message' => 'Konsultasi tidak ditemukan'], 404);
+            return response()->json(['status' => 'error', 'message' => 'Digital Literasi tidak ditemukan'], 404);
         }
         $disiDetail = $disiDetail[0];
         $disiDetail['id_disi'] = $disiDetail['uuid'];

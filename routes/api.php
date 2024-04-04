@@ -1,6 +1,7 @@
 <?php
 use App\Http\Controllers\Mobile\Page\DisiController;
 use App\Http\Controllers\Mobile\Page\EmotalController;
+use App\Http\Controllers\Mobile\Page\NutrisiController;
 use App\Http\Controllers\Mobile\Page\KonsultasiController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Mobile\MasyarakatController;
@@ -45,10 +46,12 @@ Route::group(['prefix'=>'/mobile','middleware'=>'authorized'],function(){
         Route::get('/usia/{Any}', [EmotalController::class, 'getEmotalUsia']);
         Route::get('/{any}', [EmotalController::class, 'getEmotalDetail']);
     });
-    Route::group(['prefix'=>'/pengasuhan'],function(){
-        // Route::get('/',[]);
-    });
     Route::group(['prefix'=>'/nutrisi'],function(){
+        Route::get('/', [NutrisiController::class, 'getNutrisi']);
+        Route::get('/usia/{Any}', [NutrisiController::class, 'getNutrisiUsia']);
+        Route::get('/{any}', [NutrisiController::class, 'getNutrisiDetail']);
+    });
+    Route::group(['prefix'=>'/pengasuhan'],function(){
         // Route::get('/',[]);
     });
     Route::group(['prefix'=>'/konsultasi'],function(){
