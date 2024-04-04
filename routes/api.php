@@ -1,4 +1,5 @@
 <?php
+use App\Http\Controllers\Mobile\Page\KonsultasiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Mobile\MasyarakatController;
@@ -33,10 +34,10 @@ Route::group(['prefix'=>'/mobile','middleware'=>'authorized'],function(){
         Route::put('/update', [MasyarakatController::class, 'updateProfile']);
         Route::post('/logout', [MasyarakatController::class,'logout']);
     });
-    Route::group(['prefix'=>'/emotal'],function(){
+    Route::group(['prefix'=>'/disi'],function(){
         // Route::get('/',[]);
     });
-    Route::group(['prefix'=>'/disi'],function(){
+    Route::group(['prefix'=>'/emotal'],function(){
         // Route::get('/',[]);
     });
     Route::group(['prefix'=>'/pengasuhan'],function(){
@@ -44,21 +45,16 @@ Route::group(['prefix'=>'/mobile','middleware'=>'authorized'],function(){
     });
     Route::group(['prefix'=>'/nutrisi'],function(){
         // Route::get('/',[]);
+    });
+    Route::group(['prefix'=>'/konsultasi'],function(){
+        Route::get('/', [KonsultasiController::class, 'getKonsultasi']);
+        Route::get('/{any}', [KonsultasiController::class, 'getKonsultasiDetail']);
     });
     Route::group(['prefix'=>'/pencatatan'],function(){
         // Route::get('/',[]);
         // Route::post('/tambah',[]);
         // Route::put('/update',[]);
         // Route::delete('/delete',[]);
-        Route::get('/',[]);
-    });
-    Route::group(['prefix'=>'/disi'],function(){
-        Route::get('/',[]);
-    });
-    Route::group(['prefix'=>'/pengasuhan'],function(){
-        Route::get('/',[]);
-    });
-    Route::group(['prefix'=>'/nutrisi'],function(){
         Route::get('/',[]);
     });
     Route::group(['prefix'=>'/pencatatan'],function(){

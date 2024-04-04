@@ -4,7 +4,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Nutrisi;
-use App\Models\GaleriNutrisi;
 class NutrisiController extends Controller
 {
     public function getNutrisi(Request $request){
