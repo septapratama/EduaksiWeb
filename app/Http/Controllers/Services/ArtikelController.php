@@ -35,17 +35,11 @@ class ArtikelController extends Controller
                     $result = $jsonData[$key];
                 }
             }
-            if($result === null){
-                throw new Exception('Data artikel tidak ditemukan');
-            }
             return $result;
         }else if($con == 'get_total'){
             $jsonData = json_decode(file_get_contents(self::$jsonFile), true);
-            $result = null;
+            $result = 0;
             $result = count($jsonData);
-            if($result === null){
-                return 0;
-            }
             return $result;
         }else if($con === 'get_limit') {
             $jsonData = json_decode(file_get_contents(self::$jsonFile), true);
@@ -62,7 +56,7 @@ class ArtikelController extends Controller
                     }
                 }
                 if ($result === null) {
-                    throw new Exception('Data artikel tidak ditemukan');
+                    return $result;
                 }
                 $jsonData = [];
                 $jsonData[] = $result;

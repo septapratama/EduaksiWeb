@@ -6,13 +6,13 @@ use Illuminate\Http\Request;
 class DisiController extends Controller
 {
     public function showData(Request $request, $err = null){
+        if(!is_null($err)){
+            return view('page.Disi.data', ['error' => $err]);
+        }
         $dataShow = [
             'dataDisi' => app()->make(ServiceDisiController::class)->dataCacheFile(null, 'get_limit',null, ['uuid', 'judul','rentang_usia']),
             'userAuth' => $request->input('user_auth'),
         ];
-        if(!is_null($err)){
-            return view('page.Disi.data', ['error' => $err]);
-        }
         return view('page.Disi.data',$dataShow);
     }
     public function showTambah(Request $request){
@@ -22,12 +22,12 @@ class DisiController extends Controller
         return view('page.Disi.tambah',$dataShow);
     }
     public function showEdit(Request $request, $uuid){
-        $disi = app()->make(ServiceDisiController::class)->dataCacheFile(['uuid' => $uuid], 'get_limit', 1, ['uuid', 'judul', 'deskripsi', 'rentang_usia', 'foto', 'link_video'])[0];
-        if (!$disi) {
+        $disi = app()->make(ServiceDisiController::class)->dataCacheFile(['uuid' => $uuid], 'get_limit', 1, ['uuid', 'judul', 'deskripsi', 'rentang_usia', 'foto', 'link_video']);
+        if (is_null($disi)) {
             return $this->showData($request,'Data Disi tidak ditemukan');
         }
         $dataShow = [
-            'disi' => $disi,
+            'disi' => $disi[0],
             'userAuth' => $request->input('user_auth'),
         ];
         return view('page.Disi.edit',$dataShow);

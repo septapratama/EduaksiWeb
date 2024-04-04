@@ -28,7 +28,7 @@ class PengasuhanController extends Controller
                 unset($item['id_pengasuhan']);
             }
             if (!file_put_contents(self::$jsonFile,json_encode($pengasuhanData, JSON_PRETTY_PRINT))) {
-                throw new Exception('Gagal menyimpan file sistem');
+                return('Gagal menyimpan file sistem');
             }
         }
         if($con == 'get_id'){
@@ -39,17 +39,11 @@ class PengasuhanController extends Controller
                     $result = $jsonData[$key];
                 }
             }
-            if($result === null){
-                throw new Exception('Data Pengasuhan tidak ditemukan');
-            }
             return $result;
         }else if($con == 'get_total'){
             $jsonData = json_decode(file_get_contents(self::$jsonFile), true);
-            $result = null;
+            $result = 0;
             $result = count($jsonData);
-            if($result === null){
-                return 0;
-            }
             return $result;
         }else if($con == 'get_limit'){
             $jsonData = json_decode(file_get_contents(self::$jsonFile), true);
@@ -66,7 +60,7 @@ class PengasuhanController extends Controller
                     }
                 }
                 if ($result === null) {
-                    throw new Exception('Data artikel tidak ditemukan');
+                    return $result;
                 }
                 $jsonData = [];
                 $jsonData[] = $result;

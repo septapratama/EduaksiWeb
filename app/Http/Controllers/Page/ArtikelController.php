@@ -5,7 +5,10 @@ use App\Http\Controllers\Services\ArtikelController AS ServiceArtikelController;
 use Illuminate\Http\Request;
 class ArtikelController extends Controller
 {
-    public function showData(Request $request){
+    public function showData(Request $request, $err = null){
+        if(!is_null($err)){
+            return view('page.Article.data', ['error' => $err]);
+        }
         $dataArtikel = app()->make(ServiceArtikelController::class)->dataCacheFile(null, 'get_limit',null, ['uuid', 'judul','rentang_usia']);
         $dataShow = [
             'dataArtikel' => $dataArtikel,
@@ -20,8 +23,12 @@ class ArtikelController extends Controller
         return view('page.Article.tambah',$dataShow);
     }
     public function showEdit(Request $request, $uuid){
+        $artikel = app()->make(ServiceArtikelController::class)->dataCacheFile(['uuid' => $uuid], 'get_limit', 1, ['uuid', 'judul', 'deskripsi', 'kategori', 'foto', 'link_video']);
+        if(is_null($artikel)){
+            return $this->showData($request, 'Data Artikel tidak ditemukan');
+        }
         $dataShow = [
-            'artikel' => app()->make(ServiceArtikelController::class)->dataCacheFile(['uuid' => $uuid], 'get_limit', 1, ['uuid', 'judul', 'deskripsi', 'kategori', 'foto', 'link_video'])[0],
+            'artikel' => $artikel[0],
             'userAuth' => $request->input('user_auth'),
         ];
         return view('page.Article.edit',$dataShow);

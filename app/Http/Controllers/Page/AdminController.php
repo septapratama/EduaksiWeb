@@ -79,7 +79,10 @@ class AdminController extends Controller
         return view('page.profile',$dataShow);
     }
     //only admin
-    public function showAdmin(Request $request){
+    public function showAdmin(Request $request, $err = null){
+        if(!is_null($err)){
+            return view('page.Article.data', ['error' => $err]);
+        }
         $userAuth = $request->input('user_auth');
         $adminData = User::select('uuid', 'nama_lengkap', 'no_telpon', 'email')->where('role','admin')->get();
         $dataShow = [
@@ -96,11 +99,13 @@ class AdminController extends Controller
         return view('page.admin.tambah',$dataShow);
     }
     public function showAdminEdit(Request $request, $uuid){
-        $adminData = User::select('uuid','nama_lengkap', 'jenis_kelamin', 'no_telpon','role', 'email')->whereNotIn('role', ['user'])->whereRaw("BINARY uuid = ?",[$uuid])->limit(1)->get()[0];
-        $adminData['foto'] = Str::random();
+        $adminData = User::select('uuid','nama_lengkap', 'jenis_kelamin', 'no_telpon','role', 'email', 'foto')->whereNotIn('role', ['user'])->whereRaw("BINARY uuid = ?",[$uuid])->first();
+        if(is_null($adminData)){
+            return $this->showAdmin($request, 'Data Admin tidak ditemukan');
+        }
         $dataShow = [
             'userAuth' => $request->input('user_auth'),
-            'adminData' => $adminData ?? '',
+            'adminData' => $adminData[0],
         ];
         return view('page.admin.edit',$dataShow);
     }
