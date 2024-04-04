@@ -55,15 +55,51 @@ class NutrisiController extends Controller
                 foreach ($jsonData as $key => $item){
                     $keys = array_keys($data)[0];
                     if (isset($item[$keys]) && $item[$keys] == $data[$keys]) {
-                        $result = $jsonData[$key];
-                        break;
+                        $result[] = $jsonData[$key];
                     }
                 }
                 if ($result === null) {
                     return $result;
                 }
                 $jsonData = [];
-                $jsonData[] = $result;
+                $jsonData = $result;
+            }
+            if(is_array($jsonData)) {
+                if ($limit !== null && is_int($limit) && $limit > 0){
+                    $jsonData = array_slice($jsonData, 0, $limit);
+                }
+                if (is_array($col)) {
+                    foreach ($jsonData as &$entry) {
+                        $entry = array_intersect_key($entry, array_flip($col));
+                    }
+                }
+                return $jsonData;
+            }
+            return null;
+        }else if($con == 'get_usia'){
+            $inpUsia = null;
+            $constUsia = ['0-3', '4-6', '7-9', '10-12'];
+            if (in_array($data, $constUsia)) {
+                $inpUsia = $data . ' tahun';
+            } elseif (is_numeric($data)) {
+                $data = (int)$data;
+                foreach ($constUsia as $range) {
+                    list($min, $max) = explode('-', $range);
+                    if ($data >= $min && $data <= $max) {
+                        $inpUsia = $range . ' tahun';
+                        break;
+                    }
+                }
+            }
+            if(is_null($inpUsia)){
+                return null;
+            }
+            $jsonData = json_decode(file_get_contents(self::$jsonFile), true);
+            $result = null;
+            foreach($jsonData as $key => $item){
+                if (isset($item['rentang_usia']) && $item['rentang_usia'] == $inpUsia) {
+                    $result[] = $jsonData[$key];
+                }
             }
             if(is_array($jsonData)) {
                 if ($limit !== null && is_int($limit) && $limit > 0){

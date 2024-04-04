@@ -3,8 +3,6 @@ namespace App\Http\Controllers\Mobile\Page;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Services\KonsultasiController AS ServiceKonsultasiController;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use App\Models\Konsultasi;
 class KonsultasiController extends Controller
 {
     public function getKonsultasi(Request $request){

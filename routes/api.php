@@ -1,4 +1,5 @@
 <?php
+use App\Http\Controllers\Mobile\Page\DisiController;
 use App\Http\Controllers\Mobile\Page\KonsultasiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -35,7 +36,9 @@ Route::group(['prefix'=>'/mobile','middleware'=>'authorized'],function(){
         Route::post('/logout', [MasyarakatController::class,'logout']);
     });
     Route::group(['prefix'=>'/disi'],function(){
-        // Route::get('/',[]);
+        Route::get('/', [DisiController::class, 'getDisi']);
+        Route::get('/usia/{Any}', [DisiController::class, 'getDisiUsia']);
+        Route::get('/{any}', [DisiController::class, 'getDisiDetail']);
     });
     Route::group(['prefix'=>'/emotal'],function(){
         // Route::get('/',[]);

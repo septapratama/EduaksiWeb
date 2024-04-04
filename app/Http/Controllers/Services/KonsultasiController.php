@@ -50,15 +50,14 @@ class KonsultasiController extends Controller
                 foreach ($jsonData as $key => $item){
                     $keys = array_keys($data)[0];
                     if (isset($item[$keys]) && $item[$keys] == $data[$keys]) {
-                        $result = $jsonData[$key];
-                        break;
+                        $result[] = $jsonData[$key];
                     }
                 }
                 if ($result === null) {
                     return $result;
                 }
                 $jsonData = [];
-                $jsonData[] = $result;
+                $jsonData = $result;
             }
             if(is_array($jsonData)) {
                 if ($limit !== null && is_int($limit) && $limit > 0){
