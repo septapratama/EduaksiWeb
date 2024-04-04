@@ -28,8 +28,9 @@ Route::group(['prefix'=>'/mobile','middleware'=>'authorized'],function(){
     Route::group(['prefix'=>'/users'],function(){
         Route::post('/login', [MobileLoginController::class,'Login']);
         Route::post('/login/google', [MobileLoginController::class,'LoginGoogle']);
-        Route::post('/register', [MobileRegisterController::class,'Register']);
-        Route::put('/update', [MasyarakatController::class,'updateUser']);
+        Route::post('/register', [MobileRegisterController::class,'Register'])->withoutMiddleware('authorized');
+        Route::put('/profile', [MasyarakatController::class, 'getProfile']);
+        Route::put('/update', [MasyarakatController::class, 'updateProfile']);
         Route::post('/logout', [MasyarakatController::class,'logout']);
     });
     Route::group(['prefix'=>'/emotal'],function(){
