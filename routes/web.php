@@ -30,36 +30,54 @@ Route::group(['middleware'=>['auth','authorized']],function(){
         Route::get('/',[ShowArtikelController::class, 'showData']);
         Route::get('/tambah',[ShowArtikelController::class, 'showTambah']);
         Route::get('/edit/{any}',[ShowArtikelController::class, 'showEdit']);
+        Route::get('/edit', function () {
+            return view('page.Article.data');
+        });
     });
     //disi only admin route
     Route::group(['prefix'=>'/disi'],function(){
         Route::get('/',[ShowDisiController::class, 'showData']);
         Route::get('/tambah',[ShowDisiController::class, 'showTambah']);
         Route::get('/edit/{any}',[ShowDisiController::class, 'showEdit']);
+        Route::get('/edit', function () {
+            return view('page.Disi.data');
+        });
     });
     //emotal only admin route
     Route::group(['prefix'=>'/emotal'],function(){
         Route::get('/',[ShowEmotalController::class, 'showData']);
         Route::get('/tambah',[ShowEmotalController::class, 'showTambah']);
         Route::get('/edit/{any}',[ShowEmotalController::class, 'showEdit']);
+        Route::get('/edit', function () {
+            return view('page.Emotal.data');
+        });
     });
     //konsultasi only admin route
     Route::group(['prefix'=>'/konsultasi'],function(){
         Route::get('/',[ShowKonsultasiController::class, 'showData']);
         Route::get('/tambah',[ShowKonsultasiController::class, 'showTambah']);
         Route::get('/edit/{any}',[ShowKonsultasiController::class, 'showEdit']);
+        Route::get('/edit', function () {
+            return view('page.Konsultasi.edit');
+        });
     });
     //nutrisi only admin route
     Route::group(['prefix'=>'/nutrisi'],function(){
         Route::get('/',[ShowNutrisiController::class, 'showData']);
         Route::get('/tambah',[ShowNutrisiController::class, 'showTambah']);
         Route::get('/edit/{any}',[ShowNutrisiController::class, 'showEdit']);
+        Route::get('/edit', function () {
+            return view('page.Nutrisi.edit');
+        });
     });
     //pengasuhan only admin route
     Route::group(['prefix'=>'/pengasuhan'],function(){
         Route::get('/',[ShowPengasuhanController::class, 'showData']);
         Route::get('/tambah',[ShowPengasuhanController::class, 'showTambah']);
         Route::get('/edit/{any}',[ShowPengasuhanController::class, 'showEdit']);
+        Route::get('/edit', function () {
+            return view('page.Pengasuhan.edit');
+        });
     });
     //download only for admin
     Route::group(['prefix'=>'/public'],function(){
@@ -118,24 +136,12 @@ Route::group(['middleware'=>['auth','authorized']],function(){
     Route::get('/login', function () {
         return view('page.login');
     })->withoutMiddleware('authorized');
-    Route::get('/disi/edit', function () {
-        return view('page.Disi.edit');
-    })->withoutMiddleware('authorized');
-    Route::get('/emotal/edit', function () {
-        return view('page.Emotal.edit');
-    })->withoutMiddleware('authorized');
-    Route::get('/nutrisi/edit', function () {
-        return view('page.Nutrisi.edit');
-    })->withoutMiddleware('authorized');
-    Route::get('/pengasuhan/edit', function () {
-        return view('page.Pengasuhan.edit');
-    })->withoutMiddleware('authorized');
-    Route::get('/testing', function () {
-        return view('page.testing');
-    })->withoutMiddleware('authorized');
-    Route::get('/template', function(){
-        return view('page.template');
-    })->withoutMiddleware('authorized');
+    // Route::get('/testing', function () {
+    //     return view('page.testing');
+    // })->withoutMiddleware('authorized');
+    // Route::get('/template', function(){
+    //     return view('page.template');
+    // })->withoutMiddleware('authorized');
     Route::get('/dashboard',[ShowAdminController::class,'showDashboard']);
     Route::get('/profile',[ShowAdminController::class,'showProfile']);
     Route::get('/',[ShowHomeController::class,'showHome'])->withoutMiddleware('authorized');

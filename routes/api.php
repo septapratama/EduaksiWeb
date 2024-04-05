@@ -10,7 +10,7 @@ use App\Http\Controllers\Mobile\Page\KonsultasiController;
 use App\Http\Controllers\Mobile\Auth\LoginController AS MobileLoginController;
 use App\Http\Controllers\Mobile\Auth\RegisterController AS MobileRegisterController;
 
-Route::group(['prefix'=>'/mobile','middleware'=>'authorized'],function(){
+Route::group(['prefix'=>'/mobile','middleware'=>'authMobile','authorized'],function(){
     Route::group(['prefix'=>'/send'],function(){
         Route::group(['prefix'=>'/create'],function(){
             Route::post('/password','Mail\MailController@createForgotPassword');
@@ -30,9 +30,9 @@ Route::group(['prefix'=>'/mobile','middleware'=>'authorized'],function(){
         });
     });
     Route::group(['prefix'=>'/users'],function(){
-        Route::post('/login', [MobileLoginController::class,'Login']);
-        Route::post('/login/google', [MobileLoginController::class,'LoginGoogle']);
-        Route::post('/register', [MobileRegisterController::class,'Register'])->withoutMiddleware('authorized');
+        Route::post('/login', [MobileLoginController::class,'Login'])->withoutMiddleware(['authMobile', 'authorized']);
+        Route::post('/login/google', [MobileLoginController::class,'LoginGoogle'])->withoutMiddleware(['authMobile', 'authorized']);
+        Route::post('/register', [MobileRegisterController::class,'Register'])->withoutMiddleware(['authMobile', 'authorized']);
         Route::put('/profile', [MasyarakatController::class, 'getProfile']);
         Route::put('/update', [MasyarakatController::class, 'updateProfile']);
         Route::post('/logout', [MasyarakatController::class,'logout']);

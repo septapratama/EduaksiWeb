@@ -15,7 +15,7 @@ use Closure;
 class Authorization
 {
     public function handle(Request $request, Closure $next){
-        return $next($request);
+        // return $next($request);
         $userAuth = $request->input('user_auth');
         $path = '/'.$request->path();
         $checkEmail = function() use ($userAuth, $request){
@@ -63,24 +63,12 @@ class Authorization
             $role = $cEmail['data'];
             unset($cEmail);
         }
-        //only super admin can access /admin
-        if(in_array($role,['admin event','admin seniman','admin tempat','masyarakat']) && Str::startsWith($path, '/admin')){
-            return response()->json(['status'=>'error','message'=>'User Unauthorized'],403);
-        }
-        //only super admin and admin event can access /event
-        if(in_array($role,['admin seniman','admin tempat','masyarakat']) && Str::startsWith($path, '/event')){
-            return response()->json(['status'=>'error','message'=>'User Unauthorized'],403);
-        }
-        //only super admin and admin seniman can access /seniman or /pentas
-        if(in_array($role,['admin event','admin tempat','masyarakat']) && (Str::startsWith($path, '/seniman') || Str::startsWith($path, '/pentas'))){
-            return response()->json(['status'=>'error','message'=>'User Unauthorized'],403);
-        }
-        //only super admin and admin tempat can access /tempat
-        if(in_array($role,['admin event','admin seniman','masyarakat']) && Str::startsWith($path, '/tempat')){
+        //only admin can access admin feature
+        if(in_array($role,['user']) && Str::startsWith($path, ['/admin', '/article', '/disi', '/emotal', '/konsultasi', '/nutrisi', '/pengasuhan', '/dashboard', '/profile'])){
             return response()->json(['status'=>'error','message'=>'User Unauthorized'],403);
         }
         //when admin access mobile
-        if(in_array($role,$this->roleAdmin) && Str::startsWith($path, '/mobile')){
+        if(in_array($role,['admin']) && Str::startsWith($path, '/mobile')){
             return response()->json(['status'=>'error','message'=>'User Unauthorized'],403);
         }
         return $next($request);
