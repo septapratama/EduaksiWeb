@@ -32,24 +32,15 @@ $tPath = app()->environment('local') ? '' : '';
     <section id="daftar-artikel">
         <div>
             <h1>Daftar Artikel</h1>
-            <select class="" aria-label="Default select example" id="inpJenisKelamin">
-                <option value="" selected>Pilih Kategori</option>
-                <option value="disi">Digital Literasi</option>
-                <option value="emotal">Emosi Mental</option>
-                <option value="nutrisi">Nutrisi</option>
-                <option value="pengasuhan">Pengasuhan</option>
-            </select>
         </div>
         <ul>
             @php $noArtikel = 1; @endphp
             @foreach($artikel as $data)
             <li class="card" id="{{ $noArtikel }}">
                 <a href="/artikel/{{ str_replace(' ', '-', $data['judul']) }}">
-                    <img src="{{ asset($tPath.'img/artikesl/'.$data['foto']) }}" alt=""
-                        onerror="imgError('{{ $noArtikel++ }}')">
+                    <img src="{{ asset($tPath.'img/artikel/'.$data['foto']) }}" alt="" onerror="imgError('{{ $noArtikel++ }}')">
                     <span class="tanggal">{{ $data['created_at'] }}</span>
                     <h3>{{ $data['judul'] }}</h3>
-                    <p>Digital Literasi</p>
                 </a>
                 <div class="card-loading">
                     <div></div>

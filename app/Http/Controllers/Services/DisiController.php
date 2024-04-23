@@ -186,7 +186,6 @@ class DisiController extends Controller
         $file->move($destinationPath, $fotoName);
         $now = Carbon::now();
         $uuid = Str::uuid();
-        self::$database->getReference('artikel')->push();
         $ins = Disi::insert([
             'uuid' => $uuid,
             'judul' => $request->input('judul'),

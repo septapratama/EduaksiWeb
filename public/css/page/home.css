@@ -157,6 +157,9 @@ section ul a:active{
     border-radius: 10px;
     background-color: #fff;
 }
+#artikel ul li:not(:has(.card-loading)) > span, h3, p {
+    color: #fff;
+}
 #artikel ul li:not(:has(.card-loading)):hover {
     background-color: var(--biru-tua);
 }
@@ -167,12 +170,10 @@ section ul a:active{
 }
 #artikel ul li .card-loading{
     position: absolute;
-    background-color: #fff;
     display: flex;
     flex-direction: column;
+    background-color: #fff;
     width: 100%;
-    height: 100%;
-    border-radius: 10px;
 }
 /* for skeleton */
 .card-loading div,  .card-loading span,  .card-loading h3,  .card-loading p {
@@ -195,39 +196,35 @@ section ul a:active{
     transform: translateX(-50%);
     border-radius: 10px;
     width: 90%;
-    height: 255px;
+    height: 300px;
 }
 /* for date */
 .card-loading span{
-    width: 35%;
-    margin-top: 20px;
-    margin-left: 60%;
-    height: 15px;
+    position: relative;
+    left: 55%;
+    display: block;
+    margin: 0px;
+    width: 40%;
+    height: 25px;
+    margin-top: 15px;
+    border-radius: 5px;
 }
 /* for header */
-.card-loading h3,  .card-loading p{
+.card-loading h3{
     margin: 0px;
     position: relative;
-}
-.card-loading h3{
+    border-radius: 7px;
     left: 5%;
     width: 80%;
-    height: 40px;
-    margin-top: 19px;
-}
-/* for category */
-.card-loading p{
-    left: 5%;
-    width: 30%;
-    height: 20px;
-    margin-top: 15px;
-    margin-bottom: 20px;
+    height: 35px;
+    margin-top: 20px;
 }
 
 #artikel ul li a{
     margin-bottom: 0px;
     background-color: transparent;
     display: flex;
+    position: relative;;
     flex-direction: column;
     cursor: pointer;
     text-decoration: none;
@@ -240,146 +237,23 @@ section ul a:active{
     transform: translateX(-50%);
     border-radius: 10px;
     width: 90%;
-    height: 60%;
+    height: 300px;
 }
 #artikel ul li a span.tanggal{
     width: 93%;
     text-align: right;
     margin-top: 20px;
-    font-size: 15px;
+    font-size: 18px;
     position: relative;
     right: 0px;
-}
-#artikel ul li a h3, #artikel ul li a p{
-    margin: 0px;
-    width: 90%;
-    position: relative;
-    left: 50%;
-    transform: translateX(-50%);
 }
 #artikel ul li a h3{
-    font-size: 20px;
-    margin-top: 20px;
-}
-#artikel ul li a p{
-    font-size: 16px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
-
-#kategori{
-    display: flex;
-    margin-top: 60px;
-    margin-bottom: 150px;
-    flex-direction: column;
-}
-#kategori div, #kategori ul{
-    display: flex;
-}
-#kategori div{
-    position: relative;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 90%;
-    justify-content: space-between;
-}
-#kategori div h1, #kategori div a{
     margin: 0px;
-}
-#kategori div h1{
-    font-size: 26px;
-}
-#kategori div a{
     position: relative;
-    display: flex;
-    align-items: center;
-    gap:5px;
-    right:0px;
-    font-size: 18px;
-    font-weight: 600;
-    text-decoration: none;
-    color: var(--biru-tua);
-}
-#kategori div a img{
-    width: 25px;
-    height: 25px;
-}
-#kategori ul{
-    margin: 0px;
-    margin-top: 20px;
-    gap:20px;
-    position: relative;
-    left:50%;
-    transform: translateX(-50%);
-    margin-bottom:50px;
-    display: flex;
-    justify-content: space-between;
-}
-#kategori ul li{
-    position: relative;
-    display: flex;
-    width:31%;
-    left:0%;
-    border-radius: 10px;
-    background-color: #fff;
-}
-#kategori ul li:not(:has(.card-loading)):hover {
-    background-color: var(--biru-tua);
-}
-#kategori ul li:hover span,
-#kategori ul li:hover h3,
-#kategori ul li:hover p{
-    color: #fff;
-}
-#kategori ul li .card-loading{
-    position: absolute;
-    background-color: #fff;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-    border-radius: 10px;
-}
-#kategori ul li a{
-    margin-bottom: 0px;
-    background-color: transparent;
-    display: flex;
-    flex-direction: column;
-    cursor: pointer;
-    text-decoration: none;
-}
-#kategori ul li a img{
-    object-fit: cover;
+    left: 5%;
+    width: 70%;
+    font-size: 22px;
     margin-top: 15px;
-    position: relative;
-    left: 50%;
-    transform: translateX(-50%);
-    border-radius: 10px;
-    width: 90%;
-    height: 60%;
-}
-#kategori ul li a span.tanggal{
-    width: 93%;
-    text-align: right;
-    margin-top: 20px;
-    font-size: 15px;
-    position: relative;
-    right: 0px;
-}
-#kategori ul li a h3, #kategori ul li a p{
-    margin: 0px;
-    width: 90%;
-    position: relative;
-    left: 50%;
-    transform: translateX(-50%);
-}
-#kategori ul li a h3{
-    font-size: 20px;
-    margin-top: 20px;
-}
-#kategori ul li a p{
-    font-size: 16px;
-    margin-top: 20px;
     margin-bottom: 20px;
 }
 
@@ -459,65 +333,44 @@ footer span{
         transform: translateX(-50%);
         border-radius: 10px;
         width: 90%;
-        height: 150px;
+        height: 120px;
     }
     /* for date */
     .card-loading span{
-        width: 35%;
-        margin-top: 12px;
-        margin-left: 59%;
-        height: 15px;
+        margin-top: 20px;
+        height: 17px;
     }
     /* for header */
     .card-loading h3{
-        width: 75%;
-        height: 40px;
+        width: 70%;
         margin-top: 12px;
     }
-    /* for category */
-    .card-loading p{
-        height: 18px;
-        margin-top: 15px;
-        margin-bottom: 20px;
+    #artikel{
+        margin-top: 20px;
+        margin-bottom: 50px;
+        height: 80vh;
     }
-    #artikel div h1,
-    #kategori div h1{
-        font-size: 22px;
+    #artikel div h1{
+        font-size: 20px;
     }
-    #artikel div a,
-    #kategori div a{
-        font-size: 15px;
+    #artikel div select{
+        gap: 5px;
+        font-size: 16px;
     }
-    #artikel div a img,
-    #kategori div a img{
-        width: 20px;
-        height: 20px;
-    }
-    #artikel ul,
-    #kategori ul{
+    #artikel ul{
         margin-top: 10px;
     }
-    #artikel ul li a h3, #artikel ul li a p,
-    #kategori ul li a h3, #kategori ul li a p{
+    #artikel ul li a h3{
         left: 5%;
         transform: translateX(0%);
-        width: 75%;
-    }
-    #artikel ul li a span.tanggal,
-    #kategori ul li a span.tanggal{
-        font-size: 12px;
-    }
-    #artikel ul li a h3,
-    #kategori ul li a h3{
+        width: 70%;
         font-size: 15px;
     }
-    #artikel ul li a p,
-    #kategori ul li a p{
-        font-size: 13px;
+    #artikel ul li a span.tanggal{
+        font-size: 15px;
     }
-    #kategori{
-        margin-top: 30px;
-        margin-bottom: 50px;
+    #artikel ul li a img{
+        height: 120px;
     }
 }
 @media screen and (min-width: 400px) and (max-width: 615px) {
@@ -583,69 +436,58 @@ footer span{
         margin-top: 15px;
         left: 50%;
         transform: translateX(-50%);
-        border-radius: 10px;
         width: 90%;
-        height: 100px;
+        height: 125px;
     }
     /* for date */
     .card-loading span{
-        width: 35%;
-        margin-top: 5px;
-        margin-left: 58%;
+        margin-top: 10px;
         height: 13px;
     }
     /* for header */
     .card-loading h3{
-        width: 75%;
-        height: 43px;
-        margin-top: 5px;
-    }
-    /* for category */
-    .card-loading p{
-        height: 16px;
+        width: 60%;
+        height: 25px;
         margin-top: 15px;
-        margin-bottom: 20px;
+        border-radius: 7px;
     }
-    #artikel div h1,
-    #kategori div h1{
+    #artikel{
+        margin-top: 20px;
+        margin-bottom: 30px;
+    }
+    #artikel div h1{
         font-size: 20px;
     }
-    #artikel div a,
-    #kategori div a{
-        font-size: 16px;
+    #artikel div select{
+        gap: 5px;
+        font-size: 15px;
     }
-    #artikel div a img,
-    #kategori div a img{
-        width: 20px;
-        height: 20px;
-    }
-    #artikel ul,
-    #kategori ul{
+    #artikel ul{
         width: 94%;
         padding: 0px;
+        margin-top: 10px;
+        gap:10px;
     }
-    #artikel ul li a h3, #artikel ul li a p,
-    #kategori ul li a h3, #kategori ul li a p{
+    #artikel ul li{
+        width:47%;
+    }
+    #artikel ul li a h3{
         left: 5%;
         transform: translateX(0%);
         width: 75%;
+        margin-top: 10px;
+        font-size: 14px;
+        margin-bottom: 20px;
+        font-weight: 600;
     }
-    #artikel ul li a span.tanggal,
-    #kategori ul li a span.tanggal{
-        font-size: 11px;
-    }
-    #artikel ul li a h3,
-    #kategori ul li a h3{
+    #artikel ul li a span.tanggal{
+        margin-top: 10px;
         font-size: 13px;
     }
-    #artikel ul li a p,
-    #kategori ul li a p{
-        font-size: 11px;
+    #artikel ul li a img{
+        height: 125px;
     }
-    #kategori{
-        margin-top: 30px;
-        margin-bottom: 30px;
-    }
+
     footer{
         height: 40px;
     }
@@ -711,7 +553,7 @@ footer span{
         font-size: 14px;
         margin-top: 0px;
     }
-    
+
     /* for img */
     .card-loading div{
         margin-top: 6px;
@@ -720,83 +562,62 @@ footer span{
         transform: translateX(-50%);
         border-radius: 10px;
         width: 90%;
-        height: 100px;
+        height: 80px;
     }
     /* for date */
     .card-loading span{
-        width: 35%;
-        margin-top: 10px;
-        margin-left: 58%;
+        margin-top: 7px;
         height: 13px;
     }
     /* for header */
     .card-loading h3{
-        width: 75%;
-        height: 40px;
-        margin-top: 10px;
+        border-radius: 7px;
+        margin-top: 7px;
     }
-    /* for category */
-    .card-loading p{
-        height: 16px;
-        margin-top: 20px;
-        margin-bottom: 20px;
-    }
-    #artikel div h1,
-    #kategori div h1{
+    #artikel div h1{
         font-size: 17px;
     }
-    #artikel div a,
-    #kategori div a{
+    #artikel div a{
         font-size: 13px;
     }
-    #artikel div a img,
-    #kategori div a img{
+    #artikel div a img{
         width: 14px;
         height: 14px;
     }
-    #artikel ul,
-    #kategori ul{
+    #artikel ul{
         width: 95%;
         padding: 0px;
         margin-top: 10px;
         margin-bottom: 10px;
+        gap:10px;
     }
-    #artikel ul li,
-    #kategori ul li{
+    #artikel ul li{
+        width:47%;
         border-radius: 6px;
     }
-    #artikel ul li a img,
-    #kategori ul li a img{
+    #artikel ul li a img{
         margin-top: 6px;
         border-radius: 6px;
+        height: 80px;
     }
-    #artikel ul li a h3, #artikel ul li a p,
-    #kategori ul li a h3, #kategori ul li a p{
+    #artikel ul li a h3{
         position: relative;
         left: 5%;
         transform: translateX(0%);
         width: 75%;
-    }
-    #artikel ul li a span.tanggal,
-    #kategori ul li a span.tanggal{
         margin-top: 7px;
-        font-size: 7px;
+        font-size: 11px;
+        font-weight: 600;
     }
-    #artikel ul li a h3,
-    #kategori ul li a h3{
+    #artikel ul li a span.tanggal{
         margin-top: 7px;
         font-size: 10px;
     }
-    #artikel ul li a p,
-    #kategori ul li a p{
-        margin-top: 10px;
-        font-size: 8px;
-        margin-bottom: 10px;
-    }
-    #kategori{
+    #artikel{
         margin-top: 10px;
         margin-bottom: 20px;
     }
+
     footer{
         height: 25px;
     }

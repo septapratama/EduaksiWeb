@@ -388,7 +388,7 @@ class AdminController extends Controller
         }else if(empty($number) || is_null($number)){
             return response()->json(['status'=>'error','message'=>'token empty'],400);
         }else{
-            $deleted = $jwtController->deleteRefreshWebsite($email,$number);
+            $deleted = $jwtController->deleteRefreshToken($email,$number, 'website');
             if($deleted['status'] == 'error'){
                 return redirect("/login")->withCookies([Cookie::forget('token1'),Cookie::forget('token2'), Cookie::forget('token3')]);
             }else{

@@ -211,13 +211,16 @@ main div div iframe{
 section ul a:active{
     color: var(--biru-tua);
 }
+
 #rekomendasi{
+    margin-top:20px;
     display: flex;
     flex-direction: column;
-    margin-bottom: 100px;
+    margin-bottom: 20px;
 }
 #rekomendasi div, #rekomendasi ul{
     display: flex;
+    flex-wrap: wrap;
 }
 #rekomendasi div{
     position: relative;
@@ -232,7 +235,7 @@ section ul a:active{
 #rekomendasi div h1{
     font-size: 26px;
 }
-#rekomendasi div a{
+#rekomendasi div select{
     position: relative;
     display: flex;
     align-items: center;
@@ -241,11 +244,9 @@ section ul a:active{
     font-size: 18px;
     font-weight: 600;
     text-decoration: none;
+    border: none;
+    outline: none;
     color: var(--biru-tua);
-}
-#rekomendasi div a img{
-    width: 25px;
-    height: 25px;
 }
 #rekomendasi ul{
     margin: 0px;
@@ -266,6 +267,9 @@ section ul a:active{
     border-radius: 10px;
     background-color: #fff;
 }
+#rekomendasi ul li:not(:has(.card-loading)) > span, h3, p {
+    color: #fff;
+}
 #rekomendasi ul li:not(:has(.card-loading)):hover {
     background-color: var(--biru-tua);
 }
@@ -276,17 +280,61 @@ section ul a:active{
 }
 #rekomendasi ul li .card-loading{
     position: absolute;
-    background-color: #fff;
     display: flex;
     flex-direction: column;
+    background-color: #fff;
     width: 100%;
-    height: 100%;
-    border-radius: 10px;
 }
+/* for skeleton */
+.card-loading div,  .card-loading span,  .card-loading h3,  .card-loading p {
+    background: linear-gradient(135deg, #b9b9b9 0%, #cdcdcd 52%, #fff 52%, #fff 54%, #cdcdcd 54%, #b9b9b9 100%);
+    background-size: 180% 180%;
+    background-position: 100% 100%;
+    animation: 2.5s shine ease-in infinite;
+    animation-delay: 0.25s;
+}
+@keyframes shine {
+    to {
+        background-position: 0% 0%;
+    }
+}
+/* for img */
+.card-loading div{
+    margin-top: 15px;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 10px;
+    width: 90%;
+    height: 300px;
+}
+/* for date */
+.card-loading span{
+    position: relative;
+    left: 55%;
+    display: block;
+    margin: 0px;
+    width: 40%;
+    height: 25px;
+    margin-top: 15px;
+    border-radius: 5px;
+}
+/* for header */
+.card-loading h3{
+    margin: 0px;
+    position: relative;
+    border-radius: 7px;
+    left: 5%;
+    width: 80%;
+    height: 35px;
+    margin-top: 20px;
+}
+
 #rekomendasi ul li a{
     margin-bottom: 0px;
     background-color: transparent;
     display: flex;
+    position: relative;;
     flex-direction: column;
     cursor: pointer;
     text-decoration: none;
@@ -299,30 +347,23 @@ section ul a:active{
     transform: translateX(-50%);
     border-radius: 10px;
     width: 90%;
-    height: 60%;
+    height: 300px;
 }
 #rekomendasi ul li a span.tanggal{
     width: 93%;
     text-align: right;
     margin-top: 20px;
-    font-size: 15px;
+    font-size: 18px;
     position: relative;
     right: 0px;
 }
-#rekomendasi ul li a h3, #rekomendasi ul li a p{
-    margin: 0px;
-    width: 90%;
-    position: relative;
-    left: 50%;
-    transform: translateX(-50%);
-}
 #rekomendasi ul li a h3{
-    font-size: 20px;
-    margin-top: 20px;
-}
-#rekomendasi ul li a p{
-    font-size: 16px;
-    margin-top: 20px;
+    margin: 0px;
+    position: relative;
+    left: 5%;
+    width: 70%;
+    font-size: 22px;
+    margin-top: 15px;
     margin-bottom: 20px;
 }
 
@@ -418,6 +459,7 @@ footer span{
         height: 100%;
         margin-bottom: 20px;
     }
+
     /* for img */
     .card-loading div{
         margin-top: 15px;
@@ -425,58 +467,44 @@ footer span{
         transform: translateX(-50%);
         border-radius: 10px;
         width: 90%;
-        height: 150px;
+        height: 120px;
     }
     /* for date */
     .card-loading span{
-        width: 35%;
-        margin-top: 12px;
-        margin-left: 59%;
-        height: 15px;
+        margin-top: 20px;
+        height: 17px;
     }
     /* for header */
     .card-loading h3{
-        width: 75%;
-        height: 40px;
+        width: 70%;
         margin-top: 12px;
-    }
-    /* for category */
-    .card-loading p{
-        height: 18px;
-        margin-top: 15px;
-        margin-bottom: 20px;
     }
     #rekomendasi{
         margin-top: 20px;
-        margin-bottom: 30px;
-        padding-top: 20px;
+        margin-bottom: 50px;
+        height: 80vh;
     }
     #rekomendasi div h1{
-        font-size: 22px;
+        font-size: 20px;
     }
-    #rekomendasi div a{
-        font-size: 15px;
-    }
-    #rekomendasi div a img{
-        width: 20px;
-        height: 20px;
+    #rekomendasi div select{
+        gap: 5px;
+        font-size: 16px;
     }
     #rekomendasi ul{
         margin-top: 10px;
     }
-    #rekomendasi ul li a h3, #rekomendasi ul li a p{
+    #rekomendasi ul li a h3{
         left: 5%;
         transform: translateX(0%);
-        width: 85%;
-    }
-    #rekomendasi ul li a span.tanggal{
-        font-size: 12px;
-    }
-    #rekomendasi ul li a h3{
+        width: 70%;
         font-size: 15px;
     }
-    #rekomendasi ul li a p{
-        font-size: 13px;
+    #rekomendasi ul li a span.tanggal{
+        font-size: 15px;
+    }
+    #rekomendasi ul li a img{
+        height: 120px;
     }
 }
 @media screen and (min-width: 400px) and (max-width: 625px) {
@@ -559,82 +587,64 @@ footer span{
         margin-bottom: 0px;
         border-radius: 10px;
     }
+
     /* for img */
     .card-loading div{
         margin-top: 15px;
         left: 50%;
         transform: translateX(-50%);
-        border-radius: 10px;
         width: 90%;
-        height: 150px;
+        height: 125px;
     }
     /* for date */
     .card-loading span{
-        width: 35%;
-        margin-top: 12px;
-        margin-left: 59%;
-        height: 15px;
+        margin-top: 10px;
+        height: 13px;
     }
     /* for header */
     .card-loading h3{
-        width: 75%;
-        height: 40px;
-        margin-top: 12px;
-    }
-    /* for category */
-    .card-loading p{
-        height: 18px;
+        width: 60%;
+        height: 25px;
         margin-top: 15px;
-        margin-bottom: 20px;
+        border-radius: 7px;
     }
     #rekomendasi{
         margin-top: 20px;
         margin-bottom: 30px;
-        padding-top: 20px;
     }
     #rekomendasi div h1{
         font-size: 20px;
     }
-    #rekomendasi div a{
+    #rekomendasi div select{
+        gap: 5px;
         font-size: 15px;
     }
-    #rekomendasi div a img{
-        width: 20px;
-        height: 20px;
-    }
     #rekomendasi ul{
-        margin-top: 10px;
-    }
-    #rekomendasi ul{
-        width: 95%;
+        width: 94%;
         padding: 0px;
+        margin-top: 10px;
         gap:10px;
     }
     #rekomendasi ul li{
-        border-radius: 8px;
+        width:47%;
     }
-    #rekomendasi ul li a img{
-        margin-top: 8px;
-        border-radius: 6px;
-    }
-    #rekomendasi ul li a h3, #rekomendasi ul li a p{
+    #rekomendasi ul li a h3{
         left: 5%;
         transform: translateX(0%);
         width: 75%;
-    }
-    #rekomendasi ul li a span.tanggal{
-        margin-top: 12px;
-        font-size: 11px;
-    }
-    #rekomendasi ul li a h3{
         margin-top: 10px;
         font-size: 14px;
+        margin-bottom: 20px;
+        font-weight: 600;
     }
-    #rekomendasi ul li a p{
+    #rekomendasi ul li a span.tanggal{
         margin-top: 10px;
         font-size: 13px;
-        margin-bottom: 12px;
     }
+    #rekomendasi ul li a img{
+        height: 125px;
+    }
+
     footer{
         height: 40px;
     }
@@ -723,6 +733,7 @@ footer span{
         margin-bottom: 20px;
         border-radius: 7px;
     }
+
     /* for img */
     .card-loading div{
         margin-top: 6px;
@@ -731,26 +742,17 @@ footer span{
         transform: translateX(-50%);
         border-radius: 10px;
         width: 90%;
-        height: 100px;
+        height: 80px;
     }
     /* for date */
     .card-loading span{
-        width: 35%;
-        margin-top: 10px;
-        margin-left: 58%;
+        margin-top: 7px;
         height: 13px;
     }
     /* for header */
     .card-loading h3{
-        width: 75%;
-        height: 40px;
-        margin-top: 10px;
-    }
-    /* for category */
-    .card-loading p{
-        height: 16px;
-        margin-top: 20px;
-        margin-bottom: 20px;
+        border-radius: 7px;
+        margin-top: 7px;
     }
     #rekomendasi div h1{
         font-size: 17px;
@@ -768,7 +770,6 @@ footer span{
         margin-top: 10px;
         margin-bottom: 10px;
         gap:10px;
-        flex-wrap: wrap;
     }
     #rekomendasi ul li{
         width:47%;
@@ -777,24 +778,20 @@ footer span{
     #rekomendasi ul li a img{
         margin-top: 6px;
         border-radius: 6px;
+        height: 80px;
     }
-    #rekomendasi ul li a h3, #rekomendasi ul li a p{
+    #rekomendasi ul li a h3{
+        position: relative;
         left: 5%;
         transform: translateX(0%);
-        width: 85%;
+        width: 75%;
+        margin-top: 7px;
+        font-size: 11px;
+        font-weight: 600;
     }
     #rekomendasi ul li a span.tanggal{
         margin-top: 7px;
         font-size: 10px;
-    }
-    #rekomendasi ul li a h3{
-        margin-top: 7px;
-        font-size: 14px;
-    }
-    #rekomendasi ul li a p{
-        margin-top: 10px;
-        font-size: 11px;
-        margin-bottom: 10px;
     }
     #rekomendasi{
         margin-top: 10px;

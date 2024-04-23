@@ -62,42 +62,11 @@ $tPath = app()->environment('local') ? '' : '';
                         onerror="imgError('{{ $noArtikel++ }}')">
                     <span class="tanggal">{{ $data['created_at'] }}</span>
                     <h3>{{ $data['judul'] }}</h3>
-                    <p>Digital Literasi</p>
                 </a>
                 <div class="card-loading">
                     <div></div>
                     <span></span>
                     <h3></h3>
-                    <p></p>
-                </div>
-            </li>
-            @endforeach
-        </ul>
-    </section>
-    <section id="kategori">
-        <div>
-            <h1>Kategori</h1>
-            <a href="/artikel">
-                <span>Lainnya</span>
-                <img src="{{ asset($tPath.'img/icon/arrow-right.svg') }}" alt="">
-            </a>
-        </div>
-        <ul>
-            @php $noRekomendasi = 1; @endphp
-            @foreach($rekomendasi as $data)
-            <li class="card" id="{{ $noRekomendasi }}">
-                <a href="/artikel/{{ str_replace(' ', '-', $data['judul']) }}">
-                    <img src="{{ asset($tPath.'img/artikel/'.$data['foto']) }}" alt=""
-                        onerror="imgError('{{ $noRekomendasi++ }}')">
-                    <span class="tanggal">{{ $data['created_at'] }}</span>
-                    <h3>{{ $data['judul'] }}</h3>
-                    <p>Digital Literasi</p>
-                </a>
-                <div class="card-loading">
-                    <div></div>
-                    <span></span>
-                    <h3></h3>
-                    <p></p>
                 </div>
             </li>
             @endforeach

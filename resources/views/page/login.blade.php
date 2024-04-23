@@ -12,6 +12,18 @@ $tPath = app()->environment('local') ? '' : '';
     <link rel="stylesheet" href="{{ asset($tPath.'assets/css/styles.min.css') }}">
     <link rel="stylesheet" href="{{ asset($tPath.'css/popup.css') }}">
     <link rel="stylesheet" href="{{ asset($tPath.'css/preloader.css') }}" />
+    <style>
+        html{
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            user-select: none;
+        }
+        body img{
+            pointer-events: none;
+        }
+    </style>
 </head>
 
 <body>
@@ -40,9 +52,12 @@ $tPath = app()->environment('local') ? '' : '';
                         <div class="card mb-0">
                             <div class="card-body">
                                 <a href="/" class="text-nowrap logo-img text-center d-block py-3 w-100">
-                                    <img src="../assets/images/logos/dark-logo.svg" width="180" alt="">
+                                    <div style="display: flex; justify-content: center;">
+                                        <img src="{{ asset($tPath.'img/icon/logo.png') }}" alt="" style="width: 80px; height:40px;"></img>
+                                        <span class="hide-menu" style="color:black; text-decoration: none; font-size:27px; font-weight:600;">EduAksi</span>
+                                    </div>
+                                    {{-- <img src="../assets/images/logos/dark-logo.svg" width="180" alt=""> --}}
                                 </a>
-                                <p class="text-center">Your Social Campaigns</p>
                                 <form id="loginForm">
                                     <div class="mb-3">
                                         <label for="exampleInputEmail1" class="form-label">Email</label>

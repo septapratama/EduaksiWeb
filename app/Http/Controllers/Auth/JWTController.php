@@ -326,7 +326,7 @@ class JwtController extends Controller
     }
 
     //delete refresh token website 
-    public function deleteRefreshWebsite($email,$number = null, $cond){
+    public function deleteRefreshToken($email,$number = null, $cond){
         try{
             if(empty($email) || is_null($email)){
                 return ['status'=>'error','message'=>'email empty','code'=>400];

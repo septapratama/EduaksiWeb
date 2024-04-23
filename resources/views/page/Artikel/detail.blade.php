@@ -70,13 +70,11 @@ $tPath = app()->environment('local') ? '' : '';
                         onerror="imgError('{{ $noArtikel++ }}')">
                     <span class="tanggal">{{ $data['created_at'] }}</span>
                     <h3>{{ $data['judul'] }}</h3>
-                    <p>Digital Literasi</p>
                 </a>
                 <div class="card-loading">
                     <div></div>
                     <span></span>
                     <h3></h3>
-                    <p></p>
                 </div>
             </li>
             @endforeach

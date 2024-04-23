@@ -7,7 +7,7 @@ $tPath = app()->environment('local') ? '' : '';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Disi | EduAksi</title>
+    <title>Data Digital Literasi | EduAksi</title>
     <link rel="shortcut icon" type="image/png" href="{{ asset($tPath.'img/icon/icon.png') }}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
@@ -194,11 +194,11 @@ $tPath = app()->environment('local') ? '' : '';
             <!--  Header End -->
             <div class="container-fluid" style="background-color: #F6F9FF">
                 <div class="pagetitle">
-                    <h1>Kelola Disi</h1>
+                    <h1>Kelola Digital</h1>
                     <nav>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="/dashboard">Beranda</a></li>
-                            <li class="breadcrumb-item">Kelola Disi</li>
+                            <li class="breadcrumb-item">Kelola Digital Literasi</li>
                         </ol>
                     </nav>
                 </div>
@@ -208,7 +208,7 @@ $tPath = app()->environment('local') ? '' : '';
                             style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
                             <a href="/disi/tambah" class="btn btn-success" id="btnTambah">
                                 <img src="{{ asset($tPath.'img/icon/tambah.svg') }}" alt="">
-                                <span>Tambah Disi</span>
+                                <span>Tambah Digital Literasi</span>
                             </a>
                             <div class="table-responsive">
                                 <table class="table mb-0 align-middle">
