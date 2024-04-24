@@ -52,10 +52,11 @@ class AdminController extends Controller
         }
     }
     public function tambahAdmin(Request $request){
-        $validator = Validator::make($request->only('email_admin','nama_lengkap','jenis_kelamin','no_telpon','password','foto'), [
+        $validator = Validator::make($request->only('email_admin', 'nama_lengkap', 'jenis_kelamin','no_telpon', 'role', 'password', 'foto'), [
             'email_admin'=>'required|email',
             'nama_lengkap' => 'required|max:50',
             'jenis_kelamin' => 'required|in:laki-laki,perempuan',
+            'role' => 'required|in:admin disi,admin emotal,admin nutrisi,admin pengasuhan',
             'no_telpon' => 'required|digits_between:11,13',
             'password' => [
                 'required',
@@ -74,6 +75,8 @@ class AdminController extends Controller
             'jenis_kelamin.in' => 'Jenis kelamin harus Laki-laki atau Perempuan',
             'no_telpon.required' => 'Nomor telepon wajib di isi',
             'no_telpon.digits_between' => 'Nomor telepon tidak boleh lebih dari 13 karakter',
+            'role.required' => 'Role admin harus di isi',
+            'role.in' => 'Role admin tidak valid',
             'password.required'=>'Password wajib di isi',
             'password.min'=>'Password minimal 8 karakter',
             'password.max'=>'Password maksimal 25 karakter',
@@ -109,7 +112,7 @@ class AdminController extends Controller
             'nama_lengkap' => $request->input('nama_lengkap'),
             'no_telpon' => $request->input('no_telpon'),
             'jenis_kelamin' => $request->input('jenis_kelamin'),
-            'role' => 'admin',
+            'role'=>$request->input('role'),
             'email' => $request->input('email_admin'),
             'password' => Hash::make($request->input('password')),
             'foto' => $request->hasFile('foto') ? $fotoName : '',
@@ -123,12 +126,13 @@ class AdminController extends Controller
         return response()->json(['status'=>'success','message'=>'Data Admin berhasil ditambahkan']);
     }
     public function editAdmin(Request $request){
-        $validator = Validator::make($request->only('email_admin_lama', 'email_admin','nama_lengkap','jenis_kelamin','no_telpon','password','foto'), [
+        $validator = Validator::make($request->only('email_admin_lama', 'email_admin','nama_lengkap', 'jenis_kelamin', 'no_telpon', 'role', 'password','foto'), [
             'email_admin_lama'=>'required|email',
             'email_admin'=>'nullable|email',
             'nama_lengkap' => 'required|max:50',
             'jenis_kelamin' => 'required|in:laki-laki,perempuan',
             'no_telpon' => 'required|digits_between:11,13',
+            'role' => 'required|in:admin disi,admin emotal,admin nutrisi,admin pengasuhan',
             'password' => [
                 'nullable',
                 'string',
@@ -147,6 +151,8 @@ class AdminController extends Controller
             'jenis_kelamin.in' => 'Jenis kelamin harus Laki-laki atau Perempuan',
             'no_telpon.required' => 'Nomor telepon wajib di isi',
             'no_telpon.digits_between' => 'Nomor telepon tidak boleh lebih dari 13 karakter',
+            'role.required' => 'Role admin harus di isi',
+            'role.in' => 'Role admin tidak valid',
             'password.min'=>'Password minimal 8 karakter',
             'password.max'=>'Password maksimal 25 karakter',
             'password.regex'=>'Password terdiri dari 1 huruf besar, huruf kecil, angka dan karakter unik',
@@ -185,10 +191,11 @@ class AdminController extends Controller
         }
         //update admin
         $updatedAdmin = User::whereRaw("BINARY email = ?",[$request->input('email_admin_lama')])->update([
-            'email'=> (empty($request->input('email_admin')) || is_null($request->input('email_admin'))) ? $request->input('email_admin_lama') : $request->input('email_admin'),
             'nama_lengkap'=>$request->input('nama_lengkap'),
-            'no_telpon'=>$request->input('no_telpon'),
             'jenis_kelamin'=>$request->input('jenis_kelamin'),
+            'no_telpon'=>$request->input('no_telpon'),
+            'role'=>$request->input('role'),
+            'email'=> (empty($request->input('email_admin')) || is_null($request->input('email_admin'))) ? $request->input('email_admin_lama') : $request->input('email_admin'),
             'password'=> (empty($request->input('password')) || is_null($request->input('password'))) ? $admin['password']: Hash::make($request->input('password')),
             'foto' => $request->hasFile('foto') ? $fotoName : $admin['foto'],
             'verifikasi'=>true,
@@ -200,7 +207,7 @@ class AdminController extends Controller
         return response()->json(['status'=>'success','message'=>'Data Admin berhasil diperbarui']);
     }
     public function updateProfile(Request $request){
-        $userAuth = $request->input('user_auth');
+        // $userAuth = $request->input('user_auth');
         $validator = Validator::make($request->only('email_new', 'nama_lengkap', 'jenis_kelamin', 'no_telpon', 'foto'),
             [
                 'email_new'=>'nullable|email',

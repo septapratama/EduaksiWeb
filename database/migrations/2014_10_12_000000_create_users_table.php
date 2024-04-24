@@ -14,7 +14,7 @@ return new class extends Migration
             $table->string('nama_lengkap',50);  
             $table->enum('jenis_kelamin',['laki-laki','perempuan'])->nullable();
             $table->string('no_telpon',15)->nullable();
-            $table->enum('role',['admin', 'user']);
+            $table->enum('role',['super admin', 'admin disi', 'admin emotal', 'admin nutrisi', 'admin pengasuhan', 'user']);
             $table->string('email',45);
             $table->string('password');
             $table->string('foto',50)->nullable();

@@ -21,6 +21,8 @@
                         <span class="hide-menu">Dashboard</span>
                     </a>
                 </li>
+
+                @if($userAuth['role'] == 'super admin' || $userAuth['role'] == 'admin disi')
                 <li class="sidebar-item {{ $nav == 'disi' ? 'selected' : ''}}">
                     <a class="sidebar-link {{ $nav == 'disi' ? 'active' : ''}}" href="/disi" aria-expanded="false">
                         <img src="{{ asset($tPath.'img/icon/sidebar/disi.svg') }}" alt="" width="30" height="30" style="display: {{ $nav == 'disi' ? 'block' : 'none'}}" class="white">
@@ -28,6 +30,9 @@
                         <span class="hide-menu">Kelola Disi</span>
                     </a>
                 </li>
+                @endif
+
+                @if($userAuth['role'] == 'super admin' || $userAuth['role'] == 'admin emotal')
                 <li class="sidebar-item {{ $nav == 'emotal' ? 'selected' : ''}}">
                     <a class="sidebar-link {{ $nav == 'emotal' ? 'active' : ''}}" href="/emotal" aria-expanded="false">
                         <img src="{{ asset($tPath.'img/icon/sidebar/emotal.svg') }}" alt="" width="30" height="30" style="display: {{ $nav == 'emotal' ? 'block' : 'none'}}" class="white">
@@ -35,6 +40,9 @@
                         <span class="hide-menu">Kelola Emotal</span>
                     </a>
                 </li>
+                @endif
+
+                @if($userAuth['role'] == 'super admin' || $userAuth['role'] == 'admin nutrisi')
                 <li class="sidebar-item {{ $nav == 'nutrisi' ? 'selected' : ''}}">
                     <a class="sidebar-link {{ $nav == 'nutrisi' ? 'active' : ''}}" href="/nutrisi"
                         aria-expanded="false">
@@ -43,6 +51,9 @@
                         <span class="hide-menu">Kelola Nutrisi</span>
                     </a>
                 </li>
+                @endif
+
+                @if($userAuth['role'] == 'super admin' || $userAuth['role'] == 'admin pengasuhan')
                 <li class="sidebar-item {{ $nav == 'pengasuhan' ? 'selected' : ''}}">
                     <a class="sidebar-link {{ $nav == 'pengasuhan' ? 'active' : ''}}" href="/pengasuhan"
                         aria-expanded="false">
@@ -51,6 +62,8 @@
                         <span class="hide-menu">Kelola Pengasuhan</span>
                     </a>
                 </li>
+                @endif
+
                 <li class="sidebar-item {{ $nav == 'konsultasi' ? 'selected' : ''}}">
                     <a class="sidebar-link {{ $nav == 'konsultasi' ? 'active' : ''}}" href="/konsultasi"
                         aria-expanded="false">
@@ -59,6 +72,7 @@
                         <span class="hide-menu">Kelola Konsultasi</span>
                     </a>
                 </li>
+
                 <li class="sidebar-item {{ $nav == 'artikel' ? 'selected' : ''}}">
                     <a class="sidebar-link {{ $nav == 'artikel' ? 'active' : ''}}" href="/article"
                         aria-expanded="false">
@@ -67,6 +81,28 @@
                         <span class="hide-menu">Kelola Artikel</span>
                     </a>
                 </li>
+
+                <li class="sidebar-item {{ $nav == 'event' ? 'selected' : ''}}">
+                    <a class="sidebar-link {{ $nav == 'event' ? 'active' : ''}}" href="/event"
+                        aria-expanded="false">
+                        <img src="{{ asset($tPath.'img/icon/sidebar/event.svg') }}" alt="" width="30" height="30" style="display: {{ $nav == 'event' ? 'block' : 'none'}}" class="white">
+                        <img src="{{ asset($tPath.'img/icon/sidebar/event_dark.svg') }}" alt="" width="30" height="30" style="display: {{ $nav == 'event' ? 'none' : 'block'}}" class="dark">
+                        <span class="hide-menu">Kelola Event</span>
+                    </a>
+                </li>
+
+                @if($userAuth['role'] == 'super admin')
+                <li class="sidebar-item {{ $nav == 'riwayat' ? 'selected' : ''}}">
+                    <a class="sidebar-link {{ $nav == 'riwayat' ? 'active' : ''}}" href="/riwayat"
+                        aria-expanded="false">
+                        <img src="{{ asset($tPath.'img/icon/sidebar/riwayat.svg') }}" alt="" width="30" height="30" style="display: {{ $nav == 'riwayat' ? 'block' : 'none'}}" class="white">
+                        <img src="{{ asset($tPath.'img/icon/sidebar/riwayat_dark.svg') }}" alt="" width="30" height="30" style="display: {{ $nav == 'riwayat' ? 'none' : 'block'}}" class="dark">
+                        <span class="hide-menu">Kelola Riwayat</span>
+                    </a>
+                </li>
+                @endif
+
+                @if($userAuth['role'] == 'super admin')
                 <li class="sidebar-item {{ $nav == 'admin' ? 'selected' : ''}}">
                     <a class="sidebar-link {{ $nav == 'admin' ? 'active' : ''}}"" href=" /admin" aria-expanded="false">
                         <img src="{{ asset($tPath.'img/icon/sidebar/admin.svg') }}" alt="" width="30" height="30" style="display: {{ $nav == 'admin' ? 'block' : 'none'}}" class="white">
@@ -74,6 +110,7 @@
                         <span class="hide-menu">Kelola Admin</span>
                     </a>
                 </li>
+                @endif
             </ul>
         </nav>
         <!-- End Sidebar navigation -->

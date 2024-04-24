@@ -116,7 +116,7 @@ tambahForm.onsubmit = function(event){
     formData.append("alamat", alamat);
     formData.append("foto", uploadeFile);
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "/admin" + reff + "/tambah");
+    xhr.open("POST", reff + "/tambah");
     xhr.setRequestHeader("X-CSRF-TOKEN", csrfToken);
     xhr.onload = function () {
         if (xhr.status === 200) {

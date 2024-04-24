@@ -102,7 +102,7 @@ editForm.onsubmit = function (event) {
     }
     formData.append("deskripsi", deskripsi);
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "/admin" + reff + "/update");
+    xhr.open("POST", reff + "/update");
     xhr.setRequestHeader("X-CSRF-TOKEN", csrfToken);
     xhr.onload = function () {
         if (xhr.status === 200) {

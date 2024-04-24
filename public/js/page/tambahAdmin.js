@@ -1,6 +1,7 @@
 const tambahForm = document.getElementById("tambahForm");
 const inpNama = document.getElementById("inpNama");
 const inpJenisKelamin = document.getElementById("inpJenisKelamin");
+const inpRole = document.getElementById("inpRole");
 const inpNomerTelepon = document.getElementById("inpNomerTelepon");
 const inpEmail = document.getElementById("inpEmail");
 const inpPassword = document.getElementById("inpPassword");
@@ -63,6 +64,7 @@ tambahForm.onsubmit = function(event){
     event.preventDefault();
     const nama = inpNama.value.trim();
     const inp_jenis_kelamin = inpJenisKelamin.value.trim();
+    const inp_role = inpRole.value.trim();
     const nomer = inpNomerTelepon.value.trim();
     const inpEmails = inpEmail.value.trim();
     const password = inpPassword.value.trim();
@@ -85,6 +87,10 @@ tambahForm.onsubmit = function(event){
         return;
     }else if(!/^\d{11,13}$/.test(nomer)) {
         showRedPopup("Nomer Telepon harus terdiri dari 11-13 digit angka !");
+        return;
+    }
+    if(inp_role === "") {
+        showRedPopup("Role Admin harus diisi !");
         return;
     }
     if(inpEmails === "") {
@@ -130,6 +136,7 @@ tambahForm.onsubmit = function(event){
     formData.append("nama_lengkap", nama);
     formData.append("jenis_kelamin", inp_jenis_kelamin);
     formData.append("no_telpon", nomer);
+    formData.append("role", inp_role);
     formData.append("email_admin", inpEmails);
     formData.append("password", password);
     if (uploadeFile) {

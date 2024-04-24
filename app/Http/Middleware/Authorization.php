@@ -14,6 +14,7 @@ use App\Models\User;
 use Closure;
 class Authorization
 {
+    private $roleAdmin = ['super admin','admin disi','admin emotal','admin pengasuhan', 'admin nutrisi'];
     public function handle(Request $request, Closure $next){
         // return $next($request);
         $userAuth = $request->input('user_auth');
@@ -64,12 +65,32 @@ class Authorization
             unset($cEmail);
         }
         //only admin can access admin feature
-        if(in_array($role,['user']) && Str::startsWith($path, ['/admin', '/article', '/disi', '/emotal', '/konsultasi', '/nutrisi', '/pengasuhan', '/dashboard', '/profile'])){
-            return response()->json(['status'=>'error','message'=>'User Unauthorized'],403);
+        if(in_array($role, ['user']) && !Str::startsWith($path, ['/api/mobile'])){
+            return response()->json(['status'=>'error','message'=>'User Unauthorized2'],403);
+        }
+        //only super admin can access /admin
+        if(in_array($role,['admin disi','admin emotal','admin pengasuhan', 'admin nutrisi', 'user']) && Str::startsWith($path, '/admin')){
+            return response()->json(['status'=>'error','message'=>'User Unauthorized3'],403);
+        }
+        //only super admin and admin disi can access /disi
+        if(in_array($role,['admin emotal','admin nutrisi', 'admin pengasuhan','user']) && Str::startsWith($path, '/disi')){
+            return response()->json(['status'=>'error','message'=>'User Unauthorized4'],403);
+        }
+        //only super admin and admin emotal can access /emotal
+        if(in_array($role,['admin disi','admin nutrisi', 'admin pengasuhan','user']) && Str::startsWith($path, '/emotal')){
+            return response()->json(['status'=>'error','message'=>'User Unauthorized5'],403);
+        }
+        //only super admin and admin nutrisi can access /nutrisi
+        if(in_array($role,['admin disi','admin emotal', 'admin pengasuhan', 'user']) && Str::startsWith($path, '/nutrisi')){
+            return response()->json(['status'=>'error','message'=>'User Unauthorized7'],403);
+        }
+        //only super admin and admin pengasuhan can access /pengasuhan
+        if(in_array($role,['admin disi','admin emotal', 'admin nutrisi','user']) && Str::startsWith($path, '/pengasuhan')){
+            return response()->json(['status'=>'error','message'=>'User Unauthorized8'],403);
         }
         //when admin access mobile
-        if(in_array($role,['admin']) && Str::startsWith($path, '/mobile')){
-            return response()->json(['status'=>'error','message'=>'User Unauthorized'],403);
+        if(in_array($role, $this->roleAdmin) && Str::startsWith($path, '/mobile')){
+            return response()->json(['status'=>'error','message'=>'User Unauthorized9'],403);
         }
         return $next($request);
     }

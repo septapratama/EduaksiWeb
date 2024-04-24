@@ -1,6 +1,7 @@
 const editForm = document.getElementById("editForm");
 const inpNama = document.getElementById("inpNama");
 const inpJenisKelamin = document.getElementById("inpJenisKelamin");
+const inpRole = document.getElementById("inpRole");
 const inpNomerTelepon = document.getElementById("inpNomerTelepon");
 const inpEmail = document.getElementById("inpEmail");
 const inpPassword = document.getElementById("inpPassword");
@@ -62,9 +63,10 @@ editForm.onsubmit = function(event){
     const nama = inpNama.value.trim();
     const nomer = inpNomerTelepon.value.trim();
     const inp_jenis_kelamin = inpJenisKelamin.value.trim();
+    const inp_role = inpRole.value.trim();
     const inpEmails = inpEmail.value.trim();
     const password = inpPassword.value.trim();
-    if (nama === users.nama_lengkap && nomer === users.no_telpon && inp_jenis_kelamin === users.jenis_kelamin && inpEmails === users.email && password === '' && uploadeFile === null) {
+    if (nama === users.nama_lengkap && nomer === users.no_telpon && inp_jenis_kelamin === users.jenis_kelamin && inp_role === users.role && inpEmails === users.email && password === '' && uploadeFile === null) {
         showRedPopup('Data belum diubah');
         return;
     }
@@ -87,6 +89,10 @@ editForm.onsubmit = function(event){
         return;
     }else if(!/^\d{11,13}$/.test(nomer)) {
         showRedPopup("Nomer Telepon harus terdiri dari 11-13 digit angka !");
+        return;
+    }
+    if(inp_role === "") {
+        showRedPopup("Role Admin harus diisi !");
         return;
     }
     if(inpEmails === "") {
@@ -131,6 +137,7 @@ editForm.onsubmit = function(event){
     formData.append("nama_lengkap", nama);
     formData.append("jenis_kelamin", inp_jenis_kelamin);
     formData.append("no_telpon", nomer);
+    formData.append("role", role);
     formData.append("email_admin_lama", users.email);
     formData.append("email_admin", inpEmails);
     if (password !== '') {

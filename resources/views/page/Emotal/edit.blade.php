@@ -42,7 +42,7 @@ $tPath = app()->environment('local') ? '' : '';
         data-sidebar-position="fixed" data-header-position="fixed">
         <!-- Sidebar Start -->
         @php
-        $nav = 'emotal';
+            $nav = 'emotal';
         @endphp
         @include('page.Components.admin.sidebar')
         <!--  Sidebar End -->

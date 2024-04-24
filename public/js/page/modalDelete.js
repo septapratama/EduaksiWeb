@@ -47,7 +47,7 @@ deleteForm.onsubmit = function (event) {
     if(reff == '/admin'){
         xhr.open("DELETE", "/admin/delete");
     }else{
-        xhr.open("DELETE", "/admin" + reff + "/delete");
+        xhr.open("DELETE", reff + "/delete");
     }
     xhr.setRequestHeader("X-CSRF-TOKEN", csrfToken);
     xhr.setRequestHeader("Content-Type", "application/json");

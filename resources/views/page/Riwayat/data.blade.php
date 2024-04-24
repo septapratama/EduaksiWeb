@@ -7,7 +7,7 @@ $tPath = app()->environment('local') ? '' : '';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Digital Literasi | EduAksi</title>
+    <title>Data Artikel | EduAksi</title>
     <link rel="shortcut icon" type="image/png" href="{{ asset($tPath.'img/icon/icon.png') }}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
@@ -20,7 +20,7 @@ $tPath = app()->environment('local') ? '' : '';
     #btnTambah{
         padding: 0px;
         display: flex;
-        width: 145px;
+        width: 160px;
         height: 45px;
         align-items: center;
         justify-content: space-evenly;
@@ -28,8 +28,8 @@ $tPath = app()->environment('local') ? '' : '';
         font-size: 15px;
     }
     #btnTambah img{
-        width: 30px;
-        height: 30px;
+        width: 28px;
+        height: 28px;
     }
     th {
         white-space: nowrap;
@@ -64,13 +64,13 @@ $tPath = app()->environment('local') ? '' : '';
     }
     @media screen and (min-width: 700px) and (max-width: 1100px) {
         #btnTambah{
-            width: 135px;
-            height: 43px;
+            width: 147px;
+            height: 40px;
             font-size: 14px;
         }
         #btnTambah img{
-            width: 26px;
-            height: 26px;
+            width: 25px;
+            height: 25px;
         }
         .btn-edit,
         .btn-delete{
@@ -86,13 +86,13 @@ $tPath = app()->environment('local') ? '' : '';
     }
     @media screen and (min-width: 500px) and (max-width: 700px) {
         #btnTambah{
-            width: 125px;
+            width: 135px;
             height: 40px;
             font-size: 13px;
         }
         #btnTambah img{
-            width: 23px;
-            height: 23px;
+            width: 22px;
+            height: 22px;
         }
         .table{
             margin-top: 7px;
@@ -123,8 +123,8 @@ $tPath = app()->environment('local') ? '' : '';
     }
     @media screen and (max-width: 500px) {
         #btnTambah{
-            width: 115px;
-            height: 37px;
+            width: 132px;
+            height: 35px;
             font-size: 13px;
         }
         #btnTambah img{
@@ -173,7 +173,7 @@ $tPath = app()->environment('local') ? '' : '';
     @endif
     <script>
     const domain = window.location.protocol + '//' + window.location.hostname + ":" + window.location.port;
-    const reff = '/disi';
+    const reff = '/article';
     var csrfToken = "{{ csrf_token() }}";
     var email = "{{ $userAuth['email'] }}";
     var number = "{{ $userAuth['number'] }}";
@@ -183,7 +183,7 @@ $tPath = app()->environment('local') ? '' : '';
         data-sidebar-position="fixed" data-header-position="fixed">
         <!-- Sidebar Start -->
         @php
-            $nav = 'disi';
+            $nav = 'riwayat';
         @endphp
         @include('page.Components.admin.sidebar')
         <!--  Sidebar End -->
@@ -194,11 +194,11 @@ $tPath = app()->environment('local') ? '' : '';
             <!--  Header End -->
             <div class="container-fluid" style="background-color: #F6F9FF">
                 <div class="pagetitle">
-                    <h1>Kelola Digital</h1>
+                    <h1>Kelola Artikel</h1>
                     <nav>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="/dashboard">Beranda</a></li>
-                            <li class="breadcrumb-item">Kelola Digital Literasi</li>
+                            <li class="breadcrumb-item">Kelola Artikel</li>
                         </ol>
                     </nav>
                 </div>
@@ -206,9 +206,9 @@ $tPath = app()->environment('local') ? '' : '';
                     <div class="card w-100">
                         <div class="card-body p-4"
                             style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
-                            <a href="/disi/tambah" class="btn btn-success" id="btnTambah">
+                            <a href="/article/tambah" class="btn btn-success" id="btnTambah">
                                 <img src="{{ asset($tPath.'img/icon/tambah.svg') }}" alt="">
-                                <span>Tambah Digital Literasi</span>
+                                <span>Tambah Artikel</span>
                             </a>
                             <div class="table-responsive">
                                 <table class="table mb-0 align-middle">
@@ -221,16 +221,13 @@ $tPath = app()->environment('local') ? '' : '';
                                                 <h6 class="fw-semibold mb-0">Judul</h6>
                                             </th>
                                             <th class="border-bottom-0">
-                                                <h6 class="fw-semibold mb-0">Rentang Usia</h6>
-                                            </th>
-                                            <th class="border-bottom-0">
                                                 <h6 class="fw-semibold mb-0">Aksi</h6>
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @php $no = 1; @endphp
-                                        @foreach ($dataDisi as $data)
+                                        @foreach ($dataArtikel as $data)
                                         <tr>
                                             <td class="border-bottom-0">
                                                 <h6 class="fw-semibold mb-0">{{ $no++ }}</h6>
@@ -240,10 +237,7 @@ $tPath = app()->environment('local') ? '' : '';
                                                 </span>
                                             </td>
                                             <td class="border-bottom-0">
-                                                <p class="mb-0 fw-normal">{{ $data['rentang_usia']}}</p>
-                                            </td>
-                                            <td class="border-bottom-0">
-                                                <a href="/disi/edit/{{ $data['uuid'] }}" class="btn btn-warning btn-edit m-1">
+                                                <a href="/article/edit/{{ $data['uuid'] }}" class="btn btn-warning btn-edit m-1">
                                                     <img src="{{ asset($tPath.'img/icon/edit.svg') }}" alt="">
                                                     <span>Edit</span>
                                                 </a>
@@ -265,7 +259,7 @@ $tPath = app()->environment('local') ? '' : '';
         </div>
     </div>
     @php
-    $modalDelete = 'digital literasi';
+    $modalDelete = 'artikel';
     @endphp
     @include('page.Components.admin.modalDelete')
     @include('page.Components.preloader')

@@ -40,7 +40,7 @@ $tPath = app()->environment('local') ? '' : '';
         data-sidebar-position="fixed" data-header-position="fixed">
         <!-- Sidebar Start -->
         @php
-        $nav = 'admin';
+            $nav = 'admin';
         @endphp
         @include('page.Components.admin.sidebar')
         <!--  Sidebar End -->
@@ -67,15 +67,25 @@ $tPath = app()->environment('local') ? '' : '';
                             <input type="text" id="inpNama">
                         </div>
                         <div class="crow">
-                            <div>
+                            <div style="width: 20%">
                                 <label for="">Jenis Kelamin</label>
-                                <select class="" aria-label="Default select example" id="inpJenisKelamin">
+                                <select aria-label="Default select example" id="inpJenisKelamin">
                                     <option value="" selected>Pilih Kelamin</option>
                                     <option value="laki-laki">Laki-Laki</option>
                                     <option value="perempuan">Perempuan</option>
                                 </select>
                             </div>
-                            <div>
+                            <div style="width: 25%">
+                                <label>Role</label>
+                                <select name="role" aria-label="Default select example" id="inpRole">
+                                    <option value="" disabled selected>Pilih Role</option>
+                                    <option value="admin disi">Admin Disi</option>
+                                    <option value="admin emotal">Admin Emotal</option>
+                                    <option value="admin nutrisi">Admin Nutrisi</option>
+                                    <option value="admin pengasuhan">Admin Pengasuhan</option>
+                                </select>
+                            </div>
+                            <div style="flex: 1">
                                 <label for="">Nomer Telepon</label>
                                 <input type="text" id="inpNomerTelepon">
                             </div>

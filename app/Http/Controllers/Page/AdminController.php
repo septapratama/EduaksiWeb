@@ -84,7 +84,7 @@ class AdminController extends Controller
             return view('page.Article.data', ['error' => $err]);
         }
         $userAuth = $request->input('user_auth');
-        $adminData = User::select('uuid', 'nama_lengkap', 'no_telpon', 'email')->where('role','admin')->get();
+        $adminData = User::select('uuid', 'nama_lengkap', 'no_telpon', 'email')->whereNotIn('role',['user', 'super admin'])->get();
         $dataShow = [
             'userAuth' => $userAuth,
             'adminData' => $adminData ?? '',
@@ -105,7 +105,7 @@ class AdminController extends Controller
         }
         $dataShow = [
             'userAuth' => $request->input('user_auth'),
-            'adminData' => $adminData[0],
+            'adminData' => $adminData,
         ];
         return view('page.admin.edit',$dataShow);
     }

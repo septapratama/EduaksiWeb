@@ -41,7 +41,7 @@ $tPath = app()->environment('local') ? '' : '';
         data-sidebar-position="fixed" data-header-position="fixed">
         <!-- Sidebar Start -->
         @php
-        $nav = 'admin';
+            $nav = 'admin';
         @endphp
         @include('page.Components.admin.sidebar')
         <!--  Sidebar End -->
@@ -68,7 +68,7 @@ $tPath = app()->environment('local') ? '' : '';
                             <input type="text" id="inpNama" value="{{ $adminData['nama_lengkap']}}">
                         </div>
                         <div class="crow">
-                            <div>
+                            <div style="width: 20%">
                                 <label for="">Jenis Kelamin</label>
                                 <select class="" aria-label="Default select example" id="inpJenisKelamin">
                                     <option value="laki-laki"
@@ -79,7 +79,16 @@ $tPath = app()->environment('local') ? '' : '';
                                     </option>
                                 </select>
                             </div>
-                            <div>
+                            <div style="width: 25%">
+                                <label>Role</label>
+                                <select name="role" aria-label="Default select example" id="inpRole">
+                                    <option value="admin disi" {{ ($adminData['role'] == 'admin disi') ? 'selected' : ''}}>Admin Disi</option>
+                                    <option value="admin emotal" {{ ($adminData['role'] == 'admin emotal') ? 'selected' : ''}}>Admin Emotal</option>
+                                    <option value="admin nutrisi" {{ ($adminData['role'] == 'admin nutrisi') ? 'selected' : ''}}>Admin Nutrisi</option>
+                                    <option value="admin pengasuhan" {{ ($adminData['role'] == 'admin pengasuhan') ? 'selected' : ''}}>Admin Pengasuhan</option>
+                                </select>
+                            </div>
+                            <div style="flex: 1">
                                 <label for="">Nomer Telepon</label>
                                 <input type="text" id="inpNomerTelepon" value="{{ $adminData['no_telpon']}}">
                             </div>

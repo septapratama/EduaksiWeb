@@ -7,7 +7,7 @@ $tPath = app()->environment('local') ? '' : '';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Nutrisi | EduAksi</title>
+    <title>Tambah Artikel | EduAksi</title>
     <link rel="shortcut icon" type="image/png" href="{{ asset($tPath.'img/icon/icon.png') }}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
@@ -15,7 +15,7 @@ $tPath = app()->environment('local') ? '' : '';
     <link rel="stylesheet" href="{{ asset($tPath.'assets/css/styles.min.css') }}" />
     <link rel="stylesheet" href="{{ asset($tPath.'css/popup.css') }}" />
     <link rel="stylesheet" href="{{ asset($tPath.'css/preloader.css') }}" />
-    <link rel="stylesheet" href="{{ asset($tPath.'css/page/editData.css') }}" />
+    <link rel="stylesheet" href="{{ asset($tPath.'css/page/tambahData.css') }}" />
 </head>
 
 <body>
@@ -30,19 +30,17 @@ $tPath = app()->environment('local') ? '' : '';
     @endif
     <script>
     const domain = window.location.protocol + '//' + window.location.hostname + ":" + window.location.port;
-    const reff = '/nutrisi';
+    const reff = '/article';
     var csrfToken = "{{ csrf_token() }}";
     var email = "{{ $userAuth['email'] }}";
     var number = "{{ $userAuth['number'] }}";
-    var uuid = "{{ $nutrisi['uuid'] }}";
-    var data = {!! json_encode($nutrisi) !!};
     </script>
     <!--  Body Wrapper -->
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
         data-sidebar-position="fixed" data-header-position="fixed">
         <!-- Sidebar Start -->
         @php
-            $nav = 'nutrisi';
+            $nav = 'riwayat';
         @endphp
         @include('page.Components.admin.sidebar')
         <!--  Sidebar End -->
@@ -53,64 +51,55 @@ $tPath = app()->environment('local') ? '' : '';
             <!--  Header End -->
             <div class="container-fluid" style="background-color: #F6F9FF">
                 <div class="pagetitle">
-                    <h1>Edit Nutrisi</h1>
+                    <h1>Tambah Artikel</h1>
                     <nav>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="/dashboard">Beranda</a></li>
-                            <li class="breadcrumb-item"><a href="/nutrisi">Kelola Nutrisi</a></li>
-                            <li class="breadcrumb-item">Edit Nutrisi</li>
+                            <li class="breadcrumb-item"><a href="/article">Kelola Artikel</a></li>
+                            <li class="breadcrumb-item">Tambah Artikel</li>
                         </ol>
                     </nav>
                 </div>
                 <div class="d-flex align-items-stretch"
                     style="background-color: #ffffff; border-radius: 20px; box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
-                    <form id="editForm">
+                    <form id="tambahForm">
                         <div class="crow">
-                            <label for="">Judul Nutrisi</label>
-                            <input type="text" id="inpJudul" value="{{ $nutrisi['judul'] }}">
+                            <label for="">Judul Artikel</label>
+                            <input type="text" id="inpJudul">
                         </div>
                         <div class="crow">
                             <div>
-                                <label for="">Rentang Usia</label>
-                                <select class="" aria-label="Default select example" id="inpRentangUsia" disabled>
-                                    <option value="">Pilih Umur</option>
-                                    <option value="0-3 tahun"
-                                        {{ ($nutrisi['rentang_usia'] == '0-3 tahun') ? 'selected' : ''}}>0-3 Tahun
-                                    </option>
-                                    <option value="4-6 tahun"
-                                        {{ ($nutrisi['rentang_usia'] == '4-6 tahun') ? 'selected' : ''}}>4-6 Tahun
-                                    </option>
-                                    <option value="7-9 tahun"
-                                        {{ ($nutrisi['rentang_usia'] == '7-9 tahun') ? 'selected' : ''}}>7-9 Tahun
-                                    </option>
-                                    <option value="10-12 tahun"
-                                        {{ ($nutrisi['rentang_usia'] == '10-12 tahun') ? 'selected' : ''}}>10-12 Tahun
-                                    </option>
+                                <label for="">Kategori</label>
+                                <select class="" aria-label="Default select example" id="inpKategori">
+                                    <option value="" selected>Pilih Kategori</option>
+                                    <option value="disi">Digital Literasi</option>
+                                    <option value="emotal">Emosi Mental</option>
+                                    <option value="nutrisi">Nutrisi</option>
+                                    <option value="pengasuhan">Pengasuhan</option>
                                 </select>
                             </div>
                             <div>
                                 <label for="">Link Video</label>
-                                <input type="text" id="inpLinkVideo" value="{{ $nutrisi['link_video'] }}">
+                                <input type="text" id="inpLinkVideo">
                             </div>
                         </div>
                         <div class="crow">
                             <label for="">Deskripsi</label>
-                            <textarea name="deskripsi" id="inpDeskripsi" placeholder="Masukkan Isi Nutrisi" class=""
-                                style="height:120px">{{ $nutrisi['deskripsi'] }}</textarea>
+                            <textarea name="deskripsi" id="inpDeskripsi" placeholder="Masukkan Isi Artikel" class=""
+                                style="height:120px"></textarea>
                         </div>
                         <div class="img" onclick="handleFileClick()" ondragover="handleDragOver(event)"
-                            ondrop="handleDrop(event)"
-                            style="{{ $nutrisi['foto'] ? '' : 'border: 4px dashed #b1b1b1;'}}">
+                            ondrop="handleDrop(event)">
                             <img src="{{ asset($tPath.'img/icon/upload.svg') }}" alt="" id="icon">
                             <span>Pilih File atau Jatuhkan File</span>
                             <input type="file" id="inpFoto" hidden onchange="handleFileChange(event)">
-                            <img src="{{ asset($tPath.'img/nutrisi/' . $nutrisi['foto']) }}" alt="" id="file">
+                            <img src="" alt="" id="file" style="display:none">
                         </div>
                         <div class="crow">
-                            <a href="/nutrisi" class="btn btn-danger">Kembali</a>
+                            <a href="/article" class="btn btn-danger">Kembali</a>
                             <button type="submit" class="btn btn-success">
-                                <img src="{{ asset($tPath.'img/icon/edit.svg') }}" alt="">
-                                <span>Edit</span>
+                                <img src="{{ asset($tPath.'img/icon/tambah.svg') }}" alt="" width="30" height="30">
+                                <span>Tambah</span>
                             </button>
                         </div>
                     </form>
@@ -129,7 +118,7 @@ $tPath = app()->environment('local') ? '' : '';
     <script src="{{ asset($tPath.'assets/libs/apexcharts/dist/apexcharts.min.js') }}"></script>
     <script src="{{ asset($tPath.'assets/libs/simplebar/dist/simplebar.js') }}"></script>
     <script src="{{ asset($tPath.'assets/js/dashboard.js') }}"></script>
-    <script src="{{ asset($tPath.'js/page/editData.js') }}"></script>
+    <script src="{{ asset($tPath.'js/page/tambahData.js') }}"></script>
     <script src="{{ asset($tPath.'js/popup.js') }}"></script>
 </body>
 

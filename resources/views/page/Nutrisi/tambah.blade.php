@@ -40,7 +40,7 @@ $tPath = app()->environment('local') ? '' : '';
         data-sidebar-position="fixed" data-header-position="fixed">
         <!-- Sidebar Start -->
         @php
-        $nav = 'nutrisi';
+            $nav = 'nutrisi';
         @endphp
         @include('page.Components.admin.sidebar')
         <!--  Sidebar End -->

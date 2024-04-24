@@ -79,12 +79,11 @@ tambahForm.onsubmit = function (event) {
     const formData = new FormData();
     formData.append("judul", judul);
     if (reff == "/article") {
-        const kategori = inpKategori.value.trim();
-        if (kategori === "") {
-            showRedPopup("Kategori harus diisi !");
-            return;
-        }
-        formData.append("kategori", kategori);
+        // if (kategori === "") {
+        //     showRedPopup("Kategori harus diisi !");
+        //     return;
+        // }
+        // formData.append("kategori", kategori);
     } else {
         const rentangUsia = inpRentangUsia.value.trim();
         if (rentangUsia === "") {
@@ -97,7 +96,7 @@ tambahForm.onsubmit = function (event) {
     formData.append("deskripsi", deskripsi);
     formData.append("foto", uploadeFile);
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "/admin" + reff + "/tambah");
+    xhr.open("POST", reff + "/tambah");
     xhr.setRequestHeader("X-CSRF-TOKEN", csrfToken);
     xhr.onload = function () {
         if (xhr.status === 200) {
