@@ -157,15 +157,17 @@ section ul a:active{
     border-radius: 10px;
     background-color: #fff;
 }
-#artikel ul li:not(:has(.card-loading)) > span, h3, p {
+#artikel ul li:has(.card-loading) span,
+#artikel ul li:has(.card-loading) h3,
+#artikel ul li:has(.card-loading) p{
     color: #fff;
 }
 #artikel ul li:not(:has(.card-loading)):hover {
     background-color: var(--biru-tua);
 }
-#artikel ul li:hover span,
-#artikel ul li:hover h3,
-#artikel ul li:hover p{
+#artikel ul li:not(:has(.card-loading)):hover span,
+#artikel ul li:not(:has(.card-loading)):hover h3,
+#artikel ul li:not(:has(.card-loading)):hover p{
     color: #fff;
 }
 #artikel ul li .card-loading{

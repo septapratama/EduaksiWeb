@@ -7,6 +7,7 @@ use App\Http\Controllers\Services\EmotalController;
 use App\Http\Controllers\Services\NutrisiController;
 use App\Http\Controllers\Services\PengasuhanController;
 use App\Http\Controllers\Services\ArtikelController;
+use App\Http\Controllers\Services\EventController;
 use App\Http\Controllers\Services\KonsultasiController;
 
 use App\Http\Controllers\Page\DisiController AS ShowDisiController;
@@ -15,6 +16,7 @@ use App\Http\Controllers\Page\NutrisiController AS ShowNutrisiController;
 use App\Http\Controllers\Page\PengasuhanController AS ShowPengasuhanController;
 use App\Http\Controllers\Page\KonsultasiController AS ShowKonsultasiController;
 use App\Http\Controllers\Page\ArtikelController AS ShowArtikelController;
+use App\Http\Controllers\Page\EventController AS ShowEventController;
 use App\Http\Controllers\Page\HomeController AS ShowHomeController;
 use App\Http\Controllers\Page\AdminController AS ShowAdminController;
 use App\Http\Controllers\Auth\LoginController;
@@ -24,6 +26,15 @@ Route::group(['middleware'=>['auth','authorized']],function(){
     Route::group(['prefix'=>'/artikel'],function(){
         Route::get('/',[ShowHomeController::class,'showArtikel'])->withoutMiddleware('authorized');
         Route::get('/{any}',[ShowHomeController::class,'showDetailArtikel'])->withoutMiddleware('authorized');
+    });
+    //event only admin route
+    Route::group(['prefix'=>'/event'],function(){
+        Route::get('/',[ShowEventController::class, 'showData']);
+        Route::get('/tambah',[ShowEventController::class, 'showTambah']);
+        Route::get('/edit/{any}',[ShowEventController::class, 'showEdit']);
+        Route::get('/edit', function () {
+            return view('page.Event.data');
+        });
     });
     //article only admin route
     Route::group(['prefix'=>'/article'],function(){
@@ -92,6 +103,11 @@ Route::group(['middleware'=>['auth','authorized']],function(){
             Route::post('/tambah', [ArtikelController::class, 'tambahArtikel']);
             Route::put('/update', [ArtikelController::class, 'editArtikel']);
             Route::delete('/delete', [ArtikelController::class, 'deleteArtikel']);
+        });
+        Route::group(['prefix'=>'/event'],function(){
+            Route::post('/tambah', [EventController::class, 'tambahEVent']);
+            Route::put('/update', [EventController::class, 'editEvent']);
+            Route::delete('/delete', [EventController::class, 'deleteEvent']);
         });
         Route::group(['prefix'=>'/disi'],function(){
             Route::post('/tambah', [DisiController::class, 'tambahDisi']);

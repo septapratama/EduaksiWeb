@@ -109,15 +109,17 @@ section ul a:active{
     left:0%;
     border-radius: 10px;
 }
-#daftar-artikel ul li:not(:has(.card-loading)) > span, h3, p {
+#daftar-artikel ul li:has(.card-loading) span,
+#daftar-artikel ul li:has(.card-loading) h3,
+#daftar-artikel ul li:has(.card-loading) p{
     color: #fff;
 }
 #daftar-artikel ul li:not(:has(.card-loading)):hover {
     background-color: var(--biru-tua);
 }
-#daftar-artikel ul li:hover span,
-#daftar-artikel ul li:hover h3,
-#daftar-artikel ul li:hover p{
+#daftar-artikel ul li:not(:has(.card-loading)):hover span,
+#daftar-artikel ul li:not(:has(.card-loading)):hover h3,
+#daftar-artikel ul li:not(:has(.card-loading)):hover p{
     color: #fff;
 }
 #daftar-artikel ul li .card-loading{

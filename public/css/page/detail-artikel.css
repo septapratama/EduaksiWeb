@@ -267,15 +267,17 @@ section ul a:active{
     border-radius: 10px;
     background-color: #fff;
 }
-#rekomendasi ul li:not(:has(.card-loading)) > span, h3, p {
+#rekomendasi ul li:has(.card-loading) span,
+#rekomendasi ul li:has(.card-loading) h3,
+#rekomendasi ul li:has(.card-loading) p{
     color: #fff;
 }
 #rekomendasi ul li:not(:has(.card-loading)):hover {
     background-color: var(--biru-tua);
 }
-#rekomendasi ul li:hover span,
-#rekomendasi ul li:hover h3,
-#rekomendasi ul li:hover p{
+#rekomendasi ul li:not(:has(.card-loading)):hover span,
+#rekomendasi ul li:not(:has(.card-loading)):hover h3,
+#rekomendasi ul li:not(:has(.card-loading)):hover p{
     color: #fff;
 }
 #rekomendasi ul li .card-loading{

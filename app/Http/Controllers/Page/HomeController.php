@@ -2,13 +2,15 @@
 namespace App\Http\Controllers\Page;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Services\ArtikelController AS ServiceArtikelController;
+use App\Http\Controllers\Services\EventController AS ServiceEventController;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 class HomeController extends Controller
 {
     public function showHome(Request $request){
+        $kalender = app()->make(ServiceEventController::class)->dataCacheFile(null, 'get_limit', null, ['nama_event', 'tanggal_awal', 'tanggal_akhir']);
         $artikel = app()->make(ServiceArtikelController::class)->dataCacheFile(null, 'get_limit', 3, ['judul', 'foto', 'created_at']);
-        $rekomendasi = app()->make(ServiceArtikelController::class)->dataCacheFile(null, 'get_limit',3, ['judul', 'foto', 'created_at']);
+        $rekomendasi = app()->make(ServiceArtikelController::class)->dataCacheFile(null, 'get_limit', 3, ['judul', 'foto', 'created_at']);
         foreach($artikel as &$item){
             $item['created_at'] = Carbon::parse($item['created_at'])->translatedFormat('l, d F Y');
         }
@@ -16,6 +18,7 @@ class HomeController extends Controller
             $item['created_at'] = Carbon::parse($item['created_at'])->translatedFormat('l, d F Y');
         }
         $dataShow = [
+            'kalender' => $kalender,
             'artikel' => $artikel,
             'rekomendasi' => $rekomendasi,
         ];
