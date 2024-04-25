@@ -56,7 +56,6 @@ $tPath = app()->environment('local') ? '' : '';
                                         <img src="{{ asset($tPath.'img/icon/logo.png') }}" alt="" style="width: 80px; height:40px;"></img>
                                         <span class="hide-menu" style="color:black; text-decoration: none; font-size:27px; font-weight:600;">EduAksi</span>
                                     </div>
-                                    {{-- <img src="../assets/images/logos/dark-logo.svg" width="180" alt=""> --}}
                                 </a>
                                 <form id="loginForm">
                                     <div class="mb-3">
@@ -66,6 +65,7 @@ $tPath = app()->environment('local') ? '' : '';
                                     <div class="mb-4">
                                         <label for="exampleInputPassword1" class="form-label">Password</label>
                                         <input id="inpPassword" type="password" class="form-control" id="exampleInputPassword1">
+                                        <a href="/password/reset">Lupa Password ?</a>
                                     </div>
                                     <div class="d-flex align-items-center justify-content-between mb-4"></div>
                                     <input type="submit" href="/admin/login" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2" value="Login">

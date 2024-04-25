@@ -1,7 +1,6 @@
 <?php
-namespace App\Http\Controllers\Mobile\Services;
+namespace App\Http\Controllers\Services;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Mobile\MasyarakatController;
 use App\Http\Controllers\Website\NotificationPageController;
 use App\Models\User;
 use App\Models\RefreshToken;
@@ -21,6 +20,10 @@ use Carbon\Carbon;
 use Exception;
 class MailController extends Controller
 {
+    private static $conditionOTP = [ 5, 15, 30, 60];
+    public static function getConditionOTP(){
+        return self::$conditionOTP;
+    }
     public function getVerifyEmail(Request $request){
         $email = $request->input('email');
         if(empty($email) || is_null($email)){
@@ -57,7 +60,6 @@ class MailController extends Controller
             }
             return ['status' => 'error', 'message' => $errors,'code' => 400];
         }
-        $userController = new MasyarakatController();
         $email = $request->input('email');
         //check email on table user
         $user = User::select('id_user', 'nama_lengkap')->whereRaw("BINARY email = ?",[$request->input('email')])->first();
@@ -85,11 +87,10 @@ class MailController extends Controller
             }
             $data = ['name'=>$user->nama_lengkap,'email'=>$email,'code'=>$verificationCode,'link'=>urldecode($verificationLink)];
             dispatch(new SendVerifyEmail($data));
-            // Mail::to($email)->send(new VerifyEmail($data));
-            return ['status'=>'Success','message'=>'Akun Berhasil Dibuat Silahkan verifikasi email','code'=>200,'data'=>['waktu'=>Carbon::now()->addMinutes(MasyarakatController::getConditionOTP()[0])]];
+            return ['status'=>'Success','message'=>'Akun Berhasil Dibuat Silahkan verifikasi email','code'=>200,'data'=>['waktu'=>Carbon::now()->addMinutes(self::$conditionOTP[0])]];
         }
         //checking if user have create verify email
-        $expTime = MasyarakatController::getConditionOTP()[($verifyDb->send - 1)];
+        $expTime = self::$conditionOTP[($verifyDb->send - 1)];
         if (!Carbon::parse($verifyDb->updated_at)->diffInMinutes(Carbon::now()) <= $expTime) {
             return ['status'=>'error','message'=>'Kami sudah mengirim email verifikasi ','data'=>true];
         }
@@ -102,11 +103,10 @@ class MailController extends Controller
         }
         $data = ['name'=>$user->nama_lengkap,'email'=>$email,'code'=>$verificationCode,'link'=>urldecode($verificationLink)];
         //resend email
-        dispatch(new SendVerifyEmail($data));
-        // Mail::to($email)->send(new VerifyEmail($data));
+        dispatch(new SendVerifyEmail(Mail::to($email)->send(new VerifyEmail($data))));
         return ['status'=>'success','message'=>'success send verify email','data'=>['waktu'=>Carbon::now()->addMinutes($expTime)]];
     }
-    //send email forgot password
+    //send email forgot password for admin and mobile
     public function createForgotPassword(Request $request, Verifikasi $verify){
         $validator = Validator::make($request->all(), [
             'email'=>'required|email',
@@ -122,12 +122,15 @@ class MailController extends Controller
             }
             return response()->json(['status' => 'error', 'message' => $errors], 400);
         }
-        $userController = new MasyarakatController();
         $email = $request->input('email');
         //check email on table user
-        $user = User::select('id_user', 'nama_lengkap')->whereRaw("BINARY email = ?",[$request->input('email')])->first();
+        $user = User::select('id_user', 'nama_lengkap', 'role')->whereRaw("BINARY email = ?",[$request->input('email')])->first();
         if (!$user) {
-            return response()->json(['status'=>'error','message'=>'Email tidak terdaftar !'],400);
+            return response()->json(['status'=>'error','message'=>'Email tidak terdaftar !'], 400);
+        }
+        //check role for reset password
+        if((Str::startsWith('/'.$request->path(), '/api') && strpos($user['role'], 'admin')) || (!Str::startsWith('/'.$request->path(), '/api') && $user['role'] === 'user')){
+            return response()->json(['status'=>'error','message'=>'User Unauthorized'], 403);
         }
         //check if user have create verify email
         $verifyDb = Verifikasi::select('send','updated_at')->whereRaw("BINARY email = ?",[$request->input('email')])->where('deskripsi', 'password')->first();
@@ -145,14 +148,13 @@ class MailController extends Controller
             if($verify->save()){
                 $data = ['name'=>$user->nama_lengkap,'email'=>$email,'code'=>$verificationCode,'link'=>$verificationLink];
                 dispatch(new SendResetPassword($data));
-                // Mail::to($email)->send(new ForgotPassword($data));
-                return response()->json(['status'=>'success','message'=>'kami akan kirim kode ke anda silahkan cek email','data'=>['waktu'=>Carbon::now()->addMinutes(MasyarakatController::getConditionOTP()[0])]]);
+                return response()->json(['status'=>'success','message'=>'kami akan kirim kode ke anda silahkan cek email','data'=>['waktu'=>Carbon::now()->addMinutes(self::$conditionOTP[0])]]);
             }else{
                 return response()->json(['status'=>'error','message'=>'fail create forgot password'],500);
             }
         }
         //checking if user have create verify email
-        $expTime = MasyarakatController::getConditionOTP()[($verifyDb->send - 1)];
+        $expTime = self::$conditionOTP[($verifyDb->send - 1)];
         if (!Carbon::parse($verifyDb->updated_at)->diffInMinutes(Carbon::now()) <= $expTime) {
             return response()->json(['status'=>'error','message'=>'Kami sudah mengirim Otp silahkan cek mail anda ','data'=>true]);
         }
@@ -165,7 +167,6 @@ class MailController extends Controller
         }else{
             $data = ['name'=>$user->nama_lengkap,'email'=>$email,'code'=>$verificationCode,'link'=>$verificationLink];
             dispatch(new SendResetPassword($data));
-            // Mail::to($email)->send(new ForgotPassword($data));
             return response()->json(['status'=>'success','message'=>'email benar kami kirim kode ke anda silahkan cek email','data'=>['waktu'=>Carbon::now()->addMinutes($expTime)]]);
         }
     }

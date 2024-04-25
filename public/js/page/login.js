@@ -16,12 +16,10 @@ loginForm.onsubmit = function (event) {
     const email = inpEmail.value;
     const password = inpPassword.value;
     if (email.trim() === "") {
-        console.log("email kosong");
         showRedPopup("Email harus diisi !");
         return;
     }
     if (password.trim() === "") {
-        console.log("password kosong");
         showRedPopup("Password harus diisi !");
         return;
     }

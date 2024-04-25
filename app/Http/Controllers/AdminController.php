@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 use App\Http\Controllers\Auth\JwtController;
+use App\Http\Controllers\Services\MailController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
@@ -8,7 +9,9 @@ use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 use App\Models\User;
+use App\Models\Verifikasi;
 use App\Models\RefreshToken;
 use Carbon\Carbon;
 use Closure;
@@ -36,8 +39,8 @@ class AdminController extends Controller
         if (!$referrer && $request->path() == 'public/download/foto') {
             abort(404);
         }
-        $admin = User::select('foto')->where('uuid',$uuid)->limit(1)->get()[0];
-        if (!$admin) {
+        $admin = User::select('foto')->where('uuid',$uuid)->first();
+        if (is_null($admin)) {
             return response()->json(['status' => 'error', 'message' => 'Data Admin tidak ditemukan'], 404);
         }
         if (empty($admin->foto) || is_null($admin->foto)) {
@@ -51,10 +54,173 @@ class AdminController extends Controller
             abort(404);
         }
     }
+    public function getChangePass(Request $request, User $user, $any = null){
+        $validator = Validator::make($request->all(), [
+            'email'=>'required|email',
+            'code' =>'nullable'
+        ],[
+            'email.required'=>'Email harus di isi',
+            'email.email'=>'Email yang anda masukkan invalid',
+        ]);
+        if ($validator->fails()) {
+            $errors = [];
+            foreach ($validator->errors()->toArray() as $field => $errorMessages) {
+                $errors[$field] = $errorMessages[0];
+                break;
+            }
+            return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
+        }
+        //check email on table user
+        $user = User::select('role')->whereRaw("BINARY email = ?",[$request->input('email')])->first();
+        if (is_null($user)) {
+            return response()->json(['status'=>'error','message'=>'Email tidak terdaftar !'],400);
+        }
+        if($user['role'] === 'user'){
+            return response()->json(['status'=>'error','message'=>'User Unauthorized'], 403);
+        }
+        if(Str::startsWith($request->path(), 'verify/password') && $request->isMethod('get')){
+            $email = $request->query('email');
+            if (!Verifikasi::whereRaw("BINARY link = ?", [$any])->exists()) {
+                return view('page.forgotPassword', ['title' => 'Reset Password', 'message' => 'Link invalid', 'code' => 400, 'div' => 'red']);
+            }
+            if (!Verifikasi::whereRaw("BINARY email = ?", [$email])->exists()) {
+                return view('page.forgotPassword', ['title' => 'Reset Password', 'message' => 'Email invalid', 'code' => 400, 'div' => 'red']);
+            }
+            if (!Verifikasi::whereRaw("BINARY email = ? AND BINARY link = ?", [$email, $any])->exists()) {
+                return view('page.forgotPassword', ['title' => 'Reset Password', 'message' => 'Link invalid', 'code' => 400, 'div' => 'red']);
+            }
+            $currentDateTime = Carbon::now();
+            if (!Verifikasi::whereRaw("BINARY email = ?", [$email])->where('updated_at', '>=', $currentDateTime->subMinutes(1))->exists()) {
+                Verifikasi::whereRaw("BINARY email = ? AND deskripsi = 'password'", [$email])->delete();
+                return view('page.forgotPassword', ['title' => 'Reset Password', 'message' => 'Link Expired', 'code' => 400, 'div' => 'red']);
+            }
+            return view('page.forgotPassword', ['email' => $email, 'title' => 'Reset Password', 'link' => $any, 'code' => '', 'div' => 'verifyDiv', 'description' => 'password']);
+        }else{
+            $email = $request->input('email');
+            $code = $request->input('otp');
+            if (!Verifikasi::whereRaw("BINARY email = ?", [$email])->exists()) {
+                return response()->json(['status' => 'error', 'message' => 'Email invalid'], 400);
+            }
+            if (!Verifikasi::whereRaw("BINARY email = ? AND BINARY kode_otp = ?", [$email, $code])->exists()) {
+                return response()->json(['status' => 'error', 'message' => 'Code OTP invalid'], 400);
+            }
+            $currentDateTime = Carbon::now();
+            if (!DB::table('verifikasi')->whereRaw("BINARY email = ?", [$email])->where('updated_at', '>=', $currentDateTime->subMinutes(15))->exists()) {
+                DB::table('verifikasi')->whereRaw("BINARY email = ? AND deskripsi = 'password'", [$email])->delete();
+                return response()->json(['status' => 'error', 'message' => 'Code OTP expired'], 400);
+            }
+            return response()->json(['status' => 'success', 'message' => 'OTP Anda benar, silahkan ganti password']);
+        }
+    }
+    public function changePassEmail(Request $request, User $user, JWTController $jwtController, RefreshToken $refreshToken){
+        $validator = Validator::make($request->all(), [
+            'email'=>'required|email',
+            'nama'=>'nullable',
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+                'max:25',
+                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/'
+            ],
+            'password_confirm' => [
+                'required',
+                'string',
+                'min:8',
+                'max:25',
+                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/'
+            ],
+            'code' => 'nullable',
+            'link' => 'nullable',
+            'description'=>'required'
+        ],[
+            'email.required'=>'Email wajib di isi',
+            'email.email'=>'Email yang anda masukkan invalid',
+            'password.required'=>'Password wajib di isi',
+            'password.min'=>'Password minimal 8 karakter',
+            'password.max'=>'Password maksimal 25 karakter',
+            'password.regex'=>'Password baru wajib terdiri dari 1 huruf besar, huruf kecil, angka dan karakter unik',
+            'password_confirm.required'=>'Password konfirmasi konfirmasi harus di isi',
+            'password_confirm.min'=>'Password konfirmasi minimal 8 karakter',
+            'password_confirm.max'=>'Password konfirmasi maksimal 25 karakter',
+            'password_confirm.regex'=>'Password konfirmasi terdiri dari 1 huruf besar, huruf kecil, angka dan karakter unik',
+            'description.required'=>'Deskripsi wajib di isi',
+        ]);
+        if ($validator->fails()) {
+            $errors = [];
+            foreach ($validator->errors()->toArray() as $field => $errorMessages) {
+                $errors = $errorMessages[0];
+            }
+            return response()->json(['status' => 'error', 'message' => $errors], 400);
+        }
+        $email = $request->input('email');
+        $pass = $request->input("password");
+        $pass1 = $request->input("password_confirm");
+        $code = $request->input('code');
+        $link = $request->input('link');
+        $desc = $request->input('description');
+        if($pass !== $pass1){
+            return response()->json(['status'=>'error','message'=>'Password Harus Sama'],400);
+        }
+        //check email on table user
+        $user = User::select('nama_lengkap')->whereRaw("BINARY email = ?",[$request->input('email')])->first();
+        if(is_null($user)) {
+            return response()->json(['status'=>'error','message'=>'Email tidak terdaftar !'],400);
+        }
+        if(is_null($link) || empty($link)){
+            //check if user have create reset password
+            $verify = Verifikasi::select('kode_otp','send','updated_at')->whereRaw("BINARY email = ?",[$request->input('email')])->where('deskripsi', 'password')->first();
+            if (is_null($verify)) {
+                return response()->json(['status'=>'error','message'=>'Email invalid'],400);
+            }
+            //check code
+            if ($verify['kode_otp'] !== $code) {
+                return response()->json(['status'=>'error','message'=>'Code invalid'],400);
+            }
+            //checking if mail not expired
+            $expTime = MailController::getConditionOTP()[($verify->send - 1)];
+            if (!Carbon::parse($verify->updated_at)->diffInMinutes(Carbon::now()) >= $expTime) {
+                $deleted = DB::table('verifikasi')->whereRaw("BINARY email = ? AND deskripsi = 'password'",[$email])->delete();
+                return response()->json(['status'=>'error','message'=>'token expired'],400);
+            }
+            if(is_null(DB::table('users')->whereRaw("BINARY email = ?",[$email])->update(['password'=>Hash::make($pass)]))){
+                return response()->json(['status'=>'error','message'=>'error update password'],500);
+            }
+            $deleted = DB::table('verifikasi')->whereRaw("BINARY email = ?",[$email])->delete();
+            if(!$deleted){
+                return response()->json(['status'=>'error','message'=>'error update password'],500);
+            }
+            return response()->json(['status'=>'success','message'=>'ganti password berhasil silahkan login']);
+        }else{
+            //check if user have create reset password
+            $verify = Verifikasi::select('link','send','updated_at')->whereRaw("BINARY email = ?",[$request->input('email')])->where('deskripsi', 'password')->first();
+            if (is_null($verify)) {
+                return response()->json(['status'=>'error','message'=>'Email invalid'],400);
+            }
+            //check link
+            if ($verify->link !== $link) {
+                return response()->json(['status'=>'error','message'=>'Link invalid'],400);
+            }
+            //checking if mail not expired
+            $expTime = MailController::getConditionOTP()[($verify->send - 1)];
+            if (!Carbon::parse($verify->updated_at)->diffInMinutes(Carbon::now()) >= $expTime) {
+                $deleted = DB::table('verifikasi')->whereRaw("BINARY email = ? AND deskripsi = 'password'",[$email])->delete();
+                return response()->json(['status'=>'error','message'=>'link expired'],400);
+            }
+            if(is_null(DB::table('users')->whereRaw("BINARY email = ?",[$email])->update(['password'=>Hash::make($pass)]))){
+                return response()->json(['status'=>'error','message'=>'error update password'],500);
+            }
+            $deleted = DB::table('verifikasi')->whereRaw("BINARY email = ? AND deskripsi = 'password'",[$email])->delete();
+            if(!$deleted){
+                return response()->json(['status'=>'error','message'=>'error update password'],500);
+            }
+            return response()->json(['status'=>'success','message'=>'ganti password berhasil silahkan login']);
+        }
+    }
     public function tambahAdmin(Request $request){
         $validator = Validator::make($request->only('email_admin', 'nama_lengkap', 'jenis_kelamin','no_telpon', 'role', 'password', 'foto'), [
             'email_admin'=>'required|email',
-            'nama_lengkap' => 'required|max:50',
+            'nama_lengkap' => 'required|min:3|max:50',
             'jenis_kelamin' => 'required|in:laki-laki,perempuan',
             'role' => 'required|in:admin disi,admin emotal,admin nutrisi,admin pengasuhan',
             'no_telpon' => 'required|digits_between:11,13',
@@ -70,6 +236,7 @@ class AdminController extends Controller
             'email_admin.required'=>'Email wajib di isi',
             'email_admin.email'=>'Email yang anda masukkan invalid',
             'nama_lengkap.required' => 'Nama admin wajib di isi',
+            'nama_lengkap.min'=>'Nama admin minimal 3 karakter',
             'nama_lengkap.max' => 'Nama admin maksimal 50 karakter',
             'jenis_kelamin.required' => 'Jenis kelamin wajib di isi',
             'jenis_kelamin.in' => 'Jenis kelamin harus Laki-laki atau Perempuan',
@@ -129,7 +296,7 @@ class AdminController extends Controller
         $validator = Validator::make($request->only('email_admin_lama', 'email_admin','nama_lengkap', 'jenis_kelamin', 'no_telpon', 'role', 'password','foto'), [
             'email_admin_lama'=>'required|email',
             'email_admin'=>'nullable|email',
-            'nama_lengkap' => 'required|max:50',
+            'nama_lengkap' => 'required|min:3|max:50',
             'jenis_kelamin' => 'required|in:laki-laki,perempuan',
             'no_telpon' => 'required|digits_between:11,13',
             'role' => 'required|in:admin disi,admin emotal,admin nutrisi,admin pengasuhan',
@@ -146,6 +313,7 @@ class AdminController extends Controller
             'email_admin_lama.email'=>'Email yang anda masukkan invalid',
             'email_admin.email'=>'Email yang anda masukkan invalid',
             'nama_lengkap.required' => 'Nama admin wajib di isi',
+            'nama_lengkap.min'=>'Nama admin minimal 3 karakter',
             'nama_lengkap.max' => 'Nama admin maksimal 50 karakter',
             'jenis_kelamin.required' => 'Jenis kelamin wajib di isi',
             'jenis_kelamin.in' => 'Jenis kelamin harus Laki-laki atau Perempuan',
@@ -154,7 +322,7 @@ class AdminController extends Controller
             'role.required' => 'Role admin harus di isi',
             'role.in' => 'Role admin tidak valid',
             'password.min'=>'Password minimal 8 karakter',
-            'password.max'=>'Password maksimal 25 karakter',
+            'password.max'=>'Password maksimal 50 karakter',
             'password.regex'=>'Password terdiri dari 1 huruf besar, huruf kecil, angka dan karakter unik',
             'foto.image' => 'Foto Admin harus berupa gambar',
             'foto.mimes' => 'Format foto admin tidak valid. Gunakan format jpeg, png, jpg',
@@ -169,8 +337,8 @@ class AdminController extends Controller
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
         //check data admin
-        $admin = User::select('password','foto')->whereRaw("BINARY email = ?",[$request->input('email_admin_lama')])->limit(1)->get()[0];
-        if (!$admin) {
+        $admin = User::select('password','foto')->whereRaw("BINARY email = ?",[$request->input('email_admin_lama')])->first();
+        if (is_null($admin)) {
             return response()->json(['status' => 'error', 'message' => 'Data Admin tidak ditemukan'], 404);
         }
         //process file foto
@@ -370,8 +538,8 @@ class AdminController extends Controller
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
         //check data Admin
-        $admin = User::select('foto')->where('uuid',$request->input('uuid'))->limit(1)->get()[0];
-        if (!$admin) {
+        $admin = User::select('foto')->where('uuid',$request->input('uuid'))->first();
+        if (is_null($admin)) {
             return response()->json(['status' => 'error', 'message' => 'Data Admin tidak ditemukan'], 404);
         }
         //delete foto

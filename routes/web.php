@@ -2,6 +2,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Services\MailController;
 use App\Http\Controllers\Services\DisiController;
 use App\Http\Controllers\Services\EmotalController;
 use App\Http\Controllers\Services\NutrisiController;
@@ -24,8 +25,8 @@ use App\Http\Controllers\Auth\LoginController;
 Route::group(['middleware'=>['auth','authorized']],function(){
     //artikel public route
     Route::group(['prefix'=>'/artikel'],function(){
-        Route::get('/',[ShowHomeController::class,'showArtikel'])->withoutMiddleware('authorized');
-        Route::get('/{any}',[ShowHomeController::class,'showDetailArtikel'])->withoutMiddleware('authorized');
+        Route::get('/',[ShowHomeController::class,'showArtikel']);
+        Route::get('/{any}',[ShowHomeController::class,'showDetailArtikel']);
     });
     //event only admin route
     Route::group(['prefix'=>'/event'],function(){
@@ -128,23 +129,44 @@ Route::group(['middleware'=>['auth','authorized']],function(){
         Route::post('/tambah',[AdminController::class,'tambahAdmin']);
         Route::put('/update',[AdminController::class,'editAdmin']);
         Route::delete('/delete',[AdminController::class,'hapusAdmin']);
-        Route::post('/login',[LoginController::class,'Login'])->withoutMiddleware('authorized');
-        Route::post('/logout',[AdminController::class,'logout'])->withoutMiddleware('authorized');
+        Route::post('/login',[LoginController::class,'Login']);
+        Route::post('/logout',[AdminController::class,'logout']);
         Route::group(['prefix'=>'/update'],function(){
             Route::put('/profile', [AdminController::class, 'updateProfile']);
             Route::put('/password', [AdminController::class, 'updatePassword']);
         });
     });
+    Route::group(["prefix"=>"/verify"],function(){
+        Route::group(['prefix'=>'/create'],function(){
+            Route::post('/password',[MailController::class, 'createForgotPassword']);
+            // Route::post('/email',[MailController::class, 'createVerifyEmail']);
+        });
+        Route::group(['prefix'=>'/password'],function(){
+            Route::get('/{any?}',[AdminController::class, 'getChangePass'])->where('any','.*');
+            Route::post('/',[AdminController::class, 'changePassEmail']);
+        });
+        // Route::group(['prefix'=>'/email'],function(){
+            // Route::get('/{any?}',[AdminController::class, 'verifyEmail'])->where('any','.*');
+            // Route::post('/',[AdminController::class, 'verifyEmail']);
+        // });
+        Route::group(['prefix'=>'/otp'],function(){
+            Route::post('/password',[AdminController::class, 'getChangePass']);
+            // Route::post('/email',[AdminController::class, 'verifyEmail']);
+        });
+    });
+    Route::get('/password/reset',function (){
+        return view('page.forgotPassword', ['title'=>'Lupa password']);
+    });
     Route::get('/login', function () {
         return view('page.login');
-    })->withoutMiddleware('authorized');
+    });
     // Route::get('/testing', function () {
     //     return view('page.testing');
-    // })->withoutMiddleware('authorized');
+    // });
     // Route::get('/template', function(){
     //     return view('page.template');
-    // })->withoutMiddleware('authorized');
+    // });
     Route::get('/dashboard',[ShowAdminController::class,'showDashboard']);
     Route::get('/profile',[ShowAdminController::class,'showProfile']);
-    Route::get('/',[ShowHomeController::class,'showHome'])->withoutMiddleware('authorized');
+    Route::get('/',[ShowHomeController::class,'showHome']);
 });

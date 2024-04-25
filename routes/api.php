@@ -1,5 +1,6 @@
 <?php
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Services\MailController;
 use App\Http\Controllers\Mobile\MasyarakatController;
 use App\Http\Controllers\Mobile\Page\DisiController;
 use App\Http\Controllers\Mobile\Page\EmotalController;
@@ -13,20 +14,20 @@ use App\Http\Controllers\Mobile\Auth\RegisterController AS MobileRegisterControl
 Route::group(['prefix'=>'/mobile','middleware'=>'authMobile','authorized'],function(){
     Route::group(['prefix'=>'/send'],function(){
         Route::group(['prefix'=>'/create'],function(){
-            Route::post('/password','Mail\MailController@createForgotPassword');
-            Route::post('/email','Mail\MailController@createVerifyEmail');
+            Route::post('/password',[MailController::class, 'createForgotPassword']);
+            Route::post('/email',[MailController::class, 'createVerifyEmail']);
         });
         Route::group(['prefix'=>'/password'],function(){
-            Route::get('/{any?}','MasyarakatController@getChangePass')->where('any','.*');
-            Route::post('/','MasyarakatController@changePassEmail');
+            Route::get('/{any?}',[MasyarakatController::class, 'getChangePass'])->where('any','.*');
+            Route::post('/',[MasyarakatController::class, 'changePassEmail']);
         });
         Route::group(['prefix'=>'/email'],function(){
-            Route::get('/{any?}','MasyarakatController@verifyEmail')->where('any','.*');
-            Route::post('/','MasyarakatController@verifyEmail');
+            Route::get('/{any?}',[MasyarakatController::class, 'verifyEmail'])->where('any','.*');
+            Route::post('/',[MasyarakatController::class, 'verifyEmail']);
         });
         Route::group(['prefix'=>'/otp'],function(){
-            Route::post('/password','MasyarakatController@getChangePass');
-            Route::post('/email','MasyarakatController@verifyEmail');
+            Route::post('/password',[MasyarakatController::class, 'getChangePass']);
+            Route::post('/email',[MasyarakatController::class, 'verifyEmail']);
         });
     });
     Route::group(['prefix'=>'/users'],function(){
