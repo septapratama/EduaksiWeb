@@ -270,7 +270,7 @@ class JwtController extends Controller
     //decode token mobile
     public function decodeMobile($token){
         try{
-            return ['status'=>'success','data'=>json_decode(json_encode(JWT::decode($token, new Key(env('JWT_MOBILE_REFRESH_TOKEN_EXPIRED'), 'HS512'))), true)];
+            return ['status'=>'success','data'=>json_decode(json_encode(JWT::decode($token, new Key(env('JWT_SECRET_MOBILE'), 'HS512'))), true)];
         }catch(ExpiredException $e){
             return ['status'=>'error','message'=>$e->getMessage()];
         } catch (SignatureInvalidException $e) {
