@@ -8,7 +8,7 @@ $tPath = app()->environment('local') ? '' : '';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{ $dataArtikel['judul'] }} | EduAksi</title>
+    <title>{{ $detailArtikel['judul'] }} | EduAksi</title>
     <link rel="shortcut icon" type="image/png" href="{{ asset($tPath.'img/icon/icon.png') }}" />
     <link rel="stylesheet" href="{{ asset($tPath.'css/page/detail-artikel.css') }}" />
     {{-- font --}}
@@ -35,18 +35,18 @@ $tPath = app()->environment('local') ? '' : '';
             <span>Kembali</span>
         </a>
         <div>
-            <h1>{{ $dataArtikel['judul'] }}</h1>
-            <span class="tanggal">{{ $dataArtikel['created_at'] }}</span>
-            <img id="imgMain" src="{{ asset($tPath.'img/artikel/' . $dataArtikel['foto']) }}" alt=""
+            <h1>{{ $detailArtikel['judul'] }}</h1>
+            <span class="tanggal">{{ $detailArtikel['created_at'] }}</span>
+            <img id="imgMain" src="{{ asset($tPath.'img/artikel/' . $detailArtikel['foto']) }}" alt=""
                 onerror="imgError('imgMain')">
             <div class="main-loading"></div>
             <span>
-                {!! $dataArtikel['deskripsi'] !!}
+                {!! $detailArtikel['deskripsi'] !!}
             </span>
-            @if(isset($dataArtikel['link_video']) && !empty($dataArtikel['link_video']))
+            @if(isset($detailArtikel['link_video']) && !empty($detailArtikel['link_video']))
             <div id="video">
                 <h3>Video Terkait</h3>
-                <iframe src="{{ $dataArtikel['link_video'] }}" title="YouTube video player" frameborder="0"
+                <iframe src="{{ $detailArtikel['link_video'] }}" title="YouTube video player" frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowfullscreen></iframe>
             </div>

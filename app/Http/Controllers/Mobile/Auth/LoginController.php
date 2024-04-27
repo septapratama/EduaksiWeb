@@ -30,7 +30,7 @@ class LoginController extends Controller
         //check email
         $user = User::select('password')->whereRaw("BINARY email = ?",[$request->input('email')])->first();
         if (is_null($user)) {
-            return response()->json(['status' => 'error', 'message' => 'Email salah'], 400);
+            return response()->json(['status' => 'error', 'message' => 'Pengguna tidak ditemukan'], 400);
         }
         if(!password_verify($pass, $user['password'])){
             return response()->json(['status'=>'error','message'=>'Password salah'],400);

@@ -52,17 +52,14 @@ $tPath = app()->environment('local') ? '' : '';
                     <div class="col-md-8 col-lg-6 col-xxl-3">
                         <div class="card mb-0">
                             <div class="card-body">
-                                <a href="/" class="text-nowrap logo-img text-center d-block py-3 w-100">
-                                    <div style="display: flex; justify-content: center;">
+                                <a href="#" class="text-nowrap logo-img text-center d-block py-3 w-100">
+                                    <div style="display: flex; justify-content: center; gap:10px;">
                                         <img src="{{ asset($tPath.'img/icon/logo.png') }}" alt="" style="width: 80px; height:40px;"></img>
                                         <span class="hide-menu" style="color:black; text-decoration: none; font-size:27px; font-weight:600;">EduAksi</span>
                                     </div>
                                 </a>
-                                <div id="sendEmail">
-                                    <div>
-                                        <h5 class="card-title text-left pb-0 fs-4">Lupa Password</h5>
-                                        <p class="text-left small">Pakai fitur ini apabila anda lupa dengan kata sandi.</p>
-                                    </div>
+                                <div id="sendEmail" style="display: none">
+                                    <p class="">Masukkan email untuk lupa password.</p>
                                     <form id="ForgotPassword">
                                         <div class="mb-3">
                                             <label for="exampleInputEmail1" class="form-label">Email</label>
@@ -72,10 +69,8 @@ $tPath = app()->environment('local') ? '' : '';
                                         <input type="submit" href="/admin/login" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2" value="Login">
                                     </form>
                                 </div>
-                                <div id="otp" style="display: none;">
+                                <div id="otp" style="display: block;">
                                     <form id="verifyOTP">
-                                        <h3>Lupa Password</h3>
-                                        <p>Pakai fitur ini apabila anda lupa dengan kata sandi</p>
                                         <p>Verifikasi OTP</p>
                                         <div class="input">
                                             <input type="text" id="otp1">
@@ -85,8 +80,8 @@ $tPath = app()->environment('local') ? '' : '';
                                             <input type="text" id="otp5">
                                             <input type="text" id="otp6">
                                         </div>
-                                        <input type="submit" value="Konfirmasi">
                                         <span>Tidak Menerima Kode OTP ? <a onclick="sendOtp()">kirim ulang</a></span>
+                                        <input type="submit" value="Konfirmasi">
                                     </form>
                                 </div>
                                 <div id="gantiPassword" style="display: none;">

@@ -2,7 +2,7 @@
 namespace App\Http\Controllers\Mobile\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Mobile\MasyarakatController;
-use App\Http\Controllers\Mobile\Services\MailController;
+use App\Http\Controllers\Services\MailController;
 use App\Models\User;
 use App\Models\Verifikasi;
 use Illuminate\Http\Request;

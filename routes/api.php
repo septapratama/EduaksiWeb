@@ -2,6 +2,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Services\MailController;
 use App\Http\Controllers\Mobile\MasyarakatController;
+use App\Http\Controllers\Mobile\Page\HomeController;
 use App\Http\Controllers\Mobile\Page\DisiController;
 use App\Http\Controllers\Mobile\Page\EmotalController;
 use App\Http\Controllers\Mobile\Page\NutrisiController;
@@ -38,6 +39,9 @@ Route::group(['prefix'=>'/mobile','middleware'=>'authMobile','authorized'],funct
         Route::put('/update', [MasyarakatController::class, 'updateProfile']);
         Route::post('/logout', [MasyarakatController::class,'logout']);
     });
+    Route::post('/dashboard',[HomeController::class, 'dashboard']);
+    Route::post('/artikel',[HomeController::class, 'showArtikel']);
+    Route::post('/artikel/{any}',[HomeController::class, 'showDetailArtikel']);
     Route::group(['prefix'=>'/disi'],function(){
         Route::get('/', [DisiController::class, 'getDisi']);
         Route::get('/usia/{Any}', [DisiController::class, 'getDisiUsia']);

@@ -33,6 +33,7 @@ function startCountdown(waktu) {
 }
 forgotPasswordForm.onsubmit = function(event){
     event.preventDefault();
+    return showGreenPopup({message: 'ws kenek'},'otp');
     const Email = emailInput.value;
     if(Email.trim() == ''){
         showRedPopup('Email harus di isi');
@@ -102,6 +103,7 @@ inputOtp.forEach((input, index) => {
     });
 });
 verifyOTPForm.onsubmit = function(event){
+    return showGreenPopup({message: 'ws kenek otp'},'gantiPassword');
     event.preventDefault();
     var data = '', isInputEmpty = false; 
     for (var i = 0; i < inputOtp.length; i++) {
@@ -144,6 +146,7 @@ verifyOTPForm.onsubmit = function(event){
     return false; 
 }
 verifyChangeForm.onsubmit = function(event){
+    return showGreenPopup({message: 'mlebu dashboard'});
     event.preventDefault();
     const password = passInput.value;
     const confirmPassword = passNewInput.value;
