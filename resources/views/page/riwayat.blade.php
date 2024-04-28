@@ -1,5 +1,6 @@
 <?php
 $tPath = app()->environment('local') ? '' : '';
+$constDB = ['ds'=>'digital_literasi', 'em'=>'emosi_mental', 'nt'=>'nutrisi', 'pn'=>'pengasuhan', 'ks'=>'konsultasi', 'ar'=>'article'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -7,7 +8,7 @@ $tPath = app()->environment('local') ? '' : '';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Artikel | EduAksi</title>
+    <title>Data Riwayat | EduAksi</title>
     <link rel="shortcut icon" type="image/png" href="{{ asset($tPath.'img/icon/icon.png') }}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
@@ -17,33 +18,18 @@ $tPath = app()->environment('local') ? '' : '';
     <link rel="stylesheet" href="{{ asset($tPath.'css/popup.css') }}" />
     <link rel="stylesheet" href="{{ asset($tPath.'css/preloader.css') }}" />
     <style>
-    #btnTambah{
-        padding: 0px;
-        display: flex;
-        width: 160px;
-        height: 45px;
-        align-items: center;
-        justify-content: space-evenly;
-        border: none;
-        font-size: 15px;
-    }
-    #btnTambah img{
-        width: 28px;
-        height: 28px;
-    }
     th {
         white-space: nowrap;
     }
-    th:nth-child(2) {
-        width: 100%;
+    th:nth-child(3) {
+        width: 20%;
     }
     td:last-child {
         position: relative;
         display: flex;
         flex-direction: row;
     }
-    .btn-edit,
-    .btn-delete{
+    .btn-lihat{
         padding: 0px;
         display: flex;
         width: 100px;
@@ -53,47 +39,25 @@ $tPath = app()->environment('local') ? '' : '';
         border: none;
         font-size: 17px;
     }
-    .btn-edit img,
-    .btn-delete img{
+    .btn-lihat img{
         width: 24px;
         height: 24px;
     }
-    .btn-delete,
-    .btn-delete:hover{
-        background-color: #FA64B5;
-    }
     @media screen and (min-width: 700px) and (max-width: 1100px) {
-        #btnTambah{
-            width: 147px;
-            height: 40px;
-            font-size: 14px;
+        th:nth-child(3) {
+            width: 23%;
         }
-        #btnTambah img{
-            width: 25px;
-            height: 25px;
-        }
-        .btn-edit,
-        .btn-delete{
+        .btn-lihat{
             width: 90px;
             height: 40px;
             font-size: 16px;
         }
-        .btn-edit img,
-        .btn-delete img{
+        .btn-lihat img{
             width: 22px;
             height: 22px;
         }
     }
     @media screen and (min-width: 500px) and (max-width: 700px) {
-        #btnTambah{
-            width: 135px;
-            height: 40px;
-            font-size: 13px;
-        }
-        #btnTambah img{
-            width: 22px;
-            height: 22px;
-        }
         .table{
             margin-top: 7px;
         }
@@ -103,34 +67,26 @@ $tPath = app()->environment('local') ? '' : '';
         th h6{
             font-size: 14px;
         }
+        th:nth-child(3){
+            width: 27%;
+        }
         td{
             font-size: 13px;
         }
         td:last-child {
             flex-direction: column;
         }
-        .btn-edit,
-        .btn-delete{
+        .btn-lihat{
             width: 90px;
             height: 40px;
             font-size: 15px;
         }
-        .btn-edit img,
-        .btn-delete img{
+        .btn-lihat img{
             width: 21px;
             height: 21px;
         }
     }
     @media screen and (max-width: 500px) {
-        #btnTambah{
-            width: 132px;
-            height: 35px;
-            font-size: 13px;
-        }
-        #btnTambah img{
-            width: 20px;
-            height: 20px;
-        }
         .table{
             margin-top: 7px;
         }
@@ -140,22 +96,23 @@ $tPath = app()->environment('local') ? '' : '';
         th h6{
             font-size: 12px;
         }
+        th:nth-child(3){
+            width: 27%;
+        }
         td{
             font-size: 11px;
         }
         td:last-child {
             flex-direction: column;
         }
-        .btn-edit,
-        .btn-delete{
-            width: 80px;
-            height: 37px;
-            font-size: 14px;
+        .btn-lihat{
+            width: 60px;
+            height: 30px;
+            font-size: 12px;
         }
-        .btn-edit img,
-        .btn-delete img{
-            width: 19px;
-            height: 19px;
+        .btn-lihat img{
+            width: 15px;
+            height: 15px;
         }
     }
     </style>
@@ -194,11 +151,11 @@ $tPath = app()->environment('local') ? '' : '';
             <!--  Header End -->
             <div class="container-fluid" style="background-color: #F6F9FF">
                 <div class="pagetitle">
-                    <h1>Kelola Artikel</h1>
+                    <h1>Kelola Riwayat</h1>
                     <nav>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="/dashboard">Beranda</a></li>
-                            <li class="breadcrumb-item">Kelola Artikel</li>
+                            <li class="breadcrumb-item">Kelola Riwayat</li>
                         </ol>
                     </nav>
                 </div>
@@ -206,10 +163,6 @@ $tPath = app()->environment('local') ? '' : '';
                     <div class="card w-100">
                         <div class="card-body p-4"
                             style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
-                            <a href="/article/tambah" class="btn btn-success" id="btnTambah">
-                                <img src="{{ asset($tPath.'img/icon/tambah.svg') }}" alt="">
-                                <span>Tambah Artikel</span>
-                            </a>
                             <div class="table-responsive">
                                 <table class="table mb-0 align-middle">
                                     <thead class="text-dark fs-4">
@@ -221,13 +174,16 @@ $tPath = app()->environment('local') ? '' : '';
                                                 <h6 class="fw-semibold mb-0">Judul</h6>
                                             </th>
                                             <th class="border-bottom-0">
+                                                <h6 class="fw-semibold mb-0">Tanggal</h6>
+                                            </th>
+                                            <th class="border-bottom-0">
                                                 <h6 class="fw-semibold mb-0">Aksi</h6>
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @php $no = 1; @endphp
-                                        @foreach ($dataArtikel as $data)
+                                        @foreach ($dataRiwayat as $data)
                                         <tr>
                                             <td class="border-bottom-0">
                                                 <h6 class="fw-semibold mb-0">{{ $no++ }}</h6>
@@ -237,14 +193,14 @@ $tPath = app()->environment('local') ? '' : '';
                                                 </span>
                                             </td>
                                             <td class="border-bottom-0">
-                                                <a href="/article/edit/{{ $data['uuid'] }}" class="btn btn-warning btn-edit m-1">
+                                                <span class="fw-normal">{{ $data['created_at'] }}
+                                                </span>
+                                            </td>
+                                            <td class="border-bottom-0">
+                                                <a href="/{{$constDB[$data['desc']]}}/edit/{{ $data['uuid'] }}" class="btn btn-warning btn-lihat m-1">
                                                     <img src="{{ asset($tPath.'img/icon/edit.svg') }}" alt="">
-                                                    <span>Edit</span>
+                                                    <span>Lihat</span>
                                                 </a>
-                                                <button type="button" class="btn btn-danger btn-delete m-1" onclick="showModalDelete('{{ $data['uuid'] }}')">
-                                                    <img src="{{ asset($tPath.'img/icon/delete.svg') }}" alt="">
-                                                    <span>Hapus</span>
-                                                </button>
                                             </td>
                                         </tr>
                                         @endforeach
@@ -261,7 +217,6 @@ $tPath = app()->environment('local') ? '' : '';
     @php
     $modalDelete = 'artikel';
     @endphp
-    @include('page.Components.admin.modalDelete')
     @include('page.Components.preloader')
     <div id="greenPopup" style="display:none"></div>
     <div id="redPopup" style="display:none"></div>
@@ -273,7 +228,6 @@ $tPath = app()->environment('local') ? '' : '';
     <script src="{{ asset($tPath.'assets/libs/simplebar/dist/simplebar.js') }}"></script>
     <script src="{{ asset($tPath.'assets/js/dashboard.js') }}"></script>
     <script src="{{ asset($tPath.'js/popup.js') }}"></script>
-    <script src="{{ asset($tPath.'js/page/modalDelete.js') }}"></script>
 </body>
 
 </html>

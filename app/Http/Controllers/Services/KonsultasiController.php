@@ -14,6 +14,10 @@ class KonsultasiController extends Controller
         self::$jsonFile = storage_path('app/database/konsultasi.json');
     }
     public function dataCacheFile($data = null, $con, $limit = null, $col = null){
+        $directory = storage_path('app/database');
+        if (!file_exists($directory)) {
+            mkdir($directory, 0755, true);
+        }
         $fileExist = file_exists(self::$jsonFile);
         //check if file exist
         if (!$fileExist) {
@@ -71,6 +75,43 @@ class KonsultasiController extends Controller
                 return $jsonData;
             }
             return null;
+        }else if($con == 'get_riwayat'){
+            $jsonData = json_decode(file_get_contents(self::$jsonFile), true);
+            usort($jsonData, function($a, $b) {
+                return strtotime($b['created_at']) - strtotime($a['created_at']);
+            });
+            if(!empty($data) && !is_null($data)) {
+                $result = null;
+                if (count($data) > 1) {
+                    return 'error array key more than 1';
+                }
+                foreach ($jsonData as $key => $item){
+                    $keys = array_keys($data)[0];
+                    if (isset($item[$keys]) && $item[$keys] == $data[$keys]) {
+                        $result[] = $jsonData[$key];
+                    }
+                }
+                if ($result === null) {
+                    return $result;
+                }
+                $jsonData = [];
+                $jsonData = $result;
+            }
+            if(is_array($jsonData)) {
+                if ($limit !== null && is_int($limit) && $limit > 0){
+                    $jsonData = array_slice($jsonData, 0, $limit);
+                }
+                if (is_array($col)) {
+                    foreach ($jsonData as &$entry) {
+                        $entry = array_intersect_key($entry, array_flip($col));
+                    }
+                }
+                foreach ($jsonData as &$item){
+                    $item['desc'] = 'ks';
+                }
+                return $jsonData;
+            }
+            return [];
         }else if($con == 'tambah'){
             if($fileExist){
                 //tambah konsultasi data

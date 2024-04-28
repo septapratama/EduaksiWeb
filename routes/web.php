@@ -112,6 +112,7 @@ Route::group(['middleware'=>['auth','authorized']],function(){
         Route::put('/update', [PengasuhanController::class, 'editPengasuhan']);
         Route::delete('/delete', [PengasuhanController::class, 'deletePengasuhan']);
     });
+    Route::get('/riwayat', [ShowHomeController::class, 'showRiwayat']);
     //download only for admin
     Route::group(['prefix'=>'/public'],function(){
         Route::group(['prefix'=>'/download'],function(){
