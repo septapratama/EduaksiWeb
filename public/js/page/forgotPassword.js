@@ -7,7 +7,7 @@ const emailInput = document.getElementById('inpEmail');
 const passInput = document.getElementById('password');
 const passNewInput = document.getElementById('password_new');
 const inputOtp = verifyOTPForm.querySelectorAll('input[type="text"]');
-var email, otp = '', div, timer,timerMenit,timerDetik;
+var email, otp = '', div, timer,timerMenit,timerDetik, updateOtp = false;
 function showLoading(){
     document.querySelector('div#preloader').style.display = 'block';
 }
@@ -27,13 +27,13 @@ function startCountdown(waktu) {
     timerDetik = Math.floor((distance % (1000 * 60)) / 1000);
         if (distance < 0) {
             clearInterval(timer);
-            timer['timer'] = null;
+            timer = null;
+            updateOtp = true;
         }
     }, 1000);
 }
 forgotPasswordForm.onsubmit = function(event){
     event.preventDefault();
-    return showGreenPopup({message: 'ws kenek'},'otp');
     const Email = emailInput.value;
     if(Email.trim() == ''){
         showRedPopup('Email harus di isi');
@@ -84,6 +84,9 @@ inputOtp.forEach((input, index) => {
         if (!isNaN(value)) {
             if (index < inputOtp.length - 1) {
                 inputOtp[index + 1].focus();
+                event.target.style.borderColor = 'black';
+            }else{
+                event.target.style.borderColor = 'black';
             }
         } else {
             event.target.value = event.target.value.replace(/\D/g, '');
@@ -92,6 +95,7 @@ inputOtp.forEach((input, index) => {
             if (index > 0) {
                 inputOtp[index - 1].focus();
             }
+            event.target.style.borderColor = '';
         }
     });
     input.addEventListener('keydown', (event) => {
@@ -99,11 +103,11 @@ inputOtp.forEach((input, index) => {
             if (index > 0) {
                 inputOtp[index-1].focus();
             }
+            event.target.style.borderColor = '';
         }
     });
 });
 verifyOTPForm.onsubmit = function(event){
-    return showGreenPopup({message: 'ws kenek otp'},'gantiPassword');
     event.preventDefault();
     var data = '', isInputEmpty = false; 
     for (var i = 0; i < inputOtp.length; i++) {
@@ -146,7 +150,6 @@ verifyOTPForm.onsubmit = function(event){
     return false; 
 }
 verifyChangeForm.onsubmit = function(event){
-    return showGreenPopup({message: 'mlebu dashboard'});
     event.preventDefault();
     const password = passInput.value;
     const confirmPassword = passNewInput.value;
@@ -207,7 +210,6 @@ verifyChangeForm.onsubmit = function(event){
     if(otp === null || otp === ''){
         requestBody = {
             email: email,
-            nama:nama,
             link:link,
             password:passInput.value,
             password_confirm:passNewInput.value,
@@ -232,7 +234,6 @@ verifyChangeForm.onsubmit = function(event){
             if (xhr.status === 200) {
                 closeLoading();
                 var response = JSON.parse(xhr.responseText);
-                // verifyChangeForm.reset();
                 if(otp == null || otp == ''){
                     showGreenPopup(response,'dashboard');
                 }else{
@@ -250,12 +251,13 @@ verifyChangeForm.onsubmit = function(event){
 function sendOtp(){
     if (email && email.trim() !== '') {
         if(timer){
-            showTimerPopup()
+            showTimerPopup();
         }else{
             showLoading();
             var xhr = new XMLHttpRequest();
             var requestBody = {
                 email: email,
+                desc: updateOtp ? 'update' : '',
             };
             xhr.open('POST',"/verify/create/password");
             xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken);
@@ -297,7 +299,6 @@ function showTimerPopup(){
     const intervalId = setInterval(() => {
         labelElement.textContent = `sisa waktu ${timerMenit} menit ${timerDetik} detik untuk kirim kembali`;
         second++;
-
         if (second >= 3) {
             clearInterval(intervalId); 
             closePopup('red');

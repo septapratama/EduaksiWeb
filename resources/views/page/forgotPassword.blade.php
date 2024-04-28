@@ -58,7 +58,8 @@ $tPath = app()->environment('local') ? '' : '';
                                         <span class="hide-menu" style="color:black; text-decoration: none; font-size:27px; font-weight:600;">EduAksi</span>
                                     </div>
                                 </a>
-                                <div id="sendEmail" style="display: none">
+                                @if(empty($div) || is_null($div) || !isset($div) || $div != 'red')
+                                <div id="sendEmail">
                                     <p class="">Masukkan email untuk lupa password.</p>
                                     <form id="ForgotPassword">
                                         <div class="mb-3">
@@ -66,10 +67,10 @@ $tPath = app()->environment('local') ? '' : '';
                                             <input type="email" id="inpEmail" class="form-control" aria-describedby="emailHelp">
                                         </div>
                                         <div class="d-flex align-items-center justify-content-between mb-4"></div>
-                                        <input type="submit" href="/admin/login" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2" value="Login">
+                                        <input type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2" value="Kirim Lupa Password">
                                     </form>
                                 </div>
-                                <div id="otp" style="display: block;">
+                                <div id="otp" style="display: none;">
                                     <form id="verifyOTP">
                                         <p>Verifikasi OTP</p>
                                         <div class="input">
@@ -86,46 +87,51 @@ $tPath = app()->environment('local') ? '' : '';
                                 </div>
                                 <div id="gantiPassword" style="display: none;">
                                     <form class="row g-3 needs-validation" novalidate id="verifyChange">
-                                    <div class="col-12">
-                                    @if(isset($description) && $description == 'createUser')
-                                    <label for="newPassword" class="form-label">Password</label>
-                                    <div class="input-group has-validation">
-                                        <input type="password" name="pass" class="form-control" id="password" required>
-                                        <div class="invalid-feedback">Masukkan Password</div>
-                                    </div>
-                                    @else
-                                    <label for="newPassword" class="form-label">Password Baru</label>
-                                    <div class="input-group has-validation">
-                                        <input type="password" name="pass" class="form-control" id="password" required>
-                                        <div class="invalid-feedback">Masukkan Password Baru</div>
-                                    </div>
-                                    @endif
-                                    </div>
-                                    <div class="col-12">
-                                    @if(isset($description) && $description == 'createUser')
-                                        <label for="confirmPassword" class="form-label">Konfirmasi Password</label>
+                                        <div class="col-12">
+                                        @if(isset($description) && $description == 'createUser')
+                                        <label for="newPassword" class="form-label">Password</label>
                                         <div class="input-group has-validation">
-                                            <input type="password" name="pass_new" class="form-control" id="password_new" required>
-                                            <div class="invalid-feedback">Masukkan Konfirmasi Password</div>
+                                            <input type="password" name="pass" class="form-control" id="password" required>
+                                            <div class="invalid-feedback">Masukkan Password</div>
                                         </div>
                                         @else
-                                        <label for="confirmPassword" class="form-label">Konfirmasi Password Baru</label>
+                                        <label for="newPassword" class="form-label">Password Baru</label>
                                         <div class="input-group has-validation">
-                                            <input type="password" name="pass_new" class="form-control" id="password_new" required>
-                                            <div class="invalid-feedback">Masukkan Konfirmasi Password Baru</div>
+                                            <input type="password" name="pass" class="form-control" id="password" required>
+                                            <div class="invalid-feedback">Masukkan Password Baru</div>
                                         </div>
-                                    @endif
-                                    </div>
-                                    <div class="col-12">
-                                    @if(isset($description) && $description == 'createUser')
-                                        <button class="btn btn-success w-100" type="submit">Buat Akun</button>
-                                    @else
-                                        <button class="btn btn-success w-100" type="submit">Ganti Password</button>
-                                    @endif
-                                    </div>
-                                </form>
+                                        @endif
+                                        </div>
+                                        <div class="col-12">
+                                            @if(isset($description) && $description == 'createUser')
+                                            <label for="confirmPassword" class="form-label">Konfirmasi Password</label>
+                                            <div class="input-group has-validation">
+                                                <input type="password" name="pass_new" class="form-control" id="password_new" required>
+                                                <div class="invalid-feedback">Masukkan Konfirmasi Password</div>
+                                            </div>
+                                            @else
+                                            <label for="confirmPassword" class="form-label">Konfirmasi Password Baru</label>
+                                            <div class="input-group has-validation">
+                                                <input type="password" name="pass_new" class="form-control" id="password_new" required>
+                                                <div class="invalid-feedback">Masukkan Konfirmasi Password Baru</div>
+                                            </div>
+                                            @endif
+                                        </div>
+                                        <div class="col-12">
+                                            @if(isset($description) && $description == 'createUser')
+                                            <button class="btn btn-success w-100" type="submit">Buat Akun</button>
+                                            @else
+                                            <button class="btn btn-success w-100" type="submit">Ganti Password</button>
+                                            @endif
+                                        </div>
+                                    </form>
                                 </div>
-                            </div>
+                                @else
+                                <div id="red">
+                                    <p>{{ $message }}</p>
+                                    <a href="/password/reset" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">Kembali</a>
+                                </div>
+                                @endif
                         </div>
                     </div>
                 </div>
@@ -143,22 +149,17 @@ $tPath = app()->environment('local') ? '' : '';
             var description = "";
             var otp = "";
             var link = "";
-            // console.log('kosoooong');
         @else
-            var email = "{{$email}}";
-            var div = "{{$div}}";
-            var description = "{{$description}}";
-            // var otp = "{{$code}}";
-            var link = "{{$link}}";
-            @if(isset($nama))
-            var nama = "{{$nama}}";
+            @if($div != 'red')
+                var email = "{{$email}}";
+                var div = "{{$div}}";
+                var description = "{{$description}}";
+                // var otp = "{{$code}}";
+                var link = "{{$link}}";
+                @if(isset($nama))
+                var nama = "{{$nama}}";
+                @endif
             @endif
-            console.log('divvv ');
-            console.log("{{$email}}");
-            console.log("{{$div}}");
-            console.log("{{$description}}");
-            console.log("{{$code}}");
-            console.log("{{$link}}");
         @endif
         if(div == 'verifyDiv'){
             document.querySelector('div#sendEmail').style.display = 'none';

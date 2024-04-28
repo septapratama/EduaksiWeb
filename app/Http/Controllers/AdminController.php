@@ -91,7 +91,7 @@ class AdminController extends Controller
             }
             $currentDateTime = Carbon::now();
             if (!Verifikasi::whereRaw("BINARY email = ?", [$email])->where('updated_at', '>=', $currentDateTime->subMinutes(1))->exists()) {
-                Verifikasi::whereRaw("BINARY email = ? AND deskripsi = 'password'", [$email])->delete();
+                // Verifikasi::whereRaw("BINARY email = ? AND deskripsi = 'password'", [$email])->delete();
                 return view('page.forgotPassword', ['title' => 'Reset Password', 'message' => 'Link Expired', 'code' => 400, 'div' => 'red']);
             }
             return view('page.forgotPassword', ['email' => $email, 'title' => 'Reset Password', 'link' => $any, 'code' => '', 'div' => 'verifyDiv', 'description' => 'password']);
@@ -106,7 +106,7 @@ class AdminController extends Controller
             }
             $currentDateTime = Carbon::now();
             if (!DB::table('verifikasi')->whereRaw("BINARY email = ?", [$email])->where('updated_at', '>=', $currentDateTime->subMinutes(15))->exists()) {
-                DB::table('verifikasi')->whereRaw("BINARY email = ? AND deskripsi = 'password'", [$email])->delete();
+                // DB::table('verifikasi')->whereRaw("BINARY email = ? AND deskripsi = 'password'", [$email])->delete();
                 return response()->json(['status' => 'error', 'message' => 'Code OTP expired'], 400);
             }
             return response()->json(['status' => 'success', 'message' => 'OTP Anda benar, silahkan ganti password']);
@@ -115,7 +115,6 @@ class AdminController extends Controller
     public function changePassEmail(Request $request, User $user, JWTController $jwtController, RefreshToken $refreshToken){
         $validator = Validator::make($request->all(), [
             'email'=>'required|email',
-            'nama'=>'nullable',
             'password' => [
                 'required',
                 'string',
@@ -180,7 +179,7 @@ class AdminController extends Controller
             //checking if mail not expired
             $expTime = MailController::getConditionOTP()[($verify->send - 1)];
             if (!Carbon::parse($verify->updated_at)->diffInMinutes(Carbon::now()) >= $expTime) {
-                $deleted = DB::table('verifikasi')->whereRaw("BINARY email = ? AND deskripsi = 'password'",[$email])->delete();
+                // $deleted = DB::table('verifikasi')->whereRaw("BINARY email = ? AND deskripsi = 'password'",[$email])->delete();
                 return response()->json(['status'=>'error','message'=>'token expired'],400);
             }
             if(is_null(DB::table('users')->whereRaw("BINARY email = ?",[$email])->update(['password'=>Hash::make($pass)]))){
@@ -204,7 +203,7 @@ class AdminController extends Controller
             //checking if mail not expired
             $expTime = MailController::getConditionOTP()[($verify->send - 1)];
             if (!Carbon::parse($verify->updated_at)->diffInMinutes(Carbon::now()) >= $expTime) {
-                $deleted = DB::table('verifikasi')->whereRaw("BINARY email = ? AND deskripsi = 'password'",[$email])->delete();
+                // $deleted = DB::table('verifikasi')->whereRaw("BINARY email = ? AND deskripsi = 'password'",[$email])->delete();
                 return response()->json(['status'=>'error','message'=>'link expired'],400);
             }
             if(is_null(DB::table('users')->whereRaw("BINARY email = ?",[$email])->update(['password'=>Hash::make($pass)]))){
