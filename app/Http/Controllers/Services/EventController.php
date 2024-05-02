@@ -14,7 +14,7 @@ class EventController extends Controller
     public function __construct(){
         self::$jsonFile = storage_path('app/database/event.json');
     }
-    public function dataCacheFile($data = null, $con, $limit = null, $col = null){
+    public function dataCacheFile($data = null, $con, $limit = null, $col = null, $alias = null){
         $fileExist = file_exists(self::$jsonFile);
         //check if file exist
         if (!$fileExist) {
@@ -72,6 +72,41 @@ class EventController extends Controller
                 return $jsonData;
             }
             return null;
+        }else if($con === 'get_kalender') {
+            $jsonData = json_decode(file_get_contents(self::$jsonFile), true);
+            usort($jsonData, function($a, $b) {
+                return strtotime($b['tanggal_awal']) - strtotime($a['tanggal_awal']);
+            });
+            if(!empty($data) && !is_null($data)) {
+                $result = null;
+                if (count($data) > 1) {
+                    return 'error array key more than 1';
+                }
+                foreach ($jsonData as $key => $item){
+                    $keys = array_keys($data)[0];
+                    if (isset($item[$keys]) && $item[$keys] == $data[$keys]) {
+                        $result[] = $jsonData[$key];
+                    }
+                }
+                if ($result === null) {
+                    return $result;
+                }
+                $jsonData = [];
+                $jsonData = $result;
+            }
+            if(is_array($jsonData)) {
+                if ($limit !== null && is_int($limit) && $limit > 0){
+                    $jsonData = array_slice($jsonData, 0, $limit);
+                }
+                if (is_array($col)) {
+                    foreach ($jsonData as &$entry) {
+                        $entry = array_intersect_key($entry, array_flip($col));
+                        $entry = is_array($alias) && (count($col) === count($alias)) ? array_combine($alias, array_values($entry)) : $entry;
+                    }
+                }
+                return $jsonData;
+            }
+            return null;
         }else if($con == 'tambah'){
             if($fileExist){
                 //tambah event data
@@ -99,6 +134,12 @@ class EventController extends Controller
             }
             $jsonData = array_values($jsonData);
             file_put_contents(self::$jsonFile,json_encode($jsonData, JSON_PRETTY_PRINT));
+            // 'id' => $item['uuid'],
+            // 'nama_event' => $item['nama_event'],
+            // 'deskripsi' => $item['deskripsi'],
+            // 'tempat' => $item['tempaat'],
+            // 'start_date' => $item['tanggal_awal'],
+            // 'end_date' => $item['tanggal_akhir'],
         }else if($con == 'hapus'){
             //hapus event data
             $jsonData = json_decode(file_get_contents(self::$jsonFile),true);

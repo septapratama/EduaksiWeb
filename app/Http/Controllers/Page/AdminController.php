@@ -1,15 +1,18 @@
 <?php
 namespace App\Http\Controllers\Page;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Services\EventController;
 use App\Http\Controllers\Services\DisiController;
 use App\Http\Controllers\Services\EmotalController;
 use App\Http\Controllers\Services\NutrisiController;
 use App\Http\Controllers\Services\PengasuhanController;
 use App\Http\Controllers\Services\KonsultasiController;
 use App\Http\Controllers\Services\ArtikelController;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Carbon\Carbon;
 use DateTime;
 class AdminController extends Controller
 {
@@ -60,7 +63,25 @@ class AdminController extends Controller
         return $inpDate;
     }
     public function showDashboard(Request $request){
+        // $dataKalender = array_map(function($item){
+        //     $tempData = [
+        //         'id' => $item['id_sewa'],
+        //         'title' => $item['nama_kegiatan_sewa'],
+        //         'peminjam' => $item['nama_peminjam'],
+        //         'nama_tempat' => $item['nama_tempat'],
+        //         'start' => $item['start_date'],
+        //         'end' => $item['end_date'],
+        //     ];
+        //     return $tempData;
+        // Event::select('id_sewa', 'nama_event', 'deskripsi', 'tempaat', DB::raw('DATE(tanggal_awal) AS start_date'), DB::raw('DATE(tanggal_akhir) AS end_date'))->where('status', 'diajukan')->get()->map();
+        unset($request->input('user_auth')['foto']);
         $dataShow = [
+            'dataKalender' => [],
+            // 'dataKalender' => array_map(function($item){
+            //     $item['start'] = Carbon::parse($item['start'])->format('Y-m-d');
+            //     $item['end'] = Carbon::parse($item['end'])->format('Y-m-d');
+            //     return $item;
+            // }, app()->make(EventController::class)->dataCacheFile(null, 'get_kalender', null, ['nama_event', 'deskripsi', 'tempat', 'tanggal_awal', 'tanggal_akhir'], ['nama_event', 'deskripsi', 'nama_tempat', 'start', 'end'])),
             'jumlah_disi' => app()->make(DisiController::class)->dataCacheFile(null, 'get_total'),
             'jumlah_emotal' => app()->make(EmotalController::class)->dataCacheFile(null, 'get_total'),
             'jumlah_nutrisi' => app()->make(NutrisiController::class)->dataCacheFile(null, 'get_total'),
@@ -69,6 +90,8 @@ class AdminController extends Controller
             'jumlah_artikel' => app()->make(ArtikelController::class)->dataCacheFile(null, 'get_total'),
             'userAuth' => $request->input('user_auth'),
         ];
+        // return response()->json($dataShow);
+        
         return view('page.dashboard',$dataShow);
     }
     public function showProfile(Request $request){

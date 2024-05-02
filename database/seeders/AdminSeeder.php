@@ -82,7 +82,7 @@ class AdminSeeder extends Seeder
         for($i = 1; $i <= 3; $i++){
             User::insert([
                 'uuid' =>  Str::uuid(),
-                'nama_lengkap'=>'Admin '.$i,
+                'nama_lengkap'=>'Admin nutrisi'.$i,
                 'jenis_kelamin'=>['laki-laki', 'perempuan'][rand(0, 1)],
                 'no_telpon'=>'0851'.mt_rand(10000000,99999999),
                 'role'=>'admin nutrisi',

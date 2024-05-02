@@ -14,40 +14,46 @@ $tPath = app()->environment('local') ? '' : '';
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{{ asset($tPath.'assets/css/styles.min.css') }}" />
     <link rel="stylesheet" href="{{ asset($tPath.'css/preloader.css') }}" />
+    <!-- CSS for full calender -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
     <style>
     #kotak {
         display: flex;
-        flex-wrap: wrap;
-        height: 52vh;
-        align-content: space-around;
-        justify-content: space-around;
+        flex-direction: column;
         margin-bottom:6%;
+        gap: 30px;
     }
-    .card {
+    #kotak #carousel{
+        display: flex;
+    }
+    .cardC {
         width: 47%;
-        height: 100px;
+        height: 200px;
         display: flex;
         justify-content: center;
         margin-bottom: 0px;
     }
-    .card h5,
-    .card div {
+    .cardC h5,
+    .cardC div {
         position: relative;
         display: flex;
         left: 8%;
         color: black;
         font-weight: 600;
     }
-    .card h5 {
+    .cardC h5 {
         font-size: 24px;
+        width:max-content;
+        height:max-content;
     }
-    .card div {
+    .cardC div {
         display: flex;
         gap: 3%;
         align-items: center;
         font-size: 22px;
     }
-    .card img{
+    .cardC img{
         width: 40px;
         height: 40px;
     }
@@ -55,20 +61,20 @@ $tPath = app()->environment('local') ? '' : '';
         #kotak {
             height: 53vh;
         }
-        .card {
+        .cardC {
             width: 47%;
             height: 100px;
             margin-bottom: 0px;
         }
-        .card h5 {
+        .cardC h5 {
             font-size: 21px;
             font-weight: 600;
         }
-        .card div {
+        .cardC div {
             gap: 4%;
             font-size: 21px;
         }
-        .card img{
+        .cardC img{
             width: 37px;
             height: 37px;
         }
@@ -77,20 +83,20 @@ $tPath = app()->environment('local') ? '' : '';
         #kotak {
             height: 56vh;
         }
-        .card {
+        .cardC {
             width: 47%;
             height: 100px;
             margin-bottom: 0px;
         }
-        .card h5 {
+        .cardC h5 {
             font-size: 19px;
             font-weight: 600;
         }
-        .card div {
+        .cardC div {
             gap: 5%;
             font-size: 19px;
         }
-        .card img{
+        .cardC img{
             width: 35px;
             height: 35px;
         }
@@ -99,20 +105,20 @@ $tPath = app()->environment('local') ? '' : '';
         #kotak {
             height: 56vh;
         }
-        .card {
+        .cardC {
             width: 47%;
             height: 100px;
             margin-bottom: 0px;
         }
-        .card h5 {
+        .cardC h5 {
             font-size: 17px;
             font-weight: 600;
         }
-        .card div {
+        .cardC div {
             gap: 6%;
             font-size: 17px;
         }
-        .card img{
+        .cardC img{
             width: 33px;
             height: 33px;
         }
@@ -159,48 +165,118 @@ $tPath = app()->environment('local') ? '' : '';
                     </nav>
                 </div>
                 <div id="kotak">
-                    <div class="card" style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
-                        <h5 class="">Jumlah Disi</h5>
-                        <div class="">
-                            <img src="{{ asset($tPath.'img/icon/sidebar/disi_dark.svg') }}" alt="">
-                            <span>{{ $jumlah_disi }}</span>
+                    <div id="carousel">
+                        <div class="cardC" style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
+                            <h5 class="">Jumlah Disi</h5>
+                            <div class="">
+                                <img src="{{ asset($tPath.'img/icon/sidebar/disi_dark.svg') }}" alt="">
+                                <span>{{ $jumlah_disi }}</span>
+                            </div>
+                        </div>
+                        <div class="cardC" style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
+                            <h5 class="">Jumlah Emotal</h5>
+                            <div class="">
+                                <img src="{{ asset($tPath.'img/icon/sidebar/emotal_dark.svg') }}" alt="">
+                                <span>{{ $jumlah_emotal }}</span>
+                            </div>
+                        </div>
+                        <div class="cardC" style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
+                            <h5 class="">Jumlah Nutrisi</h5>
+                            <div class="">
+                                <img src="{{ asset($tPath.'img/icon/sidebar/nutrisi_dark.svg') }}" alt="">
+                                <span>{{ $jumlah_nutrisi }}</span>
+                            </div>
+                        </div>
+                        <div class="cardC" style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
+                            <h5 class="">Jumlah Pengasuhan</h5>
+                            <div class="">
+                                <img src="{{ asset($tPath.'img/icon/sidebar/pengasuhan_dark.svg') }}" alt="" width="40"
+                                    height="40">
+                                <span>{{ $jumlah_pengasuhan }}</span>
+                            </div>
+                        </div>
+                        <div class="cardC" style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
+                            <h5 class="">Jumlah Konsultan</h5>
+                            <div class="">
+                                <img src="{{ asset($tPath.'img/icon/sidebar/konsultasi_dark.svg') }}" alt="" width="40"
+                                    height="40">
+                                <span>{{ $jumlah_konsultan }}</span>
+                            </div>
+                        </div>
+                        <div class="cardC" style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
+                            <h5 class="">Jumlah Artikel</h5>
+                            <div class="">
+                                <img src="{{ asset($tPath.'img/icon/sidebar/artikel_dark.svg') }}" alt="">
+                                <span>{{ $jumlah_artikel }}</span>
+                            </div>
                         </div>
                     </div>
-                    <div class="card" style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
-                        <h5 class="">Jumlah Emotal</h5>
-                        <div class="">
-                            <img src="{{ asset($tPath.'img/icon/sidebar/emotal_dark.svg') }}" alt="">
-                            <span>{{ $jumlah_emotal }}</span>
-                        </div>
-                    </div>
-                    <div class="card" style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
-                        <h5 class="">Jumlah Nutrisi</h5>
-                        <div class="">
-                            <img src="{{ asset($tPath.'img/icon/sidebar/nutrisi_dark.svg') }}" alt="">
-                            <span>{{ $jumlah_nutrisi }}</span>
-                        </div>
-                    </div>
-                    <div class="card" style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
-                        <h5 class="">Jumlah Pengasuhan</h5>
-                        <div class="">
-                            <img src="{{ asset($tPath.'img/icon/sidebar/pengasuhan_dark.svg') }}" alt="" width="40"
-                                height="40">
-                            <span>{{ $jumlah_pengasuhan }}</span>
-                        </div>
-                    </div>
-                    <div class="card" style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
-                        <h5 class="">Jumlah Konsultan</h5>
-                        <div class="">
-                            <img src="{{ asset($tPath.'img/icon/sidebar/konsultasi_dark.svg') }}" alt="" width="40"
-                                height="40">
-                            <span>{{ $jumlah_konsultan }}</span>
-                        </div>
-                    </div>
-                    <div class="card" style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
-                        <h5 class="">Jumlah Artikel</h5>
-                        <div class="">
-                            <img src="{{ asset($tPath.'img/icon/sidebar/artikel_dark.svg') }}" alt="">
-                            <span>{{ $jumlah_artikel }}</span>
+                    <div class="card">
+                        <div class="card-body mt-2 mb-5">
+                            <h5 class="card-title mt-3 "><strong>Kalender Kegiatan Eduaksi</strong></h5>
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div id="calendar"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Start popup dialog box -->
+                            <div class="modal fade" id="event_entry_modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-md" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="modalLabel">Event</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">x</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="img-container">
+                                                <div class="row">
+                                                    <div class="col-sm-12">  
+                                                        <div class="form-group">
+                                                        <label for="nama_event">Nama event</label>
+                                                        <input type="text" name="nama_event" id="nama_event" class="form-control" readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-12">  
+                                                        <div class="form-group">
+                                                        <label for="nama_tempat">Nama Tempat</label>
+                                                        <input type="text" name="nama_tempat" id="nama_tempat" class="form-control" readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-12">  
+                                                        <div class="form-group">
+                                                        <label for="deskripsi">Nama Kegiatan</label>
+                                                        <input type="text" name="deskripsi" id="deskripsi" class="form-control" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-6">  
+                                                        <div class="form-group">
+                                                        <label for="event_start_date">Tanggal Awal</label>
+                                                        <input type="date" name="event_start_date" id="event_start_date" class="form-control onlydatepicker" placeholder="Event start date" disabled>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">  
+                                                        <div class="form-group">
+                                                        <label for="event_end_date">Tanggal Selesai</label>
+                                                        <input type="date" name="event_end_date" id="event_end_date" class="form-control" placeholder="Event end date" disabled>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--<div class="modal-footer">
+                                            <button type="button" class="btn btn-primary" onclick="save_event()">Save Event</button>
+                                        </div>-->
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End popup dialog box -->
+                            {{-- @include('component.dynamic-full-calendar') --}}
                         </div>
                     </div>
                 </div>
@@ -209,12 +285,74 @@ $tPath = app()->environment('local') ? '' : '';
         </div>
     </div>
     @include('page.Components.preloader')
+    <!-- JS for jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- JS for full calender -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.js"></script>
+    <!-- bootstrap css and js -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script>
+        function display_events(dataCalender) {
+            console.log('ws kenek');
+            var Calenders = []; // Initialize empty array for events
+            // if (!dataCalender || dataCalender.length <= 0) {
+            //     var calendar = $('#calendar').fullCalendar({
+            //         defaultView: 'month',
+            //         timeZone: 'local',
+            //         editable: true,
+            //         selectable: true,
+            //         selectHelper: true,
+            //         eventClick: function(event) {
+            //             // $('#nama_event').val(event.peminjam);
+            //             // $('#nama_tempat').val(event.nama_tempat);
+            //             // $('#deskripsi').val(event.deskripsi);
+            //             // $('#event_start_date').val(moment(event.start).format('YYYY-MM-DD'));
+            //             // $('#event_end_date').val(moment(event.end).format('YYYY-MM-DD'));
+            //             // $('#event_entry_modal').modal('show');
+            //         },
+            //         events: Calenders,
+            //     });
+            //     return; // Return early if dataCalender is empty or null
+            // }
+            // Loop through each element in the dataCalender parameter
+            for (var i = 0; i < dataCalender.length; i++) {
+                var event = dataCalender[i];
+                Calenders.push({
+                    // event_id: event.id, // Assuming you have these fields
+                    nama_event: event.nama_event,
+                    deskripsi:event.deskripsi,
+                    nama_tempat:event.nama_tempat,
+                    start: event.start,
+                    end: event.end,
+                    color: event.color,
+                    url: ''
+                });
+            }
+        
+            var calendar = $('#calendar').fullCalendar({
+                defaultView: 'month',
+                timeZone: 'local',
+                editable: true,
+                selectable: true,
+                selectHelper: true,
+                eventClick: function(event) {
+                    $('#nama_event').val(event.peminjam);
+                    $('#nama_tempat').val(event.nama_tempat);
+                    $('#deskripsi').val(event.deskripsi);
+                    $('#event_start_date').val(moment(event.start).format('YYYY-MM-DD'));
+                    $('#event_end_date').val(moment(event.end).format('YYYY-MM-DD'));
+                    $('#event_entry_modal').modal('show');
+                },
+                events: Calenders,
+            });
+        }
+        display_events(<?php echo json_encode($dataKalender) ?>);
+        </script>
     <script src="{{ asset($tPath.'assets/libs/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ asset($tPath.'assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset($tPath.'assets/js/sidebarmenu.js') }}"></script>
     <script src="{{ asset($tPath.'assets/js/app.min.js') }}"></script>
-    <script src="{{ asset($tPath.'assets/libs/apexcharts/dist/apexcharts.min.js') }}"></script>
-    <script src="{{ asset($tPath.'assets/libs/simplebar/dist/simplebar.js') }}"></script>
     <script src="{{ asset($tPath.'assets/js/dashboard.js') }}"></script>
 </body>
 

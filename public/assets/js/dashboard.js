@@ -101,8 +101,8 @@ $(function () {
 
   };
 
-  var chart = new ApexCharts(document.querySelector("#chart"), chart);
-  chart.render();
+  // var chart = new ApexCharts(document.querySelector("#chart"), chart);
+  // chart.render();
 
 
   // =====================================
@@ -156,8 +156,8 @@ $(function () {
     },
   };
 
-  var chart = new ApexCharts(document.querySelector("#breakup"), breakup);
-  chart.render();
+  // var chart = new ApexCharts(document.querySelector("#breakup"), breakup);
+  // chart.render();
 
 
 
@@ -207,5 +207,5 @@ $(function () {
       },
     },
   };
-  new ApexCharts(document.querySelector("#earning"), earning).render();
+  // new ApexCharts(document.querySelector("#earning"), earning).render();
 })

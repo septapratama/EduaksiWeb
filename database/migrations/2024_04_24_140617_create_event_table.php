@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('tempat', 2000);
             $table->date('tanggal_awal');
             $table->date('tanggal_akhir');
-            $table->timestamps();
         });
     }
 
