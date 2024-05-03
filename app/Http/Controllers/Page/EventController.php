@@ -9,7 +9,7 @@ class EventController extends Controller
         if(!is_null($err)){
             return view('page.Event.data', ['error' => $err]);
         }
-        $dataEvent = app()->make(ServiceEventController::class)->dataCacheFile(null, 'get_limit',null, ['uuid', 'nama_event','tanggal_awal', 'tanggal_akhir']);
+        $dataEvent = app()->make(ServiceEventController::class)->dataCacheFile(null, 'get_limit',null, ['uuid', 'nama_event']);
         $dataShow = [
             'dataEvent' => $dataEvent,
             'userAuth' => $request->input('user_auth'),
@@ -23,12 +23,12 @@ class EventController extends Controller
         return view('page.Event.tambah',$dataShow);
     }
     public function showEdit(Request $request, $uuid){
-        $artikel = app()->make(ServiceEventController::class)->dataCacheFile(['uuid' => $uuid], 'get_limit', 1, ['uuid', 'nama_event', 'deskripsi', 'tanggal_awal', 'tanggal_akhir']);
-        if(is_null($artikel)){
+        $event = app()->make(ServiceEventController::class)->dataCacheFile(['uuid' => $uuid], 'get_limit', 1, ['uuid', 'nama_event', 'deskripsi', 'tempat', 'tanggal_awal', 'tanggal_akhir']);
+        if(is_null($event)){
             return $this->showData($request, 'Data Event tidak ditemukan');
         }
         $dataShow = [
-            'artikel' => $artikel[0],
+            'event' => $event[0],
             'userAuth' => $request->input('user_auth'),
         ];
         return view('page.Event.edit',$dataShow);

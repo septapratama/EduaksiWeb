@@ -7,7 +7,7 @@ $tPath = app()->environment('local') ? '' : '';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tambah Artikel | EduAksi</title>
+    <title>Tambah Acara | EduAksi</title>
     <link rel="shortcut icon" type="image/png" href="{{ asset($tPath.'img/icon/icon.png') }}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
@@ -15,7 +15,7 @@ $tPath = app()->environment('local') ? '' : '';
     <link rel="stylesheet" href="{{ asset($tPath.'assets/css/styles.min.css') }}" />
     <link rel="stylesheet" href="{{ asset($tPath.'css/popup.css') }}" />
     <link rel="stylesheet" href="{{ asset($tPath.'css/preloader.css') }}" />
-    <link rel="stylesheet" href="{{ asset($tPath.'css/page/tambahData.css') }}" />
+    <link rel="stylesheet" href="{{ asset($tPath.'css/page/tambahAcara.css') }}" />
 </head>
 
 <body>
@@ -30,7 +30,6 @@ $tPath = app()->environment('local') ? '' : '';
     @endif
     <script>
     const domain = window.location.protocol + '//' + window.location.hostname + ":" + window.location.port;
-    const reff = '/article';
     var csrfToken = "{{ csrf_token() }}";
     var email = "{{ $userAuth['email'] }}";
     var number = "{{ $userAuth['number'] }}";
@@ -51,12 +50,12 @@ $tPath = app()->environment('local') ? '' : '';
             <!--  Header End -->
             <div class="container-fluid" style="background-color: #F6F9FF">
                 <div class="pagetitle">
-                    <h1>Tambah Artikel</h1>
+                    <h1>Tambah Acara</h1>
                     <nav>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="/dashboard">Beranda</a></li>
-                            <li class="breadcrumb-item"><a href="/article">Kelola Artikel</a></li>
-                            <li class="breadcrumb-item">Tambah Artikel</li>
+                            <li class="breadcrumb-item"><a href="/acara">Kelola Acara</a></li>
+                            <li class="breadcrumb-item">Tambah Acara</li>
                         </ol>
                     </nav>
                 </div>
@@ -64,39 +63,29 @@ $tPath = app()->environment('local') ? '' : '';
                     style="background-color: #ffffff; border-radius: 20px; box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
                     <form id="tambahForm">
                         <div class="crow">
-                            <label for="">Judul Artikel</label>
-                            <input type="text" id="inpJudul">
+                            <label for="">Nama Acara</label>
+                            <input type="text" id="inpNamaEvent">
                         </div>
                         <div class="crow">
                             <div>
-                                <label for="">Kategori</label>
-                                <select class="" aria-label="Default select example" id="inpKategori">
-                                    <option value="" selected>Pilih Kategori</option>
-                                    <option value="disi">Digital Literasi</option>
-                                    <option value="emotal">Emosi Mental</option>
-                                    <option value="nutrisi">Nutrisi</option>
-                                    <option value="pengasuhan">Pengasuhan</option>
-                                </select>
+                                <label for="">Tanggal mulai</label>
+                                <input type="date" id="tanggal_awal">
                             </div>
                             <div>
-                                <label for="">Link Video</label>
-                                <input type="text" id="inpLinkVideo">
+                                <label for="">Tanggal selesai</label>
+                                <input type="date" id="tanggal_akhir">
                             </div>
                         </div>
                         <div class="crow">
-                            <label for="">Deskripsi</label>
-                            <textarea name="deskripsi" id="inpDeskripsi" placeholder="Masukkan Isi Artikel" class=""
-                                style="height:120px"></textarea>
-                        </div>
-                        <div class="img" onclick="handleFileClick()" ondragover="handleDragOver(event)"
-                            ondrop="handleDrop(event)">
-                            <img src="{{ asset($tPath.'img/icon/upload.svg') }}" alt="" id="icon">
-                            <span>Pilih File atau Jatuhkan File</span>
-                            <input type="file" id="inpFoto" hidden onchange="handleFileChange(event)">
-                            <img src="" alt="" id="file" style="display:none">
+                            <label for="">Tempat Acara</label>
+                            <input type="text" id="inpTempat">
                         </div>
                         <div class="crow">
-                            <a href="/article" class="btn btn-danger">Kembali</a>
+                            <label for="">Deskripsi Acara</label>
+                            <textarea name="deskripsi" id="inpDeskripsi" placeholder="Masukkan Deskripsi Acara" class=""></textarea>
+                        </div>
+                        <div class="crow">
+                            <a href="/acara" class="btn btn-danger">Kembali</a>
                             <button type="submit" class="btn btn-success">
                                 <img src="{{ asset($tPath.'img/icon/tambah.svg') }}" alt="" width="30" height="30">
                                 <span>Tambah</span>
@@ -111,14 +100,16 @@ $tPath = app()->environment('local') ? '' : '';
     @include('page.Components.preloader')
     <div id="greenPopup" style="display:none"></div>
     <div id="redPopup" style="display:none"></div>
+    <script>
+        const currentDate = new Date();
+        document.getElementById('tanggal_awal').value = currentDate.toISOString().split('T')[0];
+        document.getElementById('tanggal_akhir').value = currentDate.toISOString().split('T')[0];
+    </script>
     <script src="{{ asset($tPath.'assets/libs/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ asset($tPath.'assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset($tPath.'assets/js/sidebarmenu.js') }}"></script>
     <script src="{{ asset($tPath.'assets/js/app.min.js') }}"></script>
-    <script src="{{ asset($tPath.'assets/libs/apexcharts/dist/apexcharts.min.js') }}"></script>
-    <script src="{{ asset($tPath.'assets/libs/simplebar/dist/simplebar.js') }}"></script>
-    <script src="{{ asset($tPath.'assets/js/dashboard.js') }}"></script>
-    <script src="{{ asset($tPath.'js/page/tambahData.js') }}"></script>
+    <script src="{{ asset($tPath.'js/page/tambahAcara.js') }}"></script>
     <script src="{{ asset($tPath.'js/popup.js') }}"></script>
 </body>
 

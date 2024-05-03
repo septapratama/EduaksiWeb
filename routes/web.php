@@ -28,8 +28,8 @@ Route::group(['middleware'=>['auth','authorized']],function(){
         Route::get('/',[ShowHomeController::class,'showArtikel']);
         Route::get('/{any}',[ShowHomeController::class,'showDetailArtikel']);
     });
-    //event only admin route
-    Route::group(['prefix'=>'/event'],function(){
+    //acara only admin route
+    Route::group(['prefix'=>'/acara'],function(){
         Route::get('/',[ShowEventController::class, 'showData']);
         Route::get('/tambah',[ShowEventController::class, 'showTambah']);
         Route::get('/edit/{any}',[ShowEventController::class, 'showEdit']);

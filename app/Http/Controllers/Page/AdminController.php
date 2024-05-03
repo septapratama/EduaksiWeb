@@ -76,7 +76,8 @@ class AdminController extends Controller
         // Event::select('id_sewa', 'nama_event', 'deskripsi', 'tempaat', DB::raw('DATE(tanggal_awal) AS start_date'), DB::raw('DATE(tanggal_akhir) AS end_date'))->where('status', 'diajukan')->get()->map();
         unset($request->input('user_auth')['foto']);
         $dataShow = [
-            'dataKalender' => [],
+            'dataKalender' => app()->make(EventController::class)->dataCacheFile(null, 'get_kalender', null, ['nama_event', 'deskripsi', 'tempat', 'tanggal_awal', 'tanggal_akhir'], ['nama_event', 'deskripsi', 'nama_tempat', 'start', 'end']),
+            // 'dataKalender' => [],
             // 'dataKalender' => array_map(function($item){
             //     $item['start'] = Carbon::parse($item['start'])->format('Y-m-d');
             //     $item['end'] = Carbon::parse($item['end'])->format('Y-m-d');

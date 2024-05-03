@@ -23,10 +23,6 @@ class EmotalController extends Controller
         //check if file exist
         if (!$fileExist) {
             //if file is delete will make new json file
-            $directory = dirname(self::$jsonFile);
-            if (!is_dir($directory)) {
-                mkdir($directory, 0755, true);
-            }
             $emotalData = json_decode(Emotal::get(),true);
             foreach ($emotalData as &$item) {
                 unset($item['id_emotal']);

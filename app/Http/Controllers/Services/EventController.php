@@ -12,9 +12,13 @@ class EventController extends Controller
 {
     private static $jsonFile;
     public function __construct(){
-        self::$jsonFile = storage_path('app/database/event.json');
+        self::$jsonFile = storage_path('app/database/acara.json');
     }
     public function dataCacheFile($data = null, $con, $limit = null, $col = null, $alias = null){
+        $directory = storage_path('app/database');
+        if (!file_exists($directory)) {
+            mkdir($directory, 0755, true);
+        }
         $fileExist = file_exists(self::$jsonFile);
         //check if file exist
         if (!$fileExist) {
@@ -122,11 +126,11 @@ class EventController extends Controller
                 if (isset($item['uuid']) && $item['uuid'] == $data['uuid']) {
                     $newData = [
                         'uuid' => $data['uuid'],
-                        'judul' => $data['judul'],
+                        'nama_event' => $data['nama_event'],
                         'deskripsi' => $data['deskripsi'],
-                        'link_video' => $data['link_video'],
-                        'kategori' => $data['kategori'],
-                        'foto' => $data['foto'],
+                        'tempat' => $data['tempat'],
+                        'tanggal_awal' => $data['tanggal_awal'],
+                        'tanggal_akhir' => $data['tanggal_akhir'],
                     ];
                     $jsonData[$key] = $newData;
                     break;
@@ -134,12 +138,6 @@ class EventController extends Controller
             }
             $jsonData = array_values($jsonData);
             file_put_contents(self::$jsonFile,json_encode($jsonData, JSON_PRETTY_PRINT));
-            // 'id' => $item['uuid'],
-            // 'nama_event' => $item['nama_event'],
-            // 'deskripsi' => $item['deskripsi'],
-            // 'tempat' => $item['tempaat'],
-            // 'start_date' => $item['tanggal_awal'],
-            // 'end_date' => $item['tanggal_akhir'],
         }else if($con == 'hapus'){
             //hapus event data
             $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
@@ -184,12 +182,15 @@ class EventController extends Controller
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
         $uuid = Str::uuid();
-        $eventI = Event::create([
+        $eventI = Event::insert([
+            'uuid' => $uuid,
             'nama_event' => $request->input('nama_event'),
             'deskripsi' => $request->input('deskripsi'),
-            'tempat_event' => $request->input('tempat_event'),
-            'tanggal_awal' => Carbon::createFromFormat('d-m-Y', $request->input('tanggal_awal'))->format('Y-m-d'),
-            'tanggal_akhir' => Carbon::createFromFormat('d-m-Y', $request->input('tanggal_akhir'))->format('Y-m-d'),
+            'tempat' => $request->input('tempat'),
+            'tanggal_awal' => $request->input('tanggal_awal'),
+            'tanggal_akhir' => $request->input('tanggal_akhir'),
+            // 'tanggal_awal' => Carbon::createFromFormat('d-m-Y', $request->input('tanggal_awal'))->format('Y-m-d'),
+            // 'tanggal_akhir' => Carbon::createFromFormat('d-m-Y', $request->input('tanggal_akhir'))->format('Y-m-d'),
         ]);
         if (!$eventI) {
             return response()->json(['status' => 'error', 'message' => 'Gagal menambahkan data Event'], 500);
@@ -198,9 +199,11 @@ class EventController extends Controller
             'uuid' => $uuid,
             'nama_event' => $request->input('nama_event'),
             'deskripsi' => $request->input('deskripsi'),
-            'tempat_event' => $request->input('tempat_event'),
-            'tanggal_awal' => Carbon::createFromFormat('d-m-Y', $request->input('tanggal_awal'))->format('Y-m-d'),
-            'tanggal_akhir' => Carbon::createFromFormat('d-m-Y', $request->input('tanggal_akhir'))->format('Y-m-d'),
+            'tempat' => $request->input('tempat'),
+            'tanggal_awal' => $request->input('tanggal_awal'),
+            'tanggal_akhir' => $request->input('tanggal_akhir'),
+            // 'tanggal_awal' => Carbon::createFromFormat('d-m-Y', $request->input('tanggal_awal'))->format('Y-m-d'),
+            // 'tanggal_akhir' => Carbon::createFromFormat('d-m-Y', $request->input('tanggal_akhir'))->format('Y-m-d'),
         ],'tambah');
         return response()->json(['status'=>'success','message'=>'Data Event berhasil ditambahkan']);
     }
@@ -235,26 +238,31 @@ class EventController extends Controller
             }
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
-        $event = Event::select('foto')->where('uuid',$request->input('uuid'))->limit(1)->get()[0];
+        $event = Event::select('tanggal_akhir')->where('uuid',$request->input('uuid'))->limit(1)->get()[0];
         if (!$event) {
             return response()->json(['status' =>'error','message'=>'Data Event tidak ditemukan'], 400);
         }
         $edit = $event->where('uuid',$request->input('uuid'))->update([
             'nama_event' => $request->input('nama_event'),
             'deskripsi' => $request->input('deskripsi'),
-            'tempat_event' => $request->input('tempat_event'),
-            'tanggal_awal' => Carbon::createFromFormat('d-m-Y', $request->input('tanggal_awal'))->format('Y-m-d'),
-            'tanggal_akhir' => Carbon::createFromFormat('d-m-Y', $request->input('tanggal_akhir'))->format('Y-m-d'),
+            'tempat' => $request->input('tempat'),
+            'tanggal_awal' => $request->input('tanggal_awal'),
+            'tanggal_akhir' => $request->input('tanggal_akhir'),
+            // 'tanggal_awal' => Carbon::createFromFormat('d-m-Y', $request->input('tanggal_awal'))->format('Y-m-d'),
+            // 'tanggal_akhir' => Carbon::createFromFormat('d-m-Y', $request->input('tanggal_akhir'))->format('Y-m-d'),
         ]);
         if(!$edit){
             return response()->json(['status' =>'error','message'=>'Gagal memperbarui data Event'], 500);
         }
         $this->dataCacheFile([
+            'uuid' => $request->input('uuid'),
             'nama_event' => $request->input('nama_event'),
             'deskripsi' => $request->input('deskripsi'),
-            'tempat_event' => $request->input('tempat_event'),
-            'tanggal_awal' => Carbon::createFromFormat('d-m-Y', $request->input('tanggal_awal'))->format('Y-m-d'),
-            'tanggal_akhir' => Carbon::createFromFormat('d-m-Y', $request->input('tanggal_akhir'))->format('Y-m-d'),
+            'tempat' => $request->input('tempat'),
+            'tanggal_awal' => $request->input('tanggal_awal'),
+            'tanggal_akhir' => $request->input('tanggal_akhir'),
+            // 'tanggal_awal' => Carbon::createFromFormat('d-m-Y', $request->input('tanggal_awal'))->format('Y-m-d'),
+            // 'tanggal_akhir' => Carbon::createFromFormat('d-m-Y', $request->input('tanggal_akhir'))->format('Y-m-d'),
         ],'update');
         return response()->json(['status' =>'success','message'=>'Data Event berhasil di perbarui']);
     }
@@ -272,7 +280,7 @@ class EventController extends Controller
             }
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
-        $event = Event::select('foto')->where('uuid',$request->input('uuid'))->limit(1)->get()[0];
+        $event = Event::select('tanggal_akhir')->where('uuid',$request->input('uuid'))->limit(1)->get()[0];
         if (!$event) {
             return response()->json(['status' => 'error', 'message' => 'Data Event tidak ditemukan'], 400);
         }

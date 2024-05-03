@@ -83,7 +83,7 @@
                 </li>
 
                 <li class="sidebar-item {{ $nav == 'event' ? 'selected' : ''}}">
-                    <a class="sidebar-link {{ $nav == 'event' ? 'active' : ''}}" href="/event"
+                    <a class="sidebar-link {{ $nav == 'event' ? 'active' : ''}}" href="/acara"
                         aria-expanded="false">
                         <img src="{{ asset($tPath.'img/icon/sidebar/event.svg') }}" alt="" width="30" height="30" style="display: {{ $nav == 'event' ? 'block' : 'none'}}" class="white">
                         <img src="{{ asset($tPath.'img/icon/sidebar/event_dark.svg') }}" alt="" width="30" height="30" style="display: {{ $nav == 'event' ? 'none' : 'block'}}" class="dark">

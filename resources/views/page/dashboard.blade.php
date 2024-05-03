@@ -9,15 +9,19 @@ $tPath = app()->environment('local') ? '' : '';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard | EduAksi</title>
     <link rel="shortcut icon" type="image/png" href="{{ asset($tPath.'img/icon/icon.png') }}" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{{ asset($tPath.'assets/css/styles.min.css') }}" />
     <link rel="stylesheet" href="{{ asset($tPath.'css/preloader.css') }}" />
     <!-- CSS for full calender -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
     <style>
+    body img{
+            pointer-events: none;
+        }
+    a:hover{
+        text-decoration: none;
+    }
     #kotak {
         display: flex;
         flex-direction: column;
@@ -25,37 +29,47 @@ $tPath = app()->environment('local') ? '' : '';
         gap: 30px;
     }
     #kotak #carousel{
+        /* overflow-x: hidden; */
+        overflow-x: auto;
         display: flex;
+        gap: 10px;
     }
     .cardC {
-        width: 47%;
+        flex-shrink: 0;
         height: 200px;
+        width: 200px;
+        /* width: 46.2%; */
         display: flex;
+        flex-direction: column;
         justify-content: center;
         margin-bottom: 0px;
+        background-color: green;
     }
     .cardC h5,
     .cardC div {
         position: relative;
         display: flex;
-        left: 8%;
+        /* left: 8%; */
         color: black;
         font-weight: 600;
     }
     .cardC h5 {
+        /* background-color: blue; */
         font-size: 24px;
         width:max-content;
         height:max-content;
     }
     .cardC div {
+        /* background-color: red; */
         display: flex;
         gap: 3%;
+        justify-content:space-around;
         align-items: center;
-        font-size: 22px;
+        font-size: 30px;
     }
     .cardC img{
-        width: 40px;
-        height: 40px;
+        width: 60px;
+        height: 60px;
     }
     @media screen and (min-width: 700px) and (max-width: 1100px) {
         #kotak {
@@ -226,7 +240,7 @@ $tPath = app()->environment('local') ? '' : '';
                                 <div class="modal-dialog modal-md" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="modalLabel">Event</h5>
+                                            <h5 class="modal-title" id="modalLabel">Acara</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">x</span>
                                             </button>
@@ -236,7 +250,7 @@ $tPath = app()->environment('local') ? '' : '';
                                                 <div class="row">
                                                     <div class="col-sm-12">  
                                                         <div class="form-group">
-                                                        <label for="nama_event">Nama event</label>
+                                                        <label for="nama_event">Nama acara</label>
                                                         <input type="text" name="nama_event" id="nama_event" class="form-control" readonly>
                                                         </div>
                                                     </div>
@@ -257,20 +271,20 @@ $tPath = app()->environment('local') ? '' : '';
                                                     <div class="col-sm-6">  
                                                         <div class="form-group">
                                                         <label for="event_start_date">Tanggal Awal</label>
-                                                        <input type="date" name="event_start_date" id="event_start_date" class="form-control onlydatepicker" placeholder="Event start date" disabled>
+                                                        <input type="date" name="event_start_date" id="event_start_date" class="form-control onlydatepicker" placeholder="Acara start date" disabled>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-6">  
                                                         <div class="form-group">
                                                         <label for="event_end_date">Tanggal Selesai</label>
-                                                        <input type="date" name="event_end_date" id="event_end_date" class="form-control" placeholder="Event end date" disabled>
+                                                        <input type="date" name="event_end_date" id="event_end_date" class="form-control" placeholder="Acara end date" disabled>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <!--<div class="modal-footer">
-                                            <button type="button" class="btn btn-primary" onclick="save_event()">Save Event</button>
+                                            <button type="button" class="btn btn-primary" onclick="save_event()">Save Acara</button>
                                         </div>-->
                                     </div>
                                 </div>
@@ -294,38 +308,17 @@ $tPath = app()->environment('local') ? '' : '';
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script>
         function display_events(dataCalender) {
-            console.log('ws kenek');
-            var Calenders = []; // Initialize empty array for events
-            // if (!dataCalender || dataCalender.length <= 0) {
-            //     var calendar = $('#calendar').fullCalendar({
-            //         defaultView: 'month',
-            //         timeZone: 'local',
-            //         editable: true,
-            //         selectable: true,
-            //         selectHelper: true,
-            //         eventClick: function(event) {
-            //             // $('#nama_event').val(event.peminjam);
-            //             // $('#nama_tempat').val(event.nama_tempat);
-            //             // $('#deskripsi').val(event.deskripsi);
-            //             // $('#event_start_date').val(moment(event.start).format('YYYY-MM-DD'));
-            //             // $('#event_end_date').val(moment(event.end).format('YYYY-MM-DD'));
-            //             // $('#event_entry_modal').modal('show');
-            //         },
-            //         events: Calenders,
-            //     });
-            //     return; // Return early if dataCalender is empty or null
-            // }
-            // Loop through each element in the dataCalender parameter
+            var Calenders = [];
             for (var i = 0; i < dataCalender.length; i++) {
-                var event = dataCalender[i];
+                var acara = dataCalender[i];
                 Calenders.push({
-                    // event_id: event.id, // Assuming you have these fields
-                    nama_event: event.nama_event,
-                    deskripsi:event.deskripsi,
-                    nama_tempat:event.nama_tempat,
-                    start: event.start,
-                    end: event.end,
-                    color: event.color,
+                    // event_id: acara.id, // Assuming you have these fields
+                    nama_event: acara.nama_event,
+                    deskripsi:acara.deskripsi,
+                    nama_tempat:acara.nama_tempat,
+                    start: acara.start,
+                    end: acara.end,
+                    color: acara.color,
                     url: ''
                 });
             }
@@ -336,19 +329,19 @@ $tPath = app()->environment('local') ? '' : '';
                 editable: true,
                 selectable: true,
                 selectHelper: true,
-                eventClick: function(event) {
-                    $('#nama_event').val(event.peminjam);
-                    $('#nama_tempat').val(event.nama_tempat);
-                    $('#deskripsi').val(event.deskripsi);
-                    $('#event_start_date').val(moment(event.start).format('YYYY-MM-DD'));
-                    $('#event_end_date').val(moment(event.end).format('YYYY-MM-DD'));
+                eventClick: function(acara) {
+                    $('#nama_event').val(acara.nama_event);
+                    $('#nama_tempat').val(acara.nama_tempat);
+                    $('#deskripsi').val(acara.deskripsi);
+                    $('#event_start_date').val(moment(acara.start).format('YYYY-MM-DD'));
+                    $('#event_end_date').val(moment(acara.end).format('YYYY-MM-DD'));
                     $('#event_entry_modal').modal('show');
                 },
                 events: Calenders,
             });
         }
         display_events(<?php echo json_encode($dataKalender) ?>);
-        </script>
+    </script>
     <script src="{{ asset($tPath.'assets/libs/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ asset($tPath.'assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset($tPath.'assets/js/sidebarmenu.js') }}"></script>
