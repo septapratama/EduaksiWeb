@@ -17,8 +17,8 @@ $tPath = app()->environment('local') ? '' : '';
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
     <style>
     body img{
-            pointer-events: none;
-        }
+        pointer-events: none;
+    }
     a:hover{
         text-decoration: none;
     }
@@ -33,43 +33,61 @@ $tPath = app()->environment('local') ? '' : '';
         overflow-x: auto;
         display: flex;
         gap: 10px;
+        -ms-overflow-style: none;
+        scrollbar-width: none; 
+    }
+    #kotak #carousel::-webkit-scrollbar {
+        display: none;
     }
     .cardC {
         flex-shrink: 0;
-        height: 200px;
-        width: 200px;
+        width: 180px;
+        height: 120px;
         /* width: 46.2%; */
         display: flex;
         flex-direction: column;
         justify-content: center;
         margin-bottom: 0px;
         background-color: green;
+        border-radius: 20px;
     }
     .cardC h5,
     .cardC div {
+        color:white;
         position: relative;
         display: flex;
-        /* left: 8%; */
-        color: black;
         font-weight: 600;
     }
     .cardC h5 {
-        /* background-color: blue; */
         font-size: 24px;
         width:max-content;
         height:max-content;
+        margin-left: auto;
+        margin-right: auto;
     }
     .cardC div {
-        /* background-color: red; */
+        margin-left: auto;
+        margin-right: auto;
         display: flex;
-        gap: 3%;
-        justify-content:space-around;
         align-items: center;
         font-size: 30px;
+        gap:30px;
+    }
+    .cardC:nth-child(3) h5{
+        font-size: 24px;
+    }
+    .cardC:nth-child(4) h5{
+        font-size: 19px;
+    }
+    .cardC:nth-child(5) h5{
+        font-size: 19px;
     }
     .cardC img{
         width: 60px;
         height: 60px;
+    }
+    .cardC span{
+        font-size: 30px;
     }
     @media screen and (min-width: 700px) and (max-width: 1100px) {
         #kotak {
@@ -80,10 +98,10 @@ $tPath = app()->environment('local') ? '' : '';
             height: 100px;
             margin-bottom: 0px;
         }
-        .cardC h5 {
+        /* .cardC h5 {
             font-size: 21px;
             font-weight: 600;
-        }
+        } */
         .cardC div {
             gap: 4%;
             font-size: 21px;
@@ -102,10 +120,10 @@ $tPath = app()->environment('local') ? '' : '';
             height: 100px;
             margin-bottom: 0px;
         }
-        .cardC h5 {
+        /* .cardC h5 {
             font-size: 19px;
             font-weight: 600;
-        }
+        } */
         .cardC div {
             gap: 5%;
             font-size: 19px;
@@ -183,28 +201,28 @@ $tPath = app()->environment('local') ? '' : '';
                         <div class="cardC" style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
                             <h5 class="">Jumlah Disi</h5>
                             <div class="">
-                                <img src="{{ asset($tPath.'img/icon/sidebar/disi_dark.svg') }}" alt="">
+                                <img src="{{ asset($tPath.'img/icon/sidebar/disi.svg') }}" alt="">
                                 <span>{{ $jumlah_disi }}</span>
                             </div>
                         </div>
                         <div class="cardC" style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
                             <h5 class="">Jumlah Emotal</h5>
                             <div class="">
-                                <img src="{{ asset($tPath.'img/icon/sidebar/emotal_dark.svg') }}" alt="">
+                                <img src="{{ asset($tPath.'img/icon/sidebar/emotal.svg') }}" alt="">
                                 <span>{{ $jumlah_emotal }}</span>
                             </div>
                         </div>
                         <div class="cardC" style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
                             <h5 class="">Jumlah Nutrisi</h5>
                             <div class="">
-                                <img src="{{ asset($tPath.'img/icon/sidebar/nutrisi_dark.svg') }}" alt="">
+                                <img src="{{ asset($tPath.'img/icon/sidebar/nutrisi.svg') }}" alt="">
                                 <span>{{ $jumlah_nutrisi }}</span>
                             </div>
                         </div>
                         <div class="cardC" style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
                             <h5 class="">Jumlah Pengasuhan</h5>
                             <div class="">
-                                <img src="{{ asset($tPath.'img/icon/sidebar/pengasuhan_dark.svg') }}" alt="" width="40"
+                                <img src="{{ asset($tPath.'img/icon/sidebar/pengasuhan.svg') }}" alt="" width="40"
                                     height="40">
                                 <span>{{ $jumlah_pengasuhan }}</span>
                             </div>
@@ -212,7 +230,7 @@ $tPath = app()->environment('local') ? '' : '';
                         <div class="cardC" style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
                             <h5 class="">Jumlah Konsultan</h5>
                             <div class="">
-                                <img src="{{ asset($tPath.'img/icon/sidebar/konsultasi_dark.svg') }}" alt="" width="40"
+                                <img src="{{ asset($tPath.'img/icon/sidebar/konsultasi.svg') }}" alt="" width="40"
                                     height="40">
                                 <span>{{ $jumlah_konsultan }}</span>
                             </div>
@@ -220,7 +238,7 @@ $tPath = app()->environment('local') ? '' : '';
                         <div class="cardC" style="box-shadow: rgba(145,158,171,0.2) 0px 0px 2px 0px, rgba(145,158,171,0.12) 0px 12px 24px -4px;">
                             <h5 class="">Jumlah Artikel</h5>
                             <div class="">
-                                <img src="{{ asset($tPath.'img/icon/sidebar/artikel_dark.svg') }}" alt="">
+                                <img src="{{ asset($tPath.'img/icon/sidebar/artikel.svg') }}" alt="">
                                 <span>{{ $jumlah_artikel }}</span>
                             </div>
                         </div>
