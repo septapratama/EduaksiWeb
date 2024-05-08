@@ -13,22 +13,26 @@ use App\Http\Controllers\Mobile\Auth\LoginController AS MobileLoginController;
 use App\Http\Controllers\Mobile\Auth\RegisterController AS MobileRegisterController;
 
 Route::group(['prefix'=>'/mobile','middleware'=>'authMobile','authorized'],function(){
-    Route::group(['prefix'=>'/send'],function(){
+    Route::group(['prefix'=>'/verify'],function(){
         Route::group(['prefix'=>'/create'],function(){
-            Route::post('/password',[MailController::class, 'createForgotPassword']);
-            Route::post('/email',[MailController::class, 'createVerifyEmail']);
+            Route::post('/password',[MailController::class, 'createForgotPassword'])->withoutMiddleware(['authMobile', 'authorized']);
+            Route::post('/email',[MailController::class, 'createVerifyEmail'])->withoutMiddleware(['authMobile', 'authorized']);
+        });
+        Route::group(['prefix'=>'/create'],function(){
+            Route::post('/password',[MailController::class, 'createForgotPassword'])->withoutMiddleware(['authMobile', 'authorized']);
+            Route::post('/email',[MailController::class, 'createVerifyEmail'])->withoutMiddleware(['authMobile', 'authorized']);
         });
         Route::group(['prefix'=>'/password'],function(){
-            Route::get('/{any?}',[MasyarakatController::class, 'getChangePass'])->where('any','.*');
-            Route::post('/',[MasyarakatController::class, 'changePassEmail']);
+            Route::get('/{any?}',[MasyarakatController::class, 'getChangePass'])->where('any','.*')->withoutMiddleware(['authMobile', 'authorized']);
+            Route::post('/',[MasyarakatController::class, 'changePassEmail'])->withoutMiddleware(['authMobile', 'authorized']);
         });
         Route::group(['prefix'=>'/email'],function(){
-            Route::get('/{any?}',[MasyarakatController::class, 'verifyEmail'])->where('any','.*');
-            Route::post('/',[MasyarakatController::class, 'verifyEmail']);
+            Route::get('/{any?}',[MasyarakatController::class, 'verifyEmail'])->where('any','.*')->withoutMiddleware(['authMobile', 'authorized']);
+            Route::post('/',[MasyarakatController::class, 'verifyEmail'])->withoutMiddleware(['authMobile', 'authorized']);
         });
         Route::group(['prefix'=>'/otp'],function(){
-            Route::post('/password',[MasyarakatController::class, 'getChangePass']);
-            Route::post('/email',[MasyarakatController::class, 'verifyEmail']);
+            Route::post('/password',[MasyarakatController::class, 'getChangePass'])->withoutMiddleware(['authMobile', 'authorized']);
+            Route::post('/email',[MasyarakatController::class, 'verifyEmail'])->withoutMiddleware(['authMobile', 'authorized']);
         });
     });
     Route::group(['prefix'=>'/users'],function(){

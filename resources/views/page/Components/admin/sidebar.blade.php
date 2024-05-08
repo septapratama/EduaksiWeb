@@ -87,7 +87,7 @@
                         aria-expanded="false">
                         <img src="{{ asset($tPath.'img/icon/sidebar/event.svg') }}" alt="" width="30" height="30" style="display: {{ $nav == 'event' ? 'block' : 'none'}}" class="white">
                         <img src="{{ asset($tPath.'img/icon/sidebar/event_dark.svg') }}" alt="" width="30" height="30" style="display: {{ $nav == 'event' ? 'none' : 'block'}}" class="dark">
-                        <span class="hide-menu">Kelola Event</span>
+                        <span class="hide-menu">Kelola Acara</span>
                     </a>
                 </li>
 

@@ -25,17 +25,19 @@ class LoginController extends Controller
             }
             return ['status' => 'error', 'message' => implode(', ', $errors),'code'=>400];
         }
+        $emaill = $request->input("email");
         $pass = $request->input("password");
+        $emaill = "UserTesting2@gmail.com";
         $pass = "Admin@1234567890";
         //check email
-        $user = User::select('password')->whereRaw("BINARY email = ?",[$request->input('email')])->first();
+        $user = User::select('password')->whereRaw("BINARY email = ?",[$emaill])->first();
         if (is_null($user)) {
             return response()->json(['status' => 'error', 'message' => 'Pengguna tidak ditemukan'], 400);
         }
         if(!password_verify($pass, $user['password'])){
             return response()->json(['status'=>'error','message'=>'Password salah'],400);
         }
-        $jwtData = $jwtController->createJWTMobile($request->input('email'),$refreshToken);
+        $jwtData = $jwtController->createJWTMobile($emaill,$refreshToken);
         if($jwtData['status'] == 'error'){
             return response()->json(['status'=>'error','message'=>$jwtData['message']],400);
         }

@@ -79,18 +79,13 @@ tambahForm.onsubmit = function (event) {
     const formData = new FormData();
     formData.append("judul", judul);
     if (reff == "/article") {
-        // if (kategori === "") {
-        //     showRedPopup("Kategori harus diisi !");
+    } else {
+        // const rentangUsia = inpRentangUsia.value.trim();
+        // if (rentangUsia === "") {
+        //     showRedPopup("Rentang Usia harus diisi !");
         //     return;
         // }
-        // formData.append("kategori", kategori);
-    } else {
-        const rentangUsia = inpRentangUsia.value.trim();
-        if (rentangUsia === "") {
-            showRedPopup("Rentang Usia harus diisi !");
-            return;
-        }
-        formData.append("rentang_usia", rentangUsia);
+        // formData.append("rentang_usia", rentangUsia);
     }
     formData.append("link_video", linkVideo);
     formData.append("deskripsi", deskripsi);
