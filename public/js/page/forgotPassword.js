@@ -213,7 +213,6 @@ verifyChangeForm.onsubmit = function(event){
             link:link,
             password:passInput.value,
             password_confirm:passNewInput.value,
-            description:description
         };
     }else{
         requestBody = {
@@ -221,7 +220,6 @@ verifyChangeForm.onsubmit = function(event){
             code:otp,
             password:passInput.value,
             password_confirm:passNewInput.value,
-            description:'changePass'
         };
     }
     var xhr = new XMLHttpRequest();

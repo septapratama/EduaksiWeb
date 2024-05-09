@@ -34,15 +34,15 @@ class MasyarakatController extends Controller
         $email = $request->input('email');
         $code = $request->input('code');
         //check email on table user
-        $user = User::select('nama_lengkap')->whereRaw("BINARY email = ?",[$request->input('email')])->limit(1)->get()[0];
-        if (!$user) {
+        $user = User::select('nama_lengkap')->whereRaw("BINARY email = ?",[$request->input('email')])->first();
+        if (is_null($user)) {
             return response()->json(['status'=>'error','message'=>'Email tidak terdaftar !'],400);
         }
         if(Str::startsWith($request->path(), 'verify/password') && $request->isMethod('get')){
             $email = $request->query('email');
             //check if user have create reset password
-            $verify = Verifikasi::select('link','updated_at')->whereRaw("BINARY email = ?",[$request->input('email')])->where('deskripsi', 'email')->limit(1)->get()[0];
-            if (!$verify) {
+            $verify = Verifikasi::select('link', 'send','updated_at')->whereRaw("BINARY email = ?",[$request->input('email')])->where('deskripsi', 'password')->first();
+            if (is_null($verify)) {
                 return response()->json(['status'=>'error','message'=>'Email invalid'],400);
             }
             if ($verify->link !== $any) {
@@ -50,24 +50,22 @@ class MasyarakatController extends Controller
             }
             //check if mail not expired
             $expTime = MailController::getConditionOTP()[($verify->send - 1)];
-            if (!Carbon::parse($verify->updated_at)->diffInMinutes(Carbon::now()) >= $expTime) {
-                $deleted = DB::table('verifikasi')->whereRaw("BINARY email = ? AND deskripsi = 'password'", [$email])->delete();
+            if (Carbon::parse($verify->updated_at)->diffInMinutes(Carbon::now()) >= $expTime) {
                 return response()->json(['status'=>'error','message'=>'link expired'],400);
             }
             return response()->json(['status'=>'success','message'=>'otp anda benar silahkan ganti password']);
         }else{
             //check if user have create reset password
-            $verify = Verifikasi::select('kode_otp','updated_at')->whereRaw("BINARY email = ?",[$request->input('email')])->where('deskripsi', 'email')->limit(1)->get()[0];
-            if (!$verify) {
+            $verify = Verifikasi::select('kode_otp', 'send','updated_at')->whereRaw("BINARY email = ?",[$request->input('email')])->where('deskripsi', 'password')->first();
+            if (is_null($verify)) {
                 return response()->json(['status'=>'error','message'=>'Email invalid'],400);
             }
-            if ($verify['kode_otp'] !== $code) {
+            if ($verify['kode_otp'] != $code) {
                 return response()->json(['status'=>'error','message'=>'Kode OTP invalid'],400);
             }
             //check if mail not expired
             $expTime = MailController::getConditionOTP()[($verify->send - 1)];
-            if (!Carbon::parse($verify->updated_at)->diffInMinutes(Carbon::now()) >= $expTime) {
-                $deleted = DB::table('verifikasi')->whereRaw("BINARY email = ? AND deskripsi = 'password'", [$email])->delete();
+            if (Carbon::parse($verify->updated_at)->diffInMinutes(Carbon::now()) >= $expTime) {
                 return response()->json(['status'=>'error','message'=>'Kode otp expired'],400);
             }
             return response()->json(['status'=>'success','message'=>'otp anda benar silahkan ganti password']);
@@ -76,7 +74,6 @@ class MasyarakatController extends Controller
     public function changePassEmail(Request $request, User $user, JWTController $jwtController, RefreshToken $refreshToken){
         $validator = Validator::make($request->all(), [
             'email'=>'required|email',
-            'nama'=>'nullable',
             'password' => [
                 'required',
                 'string',
@@ -93,7 +90,6 @@ class MasyarakatController extends Controller
             ],
             'code' => 'nullable',
             'link' => 'nullable',
-            'description'=>'required'
         ],[
             'email.required'=>'Email wajib di isi',
             'email.email'=>'Email yang anda masukkan invalid',
@@ -105,7 +101,6 @@ class MasyarakatController extends Controller
             'password_confirm.min'=>'Password konfirmasi minimal 8 karakter',
             'password_confirm.max'=>'Password konfirmasi maksimal 25 karakter',
             'password_confirm.regex'=>'Password konfirmasi terdiri dari 1 huruf besar, huruf kecil, angka dan karakter unik',
-            'description.required'=>'Deskripsi wajib di isi',
         ]);
         if ($validator->fails()) {
             $errors = [];
@@ -119,30 +114,28 @@ class MasyarakatController extends Controller
         $pass1 = $request->input("password_confirm");
         $code = $request->input('code');
         $link = $request->input('link');
-        $desc = $request->input('description');
         if($pass !== $pass1){
             return response()->json(['status'=>'error','message'=>'Password Harus Sama'],400);
         }
         //check email on table user
-        $user = User::select('nama_lengkap')->whereRaw("BINARY email = ?",[$request->input('email')])->limit(1)->get()[0];
-        if (!$user) {
+        $user = User::select('nama_lengkap')->whereRaw("BINARY email = ?",[$request->input('email')])->first();
+        if (is_null($user)) {
             return response()->json(['status'=>'error','message'=>'Email tidak terdaftar !'],400);
         }
         if(is_null($link) || empty($link)){
             //check if user have create reset password
-            $verify = Verifikasi::select('kode_otp','send','updated_at')->whereRaw("BINARY email = ?",[$request->input('email')])->where('deskripsi', 'password')->limit(1)->get()[0];
-            if (!$verify) {
+            $verify = Verifikasi::select('kode_otp','send','updated_at')->whereRaw("BINARY email = ?",[$request->input('email')])->where('deskripsi', 'password')->first();
+            if (is_null($verify)) {
                 return response()->json(['status'=>'error','message'=>'Email invalid'],400);
             }
             //check code
-            if ($verify['kode_otp'] !== $code) {
-                return response()->json(['status'=>'error','message'=>'Code invalid'],400);
+            if ($verify['kode_otp'] != $code) {
+                return response()->json(['status'=>'error','message'=>'kode otp invalid'],400);
             }
             //checking if mail not expired
             $expTime = MailController::getConditionOTP()[($verify->send - 1)];
-            if (!Carbon::parse($verify->updated_at)->diffInMinutes(Carbon::now()) >= $expTime) {
-                $deleted = DB::table('verifikasi')->whereRaw("BINARY email = ? AND deskripsi = 'password'",[$email])->delete();
-                return response()->json(['status'=>'error','message'=>'token expired'],400);
+            if (Carbon::parse($verify->updated_at)->diffInMinutes(Carbon::now()) >= $expTime) {
+                return response()->json(['status'=>'error','message'=>'kode otp expired'],400);
             }
             if(is_null(DB::table('users')->whereRaw("BINARY email = ?",[$email])->update(['password'=>Hash::make($pass)]))){
                 return response()->json(['status'=>'error','message'=>'error update password'],500);
@@ -154,8 +147,8 @@ class MasyarakatController extends Controller
             return response()->json(['status'=>'success','message'=>'ganti password berhasil silahkan login']);
         }else{
             //check if user have create reset password
-            $verify = Verifikasi::select('link','send','updated_at')->whereRaw("BINARY email = ?",[$request->input('email')])->where('deskripsi', 'password')->limit(1)->get()[0];
-            if (!$verify) {
+            $verify = Verifikasi::select('link','send','updated_at')->whereRaw("BINARY email = ?",[$request->input('email')])->where('deskripsi', 'password')->first();
+            if (is_null($verify)) {
                 return response()->json(['status'=>'error','message'=>'Email invalid'],400);
             }
             //check link
@@ -164,8 +157,7 @@ class MasyarakatController extends Controller
             }
             //checking if mail not expired
             $expTime = MailController::getConditionOTP()[($verify->send - 1)];
-            if (!Carbon::parse($verify->updated_at)->diffInMinutes(Carbon::now()) >= $expTime) {
-                $deleted = DB::table('verifikasi')->whereRaw("BINARY email = ? AND deskripsi = 'password'",[$email])->delete();
+            if (Carbon::parse($verify->updated_at)->diffInMinutes(Carbon::now()) >= $expTime) {
                 return response()->json(['status'=>'error','message'=>'link expired'],400);
             }
             if(is_null(DB::table('users')->whereRaw("BINARY email = ?",[$email])->update(['password'=>Hash::make($pass)]))){
@@ -219,16 +211,16 @@ class MasyarakatController extends Controller
             return response()->json(['status' => 'error', 'message' => 'Data masyarakat tidak ditemukan'], 404);
         }
         //process file foto
-        if ($request->hasFile('foto')) {
-            $file = $request->file('foto');
-            if(!($file->isValid() && in_array($file->extension(), ['jpeg', 'png', 'jpg']))){
-                return response()->json(['status'=>'error','message'=>'Format Foto tidak valid. Gunakan format jpeg, png, jpg'], 400);
-            }
-            $destinationPath = storage_path('app/user/');
-            $fotoName = $file->hashName();
-            $fileData = Crypt::encrypt(file_get_contents($file));
-            Storage::disk('user')->put('/' . $fotoName, $fileData);
-        }
+        // if ($request->hasFile('foto')) {
+        //     $file = $request->file('foto');
+        //     if(!($file->isValid() && in_array($file->extension(), ['jpeg', 'png', 'jpg']))){
+        //         return response()->json(['status'=>'error','message'=>'Format Foto tidak valid. Gunakan format jpeg, png, jpg'], 400);
+        //     }
+        //     $destinationPath = storage_path('app/user/');
+        //     $fotoName = $file->hashName();
+        //     $fileData = Crypt::encrypt(file_get_contents($file));
+        //     Storage::disk('user')->put('/' . $fotoName, $fileData);
+        // }
         //create user
         $insert = User::insert([
             'uuid' =>  Str::uuid(),
@@ -238,7 +230,8 @@ class MasyarakatController extends Controller
             'role' => 'user',
             'email' => $request->input('email'),
             'password' => Hash::make($request->input('password')),
-            'foto' => $request->hasFile('foto') ? $fotoName : '',
+            // 'foto' => $request->hasFile('foto') ? $fotoName : '',
+            'foto' => '',
             'verifikasi' => false,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
@@ -298,8 +291,8 @@ class MasyarakatController extends Controller
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
         //check data user
-        $user = User::select('password','foto')->whereRaw("BINARY email = ?",[$request->input('email')])->limit(1)->get()[0];
-        if (!$user) {
+        $user = User::select('password','foto')->whereRaw("BINARY email = ?",[$request->input('email')])->first();
+        if (is_null($user)) {
             return response()->json(['status' => 'error', 'message' => 'Data masyarakat tidak ditemukan'], 404);
         }
         //process file foto
@@ -385,14 +378,14 @@ class MasyarakatController extends Controller
         $email = $request->input('email');
         $code = $request->input('code');
         //check email on table user
-        $user = User::select('nama_lengkap')->whereRaw("BINARY email = ?",[$request->input('email')])->limit(1)->get()[0];
-        if (!$user) {
+        $user = User::select('nama_lengkap')->whereRaw("BINARY email = ?",[$request->input('email')])->first();
+        if (is_null($user)) {
             return response()->json(['status'=>'error','message'=>'Email tidak terdaftar !'],400);
         }
         if(Str::startsWith($request->path(), 'verify/email') && $request->isMethod('get')){
             //check if user have create verify email
-            $verify = Verifikasi::select('link','send','updated_at')->whereRaw("BINARY email = ?",[$request->input('email')])->where('deskripsi', 'email')->limit(1)->get()[0];
-            if (!$verify) {
+            $verify = Verifikasi::select('link','send','updated_at')->whereRaw("BINARY email = ?",[$request->input('email')])->where('deskripsi', 'email')->first();
+            if (is_null($verify)) {
                 return response()->json(['status'=>'error','message'=>'Email invalid'],400);
             }
             //check link
@@ -401,11 +394,10 @@ class MasyarakatController extends Controller
             }
             //check if mail not expired
             $expTime = MailController::getConditionOTP()[($verify->send - 1)];
-            if (!Carbon::parse($verify->updated_at)->diffInMinutes(Carbon::now()) >= $expTime) {
-                $deleted = DB::table('verifikasi')->whereRaw("BINARY email = ? AND deskripsi = 'email'", [$email])->delete();
+            if (Carbon::parse($verify->updated_at)->diffInMinutes(Carbon::now()) >= $expTime) {
                 return response()->json(['status'=>'error','message'=>'link expired'],400);
             }
-            if(is_null(DB::table('users')->whereRaw("BINARY email = ?",[$email])->update(['email_verified'=>true]))){
+            if(is_null(DB::table('users')->whereRaw("BINARY email = ?",[$email])->update(['verifikasi'=>true]))){
                 return response()->json(['status'=>'error','message'=>'error verify email'],500);
             }
             $deleted = DB::table('verifikasi')->whereRaw("BINARY email = ?",[$email])->delete();
@@ -416,21 +408,20 @@ class MasyarakatController extends Controller
             }
         }else{
             //check if user have create verify email
-            $verify = Verifikasi::select('kode_otp','send','updated_at')->whereRaw("BINARY email = ?",[$request->input('email')])->where('deskripsi', 'email')->limit(1)->get()[0];
-            if (!$verify) {
+            $verify = Verifikasi::select('kode_otp','send','updated_at')->whereRaw("BINARY email = ?",[$request->input('email')])->where('deskripsi', 'email')->first();
+            if (is_null($verify)) {
                 return response()->json(['status'=>'error','message'=>'Email invalid'],400);
             }
             //check code
-            if ($verify['kode_otp'] !== $code) {
-                return response()->json(['status'=>'error','message'=>'token invalid'],400);
+            if ($verify['kode_otp'] != $code) {
+                return response()->json(['status'=>'error','message'=>'kode otp invalid'],400);
             }
             //check if mail not expired
             $expTime = MailController::getConditionOTP()[($verify->send - 1)];
-            if (!Carbon::parse($verify->updated_at)->diffInMinutes(Carbon::now()) >= $expTime) {
-                $deleted = DB::table('verifikasi')->whereRaw("BINARY email = ? AND deskripsi = 'email'", [$email])->delete();
-                return response()->json(['status'=>'error','message'=>'token expired'],400);
+            if (Carbon::parse($verify->updated_at)->diffInMinutes(Carbon::now()) >= $expTime) {
+                return response()->json(['status'=>'error','message'=>'kode otp expired'],400);
             }
-            if(is_null(DB::table('users')->whereRaw("BINARY email = ?",[$email])->update(['email_verified'=>true]))){
+            if(is_null(DB::table('users')->whereRaw("BINARY email = ?",[$email])->update(['verifikasi'=>true]))){
                 return response()->json(['status'=>'error','message'=>'error verifikasi email'],500);
             }
             $deleted = DB::table('verifikasi')->whereRaw("BINARY email = ?",[$email])->delete();
