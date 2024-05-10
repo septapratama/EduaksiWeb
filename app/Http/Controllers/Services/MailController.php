@@ -19,27 +19,6 @@ class MailController extends Controller
     public static function getConditionOTP(){
         return self::$conditionOTP;
     }
-    public function getVerifyEmail(Request $request){
-        $email = $request->input('email');
-        if(empty($email) || is_null($email)){
-            return response()->json(['status'=>'error','message'=>'email empty'],404);
-        }else{
-            if(User::select("email")->whereRaw("BINARY email = ?",[$email])->limit(1)->exists()){
-                if(Verifikasi::select("email")->whereRaw("BINARY email = ?",[$email])->limit(1)->exists()){
-                    $dataDb = Verifikasi::select()->whereRaw("BINARY email = ?",[$email])->limit(1)->get();
-                    $data = json_decode(json_encode($dataDb));
-                    $code = $data['code'];
-                    $linkPath = $data['link'];
-                    $verificationLink = URL::to('/verify/' . $linkPath);
-                    return response()->json(['status'=>'success','data'=>['code'=>$code,'link'=>$verificationLink]]);
-                }else{
-                    return response()->json(['status'=>'error','message'=>'email invalid'],404);
-                }
-            }else{
-                return response()->json(['status'=>'error','message'=>'email invalid'],404);
-            }
-        }
-    }
     public function createVerifyEmail(Request $request, Verifikasi $verify){
         $validator = Validator::make($request->all(), [
             'email'=>'required|email',

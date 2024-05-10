@@ -40,47 +40,12 @@ return [
             'root' => storage_path('app/admin'),
             'throw' => false,
         ],
-        'konsultasi' => [
+        'user' => [
             'driver' => 'local',
-            'root' => storage_path('app/konsultasi'),
+            'root' => storage_path('app/user'),
             'throw' => false,
         ],
 
-        'disi' => [
-            'driver' => 'local',
-            'root' => storage_path('app/digital_literasi'),
-            'url' => env('APP_URL').'/public/disi',
-            'visibility' => 'public',
-            'throw' => false,
-        ],
-        'emotal' => [
-            'driver' => 'local',
-            'root' => storage_path('app/emosi_mental'),
-            'url' => env('APP_URL').'/public/emotal',
-            'visibility' => 'public',
-            'throw' => false,
-        ],
-        'pengasuhan' => [
-            'driver' => 'local',
-            'root' => storage_path('app/pengasuhan'),
-            'url' => env('APP_URL').'/public/pengasuhan',
-            'visibility' => 'public',
-            'throw' => false,
-        ],
-        'nutrisi' => [
-            'driver' => 'local',
-            'root' => storage_path('app/nutrisi'),
-            'url' => env('APP_URL').'/public/nutrisi',
-            'visibility' => 'public',
-            'throw' => false,
-        ],
-        'artikel' => [
-            'driver' => 'local',
-            'root' => storage_path('app/artikel'),
-            'url' => env('APP_URL').'/public/artikel',
-            'visibility' => 'public',
-            'throw' => false,
-        ],
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

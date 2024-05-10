@@ -35,8 +35,11 @@ Route::group(['prefix'=>'/mobile','middleware'=>'authMobile','authorized'],funct
         Route::post('/login', [MobileLoginController::class,'Login'])->withoutMiddleware(['authMobile', 'authorized']);
         Route::post('/login/google', [MobileLoginController::class,'LoginGoogle'])->withoutMiddleware(['authMobile', 'authorized']);
         Route::post('/register', [MobileRegisterController::class,'Register'])->withoutMiddleware(['authMobile', 'authorized']);
-        Route::put('/profile', [MasyarakatController::class, 'getProfile']);
-        Route::put('/update', [MasyarakatController::class, 'updateProfile']);
+        Route::group(['prefix'=>'/profile'],function(){
+            Route::post('/', [MasyarakatController::class, 'getProfile']);
+            Route::put('/', [MasyarakatController::class, 'updateProfile']);
+            Route::post('/foto', [MasyarakatController::class, 'checkFotoProfile']);
+        });
         Route::post('/logout', [MasyarakatController::class,'logout']);
     });
     Route::post('/dashboard',[HomeController::class, 'dashboard']);
@@ -65,18 +68,5 @@ Route::group(['prefix'=>'/mobile','middleware'=>'authMobile','authorized'],funct
     Route::group(['prefix'=>'/konsultasi'],function(){
         Route::get('/', [KonsultasiController::class, 'getKonsultasi']);
         Route::get('/{any}', [KonsultasiController::class, 'getKonsultasiDetail']);
-    });
-    Route::group(['prefix'=>'/pencatatan'],function(){
-        // Route::get('/',[]);
-        // Route::post('/tambah',[]);
-        // Route::put('/update',[]);
-        // Route::delete('/delete',[]);
-        Route::get('/',[]);
-    });
-    Route::group(['prefix'=>'/pencatatan'],function(){
-        Route::get('/',[]);
-        Route::post('/tambah',[]);
-        Route::put('/update',[]);
-        Route::delete('/delete',[]);
     });
 });

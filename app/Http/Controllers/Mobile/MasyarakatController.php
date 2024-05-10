@@ -16,6 +16,22 @@ use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 class MasyarakatController extends Controller
 {
+    public function checkFotoProfile(Request $request){
+        $userAuth = $request->input('user_auth');
+        $userDb = User::select('foto')->whereRaw("BINARY email = ?",[$request->input('email')])->first();
+        if (is_null($userDb)) {
+            return response()->json(['status'=>'error','message'=>'Email tidak terdaftar !'],400);
+        }
+        if($userDb['foto'] !== $userAuth['foto']){
+            $filePath = storage_path('app/user/foto/' . $userAuth['foto']);
+            if (file_exists($filePath)) {
+                return response(Crypt::decrypt(file_get_contents($filePath)));
+            }
+            return response()->json(['status'=>'error','message'=>'foto not found', 404]);
+        }
+        //if same
+        return response()->json(['status','success','message'=>'foto same']);
+    }
     public function getChangePass(Request $request, User $user, $any = null){
         $validator = Validator::make($request->all(), [
             'email'=>'required|email',
@@ -246,119 +262,6 @@ class MasyarakatController extends Controller
             return ['status'=>'success','message'=>$email['message'],'data'=>$email['data']];
         }
     }
-    public function updateUser(Request $request, MailController $mailController, Verifikasi $verify){
-        $validator = Validator::make($request->only('nama_lengkap','jenis_kelamin','no_telpon','tanggal_lahir','tempat_lahir','email_new','password','foto'), [
-            'nama_lengkap'=>'required',
-            'jenis_kelamin' => 'required|in:laki-laki,perempuan',
-            'no_telpon' => 'required|digits_between:10,13',
-            'tanggal_lahir' => ['required', 'date', 'before_or_equal:' . now()->toDateString()],
-            'tempat_lahir' => 'required',
-            'email_new'=>'nullable | email',
-            'password' => [
-                'required',
-                'string',
-                'min:8',
-                'max:25',
-                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\p{P}\p{S}])[\p{L}\p{N}\p{P}\p{S}]+$/u',
-            ],
-            'foto' => 'required|image|mimes:jpeg,png,jpg|max:5120',
-        ],[
-            'nama_lengkap.required'=>'Nama Lengkap wajib di isi',
-            'jenis_kelamin.required' => 'Jenis kelamin wajib di isi',
-            'jenis_kelamin.in' => 'Jenis kelamin harus Laki-laki atau Perempuan',
-            'no_telpon.required' => 'Nomor telepon wajib di isi',
-            'no_telpon.digits_between' => 'Nomor telepon tidak boleh lebih dari 13 karakter',
-            'tanggal_lahir.required' => 'Tanggal lahir wajib di isi',
-            'tanggal_lahir.date' => 'Format tanggal lahir tidak valid',
-            'tanggal_lahir.before_or_equal' => 'Tanggal Lahir harus Sebelum dari tanggal sekarang',
-            'tempat_lahir.required' => 'Tempat lahir wajib di isi',
-            'email_new.email'=>'Email yang anda masukkan invalid',
-            'password.required'=>'Password wajib di isi',
-            'password.min'=>'Password minimal 8 karakter',
-            'password.max'=>'Password maksimal 25 karakter',
-            'password.regex'=>'Password baru wajib terdiri dari 1 huruf besar, huruf kecil, angka dan karakter unik',
-            'foto.required' => 'Foto wajib di isi',
-            'foto.image' => 'Foto harus berupa gambar',
-            'foto.mimes' => 'Format foto tidak valid. Gunakan format jpeg, png, jpg',
-            'foto.max' => 'Ukuran foto tidak boleh lebih dari 5MB',
-        ]);
-        if ($validator->fails()) {
-            $errors = [];
-            foreach ($validator->errors()->toArray() as $field => $errorMessages) {
-                $errors[$field] = $errorMessages[0];
-                break;
-            }
-            return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
-        }
-        //check data user
-        $user = User::select('password','foto')->whereRaw("BINARY email = ?",[$request->input('email')])->first();
-        if (is_null($user)) {
-            return response()->json(['status' => 'error', 'message' => 'Data masyarakat tidak ditemukan'], 404);
-        }
-        //process file foto
-        if ($request->hasFile('foto')) {
-            $file = $request->file('foto');
-            if(!($file->isValid() && in_array($file->extension(), ['jpeg', 'png', 'jpg']))){
-                return response()->json(['status'=>'error','message'=>'Format Foto tidak valid. Gunakan format jpeg, png, jpg'], 400);
-            }
-            $destinationPath = storage_path('app/user/');
-            $fileToDelete = $destinationPath . $user['foto'];
-            if (file_exists($fileToDelete) && !is_dir($fileToDelete)) {
-                unlink($fileToDelete);
-            }
-            Storage::disk('user')->delete('/'.$user['foto']);
-            $fotoName = $file->hashName();
-            $fileData = Crypt::encrypt(file_get_contents($file));
-            Storage::disk('user')->put('/' . $fotoName, $fileData);
-        }
-        //update user
-        $updatedAdmin = User::whereRaw("BINARY email = ?",[$request->input('email')])->update([
-            'email'=> (empty($request->input('email_new')) || is_null($request->input('email_new'))) ? $request->input('email') : $request->input('email_new'),
-            'nama_lengkap'=>$request->input('nama_lengkap'),
-            'no_telpon'=>$request->input('no_telpon'),
-            'jenis_kelamin'=>$request->input('jenis_kelamin'),
-            // 'tanggal_lahir'=>$request->input('tanggal_lahir'),
-            'tanggal_lahir'=>Carbon::createFromFormat('d-m-Y', $request->input('tanggal_lahir'))->format('Y-m-d'),
-            'tempat_lahir'=>$request->input('tempat_lahir'),
-            'role'=>$request->input('role'),
-            'password'=> (empty($request->input('password')) || is_null($request->input('password'))) ? $user['password']: Hash::make($request->input('password')),
-            'foto' => $request->hasFile('foto') ? $fotoName : $user['foto'],
-            'verifikasi'=>true,
-            'updated_at' => Carbon::now(),
-        ]);
-        if (!$updatedAdmin) {
-            return response()->json(['status' => 'error', 'message' => 'Gagal memperbarui data Masyarakat'], 500);
-        }
-        return response()->json(['status'=>'success','message'=>'Data masyarakat berhasil diperbarui']);
-    }
-    public function getVerifyEmail(Request $request, User $user, $any = null){
-        $validator = Validator::make($request->all(), [
-            'email'=>'required|email',
-            'link' => 'nullable',
-        ],[
-            'email.required'=>'Email wajib di isi',
-            'email.email'=>'Email yang anda masukkan invalid',
-        ]);
-        if ($validator->fails()) {
-            $errors = [];
-            foreach ($validator->errors()->toArray() as $field => $errorMessages) {
-                $errors = $errorMessages[0];
-            }
-            return response()->json(['status' => 'error', 'message' => $errors], 400);
-        }
-        $email = $request->input('email');
-        if(!User::select("email")->whereRaw("BINARY email = ?",[$email])->limit(1)->exists()){
-            return response()->json(['status'=>'error','message'=>'Email invalid']);
-        }else{
-            if($request->path() === '/verify/email/*' && $request->isMethod("get")){
-                if(Verifikasi::select("link")->whereRaw("BINARY link = ?",[$any])->limit(1)->exists()){
-                    return view('page.verifyEmail');
-                }else{
-                    return response()->json(['status'=>'error','message'=>'invalid token'],400);
-                }
-            }
-        }
-    }
     public function verifyEmail(Request $request, User $user, $any = null){
         $email = $request->query('email');
         $validator = Validator::make($request->all(), [
@@ -453,7 +356,6 @@ class MasyarakatController extends Controller
         return response()->json(['status'=>'error','message'=>'Profile ada', 'data'=>$user],400);
     }
     public function updateProfile(Request $request){
-        $userAuth = $request->input('user_auth');
         $validator = Validator::make($request->only('email_new', 'nama_lengkap', 'jenis_kelamin', 'no_telpon', 'foto'),
             [
                 'email_new'=>'nullable|email',
@@ -463,15 +365,15 @@ class MasyarakatController extends Controller
                 'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
             ],[
                 'email_new.email'=>'Email yang anda masukkan invalid',
-                'nama_lengkap.required' => 'Nama admin wajib di isi',
-                'nama_lengkap.max' => 'Nama admin maksimal 50 karakter',
+                'nama_lengkap.required' => 'Nama user wajib di isi',
+                'nama_lengkap.max' => 'Nama user maksimal 50 karakter',
                 'jenis_kelamin.required' => 'Jenis kelamin wajib di isi',
                 'jenis_kelamin.in' => 'Jenis kelamin harus Laki-laki atau Perempuan',
                 'no_telpon.required' => 'Nomor telepon wajib di isi',
                 'no_telpon.digits_between' => 'Nomor telepon tidak boleh lebih dari 13 karakter',
                 'foto.image' => 'Foto Admin harus berupa gambar',
-                'foto.mimes' => 'Format foto admin tidak valid. Gunakan format jpeg, png, jpg',
-                'foto.max' => 'Ukuran foto admin tidak boleh lebih dari 5MB',
+                'foto.mimes' => 'Format foto user tidak valid. Gunakan format jpeg, png, jpg',
+                'foto.max' => 'Ukuran foto user tidak boleh lebih dari 5MB',
             ],
         );
         if ($validator->fails()) {
@@ -484,8 +386,8 @@ class MasyarakatController extends Controller
         }
         //check email
         $user = User::select('email', 'password', 'foto')->whereRaw("BINARY email = ?",[$request->input('user_auth')['email']])->first();
-        if (!$user) {
-            return response()->json(['status' => 'error', 'message' => 'Admin tidak ditemukan'], 400);
+        if (is_null($user)) {
+            return response()->json(['status' => 'error', 'message' => 'User tidak ditemukan'], 400);
         }
         //check email
         if(!is_null($request->input('email_new') || !empty($request->input('email_new')))){
@@ -509,15 +411,15 @@ class MasyarakatController extends Controller
             if(!($file->isValid() && in_array($file->extension(), ['jpeg', 'png', 'jpg']))){
                 return response()->json(['status'=>'error','message'=>'Format Foto tidak valid. Gunakan format jpeg, png, jpg'], 400);
             }
-            $destinationPath = storage_path('app/admin/');
-            $fileToDelete = $destinationPath . $user['foto'];   
+            $destinationPath = storage_path('app/user/');
+            $fileToDelete = $destinationPath . $user['foto'];
             if (file_exists($fileToDelete) && !is_dir($fileToDelete)) {
                 unlink($fileToDelete);
             }
-            Storage::disk('admin')->delete('foto/'.$user['foto']);
+            Storage::disk('user')->delete('foto/'.$user['foto']);
             $fotoName = $file->hashName();
             $fileData = Crypt::encrypt(file_get_contents($file));
-            Storage::disk('admin')->put('foto/' . $fotoName, $fileData);
+            Storage::disk('user')->put('foto/' . $fotoName, $fileData);
         }
         //update profile
         $updateProfile = User::whereRaw("BINARY email = ?",[$request->input('user_auth')['email']])->update([
@@ -529,7 +431,7 @@ class MasyarakatController extends Controller
             'foto' => $request->hasFile('foto') ? $fotoName : $user['foto'],
             'updated_at'=> Carbon::now()
         ]);
-        if (!$updateProfile) {
+        if (is_null($updateProfile)) {
             return response()->json(['status' => 'error', 'message' => 'Gagal memperbarui Profile'], 500);
         }
         //update jwt

@@ -27,7 +27,7 @@ class LoginController extends Controller
         }
         $emaill = $request->input("email");
         $pass = $request->input("password");
-        $emaill = "UserTesting2@gmail.com";
+        // $emaill = "UserTesting2@gmail.com";
         $pass = "Admin@1234567890";
         //check email
         $user = User::select('password')->whereRaw("BINARY email = ?",[$emaill])->first();
