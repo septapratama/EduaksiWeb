@@ -9,17 +9,16 @@ class AcaraController extends Controller
         if(!is_null($err)){
             return view('page.Event.data', ['error' => $err]);
         }
-        $dataAcara = app()->make(ServiceEventController::class)->dataCacheFile(null, 'get_limit',null, ['uuid', 'nama_event']);
+        $dataAcara = app()->make(ServiceEventController::class)->dataCacheFile(null, 'get_limit',null, ['id_acara', 'nama_event']);
         return response()->json(['status' => 'success', 'data' => $dataAcara]);
     }
-    public function showEdit(Request $request, $uuid){
-        $dataAcara = app()->make(ServiceEventController::class)->dataCacheFile(['uuid' => $uuid], 'get_limit', 1, ['uuid', 'nama_event', 'deskripsi', 'tanggal']);
+    public function showEdit(Request $request, $id_acara){
+        $dataAcara = app()->make(ServiceEventController::class)->dataCacheFile(['id_acara' => $id_acara], 'get_limit', 1, ['id_acara', 'nama_event', 'deskripsi', 'tanggal']);
         if(is_null($dataAcara)){
             return $this->showData($request, 'Data Event tidak ditemukan');
         }
-            // 'event' => $event,
-        $dataAcara['id_kalender'] = $dataAcara['uuid'];
-        unset($dataAcara['uuid']);
+        // $dataAcara['id_acara'] = $dataAcara['id_acara'];
+        unset($dataAcara['id_acara']);
         return response()->json(['status' => 'success', 'data' => $dataAcara]);
     }
 }

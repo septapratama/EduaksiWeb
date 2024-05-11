@@ -9,12 +9,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('kalender_user', function (Blueprint $table) {
-            $table->id('id_kalender');
-            $table->uuid('uuid');
+            $table->id('id_acara');
             $table->string('nama_acara', 50);
             $table->string('deskripsi', 4000);
             $table->enum('kategori', ['umum', 'penting', 'keluarga']);
-            $table->date('tanggal');
+            $table->dateTime('tanggal');
             $table->unsignedBigInteger('id_user');
             $table->foreign('id_user')->references('id_user')->on('users')->onDelete('cascade');
         });

@@ -73,4 +73,9 @@ Route::group(['prefix'=>'/mobile','middleware'=>'authMobile','authorized'],funct
         Route::get('/', [KonsultasiController::class, 'getKonsultasi']);
         Route::get('/{any}', [KonsultasiController::class, 'getKonsultasiDetail']);
     });
+    Route::group(['prefix'=>'/kalender'],function(){
+        Route::post('/tambah', [PengasuhanController::class, 'tambahPengasuhan']);
+        Route::put('/update', [PengasuhanController::class, 'editPengasuhan']);
+        Route::delete('/delete', [PengasuhanController::class, 'deletePengasuhan']);
+    });
 });

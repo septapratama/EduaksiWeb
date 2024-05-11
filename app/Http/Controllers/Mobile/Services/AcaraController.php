@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use App\Models\Acara;
+use Carbon\Carbon;
 use Exception;
 class AcaraController extends Controller
 {
@@ -121,9 +122,9 @@ class AcaraController extends Controller
             //update acara data
             $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
             foreach($jsonData as $key => $item){
-                if (isset($item['uuid']) && $item['uuid'] == $data['uuid']) {
+                if (isset($item['id_acara']) && $item['id_acara'] == $data['id_acara']) {
                     $newData = [
-                        'uuid' => $data['uuid'],
+                        'id_acara' => $data['id_acara'],
                         'nama_acara' => $data['nama_acara'],
                         'deskripsi' => $data['deskripsi'],
                         'tanggal' => $data['tanggal'],
@@ -138,7 +139,7 @@ class AcaraController extends Controller
             //hapus acara data
             $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
             foreach($jsonData as $key => $item){
-                if (isset($item['uuid']) && $item['uuid'] == $data['uuid']) {
+                if (isset($item['id_acara']) && $item['id_acara'] == $data['id_acara']) {
                     unset($jsonData[$key]);
                 }
             }
@@ -150,16 +151,14 @@ class AcaraController extends Controller
         $validator = Validator::make($request->only('nama_acara', 'deskripsi', 'tanggal'), [
             'nama_acara' => 'required|min:6|max:50',
             'deskripsi' => 'required|max:4000',
-            'tanggal' => ['required', 'date', 'after_or_equal:' . now()->toDateString()],
+            'tanggal' => 'required',
         ], [
             'nama_acara.required' => 'Nama acara wajib di isi',
             'nama_acara.min' => 'Nama acara minimal 6 karakter',
             'nama_acara.max' => 'Nama acara maksimal 50 karakter',
             'deskripsi.required' => 'Deskripsi wajib di isi',
             'deskripsi.max' => 'Deskripsi maksimal 4000 karakter',
-            'tanggal.required' => 'Tanggal awal wajib di isi',
-            'tanggal.date' => 'Format tanggal awal tidak valid',
-            'tanggal.after_or_equal' => 'Tanggal awal harus setelah atau sama dengan tanggal sekarang',
+            'tanggal.required' => 'Tanggal wajib di isi',
         ]);
         if ($validator->fails()) {
             $errors = [];
@@ -169,21 +168,26 @@ class AcaraController extends Controller
             }
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
-        $uuid = Str::uuid();
+        //check tanggal
+        $inpTanggal = Carbon::createFromFormat('d-m-Y i:H', $request->input('tanggal'));
+        if($inpTanggal->lt(Carbon::now())){
+            return response()->json(['status'=>'error','message'=>'Data Acara harus lebh dari sekarang'], 400);
+        }
+        if ($inpTanggal->diffInMinutes(Carbon::now()) < 5) {
+            return response()->json(['status'=>'error','message'=>'Data Acara minimal 5 menit dari sekarang'], 400);
+        }
         $eventI = Acara::insert([
-            'uuid' => $uuid,
             'nama_acara' => $request->input('nama_acara'),
             'deskripsi' => $request->input('deskripsi'),
-            'tanggal' => $request->input('tanggal'),
+            'tanggal' => $inpTanggal->format('Y-m-d H:i:s'),
         ]);
         if (!$eventI) {
             return response()->json(['status' => 'error', 'message' => 'Gagal menambahkan data Acara'], 500);
         }
         $this->dataCacheFile([
-            'uuid' => $uuid,
             'nama_acara' => $request->input('nama_acara'),
             'deskripsi' => $request->input('deskripsi'),
-            'tanggal' => $request->input('tanggal'),
+            'tanggal' => $inpTanggal->format('Y-m-d H:i:s'),
         ],'tambah');
         return response()->json(['status'=>'success','message'=>'Data Acara berhasil ditambahkan']);
     }
@@ -191,16 +195,14 @@ class AcaraController extends Controller
         $validator = Validator::make($request->only('nama_acara', 'deskripsi', 'tanggal'), [
             'nama_acara' => 'required|min:6|max:50',
             'deskripsi' => 'required|max:4000',
-            'tanggal' => ['required', 'date', 'after_or_equal:' . now()->toDateString()],
+            'tanggal' => 'required',
         ], [
             'nama_acara.required' => 'Nama acara wajib di isi',
             'nama_acara.min' => 'Nama acara minimal 6 karakter',
             'nama_acara.max' => 'Nama acara maksimal 50 karakter',
             'deskripsi.required' => 'Deskripsi wajib di isi',
             'deskripsi.max' => 'Deskripsi maksimal 4000 karakter',
-            'tanggal.required' => 'Tanggal awal wajib di isi',
-            'tanggal.date' => 'Format tanggal awal tidak valid',
-            'tanggal.after_or_equal' => 'Tanggal awal harus setelah atau sama dengan tanggal sekarang',
+            'tanggal.required' => 'Tanggal wajib di isi',
         ]);
         if ($validator->fails()) {
             $errors = [];
@@ -210,31 +212,38 @@ class AcaraController extends Controller
             }
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
-        $acara = Acara::select('tanggal')->where('uuid',$request->input('uuid'))->first();
+        //check tanggal
+        $inpTanggal = Carbon::createFromFormat('d-m-Y i:H', $request->input('tanggal'));
+        if($inpTanggal->lt(Carbon::now())){
+            return response()->json(['status'=>'error','message'=>'Data Acara harus lebh dari sekarang'], 400);
+        }
+        if ($inpTanggal->diffInMinutes(Carbon::now()) < 5) {
+            return response()->json(['status'=>'error','message'=>'Data Acara minimal 5 menit dari sekarang'], 400);
+        }
+        $acara = Acara::select('tanggal')->where('id_acara',$request->input('id_acara'))->first();
         if (is_null($acara)){
             return response()->json(['status' =>'error','message'=>'Data Acara tidak ditemukan'], 400);
         }
-        $edit = $acara->where('uuid',$request->input('uuid'))->update([
+        $edit = $acara->where('id_acara',$request->input('id_acara'))->update([
             'nama_acara' => $request->input('nama_acara'),
             'deskripsi' => $request->input('deskripsi'),
-            'tanggal' => $request->input('tanggal'),
+            'tanggal' => $inpTanggal->format('Y-m-d H:i:s'),
         ]);
         if(!$edit){
             return response()->json(['status' =>'error','message'=>'Gagal memperbarui data Acara'], 500);
         }
         $this->dataCacheFile([
-            'uuid' => $request->input('uuid'),
             'nama_acara' => $request->input('nama_acara'),
             'deskripsi' => $request->input('deskripsi'),
-            'tanggal' => $request->input('tanggal'),
+            'tanggal' => $inpTanggal->format('Y-m-d H:i:s'),
         ],'update');
         return response()->json(['status' =>'success','message'=>'Data Acara berhasil di perbarui']);
     }
     public function deleteAcara(Request $request){
-        $validator = Validator::make($request->only('uuid'), [
-            'uuid' => 'required',
+        $validator = Validator::make($request->only('id_acara'), [
+            'id_acara' => 'required',
         ], [
-            'uuid.required' => 'ID acara wajib di isi',
+            'id_acara.required' => 'ID acara wajib di isi',
         ]);
         if ($validator->fails()) {
             $errors = [];
@@ -244,13 +253,13 @@ class AcaraController extends Controller
             }
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
-        if (is_null(Acara::select('tanggal')->where('uuid',$request->input('uuid'))->first())) {
+        if (is_null(Acara::select('tanggal')->where('id_acara',$request->input('id_acara'))->first())) {
             return response()->json(['status' => 'error', 'message' => 'Data Acara tidak ditemukan'], 400);
         }
-        if (!Acara::where('uuid',$request->input('uuid'))->delete()) {
+        if (!Acara::where('id_acara',$request->input('id_acara'))->delete()) {
             return response()->json(['status' => 'error', 'message' => 'Gagal menghapus data Acara'], 500);
         }
-        $this->dataCacheFile(['uuid' => $request->input('uuid')],'hapus');
+        $this->dataCacheFile(['id_acara' => $request->input('id_acara')],'hapus');
         return response()->json(['status' => 'success', 'message' => 'Data Acara berhasil dihapus']);
     }
 }
