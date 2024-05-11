@@ -22,24 +22,28 @@ form .crow {
     flex-direction: column;
     gap: 2px;
 }
-form .crow:nth-child(2) {
+form .crow:nth-child(2),
+form .crow:nth-child(3){
     position: relative;
     display: flex;
     flex-direction: row;
     gap: 20px;
 }
-form .crow:nth-child(2) div {
+form .crow:nth-child(2) div,
+form .crow:nth-child(3) div{
     display: flex;
     flex-direction: column;
     gap: 4px;
 }
-form .crow:nth-child(2) div:nth-child(1) {
+form .crow:nth-child(2) div:nth-child(1),
+form .crow:nth-child(3) div:nth-child(1){
     width: 25%;
 }
 select {
     width: 100%;
 }
-form .crow:nth-child(2) div:nth-child(2) {
+form .crow:nth-child(2) div:nth-child(2),
+form .crow:nth-child(3) div:nth-child(2){
     width: 100%;
 }
 form .crow:nth-child(4) {
@@ -200,10 +204,12 @@ form .crow textarea {
     form .crow {
         width: 64%;
     }
-    form .crow:nth-child(2) div:nth-child(1) {
+    form .crow:nth-child(2) div:nth-child(1),
+    form .crow:nth-child(3) div:nth-child(1) {
         width: 34%;
     }
-    form .crow:nth-child(2) div:nth-child(2) {
+    form .crow:nth-child(2) div:nth-child(2),
+    form .crow:nth-child(3) div:nth-child(2) {
         width: 70%;
     }
     label,
@@ -280,10 +286,12 @@ form .crow textarea {
     label{
         font-size: 12px;
     }
-    form .crow:nth-child(2) div:nth-child(1) {
+    form .crow:nth-child(2) div:nth-child(1),
+    form .crow:nth-child(3) div:nth-child(1) {
         width: 50%;
     }
-    form .crow:nth-child(2) div:nth-child(2) {
+    form .crow:nth-child(2) div:nth-child(2),
+    form .crow:nth-child(3) div:nth-child(2) {
         width: 50%;
     }
     form .crow input,

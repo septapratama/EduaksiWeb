@@ -389,12 +389,9 @@ class MasyarakatController extends Controller
         if (is_null($user)) {
             return response()->json(['status' => 'error', 'message' => 'User tidak ditemukan'], 400);
         }
-        //check email
-        if(!is_null($request->input('email_new') || !empty($request->input('email_new')))){
-            $userCheck = User::select('role')->whereRaw("BINARY email = ?",[$request->input('email_new')])->first();
-            if (!is_null($userCheck)) {
-                return response()->json(['status' => 'error', 'message' => 'Email sudah digunakan'], 400);
-            }
+        //check email on table user
+        if(!is_null($request->input('email_new') || !empty($request->input('email_new'))) &&User::select('role')->whereRaw("BINARY email = ?",[$request->input('email_new')])->first() && $request->input('email_new') != $request->input('user_auth')['email']){
+            return response()->json(['status' => 'error', 'message' => 'Email sudah digunakan'], 400);
         }
         // check password
         $pass = $request->input('password');
@@ -442,24 +439,8 @@ class MasyarakatController extends Controller
         return response()->json(['status' => 'error', 'message' => 'Profile Anda berhasil diperbarui', 'data'=>$jwtData['data']]);
     }
     public function logout(Request $request, JWTController $jwtController){
-        $validator = Validator::make($request->all(), [
-            'email'=>'required|email',
-            'number' =>'required|max:2|integer'
-        ],[
-            'email.required'=>'Email wajib di isi',
-            'email.email'=>'Email yang anda masukkan invalid',
-            'number.required'=>'Token wajib di isi',
-            'number.max'=>'Token maksimal 2',
-            'number.integer'=>'Token harus berupa angka',
-        ]);
-        if ($validator->fails()) {
-            $errors = [];
-            foreach ($validator->errors()->toArray() as $field => $errorMessages) {
-                $errors = $errorMessages[0]; 
-            }
-            return response()->json(['status' => 'error', 'message' => $errors], 400);
-        }
-        if (!RefreshToken::whereRaw("BINARY email = ?",[$request->input('email')])->where('number',$request->input('number'))->delete()) {
+        $userAuth = $request->input('user_auth');
+        if (!RefreshToken::whereRaw("BINARY email = ?",[$userAuth['email']])->where('number',$userAuth['number'])->delete()) {
             return response()->json(['status' => 'error', 'message' => 'Gagal Logout'], 500);
         }
         return response()->json(['status' => 'success', 'message' => 'Logout berhasil silahkan login kembali']);

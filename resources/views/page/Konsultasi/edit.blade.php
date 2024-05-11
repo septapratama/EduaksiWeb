@@ -80,8 +80,19 @@ $tPath = app()->environment('local') ? '' : '';
                             </div>
                         </div>
                         <div class="crow">
-                            <label for="">Email</label>
-                            <input type="text" id="inpEmail" value="{{ $konsultasi['email']}}">
+                            <div>
+                                <label for="">kategori</label>
+                                <select class="" aria-label="Default select example" id="inpKategori">
+                                    <option value="">Pilih kategori </option>
+                                    <option value="dokter anak" {{ ($konsultasi['kategori'] == 'anak') ? 'selected' : ''}}>Dokter anak</option>
+                                    <option value="dokter psikolog" {{ ($konsultasi['kategori'] == 'psikolog') ? 'selected' : ''}}>Dokter psikolog</option>
+                                    <option value="dokter gigi" {{ ($konsultasi['kategori'] == 'gigi') ? 'selected' : ''}}>Dokter gigi</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="">Email</label>
+                                <input type="text" id="inpEmail" value="{{ $konsultasi['email']}}">
+                            </div>
                         </div>
                         <div class="crow">
                             <label for="">Alamat</label>

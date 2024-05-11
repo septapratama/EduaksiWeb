@@ -340,6 +340,10 @@ class AdminController extends Controller
         if (is_null($admin)) {
             return response()->json(['status' => 'error', 'message' => 'Data Admin tidak ditemukan'], 404);
         }
+        //check email on table user
+        if (User::select('email')->whereRaw("BINARY email = ?",[$request->input('email_admin')])->first() && $request->input('email_admin') != $request->input('email_admin_lama')) {
+            return response()->json(['status' => 'error', 'message' => 'Email sudah digunakan'], 400);
+        }
         //process file foto
         if ($request->hasFile('foto')) {
             $file = $request->file('foto');
@@ -407,6 +411,10 @@ class AdminController extends Controller
         $user = User::select('email','foto')->whereRaw("BINARY email = ?",[$request->input('user_auth')['email']])->first();
         if (!$user) {
             return response()->json(['status' => 'error', 'message' => 'Admin tidak ditemukan'], 400);
+        }
+        //check email on table user
+        if(!is_null($request->input('email_new') || !empty($request->input('email_new'))) &&User::select('role')->whereRaw("BINARY email = ?",[$request->input('email_new')])->first() && $request->input('email_new') != $request->input('user_auth')['email']){
+            return response()->json(['status' => 'error', 'message' => 'Email sudah digunakan'], 400);
         }
         //process file foto
         if ($request->hasFile('foto')) {

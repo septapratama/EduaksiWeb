@@ -6,13 +6,9 @@ use Illuminate\Http\Request;
 class KonsultasiController extends Controller
 {
     public function getKonsultasi(Request $request){
-        $dataArtikel = app()->make(ServiceKonsultasiController::class)->dataCacheFile(null, 'get_limit',10, ['uuid', 'nama_lengkap','foto']);
+        $dataArtikel = app()->make(ServiceKonsultasiController::class)->dataCacheFile(null, 'get_limit', null, ['uuid', 'nama_lengkap', 'kategori', 'foto'], ['id', 'nama', 'kategori', 'foto']);
         shuffle($dataArtikel);
-        foreach($dataArtikel as &$item){
-            $item['id_konsultasi'] = $item['uuid'];
-            unset( $item['uuid']);
-        }
-        return response()->json($dataArtikel);
+        return response()->json(['status'=>'success', 'data'=>$dataArtikel]);
     }
     public function getKonsultasiDetail(Request $request, $idKonsultasi){
         $konsultasiDetail = app()->make(ServiceKonsultasiController::class)->dataCacheFile(['uuid' => $idKonsultasi], 'get_limit', 1, ['uuid', 'nama_lengkap', 'jenis_kelamin', 'alamat', 'no_telpon', 'email', 'foto']);

@@ -47,21 +47,25 @@ Route::group(['prefix'=>'/mobile','middleware'=>'authMobile','authorized'],funct
     Route::post('/artikel/{any}',[HomeController::class, 'showDetailArtikel']);
     Route::group(['prefix'=>'/disi'],function(){
         Route::get('/', [DisiController::class, 'getDisi']);
+        Route::get('/artikel', [DisiController::class, 'getDisiArtikel']);
         Route::get('/usia/{Any}', [DisiController::class, 'getDisiUsia']);
         Route::get('/{any}', [DisiController::class, 'getDisiDetail']);
     });
     Route::group(['prefix'=>'/emotal'],function(){
         Route::get('/', [EmotalController::class, 'getEmotal']);
+        Route::get('/artikel', [EmotalController::class, 'getEmotalArtikel']);
         Route::get('/usia/{Any}', [EmotalController::class, 'getEmotalUsia']);
         Route::get('/{any}', [EmotalController::class, 'getEmotalDetail']);
     });
     Route::group(['prefix'=>'/nutrisi'],function(){
         Route::get('/', [NutrisiController::class, 'getNutrisi']);
+        Route::get('/artikel', [NutrisiController::class, 'getNutrisiArtikel']);
         Route::get('/usia/{Any}', [NutrisiController::class, 'getNutrisiUsia']);
         Route::get('/{any}', [NutrisiController::class, 'getNutrisiDetail']);
     });
     Route::group(['prefix'=>'/pengasuhan'],function(){
         Route::get('/', [PengasuhanController::class, 'getPengasuhan']);
+        Route::get('/artikel', [PengasuhanController::class, 'getPengasuhanArtikel']);
         Route::get('/usia/{Any}', [PengasuhanController::class, 'getPengasuhanUsia']);
         Route::get('/{any}', [PengasuhanController::class, 'getPengasuhanDetail']);
     });

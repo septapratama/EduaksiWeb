@@ -14,7 +14,7 @@ class NutrisiController extends Controller
     public function __construct(){
         self::$jsonFile = storage_path('app/database/nutrisi.json');
     }
-    public function dataCacheFile($data = null, $con, $limit = null, $col = null){
+    public function dataCacheFile($data = null, $con, $limit = null, $col = null, $alias = null){
         $directory = storage_path('app/database');
         if (!file_exists($directory)) {
             mkdir($directory, 0755, true);
@@ -75,6 +75,7 @@ class NutrisiController extends Controller
                 if (is_array($col)) {
                     foreach ($jsonData as &$entry) {
                         $entry = array_intersect_key($entry, array_flip($col));
+                        $entry = is_array($alias) && (count($col) === count($alias)) ? array_combine($alias, array_values($entry)) : $entry;
                     }
                 }
                 return $jsonData;
@@ -112,6 +113,7 @@ class NutrisiController extends Controller
                 if (is_array($col)) {
                     foreach ($jsonData as &$entry) {
                         $entry = array_intersect_key($entry, array_flip($col));
+                        $entry = is_array($alias) && (count($col) === count($alias)) ? array_combine($alias, array_values($entry)) : $entry;
                     }
                 }
                 return $jsonData;
@@ -146,6 +148,7 @@ class NutrisiController extends Controller
                 if (is_array($col)) {
                     foreach ($jsonData as &$entry) {
                         $entry = array_intersect_key($entry, array_flip($col));
+                        $entry = is_array($alias) && (count($col) === count($alias)) ? array_combine($alias, array_values($entry)) : $entry;
                     }
                 }
                 foreach ($jsonData as &$item){

@@ -79,8 +79,19 @@ $tPath = app()->environment('local') ? '' : '';
                             </div>
                         </div>
                         <div class="crow">
-                            <label for="">Email</label>
-                            <input type="text" id="inpEmail">
+                            <div>
+                                <label for="">Kategori</label>
+                                <select class="" aria-label="Default select example" id="inpKategori">
+                                    <option value="" selected>Pilih Kategori</option>
+                                    <option value="dokter anak">Dokter anak</option>
+                                    <option value="dokter psikolog">Dokter psikolog</option>
+                                    <option value="dokter gigi">Dokter gigi</option>
+                                </select>
+                            </div>
+                                <div>
+                                <label for="">Email</label>
+                                <input type="text" id="inpEmail">
+                            </div>
                         </div>
                         <div class="crow">
                             <label for="">Alamat</label>

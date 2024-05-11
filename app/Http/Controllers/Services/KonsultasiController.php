@@ -10,10 +10,11 @@ use Exception;
 class KonsultasiController extends Controller
 {
     private static $jsonFile;
+    private static $kategoriCol = ['anak','psikolog','gigi'];
     public function __construct(){
         self::$jsonFile = storage_path('app/database/konsultasi.json');
     }
-    public function dataCacheFile($data = null, $con, $limit = null, $col = null){
+    public function dataCacheFile($data = null, $con, $limit = null, $col = null, $alias = null){
         $directory = storage_path('app/database');
         if (!file_exists($directory)) {
             mkdir($directory, 0755, true);
@@ -70,6 +71,7 @@ class KonsultasiController extends Controller
                 if (is_array($col)) {
                     foreach ($jsonData as &$entry) {
                         $entry = array_intersect_key($entry, array_flip($col));
+                        $entry = is_array($alias) && (count($col) === count($alias)) ? array_combine($alias, array_values($entry)) : $entry;
                     }
                 }
                 return $jsonData;
@@ -104,6 +106,7 @@ class KonsultasiController extends Controller
                 if (is_array($col)) {
                     foreach ($jsonData as &$entry) {
                         $entry = array_intersect_key($entry, array_flip($col));
+                        $entry = is_array($alias) && (count($col) === count($alias)) ? array_combine($alias, array_values($entry)) : $entry;
                     }
                 }
                 foreach ($jsonData as &$item){
@@ -129,6 +132,7 @@ class KonsultasiController extends Controller
                         'uuid' => $data['uuid'],
                         'nama_lengkap' => $data['nama_lengkap'],
                         'jenis_kelamin' => $data['jenis_kelamin'],
+                        'kategori' => $data['kategori'],
                         'alamat' => $data['alamat'],
                         'no_telpon' => $data['no_telpon'],
                         'email' => $data['email'],
@@ -153,9 +157,10 @@ class KonsultasiController extends Controller
         }
     }
     public function tambahKonsultasi(Request $request){
-        $validator = Validator::make($request->only('nama_lengkap', 'jenis_kelamin', 'alamat', 'no_telpon', 'email_konsultasi', 'foto'), [
+        $validator = Validator::make($request->only('nama_lengkap', 'jenis_kelamin', 'kategori', 'alamat', 'no_telpon', 'email_konsultasi', 'foto'), [
             'nama_lengkap' => 'required|max:50',
             'jenis_kelamin' => 'required|in:laki-laki,perempuan',
+            'kategori' => 'required',
             'alamat' => 'required|min:3|max:100',
             'no_telpon' => 'required|digits_between:10,13',                                                                  
             'email_konsultasi'=>'required|email',
@@ -165,6 +170,7 @@ class KonsultasiController extends Controller
             'nama_lengkap.max' => 'Nama lengkap maksimal 50 karakter',
             'jenis_kelamin.required' => 'Jenis kelamin wajib di isi',
             'jenis_kelamin.in' => 'Jenis kelamin harus Laki-laki atau Perempuan',
+            'kategori.required' => 'Jenis kelamin wajib di isi',
             'alamat.required' => 'Alamat wajib di isi',
             'alamat.min'=>'Alamat minimal 3 karakter',
             'alamat.max'=>'Alamat maksimal 100 karakter',
@@ -184,6 +190,17 @@ class KonsultasiController extends Controller
                 break;
             }
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
+        }
+        //check kategori
+        $kategori = '';
+        foreach(self::$kategoriCol as $item){
+            if (strpos($request->input('kategori'), $item) !== false) {
+                $kategori = $item;
+                break;
+            }
+        }
+        if(empty($kategori)){
+            return response()->json(['status'=>'error', 'message'=>'Kategori invalid'], 400);
         }
         //check email konsultasi on table user
         $emKon = User::select('email')->whereRaw("BINARY email = ? AND role = ?",[$request->input('email_konsultasi'), 'admin'])->first();
@@ -211,6 +228,7 @@ class KonsultasiController extends Controller
             'uuid' => $uuid,
             'nama_lengkap' => $request->input('nama_lengkap'),
             'jenis_kelamin' => $request->input('jenis_kelamin'),
+            'kategori' => $kategori,
             'alamat' => $request->input('alamat'),
             'no_telpon' => $request->input('no_telpon'),
             'email' => $request->input('email_konsultasi'),
@@ -223,6 +241,7 @@ class KonsultasiController extends Controller
             'uuid' => $uuid,
             'nama_lengkap' => $request->input('nama_lengkap'),
             'jenis_kelamin' => $request->input('jenis_kelamin'),
+            'kategori' => $kategori,
             'alamat' => $request->input('alamat'),
             'no_telpon' => $request->input('no_telpon'),
             'email' => $request->input('email_konsultasi'),
@@ -231,10 +250,11 @@ class KonsultasiController extends Controller
         return response()->json(['status'=>'success','message'=>'Data Konsultasi berhasil ditambahkan']);
     }
     public function editKonsultasi(Request $request){
-        $validator = Validator::make($request->only('uuid','nama_lengkap', 'jenis_kelamin', 'alamat', 'no_telpon', 'email_konsultasi', 'foto'), [
+        $validator = Validator::make($request->only('uuid','nama_lengkap', 'jenis_kelamin', 'kategori', 'alamat', 'no_telpon', 'email_konsultasi', 'foto'), [
             'uuid' => 'required',
             'nama_lengkap' => 'required|max:50',
             'jenis_kelamin' => 'required|in:laki-laki,perempuan',
+            'kategori' => 'required',
             'alamat' => 'required|min:3|max:100',
             'no_telpon' => 'required|digits_between:10,13',
             'email_konsultasi'=>'required|email',
@@ -245,6 +265,7 @@ class KonsultasiController extends Controller
             'nama_lengkap.max' => 'Nama lengkap maksimal 50 karakter',
             'jenis_kelamin.required' => 'Jenis kelamin wajib di isi',
             'jenis_kelamin.in' => 'Jenis kelamin harus Laki-laki atau Perempuan',
+            'kategori.required' => 'Jenis kelamin wajib di isi',
             'alamat.required' => 'Alamat wajib di isi',
             'alamat.min'=>'Alamat minimal 3 karakter',
             'alamat.max'=>'Alamat maksimal 100 karakter',
@@ -263,18 +284,27 @@ class KonsultasiController extends Controller
             }
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
-        $konsultasi = Konsultasi::select('foto')->where('uuid',$request->input('uuid'))->limit(1)->get()[0];
-        if (!$konsultasi) {
+        //check kategori
+        $kategori = '';
+        foreach(self::$kategoriCol as $item){
+            if (strpos($request->input('kategori'), $item) !== false) {
+                $kategori = $item;
+                break;
+            }
+        }
+        if(empty($kategori)){
+            return response()->json(['status'=>'error', 'message'=>'Kategori invalid'], 400);
+        }
+        $konsultasi = Konsultasi::select('email')->where('uuid',$request->input('uuid'))->first();
+        if (is_null($konsultasi)) {
             return response()->json(['status' =>'error','message'=>'Data Konsultasi tidak ditemukan'], 400);
         }
         //check email konsultasi on table user
-        $emKon = User::select('email')->whereRaw("BINARY email = ? AND role = ?",[$request->input('email_konsultasi'), 'admin'])->first();
-        if ($emKon) {
-            return response()->json(['status' => 'error', 'message' => 'Email tidak boleh sama dengan Admin'], 400);
+        if (User::select('email')->whereRaw("BINARY email = ? AND role = ?",[$request->input('email_konsultasi'), 'admin'])->first()) {
+            return response()->json(['status' => 'error', 'message' => 'Email invalid'], 400);
         }
         //check email konsultasi on table konsultasi
-        $emKon = Konsultasi::select('email')->whereRaw("BINARY email = ?",[$request->input('email_konsultasi')])->first();
-        if ($emKon) {
+        if (Konsultasi::select('email')->whereRaw("BINARY email = ?",[$request->input('email_konsultasi')])->first() && $request->input('email_konsultasi') != $konsultasi['email']) {
             return response()->json(['status' => 'error', 'message' => 'Email sudah digunakan'], 400);
         }
         //process file foto
@@ -291,9 +321,10 @@ class KonsultasiController extends Controller
             $fotoName = $file->hashName();
             $file->move($destinationPath, $fotoName);
         }
-        $edit = $konsultasi->where('uuid',$request->input('uuid'))->update([
+        $edit = Konsultasi::where('uuid',$request->input('uuid'))->update([
             'nama_lengkap' => $request->input('nama_lengkap'),
             'jenis_kelamin' => $request->input('jenis_kelamin'),
+            'kategori' => $kategori,
             'alamat' => $request->input('alamat'),
             'no_telpon' => $request->input('no_telpon'),
             'email' => $request->input('email_konsultasi'),
@@ -306,6 +337,7 @@ class KonsultasiController extends Controller
             'uuid' => $request->input('uuid'),
             'nama_lengkap' => $request->input('nama_lengkap'),
             'jenis_kelamin' => $request->input('jenis_kelamin'),
+            'kategori' => $kategori,
             'alamat' => $request->input('alamat'),
             'no_telpon' => $request->input('no_telpon'),
             'email' => $request->input('email_konsultasi'),

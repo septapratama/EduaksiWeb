@@ -13,6 +13,7 @@ return new class extends Migration
             $table->uuid('uuid');
             $table->string('nama_lengkap',50);
             $table->enum('jenis_kelamin',['laki-laki','perempuan']);
+            $table->enum('kategori',['anak','psikolog','gigi']);
             $table->string('alamat',100);
             $table->string('no_telpon',15);
             $table->string('email',45);

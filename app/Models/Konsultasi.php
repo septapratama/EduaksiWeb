@@ -13,6 +13,6 @@ class Konsultasi extends Model
     public $incrementing = true;
     public $timestamps = false;
     protected $fillable = [
-        'nama_lengkap','jenis_kelamin','no_telpon','alamat','email','foto'
+        'nama_lengkap','jenis_kelamin', 'kategori', 'no_telpon','alamat','email','foto'
     ];
 }

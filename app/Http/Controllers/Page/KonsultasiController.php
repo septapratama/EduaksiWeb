@@ -22,7 +22,7 @@ class KonsultasiController extends Controller
         return view('page.Konsultasi.tambah',$dataShow);
     }
     public function showEdit(Request $request, $uuid){
-        $konsultasi = app()->make(ServiceKonsultasiController::class)->dataCacheFile(['uuid' => $uuid], 'get_limit', 1, ['uuid', 'nama_lengkap', 'jenis_kelamin', 'no_telpon', 'alamat', 'email', 'foto']);
+        $konsultasi = app()->make(ServiceKonsultasiController::class)->dataCacheFile(['uuid' => $uuid], 'get_limit', 1, ['uuid', 'nama_lengkap', 'jenis_kelamin', 'kategori', 'no_telpon', 'alamat', 'email', 'foto']);
         if (is_null($konsultasi)) {
             return $this->showData($request, 'Data Konsultasi tidak ditemukan');
         }

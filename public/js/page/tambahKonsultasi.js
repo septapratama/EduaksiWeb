@@ -1,6 +1,7 @@
 const tambahForm = document.getElementById("tambahForm");
 const inpNama = document.getElementById("inpNama");
 const inpJenisKelamin = document.getElementById("inpJenisKelamin");
+const inpKategori = document.getElementById("inpKategori");
 const inpNomerTelepon = document.getElementById("inpNomerTelepon");
 const inpEmail = document.getElementById("inpEmail");
 const inpAlamat = document.getElementById("inpAlamat");
@@ -63,6 +64,7 @@ tambahForm.onsubmit = function(event){
     event.preventDefault();
     const nama = inpNama.value.trim();
     const inp_jenis_kelamin = inpJenisKelamin.value.trim();
+    const inp_kategori = inpKategori.value.trim();
     const nomer = inpNomerTelepon.value.trim();
     const inpEmails = inpEmail.value.trim();
     const alamat = inpAlamat.value.trim();
@@ -111,6 +113,7 @@ tambahForm.onsubmit = function(event){
     const formData = new FormData();
     formData.append("nama_lengkap", nama);
     formData.append("jenis_kelamin", inp_jenis_kelamin);
+    formData.append("kategori", inp_kategori);
     formData.append("no_telpon", nomer);
     formData.append("email_konsultasi", inpEmails);
     formData.append("alamat", alamat);

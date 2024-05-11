@@ -7,16 +7,18 @@ use Carbon\Carbon;
 class HomeController extends Controller
 {
     public function dashboard(Request $request){
-        return response()->json(['status'=>'success', 'data'=> array_map(function($item){
-            $item['created_at'] = Carbon::parse($item['created_at'])->translatedFormat('l, d F Y');
+        $artikel = array_map(function($item){
+            $item['tanggal'] = Carbon::parse($item['tanggal'])->translatedFormat('l, d F Y');
             return $item;
-        }, app()->make(ArtikelController::class)->dataCacheFile(null, 'get_limit', 3, ['judul', 'foto', 'created_at']))]);
+        }, app()->make(ArtikelController::class)->dataCacheFile(null, 'get_limit', 3, ['judul', 'foto', 'created_at'], ['judul', 'gambar', 'tanggal']));
+        shuffle($artikel);
+        return response()->json(['status'=>'success', 'data'=> $artikel]);
     }
     public function showArtikel(Request $request){
         $artikel = array_map(function($item){
-            $item['created_at'] = Carbon::parse($item['created_at'])->translatedFormat('l, d F Y');
+            $item['tanggal'] = Carbon::parse($item['tanggal'])->translatedFormat('l, d F Y');
             return $item;
-        }, app()->make(ArtikelController::class)->dataCacheFile(null, 'get_limit', null, ['judul', 'foto', 'created_at']));
+        }, app()->make(ArtikelController::class)->dataCacheFile(null, 'get_limit', null, ['judul', 'foto', 'created_at'], ['judul', 'foto', 'tanggal']));
         $artikel = array_merge(...array_fill(0, 5, $artikel)); // make copy
         shuffle($artikel);
         return response()->json(['status'=>'success', 'data'=> $artikel]);
@@ -24,9 +26,9 @@ class HomeController extends Controller
     public function showDetailArtikel(Request $request, $path){
         $path = str_replace('-', ' ', $path);
         $artikel = array_map(function($item){
-            $item['created_at'] = Carbon::parse($item['created_at'])->translatedFormat('l, d F Y');
+            $item['tanggal'] = Carbon::parse($item['tanggal'])->translatedFormat('l, d F Y');
             return $item;
-        }, app()->make(ArtikelController::class)->dataCacheFile(null, 'get_limit', 3, ['judul', 'foto', 'created_at']));
+        }, app()->make(ArtikelController::class)->dataCacheFile(null, 'get_limit', 3, ['judul', 'foto', 'created_at'], ['judul', 'foto', 'tanggal']));
         $artikel = array_merge(...array_fill(0, 5, $artikel)); // make copy
         shuffle($artikel);
         $detailArtikel = app()->make(ArtikelController::class)->dataCacheFile(['judul' => $path], 'get_limit', 1, ['judul', 'deskripsi', 'foto', 'link_video','created_at'])[0];

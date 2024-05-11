@@ -1,6 +1,7 @@
 const editForm = document.getElementById("editForm");
 const inpNama = document.getElementById("inpNama");
 const inpJenisKelamin = document.getElementById("inpJenisKelamin");
+const inpKategori = document.getElementById("inpKategori");
 const inpNomerTelepon = document.getElementById("inpNomerTelepon");
 const inpEmail = document.getElementById("inpEmail");
 const inpAlamat = document.getElementById("inpAlamat");
@@ -61,10 +62,11 @@ editForm.onsubmit = function(event){
     event.preventDefault();
     const nama = inpNama.value.trim();
     const inp_jenis_kelamin = inpJenisKelamin.value.trim();
+    const inp_kategori = inpKategori.value.trim();
     const nomer = inpNomerTelepon.value.trim();
     const inpEmails = inpEmail.value.trim();
     const alamat = inpAlamat.value.trim();
-    if (nama === konsultasi.nama_lengkap && inp_jenis_kelamin === konsultasi.jenis_kelamin && nomer === konsultasi.no_telpon && inpEmails === konsultasi.email && uploadeFile === null) {
+    if (nama === konsultasi.nama_lengkap && inp_jenis_kelamin === konsultasi.jenis_kelamin && inp_kategori === konsultasi.kategori && nomer === konsultasi.no_telpon && inpEmails === konsultasi.email && uploadeFile === null) {
         showRedPopup('Data belum diubah');
         return;
     }
@@ -74,6 +76,10 @@ editForm.onsubmit = function(event){
     }
     if(inp_jenis_kelamin === "") {
         showRedPopup("Jenis Kelamin harus diisi !");
+        return;
+    }
+    if(inp_kategori === "") {
+        showRedPopup("Kategori harus diisi !");
         return;
     }
     if(nomer === "") {
@@ -113,6 +119,7 @@ editForm.onsubmit = function(event){
     formData.append("uuid", uuid);
     formData.append("nama_lengkap", nama);
     formData.append("jenis_kelamin", inp_jenis_kelamin);
+    formData.append("kategori", inp_kategori);
     formData.append("no_telpon", nomer);
     formData.append("email_konsultasi", inpEmails);
     formData.append("alamat", alamat);
