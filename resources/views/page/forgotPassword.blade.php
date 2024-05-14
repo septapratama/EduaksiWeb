@@ -24,6 +24,19 @@ $tPath = app()->environment('local') ? '' : '';
         body img{
             pointer-events: none;
         }
+        #iconPass1, #iconPass2{
+            background-color: transparent;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            right: 7px;
+            width: max-content;
+            cursor: pointer;
+        }
+        #iconPass1 img,
+        #iconPass2 img{
+            width: 30px;
+        }
     </style>
 </head>
 
@@ -85,19 +98,31 @@ $tPath = app()->environment('local') ? '' : '';
                                         <input type="submit" value="Konfirmasi">
                                     </form>
                                 </div>
-                                <div id="gantiPassword" style="display: none;">
+                                <div id="gantiPassword" style="display: block;">
                                     <form class="row g-3 needs-validation" novalidate id="verifyChange">
                                         <div class="col-12">
                                         @if(isset($description) && $description == 'createUser')
                                         <label for="newPassword" class="form-label">Password</label>
                                         <div class="input-group has-validation">
-                                            <input type="password" name="pass" class="form-control" id="password" required>
+                                            <div style="position: relative">
+                                                <input type="password" name="pass" class="form-control" id="password" required style="padding-right: 45px;" oninput="showEyePass('pass')">
+                                                <div id="iconPass1" onclick="showPass('pass')" style="display: none;">
+                                                    <img src="{{ asset($tPath.'img/icon/eye-slash.svg') }}" alt="" id="passClose1">
+                                                    <img src="{{ asset($tPath.'img/icon/eye.svg') }}" alt="" id="passShow1" style="display: none">
+                                                </div>
+                                            </div>
                                             <div class="invalid-feedback">Masukkan Password</div>
                                         </div>
                                         @else
                                         <label for="newPassword" class="form-label">Password Baru</label>
                                         <div class="input-group has-validation">
-                                            <input type="password" name="pass" class="form-control" id="password" required>
+                                            <div style="position: relative">
+                                                <input type="password" name="pass" class="form-control" id="password" required style="padding-right: 45px;" oninput="showEyePass('pass')">
+                                                <div id="iconPass1" onclick="showPass('pass')" style="display: none;">
+                                                    <img src="{{ asset($tPath.'img/icon/eye-slash.svg') }}" alt="" id="passClose1">
+                                                    <img src="{{ asset($tPath.'img/icon/eye.svg') }}" alt="" id="passShow1" style="display: none">
+                                                </div>
+                                            </div>
                                             <div class="invalid-feedback">Masukkan Password Baru</div>
                                         </div>
                                         @endif
@@ -106,13 +131,25 @@ $tPath = app()->environment('local') ? '' : '';
                                             @if(isset($description) && $description == 'createUser')
                                             <label for="confirmPassword" class="form-label">Konfirmasi Password</label>
                                             <div class="input-group has-validation">
-                                                <input type="password" name="pass_new" class="form-control" id="password_new" required>
+                                                <div style="position: relative">
+                                                    <input type="password" name="pass_new" class="form-control" id="password_new" required style="padding-right: 45px;" oninput="showEyePass('ulangi')">
+                                                    <div id="iconPass2" onclick="showPass('ulangi')" style="display: none;">
+                                                        <img src="{{ asset($tPath.'img/icon/eye-slash.svg') }}" alt="" id="passClose2">
+                                                        <img src="{{ asset($tPath.'img/icon/eye.svg') }}" alt="" id="passShow2" style="display: none">
+                                                    </div>
+                                                </div>
                                                 <div class="invalid-feedback">Masukkan Konfirmasi Password</div>
                                             </div>
                                             @else
                                             <label for="confirmPassword" class="form-label">Konfirmasi Password Baru</label>
                                             <div class="input-group has-validation">
-                                                <input type="password" name="pass_new" class="form-control" id="password_new" required>
+                                                <div style="position: relative">
+                                                    <input type="password" name="pass_new" class="form-control" id="password_new" required style="padding-right: 45px;" oninput="showEyePass('ulangi')">
+                                                    <div id="iconPass2" onclick="showPass('ulangi')" style="display: none;">
+                                                        <img src="{{ asset($tPath.'img/icon/eye-slash.svg') }}" alt="" id="passClose2">
+                                                        <img src="{{ asset($tPath.'img/icon/eye.svg') }}" alt="" id="passShow2" style="display: none">
+                                                    </div>
+                                                </div>
                                                 <div class="invalid-feedback">Masukkan Konfirmasi Password Baru</div>
                                             </div>
                                             @endif
@@ -169,7 +206,7 @@ $tPath = app()->environment('local') ? '' : '';
         </script>
     <script src="{{ asset($tPath.'assets/libs/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ asset($tPath.'assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset($tPath.'js/page/forgotPassword.js?') }}"></script>
+    <script src="{{ asset($tPath.'js/page/forgotPassword.js') }}"></script>
 </body>
 
 </html>

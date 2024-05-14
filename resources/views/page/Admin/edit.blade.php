@@ -100,7 +100,13 @@ $tPath = app()->environment('local') ? '' : '';
                             </div>
                             <div>
                                 <label for="">Password</label>
-                                <input type="password" id="inpPassword">
+                                <div style="position: relative">
+                                    <input type="password" id="inpPassword" style="padding-right: 45px;" oninput="showEyePass()">
+                                    <div id="iconPass" onclick="showPass()" style="display: none;">
+                                        <img src="{{ asset($tPath.'img/icon/eye-slash.svg') }}" alt="" id="passClose">
+                                        <img src="{{ asset($tPath.'img/icon/eye.svg') }}" alt="" id="passShow" style="display: none">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="img" onclick="handleFileClick()" ondragover="handleDragOver(event)"

@@ -335,7 +335,7 @@ $tPath = app()->environment('local') ? '' : '';
                     deskripsi:acara.deskripsi,
                     nama_tempat:acara.nama_tempat,
                     start: acara.start,
-                    end: acara.end,
+                    end: moment(acara.end).add(1, 'days').format('YYYY-MM-DD'),
                     color: acara.color,
                     url: ''
                 });

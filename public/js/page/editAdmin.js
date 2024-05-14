@@ -4,15 +4,37 @@ const inpJenisKelamin = document.getElementById("inpJenisKelamin");
 const inpRole = document.getElementById("inpRole");
 const inpNomerTelepon = document.getElementById("inpNomerTelepon");
 const inpEmail = document.getElementById("inpEmail");
+const iconPass = document.getElementById("iconPass");
 const inpPassword = document.getElementById("inpPassword");
 const inpFoto = document.getElementById("inpFoto");
 const allowedFormats = ["image/jpeg", "image/png"];
 let uploadeFile = null;
+var isPasswordShow = false;
 function showLoading() {
     document.querySelector("div#preloader").style.display = "block";
 }
 function closeLoading() {
     document.querySelector("div#preloader").style.display = "none";
+}
+function showEyePass(){
+    if(inpPassword.value == '' || inpPassword.value == null){
+        iconPass.style.display = 'none';
+    }else{
+        iconPass.style.display = 'block';
+    }
+}
+function showPass(){
+    if(isPasswordShow){
+        inpPassword.type = 'password';
+        document.getElementById('passClose').style.display = 'block';
+        document.getElementById('passShow').style.display = 'none';
+        isPasswordShow = false;
+    }else{
+        inpPassword.type = 'text';
+        document.getElementById('passClose').style.display = 'none';
+        document.getElementById('passShow').style.display = 'block';
+        isPasswordShow = true;
+    }
 }
 function handleFileClick() {
     inpFoto.click();

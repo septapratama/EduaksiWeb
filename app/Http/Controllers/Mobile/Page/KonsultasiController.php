@@ -6,12 +6,12 @@ use Illuminate\Http\Request;
 class KonsultasiController extends Controller
 {
     public function getKonsultasi(Request $request){
-        $dataArtikel = app()->make(ServiceKonsultasiController::class)->dataCacheFile(null, 'get_limit', null, ['uuid', 'nama_lengkap', 'kategori', 'foto'], ['id', 'nama', 'kategori', 'foto']);
+        $dataArtikel = app()->make(ServiceKonsultasiController::class)->dataCacheFile(null, 'get_limit', null, ['uuid', 'nama_lengkap', 'kategori', 'foto'], ['id_konsultasi', 'nama', 'kategori', 'foto']);
         shuffle($dataArtikel);
         return response()->json(['status'=>'success', 'data'=>$dataArtikel]);
     }
     public function getKonsultasiDetail(Request $request, $idKonsultasi){
-        $konsultasiDetail = app()->make(ServiceKonsultasiController::class)->dataCacheFile(['uuid' => $idKonsultasi], 'get_limit', 1, ['uuid', 'nama_lengkap', 'jenis_kelamin', 'alamat', 'no_telpon', 'email', 'foto']);
+        $konsultasiDetail = app()->make(ServiceKonsultasiController::class)->dataCacheFile(['uuid' => $idKonsultasi], 'get_limit', 1, ['uuid', 'nama_lengkap', 'kategori', 'alamat', 'no_telpon', 'email', 'foto']);
         if(is_null($konsultasiDetail)){
             return response()->json(['status' => 'error', 'message' => 'Konsultasi tidak ditemukan'], 404);
         }

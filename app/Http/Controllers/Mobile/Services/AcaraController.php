@@ -3,7 +3,7 @@ namespace App\Http\Controllers\Mobile\Services;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
+use App\Models\User;
 use App\Models\Acara;
 use Carbon\Carbon;
 use Exception;
@@ -147,18 +147,24 @@ class AcaraController extends Controller
             file_put_contents(self::$jsonFile,json_encode($jsonData, JSON_PRETTY_PRINT));
         }
     }
+    public function getAcara(Request $request){
+        //
+    }
     public function tambahAcara(Request $request){
-        $validator = Validator::make($request->only('nama_acara', 'deskripsi', 'tanggal'), [
+        $validator = Validator::make($request->only('nama_acara', 'deskripsi', 'kategori', 'tanggal'), [
             'nama_acara' => 'required|min:6|max:50',
             'deskripsi' => 'required|max:4000',
+            'kategori' => 'required|in:umum,keluarga,penting',
             'tanggal' => 'required',
         ], [
-            'nama_acara.required' => 'Nama acara wajib di isi',
+            'nama_acara.required' => 'Nama acara harus di isi',
             'nama_acara.min' => 'Nama acara minimal 6 karakter',
             'nama_acara.max' => 'Nama acara maksimal 50 karakter',
-            'deskripsi.required' => 'Deskripsi wajib di isi',
+            'deskripsi.required' => 'Deskripsi harus di isi',
             'deskripsi.max' => 'Deskripsi maksimal 4000 karakter',
-            'tanggal.required' => 'Tanggal wajib di isi',
+            'kategori.required' => 'Kategori harus di isi',
+            'kategori.in' => 'Kategori invalid',
+            'tanggal.required' => 'Tanggal harus di isi',
         ]);
         if ($validator->fails()) {
             $errors = [];
@@ -176,33 +182,46 @@ class AcaraController extends Controller
         if ($inpTanggal->diffInMinutes(Carbon::now()) < 5) {
             return response()->json(['status'=>'error','message'=>'Data Acara minimal 5 menit dari sekarang'], 400);
         }
-        $eventI = Acara::insert([
+        //check email
+        $user = User::select('id_user')->whereRaw("BINARY email = ?",[$request->input('user_auth')['email']])->first();
+        if (is_null($user)) {
+            return response()->json(['status' => 'error', 'message' => 'User tidak ditemukan'], 400);
+        }
+        $eventI = Acara::insertGetId([
             'nama_acara' => $request->input('nama_acara'),
             'deskripsi' => $request->input('deskripsi'),
+            'kategori' => $request->input('kategori'),
             'tanggal' => $inpTanggal->format('Y-m-d H:i:s'),
+            'id_user' => $user['id_user'],
         ]);
-        if (!$eventI) {
+        if (is_null($eventI) || empty($eventI) || $eventI <= 0) {
             return response()->json(['status' => 'error', 'message' => 'Gagal menambahkan data Acara'], 500);
         }
         $this->dataCacheFile([
+            'id_acara' => $eventI,
             'nama_acara' => $request->input('nama_acara'),
             'deskripsi' => $request->input('deskripsi'),
+            'kategori' => $request->input('kategori'),
             'tanggal' => $inpTanggal->format('Y-m-d H:i:s'),
-        ],'tambah');
-        return response()->json(['status'=>'success','message'=>'Data Acara berhasil ditambahkan']);
+            'id_user' => $user['id_user'],
+        ], 'tambah');
+        return response()->json(['status'=>'success','message'=>'Data Acara berhasil ditambahkan', 'data'=> $eventI]);
     }
     public function editAcara(Request $request){
-        $validator = Validator::make($request->only('nama_acara', 'deskripsi', 'tanggal'), [
+        $validator = Validator::make($request->only('nama_acara', 'deskripsi', 'kategori', 'tanggal'), [
             'nama_acara' => 'required|min:6|max:50',
             'deskripsi' => 'required|max:4000',
+            'kategori' => 'required|in:umum,keluarga,penting',
+            'kategori.required' => 'Kategori harus di isi',
+            'kategori.in' => 'Kategori invalid',
             'tanggal' => 'required',
         ], [
-            'nama_acara.required' => 'Nama acara wajib di isi',
+            'nama_acara.required' => 'Nama acara harus di isi',
             'nama_acara.min' => 'Nama acara minimal 6 karakter',
             'nama_acara.max' => 'Nama acara maksimal 50 karakter',
-            'deskripsi.required' => 'Deskripsi wajib di isi',
+            'deskripsi.required' => 'Deskripsi harus di isi',
             'deskripsi.max' => 'Deskripsi maksimal 4000 karakter',
-            'tanggal.required' => 'Tanggal wajib di isi',
+            'tanggal.required' => 'Tanggal harus di isi',
         ]);
         if ($validator->fails()) {
             $errors = [];
@@ -211,6 +230,11 @@ class AcaraController extends Controller
                 break;
             }
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
+        }
+        //check email
+        $user = User::select('id_user')->whereRaw("BINARY email = ?",[$request->input('user_auth')['email']])->first();
+        if (is_null($user)) {
+            return response()->json(['status' => 'error', 'message' => 'User tidak ditemukan'], 400);
         }
         //check tanggal
         $inpTanggal = Carbon::createFromFormat('d-m-Y i:H', $request->input('tanggal'));
@@ -227,7 +251,9 @@ class AcaraController extends Controller
         $edit = $acara->where('id_acara',$request->input('id_acara'))->update([
             'nama_acara' => $request->input('nama_acara'),
             'deskripsi' => $request->input('deskripsi'),
+            'kategori' => $request->input('kategori'),
             'tanggal' => $inpTanggal->format('Y-m-d H:i:s'),
+            'id_user' => $user['id_user'],
         ]);
         if(!$edit){
             return response()->json(['status' =>'error','message'=>'Gagal memperbarui data Acara'], 500);
@@ -235,7 +261,9 @@ class AcaraController extends Controller
         $this->dataCacheFile([
             'nama_acara' => $request->input('nama_acara'),
             'deskripsi' => $request->input('deskripsi'),
+            'kategori' => $request->input('kategori'),
             'tanggal' => $inpTanggal->format('Y-m-d H:i:s'),
+            'id_user' => $user['id_user'],
         ],'update');
         return response()->json(['status' =>'success','message'=>'Data Acara berhasil di perbarui']);
     }
@@ -243,7 +271,7 @@ class AcaraController extends Controller
         $validator = Validator::make($request->only('id_acara'), [
             'id_acara' => 'required',
         ], [
-            'id_acara.required' => 'ID acara wajib di isi',
+            'id_acara.required' => 'ID acara harus di isi',
         ]);
         if ($validator->fails()) {
             $errors = [];

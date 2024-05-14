@@ -5,6 +5,18 @@
 body{
     user-select: none;
 }
+#iconPass{
+    background-color: transparent;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 7px;
+    width: max-content;
+    cursor: pointer;
+}
+#iconPass img{
+    width: 23px;
+}
 form {
     position: relative;
     display: flex;

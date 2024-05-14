@@ -23,6 +23,18 @@ $tPath = app()->environment('local') ? '' : '';
         body img{
             pointer-events: none;
         }
+        #iconPass{
+            background-color: transparent;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            right: 7px;
+            width: max-content;
+            cursor: pointer;
+        }
+        #iconPass img{
+            width: 28px;
+        }
     </style>
 </head>
 
@@ -64,7 +76,13 @@ $tPath = app()->environment('local') ? '' : '';
                                     </div>
                                     <div class="mb-4">
                                         <label for="exampleInputPassword1" class="form-label">Password</label>
-                                        <input id="inpPassword" type="password" class="form-control" id="exampleInputPassword1">
+                                        <div style="position: relative">
+                                            <input id="inpPassword" type="password" class="form-control" id="exampleInputPassword1" style="padding-right: 45px;" oninput="showEyePass()">
+                                            <div id="iconPass" onclick="showPass()" style="display: none;">
+                                                <img src="{{ asset($tPath.'img/icon/eye-slash.svg') }}" alt="" id="passClose">
+                                                <img src="{{ asset($tPath.'img/icon/eye.svg') }}" alt="" id="passShow" style="display: none">
+                                            </div>
+                                        </div>
                                         <a href="/password/reset">Lupa Password ?</a>
                                     </div>
                                     <div class="d-flex align-items-center justify-content-between mb-4"></div>
@@ -82,7 +100,7 @@ $tPath = app()->environment('local') ? '' : '';
     <div id="redPopup" style="display:none"></div>
     <script src="{{ asset($tPath.'assets/libs/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ asset($tPath.'assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset($tPath.'js/page/login.js?') }}"></script>
+    <script src="{{ asset($tPath.'js/page/login.js') }}"></script>
 </body>
 
 </html>

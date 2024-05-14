@@ -4,10 +4,13 @@ const forgotPasswordForm = document.getElementById('ForgotPassword');
 const verifyOTPForm = document.getElementById('verifyOTP');
 const verifyChangeForm = document.getElementById('verifyChange');
 const emailInput = document.getElementById('inpEmail');
+const iconPass1 = document.getElementById("iconPass1");
+const iconPass2 = document.getElementById("iconPass2");
 const passInput = document.getElementById('password');
 const passNewInput = document.getElementById('password_new');
 const inputOtp = verifyOTPForm.querySelectorAll('input[type="text"]');
 var email, otp = '', div, timer,timerMenit,timerDetik, updateOtp = false;
+var isPasswordShow = false, isPasswordUlangiShow = false;
 function showLoading(){
     document.querySelector('div#preloader').style.display = 'block';
 }
@@ -17,6 +20,48 @@ function closeLoading(){
 function isValidEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
+}
+function showEyePass(cond){
+    if(cond == 'pass'){
+        if(passInput.value == '' || passInput.value == null){
+            iconPass1.style.display = 'none';
+        }else{
+            iconPass1.style.display = 'block';
+        }
+    }else if(cond == 'ulangi'){
+        if(passNewInput.value == '' || passNewInput.value == null){
+            iconPass2.style.display = 'none';
+        }else{
+            iconPass2.style.display = 'block';
+        }
+    }
+}
+function showPass(cond){
+    if(cond == 'pass'){
+        if(isPasswordShow){
+            passInput.type = 'password';
+            document.getElementById('passClose1').style.display = 'block';
+            document.getElementById('passShow1').style.display = 'none';
+            isPasswordShow = false;
+        }else{
+            passInput.type = 'text';
+            document.getElementById('passClose1').style.display = 'none';
+            document.getElementById('passShow1').style.display = 'block';
+            isPasswordShow = true;
+        }
+    }else if(cond == 'ulangi'){
+        if(isPasswordUlangiShow){
+            passNewInput.type = 'password';
+            document.getElementById('passClose2').style.display = 'block';
+            document.getElementById('passShow2').style.display = 'none';
+            isPasswordUlangiShow = false;
+        }else{
+            passNewInput.type = 'text';
+            document.getElementById('passClose2').style.display = 'none';
+            document.getElementById('passShow2').style.display = 'block';
+            isPasswordUlangiShow = true;
+        }
+    }
 }
 function startCountdown(waktu) {
     timer = setInterval(function() {

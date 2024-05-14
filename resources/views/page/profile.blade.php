@@ -68,7 +68,22 @@ $tPath = app()->environment('local') ? '' : '';
         width: auto;
         height: auto;
     }
-
+    #iconPass1,
+    #iconPass2,
+    #iconPass3{
+        background-color: transparent;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 20px;
+        width: max-content;
+        cursor: pointer;
+    }
+    #iconPass1 img,
+    #iconPass2 img,
+    #iconPass3 img{
+        width: 28px;
+    }
     @media (max-width: 480px) {}
 
     @media (min-width: 481px) and (max-width: 767px) {}
@@ -235,33 +250,39 @@ $tPath = app()->environment('local') ? '' : '';
                                             <!-- Change Password Form -->
                                             <form onsubmit="updatePassword(event)">
                                                 <div class="row mb-3">
-                                                    <label for="currentPassword"
-                                                        class="col-md-4 col-lg-3 col-form-label">Password Lama</label>
-                                                    <div class="col-md-8 col-lg-9">
-                                                        <input name="password_old" type="password" class="form-control"
-                                                            id="currentPassword">
+                                                    <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Password Lama</label>
+                                                    <div class="col-md-8 col-lg-9" style="position: relative">
+                                                        <input name="password_old" type="password" class="form-control" id="currentPassword" style="padding-right: 45px;" oninput="showEyePass('lama')">
+                                                        <div id="iconPass1" onclick="showPass('lama')" style="display: none;">
+                                                            <img src="{{ asset($tPath.'img/icon/eye-slash.svg') }}" alt="" id="passClose1">
+                                                            <img src="{{ asset($tPath.'img/icon/eye.svg') }}" alt="" id="passShow1" style="display: none">
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="row mb-3">
-                                                    <label for="newPassword"
-                                                        class="col-md-4 col-lg-3 col-form-label">Password Baru</label>
-                                                    <div class="col-md-8 col-lg-9">
-                                                        <input name="password" type="password" class="form-control"
-                                                            id="newPassword">
+                                                    <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">Password Baru</label>
+                                                    <div class="col-md-8 col-lg-9" style="position: relative">
+                                                        <input name="password" type="password" class="form-control" id="newPassword" style="padding-right: 45px;" oninput="showEyePass('pass')">
+                                                        <div id="iconPass2" onclick="showPass('pass')" style="display: none;">
+                                                            <img src="{{ asset($tPath.'img/icon/eye-slash.svg') }}" alt="" id="passClose2">
+                                                            <img src="{{ asset($tPath.'img/icon/eye.svg') }}" alt="" id="passShow2" style="display: none">
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="row mb-3">
                                                     <label for="renewPassword"
                                                         class="col-md-4 col-lg-3 col-form-label">Masukkan Kembali
                                                         Password Baru</label>
-                                                    <div class="col-md-8 col-lg-9">
-                                                        <input name="password_new" type="password" class="form-control"
-                                                            id="renewPassword">
+                                                    <div class="col-md-8 col-lg-9" style="position: relative">
+                                                        <input name="password_new" type="password" class="form-control" id="renewPassword" style="padding-right: 45px;" oninput="showEyePass('ulangi')">
+                                                        <div id="iconPass3" onclick="showPass('ulangi')" style="display: none;">
+                                                            <img src="{{ asset($tPath.'img/icon/eye-slash.svg') }}" alt="" id="passClose3">
+                                                            <img src="{{ asset($tPath.'img/icon/eye.svg') }}" alt="" id="passShow3" style="display: none">
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="text-center">
-                                                    <button type="submit" class="btn btn-primary" name="changePass">Ubah
-                                                        Password</button>
+                                                    <button type="submit" class="btn btn-primary" name="changePass">Ubah Password</button>
                                                 </div>
                                             </form><!-- End Change Password Form -->
                                         </div>
@@ -285,9 +306,16 @@ $tPath = app()->environment('local') ? '' : '';
     <script>
     const maxSizeInBytes = 4 * 1024 * 1024; //max file 4MB
     var divImg = document.getElementById('divImg');
+    const iconPass1 = document.getElementById("iconPass1");
+    const iconPass2 = document.getElementById("iconPass2");
+    const iconPass3 = document.getElementById("iconPass3");
+    const inpLamaPassword = document.getElementById("currentPassword");
+    const inpPassword = document.getElementById("newPassword");
+    const inpUlangiPassword = document.getElementById("renewPassword");
     var inpFile = document.getElementById('inpFile');
     var imgText = document.getElementById('imgText');
     var fileImg = '';
+    var isPasswordLamaShow = false, isPasswordShow = false, isPasswordUlangiShow = false;
     var uploadStat = false;
     divImg.addEventListener("click", function() {
         inpFile.click();
@@ -299,6 +327,68 @@ $tPath = app()->environment('local') ? '' : '';
 
     function closeLoading() {
         document.querySelector('div#preloader').style.display = 'none';
+    }
+
+    function showEyePass(cond){
+        if(cond == 'lama'){
+            if(inpLamaPassword.value == '' || inpLamaPassword.value == null){
+                iconPass1.style.display = 'none';
+            }else{
+                iconPass1.style.display = 'block';
+            }
+        }else if(cond == 'pass'){
+            if(inpPassword.value == '' || inpPassword.value == null){
+                iconPass2.style.display = 'none';
+            }else{
+                iconPass2.style.display = 'block';
+            }
+        }else if(cond == 'ulangi'){
+            if(inpUlangiPassword.value == '' || inpUlangiPassword.value == null){
+                iconPass3.style.display = 'none';
+            }else{
+                iconPass3.style.display = 'block';
+            }
+        }
+    }
+
+    function showPass(cond){
+        if(cond == 'lama'){
+            if(isPasswordLamaShow){
+                inpLamaPassword.type = 'password';
+                document.getElementById('passClose1').style.display = 'block';
+                document.getElementById('passShow1').style.display = 'none';
+                isPasswordLamaShow = false;
+            }else{
+                inpLamaPassword.type = 'text';
+                document.getElementById('passClose1').style.display = 'none';
+                document.getElementById('passShow1').style.display = 'block';
+                isPasswordLamaShow = true;
+            }
+        }else if(cond == 'pass'){
+            if(isPasswordShow){
+                inpPassword.type = 'password';
+                document.getElementById('passClose2').style.display = 'block';
+                document.getElementById('passShow2').style.display = 'none';
+                isPasswordShow = false;
+            }else{
+                inpPassword.type = 'text';
+                document.getElementById('passClose2').style.display = 'none';
+                document.getElementById('passShow2').style.display = 'block';
+                isPasswordShow = true;
+            }
+        }else if(cond == 'ulangi'){
+            if(isPasswordUlangiShow){
+                inpUlangiPassword.type = 'password';
+                document.getElementById('passClose3').style.display = 'block';
+                document.getElementById('passShow3').style.display = 'none';
+                isPasswordUlangiShow = false;
+            }else{
+                inpUlangiPassword.type = 'text';
+                document.getElementById('passClose3').style.display = 'none';
+                document.getElementById('passShow3').style.display = 'block';
+                isPasswordUlangiShow = true;
+            }
+        }
     }
 
     function uploadEdit(event) {

@@ -44,6 +44,17 @@ body{
     60% {background-position: 0% 100%,50% 0%  ,100% 50% }
     80% {background-position: 0% 100%,50% 100%,100% 0%  }
 }
+
+#iconPass{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 10px;
+}
+#iconPass img{
+    width: 30px;
+}
+
 #greenPopup, #redPopup{
     width: 400px; 
     height: 80px; 

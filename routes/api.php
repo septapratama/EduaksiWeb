@@ -2,6 +2,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Services\MailController;
 use App\Http\Controllers\Mobile\MasyarakatController;
+use App\Http\Controllers\Mobile\Services\AcaraController;
 use App\Http\Controllers\Mobile\Page\HomeController;
 use App\Http\Controllers\Mobile\Page\DisiController;
 use App\Http\Controllers\Mobile\Page\EmotalController;
@@ -74,8 +75,9 @@ Route::group(['prefix'=>'/mobile','middleware'=>'authMobile','authorized'],funct
         Route::get('/{any}', [KonsultasiController::class, 'getKonsultasiDetail']);
     });
     Route::group(['prefix'=>'/kalender'],function(){
-        Route::post('/tambah', [PengasuhanController::class, 'tambahPengasuhan']);
-        Route::put('/update', [PengasuhanController::class, 'editPengasuhan']);
-        Route::delete('/delete', [PengasuhanController::class, 'deletePengasuhan']);
+        Route::get('/', [AcaraController::class, 'getAcara']);
+        Route::post('/tambah', [AcaraController::class, 'tambahAcara']);
+        Route::put('/update', [AcaraController::class, 'editAcara']);
+        Route::delete('/delete', [AcaraController::class, 'deleteAcara']);
     });
 });

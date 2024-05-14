@@ -23,7 +23,7 @@ class LoginController extends Controller
                 $errors[$field] = $errorMessages[0];
                 break;
             }
-            return ['status' => 'error', 'message' => implode(', ', $errors),'code'=>400];
+            return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
         $emaill = $request->input("email");
         $pass = $request->input("password");
