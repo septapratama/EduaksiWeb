@@ -1,6 +1,6 @@
 <?php
 $tPath = app()->environment('local') ? '' : '';
-$constDB = ['ds'=>'digital_literasi', 'em'=>'emosi_mental', 'nt'=>'nutrisi', 'pn'=>'pengasuhan', 'ks'=>'konsultasi', 'ar'=>'article'];
+$constLink = ['ds'=>'disi', 'em'=>'emotal', 'nt'=>'nutrisi', 'pn'=>'pengasuhan', 'ks'=>'konsultasi', 'ar'=>'article'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -197,7 +197,7 @@ $constDB = ['ds'=>'digital_literasi', 'em'=>'emosi_mental', 'nt'=>'nutrisi', 'pn
                                                 </span>
                                             </td>
                                             <td class="border-bottom-0">
-                                                <a href="/{{$constDB[$data['desc']]}}/edit/{{ $data['uuid'] }}" class="btn btn-warning btn-lihat m-1">
+                                                <a href="/{{$constLink[$data['desc']]}}/edit/{{ $data['uuid'] }}" class="btn btn-warning btn-lihat m-1">
                                                     <img src="{{ asset($tPath.'img/icon/edit.svg') }}" alt="">
                                                     <span>Lihat</span>
                                                 </a>

@@ -8,25 +8,17 @@ use Carbon\Carbon;
 class EmotalController extends Controller
 {
     public function getEmotal(Request $request){
-        $artikel = array_map(function($item){
+        $dataEmotal = array_map(function($item){
             $item['tanggal'] = Carbon::parse($item['tanggal'])->translatedFormat('l, d F Y');
             return $item;
-        }, app()->make(ArtikelController::class)->dataCacheFile(null, 'get_limit', 3, ['judul', 'foto', 'created_at'], ['judul', 'gambar', 'tanggal']));
-        shuffle($artikel);
-        $dataEmotal = app()->make(ServiceEmotalController::class)->dataCacheFile(null, 'get_limit',10, ['uuid', 'judul','foto']);
-        shuffle($dataEmotal);
-        foreach($dataEmotal as &$item){
-            $item['id_emotal'] = $item['uuid'];
-            unset( $item['uuid']);
-        }
-        return response()->json(['status' => 'success', 'data' => ['artikel'=>$artikel, 'emotal'=>$dataEmotal]]);
+        }, app()->make(ServiceEmotalController::class)->dataCacheFile(null, 'get_limit', 3, ['uuid', 'judul', 'foto', 'created_at'], ['id_data', 'judul', 'gambar', 'tanggal'], true));
+        return response()->json(['status' => 'success', 'data' => $dataEmotal]);
     }
     public function getEmotalArtikel(Request $request){
         $artikel = array_map(function($item){
             $item['tanggal'] = Carbon::parse($item['tanggal'])->translatedFormat('l, d F Y');
             return $item;
-        }, app()->make(ArtikelController::class)->dataCacheFile(null, 'get_limit', null, ['judul', 'foto', 'created_at'], ['judul', 'gambar', 'tanggal']));
-        shuffle($artikel);
+        }, app()->make(ServiceEmotalController::class)->dataCacheFile(null, 'get_limit', null, ['uuid', 'judul', 'foto', 'created_at'], ['id_data', 'judul', 'gambar', 'tanggal'], true));
         return response()->json(['status'=>'success', 'data'=> $artikel]);
     }
     public function getEmotalUsia(Request $request, $usia){
@@ -40,13 +32,18 @@ class EmotalController extends Controller
         return response()->json(['status' => 'success', 'data' => $dataEmotal]);
     }
     public function getEmotalDetail(Request $request, $idEmotal){
-        $emotalDetail = app()->make(ServiceEmotalController::class)->dataCacheFile(['uuid' => $idEmotal], 'get_limit', 1, ['uuid', 'judul', 'deskripsi', 'rentang_usia', 'foto', 'link_video']);
+        $emotalDetail = array_map(function($item){
+            $item['tanggal'] = Carbon::parse($item['tanggal'])->translatedFormat('l, d F Y');
+            return $item;
+        }, app()->make(ServiceEmotalController::class)->dataCacheFile(['uuid' => $idEmotal], 'get_limit', 1, ['judul', 'deskripsi', 'rentang_usia', 'foto', 'link_video', 'created_at'], ['judul', 'deskripsi', 'rentang_usia', 'gambar', 'link_video', 'tanggal']));
         if(is_null($emotalDetail)){
             return response()->json(['status' => 'error', 'message' => 'Emosi Mental tidak ditemukan'], 404);
         }
         $emotalDetail = $emotalDetail[0];
-        $emotalDetail['id_emotal'] = $emotalDetail['uuid'];
-        unset($emotalDetail['uuid']);
-        return response()->json(['status' => 'success', 'data' => $emotalDetail]);
+        $dataEmotal = array_map(function($item){
+            $item['tanggal'] = Carbon::parse($item['tanggal'])->translatedFormat('l, d F Y');
+            return $item;
+        }, app()->make(ServiceEmotalController::class)->dataCacheFile(null, 'get_limit', 3, ['uuid', 'judul', 'foto', 'created_at'], ['id_data', 'judul', 'gambar', 'tanggal'], true));
+        return response()->json(['status' => 'success', 'data' => ['detail' => $emotalDetail, 'artikel' => $dataEmotal]]);
     }
 }

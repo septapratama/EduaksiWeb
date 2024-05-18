@@ -16,21 +16,28 @@ use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 class MasyarakatController extends Controller
 {
+    private function getMimeType($extension)
+    {
+        $mimeTypes = [
+            'jpg' => 'image/jpeg',
+            'jpeg' => 'image/jpeg',
+            'png' => 'image/png',
+            'gif' => 'image/gif',
+            // Add other extensions and MIME types as needed
+        ];
+        return $mimeTypes[strtolower($extension)] ?? 'application/octet-stream';
+    }
     public function checkFotoProfile(Request $request){
         $userAuth = $request->input('user_auth');
-        $userDb = User::select('foto')->whereRaw("BINARY email = ?",[$request->input('email')])->first();
+        $userDb = User::select('foto')->whereRaw("BINARY email = ?",[$userAuth['email']])->first();
         if (is_null($userDb)) {
             return response()->json(['status'=>'error','message'=>'Email tidak terdaftar !'],400);
         }
-        if($userDb['foto'] !== $userAuth['foto']){
-            $filePath = storage_path('app/user/foto/' . $userAuth['foto']);
-            if (file_exists($filePath)) {
-                return response(Crypt::decrypt(file_get_contents($filePath)));
-            }
-            return response()->json(['status'=>'error','message'=>'foto not found', 404]);
+        $filePath = storage_path('app/user/foto/' . $userAuth['foto']);
+        if (file_exists($filePath)) {
+            return response(Crypt::decrypt(file_get_contents($filePath)))->header('Content-Type', $this->getMimeType(pathinfo($filePath, PATHINFO_EXTENSION)));
         }
-        //if same
-        return response()->json(['status','success','message'=>'foto same']);
+        return response()->json(['status'=>'error','message'=>'foto not found'], 404);
     }
     public function getChangePass(Request $request, User $user, $any = null){
         $validator = Validator::make($request->all(), [
@@ -356,16 +363,32 @@ class MasyarakatController extends Controller
         return response()->json(['status'=>'error','message'=>'Profile ada', 'data'=>$user],400);
     }
     public function updateProfile(Request $request){
-        $validator = Validator::make($request->only('email_new', 'nama_lengkap', 'jenis_kelamin', 'no_telpon', 'foto'),
+        $validator = Validator::make($request->only('email_new', 'nama_lengkap', 'jenis_kelamin', 'no_telpon', 'foto', 'password_old', 'password', 'password_confirm'),
             [
                 'email_new'=>'nullable|email',
-                'nama_lengkap' => 'required|max:50',
+                'nama_lengkap' => 'required|min:3|max:50',
                 'jenis_kelamin' => 'required|in:laki-laki,perempuan',
                 'no_telpon' => 'required|digits_between:11,13',
                 'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
+                'password_old' => 'nullable',
+                'password' => [
+                    'nullable',
+                    'string',
+                    'min:8',
+                    'max:25',
+                    'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\p{P}\p{S}])[\p{L}\p{N}\p{P}\p{S}]+$/u',
+                ],
+                'password_confirm' => [
+                    'nullable',
+                    'string',
+                    'min:8',
+                    'max:25',
+                    'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\p{P}\p{S}])[\p{L}\p{N}\p{P}\p{S}]+$/u',
+                ],
             ],[
                 'email_new.email'=>'Email yang anda masukkan invalid',
                 'nama_lengkap.required' => 'Nama user wajib di isi',
+                'nama_lengkap.min' => 'Nama user minimal 3 karakter',
                 'nama_lengkap.max' => 'Nama user maksimal 50 karakter',
                 'jenis_kelamin.required' => 'Jenis kelamin wajib di isi',
                 'jenis_kelamin.in' => 'Jenis kelamin harus Laki-laki atau Perempuan',
@@ -374,6 +397,12 @@ class MasyarakatController extends Controller
                 'foto.image' => 'Foto Admin harus berupa gambar',
                 'foto.mimes' => 'Format foto user tidak valid. Gunakan format jpeg, png, jpg',
                 'foto.max' => 'Ukuran foto user tidak boleh lebih dari 5MB',
+                'password.min'=>'Password minimal 8 karakter',
+                'password.max'=>'Password maksimal 25 karakter',
+                'password.regex'=>'Password terdiri dari 1 huruf besar, huruf kecil, angka dan karakter unik',
+                'password_confirm.min'=>'Password konfirmasi minimal 8 karakter',
+                'password_confirm.max'=>'Password konfirmasi maksimal 25 karakter',
+                'password_confirm.regex'=>'Password konfirmasi terdiri dari 1 huruf besar, huruf kecil, angka dan karakter unik',
             ],
         );
         if ($validator->fails()) {
@@ -394,13 +423,16 @@ class MasyarakatController extends Controller
             return response()->json(['status' => 'error', 'message' => 'Email sudah digunakan'], 400);
         }
         // check password
-        $pass = $request->input('password');
-        $passConfirm = $request->input('password_confirm');
-        if(!password_verify($pass,$user['password'])){
-            return response()->json(['status'=>'error','message'=>'Password salah'],400);
-        }
-        if($pass !== $passConfirm){
-            return response()->json(['status'=>'error','message'=>'Password Harus Sama'],400);
+        if($request->has('password') && !empty($request->input('password')) && !is_null($request->input('password'))){
+            $passOld = $request->input('password_old');
+            $pass = $request->input('password_confirm');
+            $passConfirm = $request->input('password_confirm');
+            if(!password_verify($passOld,$user['password'])){
+                return response()->json(['status'=>'error','message'=>'Password salah'],400);
+            }
+            if($pass !== $passConfirm){
+                return response()->json(['status'=>'error','message'=>'Password Harus Sama'],400);
+            }
         }
         //process file foto
         if ($request->hasFile('foto')) {
@@ -422,21 +454,21 @@ class MasyarakatController extends Controller
         $updateProfile = User::whereRaw("BINARY email = ?",[$request->input('user_auth')['email']])->update([
             'email'=> (empty($request->input('email_new')) || is_null($request->input('email_new'))) ? $request->input('user_auth')['email'] : $request->input('email_new'),
             'nama_lengkap' => $request->input('nama_lengkap'),
-            'jenis_kelamin' => $request->input('jenis_kelamin'),
             'no_telpon' => $request->input('no_telpon'),
-            'password' => (empty($request->input('email_new')) || is_null($request->input('email_new'))) ? $user['password'] : Hash::make($pass),
+            'password' => (empty($request->input('password')) || is_null($request->input('password'))) ? $user['password'] : Hash::make($pass),
             'foto' => $request->hasFile('foto') ? $fotoName : $user['foto'],
             'updated_at'=> Carbon::now()
         ]);
-        if (is_null($updateProfile)) {
+        if (!$updateProfile) {
             return response()->json(['status' => 'error', 'message' => 'Gagal memperbarui Profile'], 500);
         }
         //update jwt
-        $jwtData = app()->make(JWTController::class)->createJWTMobile($request->input('email'), app()->make(RefreshToken::class));
+        $jwtData = app()->make(JWTController::class)->createJWTMobile($request->input('email_new'), app()->make(RefreshToken::class));
+        // return response()->json(['status'=>'error','message'=>$jwtData],400);
         if($jwtData['status'] == 'error'){
             return response()->json(['status'=>'error','message'=>$jwtData['message']],400);
         }
-        return response()->json(['status' => 'error', 'message' => 'Profile Anda berhasil diperbarui', 'data'=>$jwtData['data']]);
+        return response()->json(['status' => 'success', 'message' => 'Profile Anda berhasil diperbarui', 'data'=>$jwtData['data']]);
     }
     public function logout(Request $request, JWTController $jwtController){
         $userAuth = $request->input('user_auth');

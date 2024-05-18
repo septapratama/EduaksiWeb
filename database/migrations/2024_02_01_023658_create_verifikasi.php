@@ -14,7 +14,7 @@ return new class extends Migration
             $table->string('kode_otp',6);
             $table->string('link');
             $table->enum('deskripsi',['password','email']);
-            $table->unsignedInteger('send');
+            $table->unsignedSmallInteger('send');
             $table->timestamps();
             $table->unsignedBigInteger('id_user');
             $table->foreign('id_user')->references('id_user')->on('users')->onDelete('cascade');

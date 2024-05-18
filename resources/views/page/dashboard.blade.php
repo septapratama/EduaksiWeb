@@ -359,6 +359,9 @@ $tPath = app()->environment('local') ? '' : '';
             });
         }
         display_events(<?php echo json_encode($dataKalender) ?>);
+        $('.close').on('click', function(){
+            $('.modal.fade.show').modal('hide');
+        });
     </script>
     <script src="{{ asset($tPath.'assets/libs/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ asset($tPath.'assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>

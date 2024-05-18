@@ -38,7 +38,7 @@ Route::group(['prefix'=>'/mobile','middleware'=>'authMobile','authorized'],funct
         Route::post('/register', [MobileRegisterController::class,'Register'])->withoutMiddleware(['authMobile', 'authorized']);
         Route::group(['prefix'=>'/profile'],function(){
             Route::post('/', [MasyarakatController::class, 'getProfile']);
-            Route::put('/', [MasyarakatController::class, 'updateProfile']);
+            Route::post('/update', [MasyarakatController::class, 'updateProfile']);
             Route::post('/foto', [MasyarakatController::class, 'checkFotoProfile']);
         });
         Route::post('/logout', [MasyarakatController::class,'logout']);

@@ -13,7 +13,7 @@ class DisiController extends Controller
     public function __construct(){
         self::$jsonFile = storage_path('app/database/disi.json');
     }
-    public function dataCacheFile($data = null, $con, $limit = null, $col = null, $alias = null){
+    public function dataCacheFile($data = null, $con, $limit = null, $col = null, $alias = null, $shuffle = false){
         $directory = storage_path('app/database');
         if (!file_exists($directory)) {
             mkdir($directory, 0755, true);
@@ -64,6 +64,7 @@ class DisiController extends Controller
                 $jsonData = $result;
             }
             if(is_array($jsonData)) {
+                $shuffle ? shuffle($jsonData) : null;
                 if ($limit !== null && is_int($limit) && $limit > 0){
                     $jsonData = array_slice($jsonData, 0, $limit);
                 }

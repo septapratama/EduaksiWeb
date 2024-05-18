@@ -8,25 +8,17 @@ use Carbon\Carbon;
 class DisiController extends Controller
 {
     public function getDisi(Request $request){
-        $artikel = array_map(function($item){
+        $dataDisi = array_map(function($item){
             $item['tanggal'] = Carbon::parse($item['tanggal'])->translatedFormat('l, d F Y');
             return $item;
-        }, app()->make(ArtikelController::class)->dataCacheFile(null, 'get_limit', 3, ['judul', 'foto', 'created_at'], ['judul', 'gambar', 'tanggal']));
-        shuffle($artikel);
-        $dataDisi = app()->make(ServiceDisiController::class)->dataCacheFile(null, 'get_limit',10, ['uuid', 'judul','foto']);
-        shuffle($dataDisi);
-        foreach($dataDisi as &$item){
-            $item['id_disi'] = $item['uuid'];
-            unset( $item['uuid']);
-        }
-        return response()->json(['status' => 'success', 'data' => ['artikel'=>$artikel, 'disi'=>$dataDisi]]);
+        }, app()->make(ServiceDisiController::class)->dataCacheFile(null, 'get_limit', 3, ['uuid', 'judul', 'foto', 'created_at'], ['id_data', 'judul', 'gambar', 'tanggal'], true));
+        return response()->json(['status' => 'success', 'data' => $dataDisi]);
     }
     public function getDisiArtikel(Request $request){
         $artikel = array_map(function($item){
             $item['tanggal'] = Carbon::parse($item['tanggal'])->translatedFormat('l, d F Y');
             return $item;
-        }, app()->make(ArtikelController::class)->dataCacheFile(null, 'get_limit', null, ['judul', 'foto', 'created_at'], ['judul', 'gambar', 'tanggal']));
-        shuffle($artikel);
+        }, app()->make(ServiceDisiController::class)->dataCacheFile(null, 'get_limit', null, ['uuid', 'judul', 'foto', 'created_at'], ['id_data', 'judul', 'gambar', 'tanggal'], true));
         return response()->json(['status'=>'success', 'data'=> $artikel]);
     }
     public function getDisiUsia(Request $request, $usia){
@@ -40,13 +32,18 @@ class DisiController extends Controller
         return response()->json(['status' => 'success', 'data' => $dataDisi]);
     }
     public function getDisiDetail(Request $request, $idDisi){
-        $disiDetail = app()->make(ServiceDisiController::class)->dataCacheFile(['uuid' => $idDisi], 'get_limit', 1, ['uuid', 'judul', 'deskripsi', 'rentang_usia', 'foto', 'link_video']);
+        $disiDetail = array_map(function($item){
+            $item['tanggal'] = Carbon::parse($item['tanggal'])->translatedFormat('l, d F Y');
+            return $item;
+        }, app()->make(ServiceDisiController::class)->dataCacheFile(['uuid' => $idDisi], 'get_limit', 1, ['uuid', 'judul', 'deskripsi', 'rentang_usia', 'foto', 'link_video', 'created_at'], ['id_data', 'judul', 'deskripsi', 'rentang_usia', 'gambar', 'link_video', 'tanggal']));
         if(is_null($disiDetail)){
             return response()->json(['status' => 'error', 'message' => 'Digital Literasi tidak ditemukan'], 404);
         }
         $disiDetail = $disiDetail[0];
-        $disiDetail['id_disi'] = $disiDetail['uuid'];
-        unset($disiDetail['uuid']);
-        return response()->json(['status' => 'success', 'data' => $disiDetail]);
+        $dataDisi = array_map(function($item){
+            $item['tanggal'] = Carbon::parse($item['tanggal'])->translatedFormat('l, d F Y');
+            return $item;
+        }, app()->make(ServiceDisiController::class)->dataCacheFile(null, 'get_limit', 3, ['uuid', 'judul', 'foto', 'created_at'], ['id_data', 'judul', 'gambar', 'tanggal'], true));
+        return response()->json(['status' => 'success', 'data' => ['detail' => $disiDetail, 'artikel' => $dataDisi]]);
     }
 }

@@ -8,25 +8,17 @@ use Carbon\Carbon;
 class PengasuhanController extends Controller
 {
     public function getPengasuhan(Request $request){
-        $artikel = array_map(function($item){
+        $dataPengasuhan = array_map(function($item){
             $item['tanggal'] = Carbon::parse($item['tanggal'])->translatedFormat('l, d F Y');
             return $item;
-        }, app()->make(ArtikelController::class)->dataCacheFile(null, 'get_limit', 3, ['judul', 'foto', 'created_at'], ['judul', 'gambar', 'tanggal']));
-        shuffle($artikel);
-        $dataPengasuhan = app()->make(ServicePengasuhanController::class)->dataCacheFile(null, 'get_limit',10, ['uuid', 'judul','foto']);
-        shuffle($dataPengasuhan);
-        foreach($dataPengasuhan as &$item){
-            $item['id_pengasuhan'] = $item['uuid'];
-            unset( $item['uuid']);
-        }
-        return response()->json(['status' => 'success', 'data' => ['artikel'=>$artikel, 'pengasuhan'=>$dataPengasuhan]]);
+        }, app()->make(ServicePengasuhanController::class)->dataCacheFile(null, 'get_limit', 3, ['uuid', 'judul', 'foto', 'created_at'], ['id_data', 'judul', 'gambar', 'tanggal'], true));
+        return response()->json(['status' => 'success', 'data' => $dataPengasuhan]);
     }
     public function getPengasuhanArtikel(Request $request){
         $artikel = array_map(function($item){
             $item['tanggal'] = Carbon::parse($item['tanggal'])->translatedFormat('l, d F Y');
             return $item;
-        }, app()->make(ArtikelController::class)->dataCacheFile(null, 'get_limit', null, ['judul', 'foto', 'created_at'], ['judul', 'gambar', 'tanggal']));
-        shuffle($artikel);
+        }, app()->make(ServicePengasuhanController::class)->dataCacheFile(null, 'get_limit', null, ['uuid', 'judul', 'foto', 'created_at'], ['id_data', 'judul', 'gambar', 'tanggal'], true));
         return response()->json(['status'=>'success', 'data'=> $artikel]);
     }
     public function getPengasuhanUsia(Request $request, $usia){
@@ -39,14 +31,19 @@ class PengasuhanController extends Controller
         unset($dataPengasuhan['uuid']);
         return response()->json(['status' => 'success', 'data' => $dataPengasuhan]);
     }
-    public function getPengasuhanDetail(Request $request, $idNutrisi){
-        $pengasuhanDetail = app()->make(ServicePengasuhanController::class)->dataCacheFile(['uuid' => $idNutrisi], 'get_limit', 1, ['uuid', 'judul', 'deskripsi', 'rentang_usia', 'foto', 'link_video']);
+    public function getPengasuhanDetail(Request $request, $idPengasuhan){
+        $pengasuhanDetail = array_map(function($item){
+            $item['tanggal'] = Carbon::parse($item['tanggal'])->translatedFormat('l, d F Y');
+            return $item;
+        }, app()->make(ServicePengasuhanController::class)->dataCacheFile(['uuid' => $idPengasuhan], 'get_limit', 1, ['uuid', 'judul', 'deskripsi', 'rentang_usia', 'foto', 'link_video', 'created_at'], ['id_data', 'judul', 'deskripsi', 'rentang_usia', 'gambar', 'link_video', 'tanggal']));
         if(is_null($pengasuhanDetail)){
             return response()->json(['status' => 'error', 'message' => 'Pengasuhan tidak ditemukan'], 404);
         }
         $pengasuhanDetail = $pengasuhanDetail[0];
-        $pengasuhanDetail['id_pengasuhan'] = $pengasuhanDetail['uuid'];
-        unset($pengasuhanDetail['uuid']);
-        return response()->json(['status' => 'success', 'data' => $pengasuhanDetail]);
+        $dataPengasuhan = array_map(function($item){
+            $item['tanggal'] = Carbon::parse($item['tanggal'])->translatedFormat('l, d F Y');
+            return $item;
+        }, app()->make(ServicePengasuhanController::class)->dataCacheFile(null, 'get_limit', 3, ['uuid', 'judul', 'foto', 'created_at'], ['id_data', 'judul', 'gambar', 'tanggal'], true));
+        return response()->json(['status' => 'success', 'data' => ['detail' => $pengasuhanDetail, 'artikel' => $dataPengasuhan]]);
     }
 }
