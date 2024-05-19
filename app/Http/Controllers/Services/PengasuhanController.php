@@ -76,6 +76,7 @@ class PengasuhanController extends Controller
                 if (is_array($col)) {
                     foreach ($jsonData as &$entry) {
                         $entry = array_intersect_key($entry, array_flip($col));
+                        $entry = is_array($alias) && (count($col) === count($alias)) ? array_combine($alias, array_values($entry)) : $entry;
                     }
                 }
                 return $jsonData;

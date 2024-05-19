@@ -48,7 +48,7 @@ $tPath = app()->environment('local') ? '' : '';
         flex-direction: column;
         justify-content: center;
         margin-bottom: 0px;
-        background-color: green;
+        background-color: #201658;
         border-radius: 20px;
     }
     .cardC h5,

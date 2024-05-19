@@ -35,7 +35,7 @@ class EmotalController extends Controller
         $emotalDetail = array_map(function($item){
             $item['tanggal'] = Carbon::parse($item['tanggal'])->translatedFormat('l, d F Y');
             return $item;
-        }, app()->make(ServiceEmotalController::class)->dataCacheFile(['uuid' => $idEmotal], 'get_limit', 1, ['judul', 'deskripsi', 'rentang_usia', 'foto', 'link_video', 'created_at'], ['judul', 'deskripsi', 'rentang_usia', 'gambar', 'link_video', 'tanggal']));
+        }, app()->make(ServiceEmotalController::class)->dataCacheFile(['uuid' => $idEmotal], 'get_limit', 1, ['judul', 'deskripsi', 'link_video', 'rentang_usia', 'foto', 'created_at'], ['judul', 'deskripsi', 'link_video', 'rentang_usia', 'gambar', 'tanggal']));
         if(is_null($emotalDetail)){
             return response()->json(['status' => 'error', 'message' => 'Emosi Mental tidak ditemukan'], 404);
         }

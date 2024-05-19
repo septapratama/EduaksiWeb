@@ -25,9 +25,9 @@ class HomeController extends Controller
     }
     public function showDetailArtikel(Request $request, $path){
         $path = str_replace('-', ' ', $path);
-        $detailArtikel = app()->make(ArtikelController::class)->dataCacheFile(['judul' => $path], 'get_limit', 1, ['judul', 'deskripsi', 'foto', 'link_video','created_at'], ['judul', 'deskripsi', 'gambar', 'link_video','tanggal']);
+        $detailArtikel = app()->make(ArtikelController::class)->dataCacheFile(['judul' => $path], 'get_limit', 1, ['judul', 'deskripsi', 'link_video', 'foto','created_at'], ['judul', 'deskripsi', 'link_video', 'gambar','tanggal']);
         if(is_null($detailArtikel)){
-            return response()->json(['status' => 'error', 'message' => 'Digital Literasi tidak ditemukan'], 404);
+            return response()->json(['status' => 'error', 'message' => 'Artikel tidak ditemukan'], 404);
         }
         $detailArtikel = $detailArtikel[0];
         $detailArtikel['tanggal'] = Carbon::parse($detailArtikel['tanggal'])->translatedFormat('l, d F Y');

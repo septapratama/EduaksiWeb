@@ -35,7 +35,7 @@ class NutrisiController extends Controller
         $nutrisiDetail = array_map(function($item){
             $item['tanggal'] = Carbon::parse($item['tanggal'])->translatedFormat('l, d F Y');
             return $item;
-        }, app()->make(ServiceNutrisiController::class)->dataCacheFile(['uuid' => $idNutrisi], 'get_limit', 1, ['uuid', 'judul', 'deskripsi', 'rentang_usia', 'foto', 'link_video', 'created_at'], ['id_data', 'judul', 'deskripsi', 'rentang_usia', 'gambar', 'link_video', 'tanggal']));
+        }, app()->make(ServiceNutrisiController::class)->dataCacheFile(['uuid' => $idNutrisi], 'get_limit', 1, ['uuid', 'judul', 'deskripsi', 'link_video', 'rentang_usia', 'foto', 'created_at'], ['id_data', 'judul', 'deskripsi', 'link_video', 'rentang_usia', 'gambar', 'tanggal']));
         if(is_null($nutrisiDetail)){
             return response()->json(['status' => 'error', 'message' => 'Nutrisi tidak ditemukan'], 404);
         }

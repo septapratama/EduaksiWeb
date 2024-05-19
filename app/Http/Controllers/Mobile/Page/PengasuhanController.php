@@ -35,7 +35,7 @@ class PengasuhanController extends Controller
         $pengasuhanDetail = array_map(function($item){
             $item['tanggal'] = Carbon::parse($item['tanggal'])->translatedFormat('l, d F Y');
             return $item;
-        }, app()->make(ServicePengasuhanController::class)->dataCacheFile(['uuid' => $idPengasuhan], 'get_limit', 1, ['uuid', 'judul', 'deskripsi', 'rentang_usia', 'foto', 'link_video', 'created_at'], ['id_data', 'judul', 'deskripsi', 'rentang_usia', 'gambar', 'link_video', 'tanggal']));
+        }, app()->make(ServicePengasuhanController::class)->dataCacheFile(['uuid' => $idPengasuhan], 'get_limit', 1, ['uuid', 'judul', 'deskripsi', 'link_video', 'rentang_usia', 'foto', 'created_at'], ['id_data', 'judul', 'deskripsi', 'link_video', 'rentang_usia', 'gambar', 'tanggal']));
         if(is_null($pengasuhanDetail)){
             return response()->json(['status' => 'error', 'message' => 'Pengasuhan tidak ditemukan'], 404);
         }

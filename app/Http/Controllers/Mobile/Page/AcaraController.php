@@ -15,9 +15,8 @@ class AcaraController extends Controller
     public function showEdit(Request $request, $id_acara){
         $dataAcara = app()->make(ServiceEventController::class)->dataCacheFile(['id_acara' => $id_acara], 'get_limit', 1, ['id_acara', 'nama_event', 'deskripsi', 'tanggal']);
         if(is_null($dataAcara)){
-            return $this->showData($request, 'Data Event tidak ditemukan');
+            return $this->showData($request, 'Data Acara tidak ditemukan');
         }
-        // $dataAcara['id_acara'] = $dataAcara['id_acara'];
         unset($dataAcara['id_acara']);
         return response()->json(['status' => 'success', 'data' => $dataAcara]);
     }
