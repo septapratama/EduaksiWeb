@@ -11,14 +11,14 @@ class EmotalController extends Controller
         $dataEmotal = array_map(function($item){
             $item['tanggal'] = Carbon::parse($item['tanggal'])->translatedFormat('l, d F Y');
             return $item;
-        }, app()->make(ServiceEmotalController::class)->dataCacheFile(null, 'get_limit', 3, ['uuid', 'judul', 'foto', 'created_at'], ['id_data', 'judul', 'gambar', 'tanggal'], true));
+        }, app()->make(ServiceEmotalController::class)->dataCacheFile(null, 'get_limit', 3, ['uuid', 'judul', 'foto', 'created_at'], ['id_data', 'judul', 'gambar', 'tanggal'], true) ?? []);
         return response()->json(['status' => 'success', 'data' => $dataEmotal]);
     }
     public function getEmotalArtikel(Request $request){
         $artikel = array_map(function($item){
             $item['tanggal'] = Carbon::parse($item['tanggal'])->translatedFormat('l, d F Y');
             return $item;
-        }, app()->make(ServiceEmotalController::class)->dataCacheFile(null, 'get_limit', null, ['uuid', 'judul', 'foto', 'created_at'], ['id_data', 'judul', 'gambar', 'tanggal'], true));
+        }, app()->make(ServiceEmotalController::class)->dataCacheFile(null, 'get_limit', null, ['uuid', 'judul', 'foto', 'created_at'], ['id_data', 'judul', 'gambar', 'tanggal'], true) ?? []);
         return response()->json(['status'=>'success', 'data'=> $artikel]);
     }
     public function getEmotalUsia(Request $request, $usia){
@@ -35,7 +35,7 @@ class EmotalController extends Controller
         $emotalDetail = array_map(function($item){
             $item['tanggal'] = Carbon::parse($item['tanggal'])->translatedFormat('l, d F Y');
             return $item;
-        }, app()->make(ServiceEmotalController::class)->dataCacheFile(['uuid' => $idEmotal], 'get_limit', 1, ['judul', 'deskripsi', 'link_video', 'rentang_usia', 'foto', 'created_at'], ['judul', 'deskripsi', 'link_video', 'rentang_usia', 'gambar', 'tanggal']));
+        }, app()->make(ServiceEmotalController::class)->dataCacheFile(['uuid' => $idEmotal], 'get_limit', 1, ['judul', 'deskripsi', 'link_video', 'rentang_usia', 'foto', 'created_at'], ['judul', 'deskripsi', 'link_video', 'rentang_usia', 'gambar', 'tanggal']) ?? []);
         if(is_null($emotalDetail)){
             return response()->json(['status' => 'error', 'message' => 'Emosi Mental tidak ditemukan'], 404);
         }
@@ -43,7 +43,7 @@ class EmotalController extends Controller
         $dataEmotal = array_map(function($item){
             $item['tanggal'] = Carbon::parse($item['tanggal'])->translatedFormat('l, d F Y');
             return $item;
-        }, app()->make(ServiceEmotalController::class)->dataCacheFile(null, 'get_limit', 3, ['uuid', 'judul', 'foto', 'created_at'], ['id_data', 'judul', 'gambar', 'tanggal'], true));
+        }, app()->make(ServiceEmotalController::class)->dataCacheFile(null, 'get_limit', 3, ['uuid', 'judul', 'foto', 'created_at'], ['id_data', 'judul', 'gambar', 'tanggal'], true) ?? []);
         return response()->json(['status' => 'success', 'data' => ['detail' => $emotalDetail, 'artikel' => $dataEmotal]]);
     }
 }

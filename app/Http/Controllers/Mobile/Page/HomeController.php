@@ -10,7 +10,7 @@ class HomeController extends Controller
         $artikel = array_map(function($item){
             $item['tanggal'] = Carbon::parse($item['tanggal'])->translatedFormat('l, d F Y');
             return $item;
-        }, app()->make(ArtikelController::class)->dataCacheFile(null, 'get_limit', 3, ['uuid', 'judul', 'foto', 'created_at'], ['id_data', 'judul', 'gambar', 'tanggal']));
+        }, app()->make(ArtikelController::class)->dataCacheFile(null, 'get_limit', 3, ['uuid', 'judul', 'foto', 'created_at'], ['id_data', 'judul', 'gambar', 'tanggal']) ?? []);
         shuffle($artikel);
         return response()->json(['status'=>'success', 'data'=> $artikel]);
     }
@@ -18,7 +18,7 @@ class HomeController extends Controller
         $artikel = array_map(function($item){
             $item['tanggal'] = Carbon::parse($item['tanggal'])->translatedFormat('l, d F Y');
             return $item;
-        }, app()->make(ArtikelController::class)->dataCacheFile(null, 'get_limit', null, ['judul', 'foto', 'created_at'], ['judul', 'foto', 'tanggal']));
+        }, app()->make(ArtikelController::class)->dataCacheFile(null, 'get_limit', null, ['judul', 'foto', 'created_at'], ['judul', 'foto', 'tanggal']) ?? []);
         $artikel = array_merge(...array_fill(0, 5, $artikel)); // make copy
         shuffle($artikel);
         return response()->json(['status'=>'success', 'data'=> $artikel]);
@@ -34,7 +34,7 @@ class HomeController extends Controller
         $artikel = array_map(function($item){
             $item['tanggal'] = Carbon::parse($item['tanggal'])->translatedFormat('l, d F Y');
             return $item;
-        }, app()->make(ArtikelController::class)->dataCacheFile(null, 'get_limit', 3, ['judul', 'foto', 'created_at'], ['judul', 'foto', 'tanggal']));
+        }, app()->make(ArtikelController::class)->dataCacheFile(null, 'get_limit', 3, ['judul', 'foto', 'created_at'], ['judul', 'foto', 'tanggal']) ?? []);
         $artikel = array_merge(...array_fill(0, 5, $artikel)); // make copy
         shuffle($artikel);
         return response()->json(['status'=>'success','data'=>['detail'=>$detailArtikel, 'artikel'=>$artikel]]);

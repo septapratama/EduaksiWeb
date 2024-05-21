@@ -148,7 +148,15 @@ class AcaraController extends Controller
         }
     }
     public function getAcara(Request $request){
-        //
+        //check email
+        $user = User::select('id_user')->whereRaw("BINARY email = ?",[$request->input('user_auth')['email']])->first();
+        if (is_null($user)) {
+            return response()->json(['status' => 'error', 'message' => 'User tidak ditemukan'], 400);
+        }
+        return response()->json(['status'=>'success','message'=>'data exist', 'data'=> array_map(function($item){
+            $item['id_acara'] = strval($item['id_acara']);
+            return $item;
+        }, $this->dataCacheFile(['id_user'=>$user['id_user']], 'get_limit', null) ?? [])]);
     }
     public function tambahAcara(Request $request){
         $validator = Validator::make($request->only('nama_acara', 'deskripsi', 'kategori', 'tanggal'), [
@@ -236,6 +244,11 @@ class AcaraController extends Controller
         if (is_null($user)) {
             return response()->json(['status' => 'error', 'message' => 'User tidak ditemukan'], 400);
         }
+        //check acara
+        $acara = Acara::select('tanggal')->where('id_acara',$request->input('id_acara'))->where('id_user', $user['id_user'])->first();
+        if (is_null($acara)) {
+            return response()->json(['status' =>'error','message'=>'Data Acara tidak ditemukan'], 400);
+        }
         //check tanggal
         $inpTanggal = Carbon::createFromFormat('d-m-Y i:H', $request->input('tanggal'));
         if($inpTanggal->lt(Carbon::now())){
@@ -243,10 +256,6 @@ class AcaraController extends Controller
         }
         if ($inpTanggal->diffInMinutes(Carbon::now()) < 5) {
             return response()->json(['status'=>'error','message'=>'Data Acara minimal 5 menit dari sekarang'], 400);
-        }
-        $acara = Acara::select('tanggal')->where('id_acara',$request->input('id_acara'))->first();
-        if (is_null($acara)){
-            return response()->json(['status' =>'error','message'=>'Data Acara tidak ditemukan'], 400);
         }
         $edit = $acara->where('id_acara',$request->input('id_acara'))->update([
             'nama_acara' => $request->input('nama_acara'),
@@ -281,13 +290,22 @@ class AcaraController extends Controller
             }
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
-        if (is_null(Acara::select('tanggal')->where('id_acara',$request->input('id_acara'))->first())) {
-            return response()->json(['status' => 'error', 'message' => 'Data Acara tidak ditemukan'], 400);
+        //check email
+        $user = User::select('id_user')->whereRaw("BINARY email = ?",[$request->input('user_auth')['email']])->first();
+        if (is_null($user)) {
+            return response()->json(['status' => 'error', 'message' => 'User tidak ditemukan'], 400);
         }
-        if (!Acara::where('id_acara',$request->input('id_acara'))->delete()) {
-            return response()->json(['status' => 'error', 'message' => 'Gagal menghapus data Acara'], 500);
+        $idAcaraData = explode(',', $request->input('id_acara'));
+        foreach($idAcaraData as $idAcara){
+            //check acara
+            $acara = Acara::select('tanggal')->where('id_acara',$idAcara)->where('id_user', $user['id_user'])->first();
+            if (is_null($acara)) {
+                continue;
+            }
+            if(Acara::where('id_acara',$idAcara)->delete()){
+                $this->dataCacheFile(['id_acara' => $idAcara], 'hapus');
+            }
         }
-        $this->dataCacheFile(['id_acara' => $request->input('id_acara')],'hapus');
         return response()->json(['status' => 'success', 'message' => 'Data Acara berhasil dihapus']);
     }
 }
