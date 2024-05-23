@@ -127,7 +127,9 @@ class AcaraController extends Controller
                         'id_acara' => $data['id_acara'],
                         'nama_acara' => $data['nama_acara'],
                         'deskripsi' => $data['deskripsi'],
+                        'kategori' => $data['kategori'],
                         'tanggal' => $data['tanggal'],
+                        'id_user' => $data['id_user'],
                     ];
                     $jsonData[$key] = $newData;
                     break;
@@ -183,13 +185,13 @@ class AcaraController extends Controller
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
         //check tanggal
-        $inpTanggal = Carbon::createFromFormat('d-m-Y i:H', $request->input('tanggal'));
+        $inpTanggal = Carbon::createFromFormat('Y-m-d H:i', $request->input('tanggal'));
         if($inpTanggal->lt(Carbon::now())){
             return response()->json(['status'=>'error','message'=>'Data Acara harus lebh dari sekarang'], 400);
         }
-        if ($inpTanggal->diffInMinutes(Carbon::now()) < 5) {
-            return response()->json(['status'=>'error','message'=>'Data Acara minimal 5 menit dari sekarang'], 400);
-        }
+        // if ($inpTanggal->diffInMinutes(Carbon::now()) < 5) {
+        //     return response()->json(['status'=>'error','message'=>'Data Acara minimal 5 menit dari sekarang'], 400);
+        // }
         //check email
         $user = User::select('id_user')->whereRaw("BINARY email = ?",[$request->input('user_auth')['email']])->first();
         if (is_null($user)) {
@@ -216,7 +218,8 @@ class AcaraController extends Controller
         return response()->json(['status'=>'success','message'=>'Data Acara berhasil ditambahkan', 'data'=> $eventI]);
     }
     public function editAcara(Request $request){
-        $validator = Validator::make($request->only('nama_acara', 'deskripsi', 'kategori', 'tanggal'), [
+        $validator = Validator::make($request->only('id_acara', 'nama_acara', 'deskripsi', 'kategori', 'tanggal'), [
+            'id_acara' => 'required',
             'nama_acara' => 'required|min:6|max:50',
             'deskripsi' => 'required|max:4000',
             'kategori' => 'required|in:umum,keluarga,penting',
@@ -224,6 +227,7 @@ class AcaraController extends Controller
             'kategori.in' => 'Kategori invalid',
             'tanggal' => 'required',
         ], [
+            'id_acara.required' => 'ID acara harus di isi',
             'nama_acara.required' => 'Nama acara harus di isi',
             'nama_acara.min' => 'Nama acara minimal 6 karakter',
             'nama_acara.max' => 'Nama acara maksimal 50 karakter',
@@ -249,14 +253,14 @@ class AcaraController extends Controller
         if (is_null($acara)) {
             return response()->json(['status' =>'error','message'=>'Data Acara tidak ditemukan'], 400);
         }
-        //check tanggal
-        $inpTanggal = Carbon::createFromFormat('d-m-Y i:H', $request->input('tanggal'));
+        //check tanggal;
+        $inpTanggal = Carbon::createFromFormat('Y-m-d H:i', $request->input('tanggal'));
         if($inpTanggal->lt(Carbon::now())){
-            return response()->json(['status'=>'error','message'=>'Data Acara harus lebh dari sekarang'], 400);
+            return response()->json(['status'=>'error','message'=>'Data Acara harus lebih dari sekarang'], 400);
         }
-        if ($inpTanggal->diffInMinutes(Carbon::now()) < 5) {
-            return response()->json(['status'=>'error','message'=>'Data Acara minimal 5 menit dari sekarang'], 400);
-        }
+        // if ($inpTanggal->diffInMinutes(Carbon::now()) < 5) {
+        //     return response()->json(['status'=>'error','message'=>'Data Acara minimal 5 menit dari sekarang'], 400);
+        // }
         $edit = $acara->where('id_acara',$request->input('id_acara'))->update([
             'nama_acara' => $request->input('nama_acara'),
             'deskripsi' => $request->input('deskripsi'),
@@ -268,6 +272,7 @@ class AcaraController extends Controller
             return response()->json(['status' =>'error','message'=>'Gagal memperbarui data Acara'], 500);
         }
         $this->dataCacheFile([
+            'id_acara' => intval($request->input('id_acara')),
             'nama_acara' => $request->input('nama_acara'),
             'deskripsi' => $request->input('deskripsi'),
             'kategori' => $request->input('kategori'),
