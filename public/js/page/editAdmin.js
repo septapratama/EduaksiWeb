@@ -159,7 +159,7 @@ editForm.onsubmit = function(event){
     formData.append("nama_lengkap", nama);
     formData.append("jenis_kelamin", inp_jenis_kelamin);
     formData.append("no_telpon", nomer);
-    formData.append("role", role);
+    formData.append("role", inp_role);
     formData.append("email_admin_lama", users.email);
     formData.append("email_admin", inpEmails);
     if (password !== '') {

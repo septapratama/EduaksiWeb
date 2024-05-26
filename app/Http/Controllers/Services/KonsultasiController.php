@@ -359,8 +359,8 @@ class KonsultasiController extends Controller
             }
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
-        $konsultasi = Konsultasi::select('foto')->where('uuid',$request->input('uuid'))->limit(1)->get()[0];
-        if (!$konsultasi) {
+        $konsultasi = Konsultasi::select('foto')->where('uuid',$request->input('uuid'))->limit(1)->first();
+        if (is_null($konsultasi)) {
             return response()->json(['status' => 'error', 'message' => 'Data Konsultasi tidak ditemukan'], 400);
         }
         //delete all photo

@@ -1,6 +1,6 @@
 <?php
 namespace App\Http\Middleware;
-use App\Http\Controllers\Auth\JWTController;
+use App\Http\Controllers\Auth\JwtController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Cookie;
@@ -9,7 +9,7 @@ use Closure;
 class Authenticate
 {
     public function handle(Request $request, Closure $next){
-        $jwtController = app()->make(JWTController::class);
+        $jwtController = app()->make(JwtController::class);
         $currentPath = '/'.$request->path();
         $previousUrl = url()->previous();
         $path = parse_url($previousUrl, PHP_URL_PATH);

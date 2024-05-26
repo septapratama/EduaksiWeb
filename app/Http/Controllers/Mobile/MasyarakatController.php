@@ -2,7 +2,7 @@
 namespace App\Http\Controllers\Mobile;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Auth\JwtController;
-use App\http\controllers\Services\MailController;
+use App\Http\Controllers\Services\MailController;
 use App\Models\User;
 use App\Models\Verifikasi;
 use App\Models\RefreshToken;
@@ -34,7 +34,7 @@ class MasyarakatController extends Controller
             return response()->json(['status'=>'error','message'=>'Email tidak terdaftar !'],400);
         }
         $filePath = storage_path('app/user/foto/' . $userAuth['foto']);
-        if (file_exists($filePath)) {
+        if (!empty($userAuth['foto'] && !is_null($userAuth['foto'])) && file_exists($filePath) && is_file($filePath)) {
             return response(Crypt::decrypt(file_get_contents($filePath)))->header('Content-Type', $this->getMimeType(pathinfo($filePath, PATHINFO_EXTENSION)));
         }
         return response()->json(['status'=>'error','message'=>'foto not found'], 404);
@@ -454,6 +454,7 @@ class MasyarakatController extends Controller
         $updateProfile = User::whereRaw("BINARY email = ?",[$request->input('user_auth')['email']])->update([
             'email'=> (empty($request->input('email_new')) || is_null($request->input('email_new'))) ? $request->input('user_auth')['email'] : $request->input('email_new'),
             'nama_lengkap' => $request->input('nama_lengkap'),
+            'jenis_kelamin' => $request->input('jenis_kelamin'),
             'no_telpon' => $request->input('no_telpon'),
             'password' => (empty($request->input('password')) || is_null($request->input('password'))) ? $user['password'] : Hash::make($pass),
             'foto' => $request->hasFile('foto') ? $fotoName : $user['foto'],

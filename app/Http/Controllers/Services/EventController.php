@@ -236,8 +236,8 @@ class EventController extends Controller
             }
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
-        $event = Event::select('tanggal_akhir')->where('uuid',$request->input('uuid'))->limit(1)->get()[0];
-        if (!$event) {
+        $event = Event::select('tanggal_akhir')->where('uuid',$request->input('uuid'))->limit(1)->first();
+        if (is_null($event)) {
             return response()->json(['status' =>'error','message'=>'Data Event tidak ditemukan'], 400);
         }
         $edit = $event->where('uuid',$request->input('uuid'))->update([
@@ -278,8 +278,8 @@ class EventController extends Controller
             }
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
-        $event = Event::select('tanggal_akhir')->where('uuid',$request->input('uuid'))->limit(1)->get()[0];
-        if (!$event) {
+        $event = Event::select('tanggal_akhir')->where('uuid',$request->input('uuid'))->limit(1)->first();
+        if (is_null($event)) {
             return response()->json(['status' => 'error', 'message' => 'Data Event tidak ditemukan'], 400);
         }
         if (!Event::where('uuid',$request->input('uuid'))->delete()) {

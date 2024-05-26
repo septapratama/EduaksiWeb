@@ -115,7 +115,7 @@ $tPath = app()->environment('local') ? '' : '';
                             <img src="{{ asset($tPath.'img/icon/upload.svg') }}" alt="" id="icon">
                             <span>Pilih File atau Jatuhkan File</span>
                             <input type="file" id="inpFoto" hidden onchange="handleFileChange(event)">
-                            <img src="{{ 'download/foto/'. $adminData['uuid'] }}" alt="" id="file">
+                            <img src="{{ route('download.foto.admin', ['id'=>$adminData['uuid']]) }}" alt="" id="file" class="foto_admin" onerror="imgError('file')">
                         </div>
                         <div class="crow">
                             <a href="/admin" class="btn btn-danger">Kembali</a>

@@ -1,15 +1,12 @@
 <?php
 namespace App\Http\Middleware;
-use App\Http\Controllers\Auth\JWTController;
+use App\Http\Controllers\Auth\JwtController;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Cookie;
-use App\Models\User;
 use Closure;
 class AuthenticateMobile
 {
     public function handle(Request $request, Closure $next){
-        $jwtController = app()->make(JWTController::class);
+        $jwtController = app()->make(JwtController::class);
         if(!$request->hasHeader("Authorization")){
             return response()->json(['status'=>'error','message'=>'delete token error'], 400);
         }

@@ -7,7 +7,7 @@ use App\Http\Controllers\Auth\JwtController;
 use App\Models\User;
 use App\Models\RefreshToken;
 class LoginController extends Controller
-{ 
+{
     public function Login(Request $request, JWTController $jwtController, RefreshToken $refreshToken){
         $validator = Validator::make($request->only('email','password'), [
             'email' => 'required|email',
@@ -28,7 +28,7 @@ class LoginController extends Controller
         $emaill = $request->input("email");
         $pass = $request->input("password");
         // $emaill = "UserTesting2@gmail.com";
-        $pass = "Admin@1234567890";
+        // $pass = "Admin@1234567890";
         //check email
         $user = User::select('password')->whereRaw("BINARY email = ?",[$emaill])->first();
         if (is_null($user)) {
@@ -61,7 +61,7 @@ class LoginController extends Controller
         //check email
         $user = User::select('password')->whereRaw("BINARY email = ?",[$request->input('email')])->first();
         if (is_null($user)) {
-            return response()->json(['status' => 'error', 'message' => 'Email salah'], 400);
+            return response()->json(['status' => 'error', 'message' => 'Pengguna tidak ditemukan'], 400);
         }
         $jwtData = $jwtController->createJWTMobile($request->input('email'),$refreshToken);
         if($jwtData['status'] == 'error'){

@@ -98,7 +98,7 @@ $tPath = app()->environment('local') ? '' : '';
                                         <input type="submit" value="Konfirmasi">
                                     </form>
                                 </div>
-                                <div id="gantiPassword" style="display: block;">
+                                <div id="gantiPassword" style="display: none;">
                                     <form class="row g-3 needs-validation" novalidate id="verifyChange">
                                         <div class="col-12">
                                         @if(isset($description) && $description == 'createUser')

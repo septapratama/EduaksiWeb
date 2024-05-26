@@ -50,8 +50,10 @@ $tPath = app()->environment('local') ? '' : '';
                 untuk membantu. Nikmati fitur kalender anak, kalkulator gizi, dan konsultasi dengan profesional. EduAksi
                 - Solusi Praktis untuk Orang Tua yang Pintar dan Peduli!</span>
             <button type="button">
-                <img src="{{ asset($tPath.'img/icon/download.svg') }}" alt="">
-                <span>Unduh Aplikasi</span>
+                <a href="/eduaksi.apk" style="display: flex; align-items:center; justify-content:center; gap: 10px;">
+                    <img src="{{ asset($tPath.'img/icon/download.svg') }}" alt="">
+                    <span>Unduh Aplikasi</span>
+                </a>
             </button>
         </div>
         <img src="{{ asset($tPath.'img/app.png') }}" class="animated-img" alt="">

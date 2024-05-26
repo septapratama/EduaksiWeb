@@ -82,7 +82,7 @@ Route::group(['middleware'=>['auth','authorized']],function(){
         Route::get('/tambah',[ShowKonsultasiController::class, 'showTambah']);
         Route::get('/edit/{any}',[ShowKonsultasiController::class, 'showEdit']);
         Route::get('/edit', function () {
-            return view('page.Konsultasi.edit');
+            return view('page.Konsultasi.data');
         });
         Route::post('/tambah', [KonsultasiController::class, 'tambahKonsultasi']);
         Route::put('/update', [KonsultasiController::class, 'editKonsultasi']);
@@ -94,7 +94,7 @@ Route::group(['middleware'=>['auth','authorized']],function(){
         Route::get('/tambah',[ShowNutrisiController::class, 'showTambah']);
         Route::get('/edit/{any}',[ShowNutrisiController::class, 'showEdit']);
         Route::get('/edit', function () {
-            return view('page.Nutrisi.edit');
+            return view('page.Nutrisi.data');
         });
         Route::post('/tambah', [NutrisiController::class, 'tambahNutrisi']);
         Route::put('/update', [NutrisiController::class, 'editNutrisi']);
@@ -106,7 +106,7 @@ Route::group(['middleware'=>['auth','authorized']],function(){
         Route::get('/tambah',[ShowPengasuhanController::class, 'showTambah']);
         Route::get('/edit/{any}',[ShowPengasuhanController::class, 'showEdit']);
         Route::get('/edit', function () {
-            return view('page.Pengasuhan.edit');
+            return view('page.Pengasuhan.data');
         });
         Route::post('/tambah', [PengasuhanController::class, 'tambahPengasuhan']);
         Route::put('/update', [PengasuhanController::class, 'editPengasuhan']);
@@ -116,8 +116,11 @@ Route::group(['middleware'=>['auth','authorized']],function(){
     //download only for admin
     Route::group(['prefix'=>'/public'],function(){
         Route::group(['prefix'=>'/download'],function(){
-            Route::get('/foto',[AdminController::class,'getFotoProfile'])->name('download.foto');
-            Route::get('/foto/{id}',[AdminController::class,'getFotoAdmin']);
+            Route::group(['prefix'=>'/foto'],function(){
+                Route::get('/',[AdminController::class,'getFotoProfile'])->name('download.foto');
+                Route::get('/default',[AdminController::class,'getDefaultFoto'])->name('download.foto.default');
+                Route::get('/{id}',[AdminController::class,'getFotoAdmin'])->name('download.foto.admin');
+            });
         });
     });
     //API only admin route
@@ -126,6 +129,9 @@ Route::group(['middleware'=>['auth','authorized']],function(){
         Route::get('/',[ShowAdminController::class,'showAdmin']);
         Route::get('/tambah',[ShowAdminController::class,'showAdminTambah']);
         Route::get('/edit/{any}',[ShowAdminController::class,'showAdminEdit']);
+        Route::get('/edit', function () {
+            return view('page.admin.data');
+        });
         // route for admin
         Route::post('/tambah',[AdminController::class,'tambahAdmin']);
         Route::put('/update',[AdminController::class,'editAdmin']);
@@ -140,19 +146,13 @@ Route::group(['middleware'=>['auth','authorized']],function(){
     Route::group(["prefix"=>"/verify"],function(){
         Route::group(['prefix'=>'/create'],function(){
             Route::post('/password',[MailController::class, 'createForgotPassword']);
-            // Route::post('/email',[MailController::class, 'createVerifyEmail']);
         });
         Route::group(['prefix'=>'/password'],function(){
             Route::get('/{any?}',[AdminController::class, 'getChangePass'])->where('any','.*');
             Route::post('/',[AdminController::class, 'changePassEmail']);
         });
-        // Route::group(['prefix'=>'/email'],function(){
-            // Route::get('/{any?}',[AdminController::class, 'verifyEmail'])->where('any','.*');
-            // Route::post('/',[AdminController::class, 'verifyEmail']);
-        // });
         Route::group(['prefix'=>'/otp'],function(){
             Route::post('/password',[AdminController::class, 'getChangePass']);
-            // Route::post('/email',[AdminController::class, 'verifyEmail']);
         });
     });
     Route::get('/password/reset',function (){

@@ -156,7 +156,7 @@ $tPath = app()->environment('local') ? '' : '';
                                         <div class="tab-pane fade show active profile-overview" id="profile-overview">
                                             <div
                                                 class="card-body profile-card pt-4 d-flex flex-column align-items-center">
-                                                <img src="{{ route('download.foto') }}" alt="Profile">
+                                                <img src="{{ route('download.foto') }}" alt="Profile" id="profile1" class="foto_admin" onerror="imgError('profile1')">
                                                 <h2>
                                                     <center>
                                                         {{ $userAuth['nama_lengkap'] }}
@@ -194,8 +194,7 @@ $tPath = app()->environment('local') ? '' : '';
                                                             ondragleave="dragHandler(event,'leave')">
                                                             <input class="form-control" type="file" multiple="false"
                                                                 id="inpFile" name="foto" style="display:none">
-                                                            <img src="{{ route('download.foto') }}" alt="Profile"
-                                                                id="inpImg" class="">
+                                                            <img src="{{ route('download.foto') }}" alt="Profile" id="inpImg" class="foto_admin" onerror="imgError('inpImg')">
                                                         </div>
                                                     </div>
                                                 </div>

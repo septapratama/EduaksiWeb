@@ -288,8 +288,8 @@ class NutrisiController extends Controller
             }
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
-        $nutrisi = Nutrisi::select('foto')->where('uuid',$request->input('uuid'))->limit(1)->get()[0];
-        if (!$nutrisi) {
+        $nutrisi = Nutrisi::select('foto')->where('uuid',$request->input('uuid'))->limit(1)->first();
+        if (is_null($nutrisi)) {
             return response()->json(['status' =>'error','message'=>'Data Nutrisi tidak ditemukan'], 400);
         }
         //process file foto
@@ -343,8 +343,8 @@ class NutrisiController extends Controller
             }
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
-        $nutrisi = Nutrisi::select('foto')->where('uuid',$request->input('uuid'))->limit(1)->get()[0];
-        if (!$nutrisi) {
+        $nutrisi = Nutrisi::select('foto')->where('uuid',$request->input('uuid'))->limit(1)->first();
+        if (is_null($nutrisi)) {
             return response()->json(['status' => 'error', 'message' => 'Data Nutrisi tidak ditemukan'], 400);
         }
         //delete all photo

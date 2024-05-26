@@ -18,14 +18,14 @@ class RegisterController extends Controller
                 'string',
                 'min:8',
                 'max:25',
-                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\p{P}\p{S}])[\p{L}\p{N}\p{P}\p{S}]+$/u',
+                // 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\p{P}\p{S}])[\p{L}\p{N}\p{P}\p{S}]+$/u',
             ],
             'password_confirm' => [
                 'required',
                 'string',
                 'min:8',
                 'max:25',
-                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\p{P}\p{S}])[\p{L}\p{N}\p{P}\p{S}]+$/u',
+                // 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\p{P}\p{S}])[\p{L}\p{N}\p{P}\p{S}]+$/u',
             ],
         ],[
             'email.required'=>'Email wajib di isi',
@@ -33,11 +33,11 @@ class RegisterController extends Controller
             'password.required'=>'Password wajib di isi',
             'password.min'=>'Password minimal 8 karakter',
             'password.max'=>'Password maksimal 25 karakter',
-            'password.regex'=>'Password terdiri dari 1 huruf besar, huruf kecil, angka dan karakter unik',
+            // 'password.regex'=>'Password terdiri dari 1 huruf besar, huruf kecil, angka dan karakter unik',
             'password_confirm.required'=>'Password konfirmasi harus di isi',
             'password_confirm.min'=>'Password konfirmasi minimal 8 karakter',
             'password_confirm.max'=>'Password konfirmasi maksimal 25 karakter',
-            'password_confirm.regex'=>'Password konfirmasi terdiri dari 1 huruf besar, huruf kecil, angka dan karakter unik',
+            // 'password_confirm.regex'=>'Password konfirmasi terdiri dari 1 huruf besar, huruf kecil, angka dan karakter unik',
         ]);
         if ($validator->fails()) {
             $errors = [];
@@ -62,9 +62,6 @@ class RegisterController extends Controller
                 return response()->json(['status'=>'success','message'=>$result['message'],'data'=>$result['data']]);
             }
         }
-    }
-    public function RegisterGoogle(Request $request){
-        //
     }
 }
 ?>

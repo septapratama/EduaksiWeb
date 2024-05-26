@@ -288,8 +288,8 @@ class PengasuhanController extends Controller
             }
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
-        $pengasuhan = Pengasuhan::select('foto')->where('uuid',$request->input('uuid'))->limit(1)->get()[0];
-        if (!$pengasuhan) {
+        $pengasuhan = Pengasuhan::select('foto')->where('uuid',$request->input('uuid'))->limit(1)->first();
+        if (is_null($pengasuhan)) {
             return response()->json(['status' =>'error','message'=>'Data Pengasuhan tidak ditemukan'], 400);
         }
         //process file foto
@@ -343,8 +343,8 @@ class PengasuhanController extends Controller
             }
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
-        $pengasuhan = Pengasuhan::select('foto')->where('uuid',$request->input('uuid'))->limit(1)->get()[0];
-        if (!$pengasuhan) {
+        $pengasuhan = Pengasuhan::select('foto')->where('uuid',$request->input('uuid'))->limit(1)->first();
+        if (is_null($pengasuhan)) {
             return response()->json(['status' => 'error', 'message' => 'Data Pengasuhan tidak ditemukan'], 400);
         }
         //delete all photo

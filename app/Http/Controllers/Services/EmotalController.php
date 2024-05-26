@@ -284,8 +284,8 @@ class EmotalController extends Controller
             }
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
-        $emosiMental = Emotal::select('foto')->where('uuid',$request->input('uuid'))->limit(1)->get()[0];
-        if (!$emosiMental) {
+        $emosiMental = Emotal::select('foto')->where('uuid',$request->input('uuid'))->limit(1)->first();
+        if (is_null($emosiMental)) {
             return response()->json(['status' =>'error','message'=>'Data Emotal tidak ditemukan'], 400);
         }
         //process file foto
@@ -339,8 +339,8 @@ class EmotalController extends Controller
             }
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
-        $emosiMental = Emotal::select('foto')->where('uuid',$request->input('uuid'))->limit(1)->get()[0];
-        if (!$emosiMental) {
+        $emosiMental = Emotal::select('foto')->where('uuid',$request->input('uuid'))->limit(1)->first();
+        if (is_null($emosiMental)) {
             return response()->json(['status' =>'error','message'=>'Data Emotal tidak ditemukan'], 400);
         }
         //delete all photo

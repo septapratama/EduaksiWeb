@@ -1,3 +1,13 @@
+<script>
+    var errFotos = [];
+    function imgError(err) {
+        errFotos.push(err);
+        var image = document.getElementById(err);
+        if (image && image.src !== "{{ route('download.foto.default') }}") {
+            image.src = "{{ route('download.foto.default') }}";
+        }
+    }
+</script>
 <header class="app-header">
     <nav class="navbar navbar-expand-lg navbar-light">
         <ul class="navbar-nav">
@@ -13,8 +23,7 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
                         aria-expanded="false">
-                        <img src="{{ route('download.foto') }}" alt="Profile" width="35" height="35"
-                            class="rounded-circle">
+                        <img src="{{ route('download.foto') }}" alt="Profile" width="35" height="35" id="top_bar" class="rounded-circle foto_admin" onerror="imgError('top_bar')">
                     </a>
                     <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
                         <div class="message-body">
@@ -30,4 +39,17 @@
         </div>
     </nav>
 </header>
+<script>
+    window.addEventListener('load', function() {
+        var imgs = document.querySelectorAll('.foto_admin');
+        imgs.forEach(function(image) {
+            if (errFotos.includes(image.id)) {
+                image.src = "{{ route('download.foto.default') }}";
+            }
+            if (image.complete && image.naturalWidth === 0) {
+                image.src = "{{ route('download.foto.default') }}";
+            }
+        });
+    });
+</script>
 <script src="{{ asset($tPath . '/js/page/logout.js') }}"></script>

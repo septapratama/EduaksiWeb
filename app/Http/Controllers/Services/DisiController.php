@@ -281,8 +281,8 @@ class DisiController extends Controller
             }
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
-        $disi = Disi::select('foto')->where('uuid',$request->input('uuid'))->limit(1)->get()[0];
-        if (!$disi) {
+        $disi = Disi::select('foto')->where('uuid',$request->input('uuid'))->limit(1)->first();
+        if (is_null($disi)) {
             return response()->json(['status' =>'error','message'=>'Data Disi tidak ditemukan'], 400);
         }
         //process file foto
@@ -336,8 +336,8 @@ class DisiController extends Controller
             }
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
-        $disi = Disi::select('foto')->where('uuid',$request->input('uuid'))->limit(1)->get()[0];
-        if (!$disi) {
+        $disi = Disi::select('foto')->where('uuid',$request->input('uuid'))->limit(1)->first();
+        if (is_null($disi)) {
             return response()->json(['status' =>'error','message'=>'Data Disi tidak ditemukan'], 400);
         }
         //delete all photo

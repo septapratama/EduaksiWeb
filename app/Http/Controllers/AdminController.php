@@ -17,6 +17,13 @@ use Carbon\Carbon;
 use Closure;
 class AdminController extends Controller
 {
+    public function getDefaultFoto(Request $request){
+        $referrer = $request->headers->get('referer');
+        if (!$referrer && $request->path() == 'public/download/foto') {
+            abort(404);
+        }
+        return response()->download(storage_path('app/' . 'admin/default.jpg'), 'foto.' . pathinfo('admin/default.jpg', PATHINFO_EXTENSION));
+    }
     public function getFotoProfile(Request $request){
         $userAuth = $request->input('user_auth');
         $referrer = $request->headers->get('referer');
@@ -28,7 +35,7 @@ class AdminController extends Controller
             return response()->download(storage_path('app/' . $defaultPhotoPath), 'foto.' . pathinfo($defaultPhotoPath, PATHINFO_EXTENSION));
         } else {
             $filePath = storage_path('app/admin/foto/' . $userAuth['foto']);
-            if (file_exists($filePath)) {
+            if (!empty($userAuth['foto'] && !is_null($userAuth['foto'])) && file_exists($filePath) && is_file($filePath)) {
                 return response(Crypt::decrypt(file_get_contents($filePath)));
             }
             abort(404);
@@ -48,7 +55,7 @@ class AdminController extends Controller
             return response()->download(storage_path('app/' . $defaultPhotoPath), 'foto.' . pathinfo($defaultPhotoPath, PATHINFO_EXTENSION));
         } else {
             $filePath = storage_path('app/admin/foto/' . $admin['foto']);
-            if (file_exists($filePath)) {
+            if (!empty($admin['foto'] && !is_null($admin['foto'])) && file_exists($filePath) && is_file($filePath)) {
                 return response(Crypt::decrypt(file_get_contents($filePath)));
             }
             abort(404);

@@ -245,8 +245,8 @@ class ArtikelController extends Controller
             }
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
-        $artikel = Artikel::select('foto')->where('uuid',$request->input('uuid'))->limit(1)->get()[0];
-        if (!$artikel) {
+        $artikel = Artikel::select('foto')->where('uuid',$request->input('uuid'))->limit(1)->first();
+        if (is_null($artikel)) {
             return response()->json(['status' =>'error','message'=>'Data Artikel tidak ditemukan'], 400);
         }
         //process file foto
@@ -300,8 +300,8 @@ class ArtikelController extends Controller
             }
             return response()->json(['status' => 'error', 'message' => implode(', ', $errors)], 400);
         }
-        $artikel = Artikel::select('foto')->where('uuid',$request->input('uuid'))->limit(1)->get()[0];
-        if (!$artikel) {
+        $artikel = Artikel::select('foto')->where('uuid',$request->input('uuid'))->limit(1)->first();
+        if (is_null($artikel)) {
             return response()->json(['status' => 'error', 'message' => 'Data Artikel tidak ditemukan'], 400);
         }
         //delete all photo
