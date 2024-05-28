@@ -220,7 +220,6 @@ section ul a:active{
 }
 #rekomendasi div, #rekomendasi ul{
     display: flex;
-    flex-wrap: wrap;
 }
 #rekomendasi div{
     position: relative;
@@ -234,6 +233,21 @@ section ul a:active{
 }
 #rekomendasi div h1{
     font-size: 26px;
+}
+#rekomendasi div a{
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    right: 0px;
+    font-size: 18px;
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--biru-tua);
+}
+#rekomendasi div a img{
+    width: 25px;
+    height: 25px;
 }
 #rekomendasi div select{
     position: relative;
@@ -249,6 +263,7 @@ section ul a:active{
     color: var(--biru-tua);
 }
 #rekomendasi ul{
+    flex-wrap: wrap;
     margin: 0px;
     margin-top: 20px;
     gap:20px;

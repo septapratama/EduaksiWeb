@@ -76,6 +76,10 @@ tambahForm.onsubmit = function(event){
         showRedPopup("Jenis Kelamin harus diisi !");
         return;
     }
+    if(inp_kategori === "") {
+        showRedPopup("Kategori harus diisi !");
+        return;
+    }
     if(nomer === "") {
         showRedPopup("Nomer Telepon harus diisi !");
         return;

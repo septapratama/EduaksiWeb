@@ -17,7 +17,7 @@ class HomeController extends Controller
             'artikel' => array_map(function($item){
                 $item['created_at'] = Carbon::parse($item['created_at'])->translatedFormat('l, d F Y');
                 return $item;
-            }, app()->make(ServiceArtikelController::class)->dataCacheFile(null, 'get_limit', 3, ['judul', 'foto', 'created_at']) ?? []),
+            }, app()->make(ServiceArtikelController::class)->dataCacheFile(null, 'get_limit', 3, ['judul', 'foto', 'created_at'], null, true) ?? []),
         ];
         return view('page.home',$dataShow);
     }

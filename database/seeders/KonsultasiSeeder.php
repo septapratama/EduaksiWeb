@@ -15,7 +15,7 @@ class KonsultasiSeeder extends Seeder
                 'uuid' =>  Str::uuid(),
                 'nama_lengkap'=>'Konsultasi1',
                 'jenis_kelamin'=>'laki-laki',
-                'kategori'=>'psikolog',
+                'kategori'=>'alergi',
                 'no_telpon'=>'0852'.mt_rand(10000000,99999999),
                 'alamat'=>'Jalan surabaya',
                 'email'=>"KonsultaTesting1@gmail.com",

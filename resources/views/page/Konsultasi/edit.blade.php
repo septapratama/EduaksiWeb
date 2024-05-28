@@ -85,7 +85,7 @@ $tPath = app()->environment('local') ? '' : '';
                                 <select class="" aria-label="Default select example" id="inpKategori">
                                     <option value="">Pilih kategori </option>
                                     <option value="dokter anak" {{ ($konsultasi['kategori'] == 'anak') ? 'selected' : ''}}>Dokter anak</option>
-                                    <option value="dokter psikolog" {{ ($konsultasi['kategori'] == 'psikolog') ? 'selected' : ''}}>Dokter psikolog</option>
+                                    <option value="dokter alergi" {{ ($konsultasi['kategori'] == 'alergi') ? 'selected' : ''}}>Dokter alergi</option>
                                     <option value="dokter gigi" {{ ($konsultasi['kategori'] == 'gigi') ? 'selected' : ''}}>Dokter gigi</option>
                                 </select>
                             </div>

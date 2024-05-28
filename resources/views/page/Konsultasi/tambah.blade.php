@@ -84,7 +84,7 @@ $tPath = app()->environment('local') ? '' : '';
                                 <select class="" aria-label="Default select example" id="inpKategori">
                                     <option value="" selected>Pilih Kategori</option>
                                     <option value="dokter anak">Dokter anak</option>
-                                    <option value="dokter psikolog">Dokter psikolog</option>
+                                    <option value="dokter alergi">Dokter alergi</option>
                                     <option value="dokter gigi">Dokter gigi</option>
                                 </select>
                             </div>

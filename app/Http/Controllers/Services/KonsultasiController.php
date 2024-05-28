@@ -11,7 +11,7 @@ class KonsultasiController extends Controller
 {
     private static $jsonFile;
     private static $destinationPath;
-    private static $kategoriCol = ['anak','psikolog','gigi'];
+    private static $kategoriCol = ['anak','alergi','gigi'];
     public function __construct(){
         self::$jsonFile = storage_path('app/database/konsultasi.json');
         if(env('APP_ENV', 'local') == 'local'){
