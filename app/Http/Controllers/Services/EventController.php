@@ -122,15 +122,12 @@ class EventController extends Controller
             $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
             foreach($jsonData as $key => $item){
                 if (isset($item['uuid']) && $item['uuid'] == $data['uuid']) {
-                    $newData = [
-                        'uuid' => $data['uuid'],
-                        'nama_event' => $data['nama_event'],
-                        'deskripsi' => $data['deskripsi'],
-                        'tempat' => $data['tempat'],
-                        'tanggal_awal' => $data['tanggal_awal'],
-                        'tanggal_akhir' => $data['tanggal_akhir'],
-                    ];
-                    $jsonData[$key] = $newData;
+                    foreach ($item as $column => $value) {
+                        if (array_key_exists($column, $data)) {
+                            $item[$column] = $data[$column];
+                        }
+                    }
+                    $jsonData[$key] = $item;
                     break;
                 }
             }

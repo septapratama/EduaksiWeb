@@ -85,8 +85,7 @@ $tPath = app()->environment('local') ? '' : '';
                                         </div>
                                         <a href="/password/reset">Lupa Password ?</a>
                                     </div>
-                                    <div class="d-flex align-items-center justify-content-between mb-4"></div>
-                                    <input type="submit" href="/admin/login" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2" value="Login">
+                                    <input type="submit" href="/admin/login" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2" value="Masuk">
                                 </form>
                             </div>
                         </div>

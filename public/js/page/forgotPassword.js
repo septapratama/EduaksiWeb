@@ -111,7 +111,7 @@ forgotPasswordForm.onsubmit = function(event){
                 closeLoading();
                 var response = JSON.parse(xhr.responseText);
                 if(response.data){
-                    showRedPopup(response,'otp');
+                    return showRedPopup(response,'otp');
                 }
                 showRedPopup(response);
             }
@@ -285,6 +285,9 @@ verifyChangeForm.onsubmit = function(event){
             } else {
                 closeLoading();
                 var response = JSON.parse(xhr.responseText);
+                if(response.message.icludes('expired')){
+                    return showRedPopup(response, 'otp');
+                }
                 showRedPopup(response);
             }
         }

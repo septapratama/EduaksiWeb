@@ -10,9 +10,16 @@ use Exception;
 class KonsultasiController extends Controller
 {
     private static $jsonFile;
+    private static $destinationPath;
     private static $kategoriCol = ['anak','psikolog','gigi'];
     public function __construct(){
         self::$jsonFile = storage_path('app/database/konsultasi.json');
+        if(env('APP_ENV', 'local') == 'local'){
+            self::$destinationPath = public_path('img/konsultasi/');
+        }else{
+            $path = env('PUBLIC_PATH', '/../public_html/eduaksi');
+            self::$destinationPath = base_path($path == '/../public_html/eduaksi' ? $path : '/../public_html/eduaksi') .'/img/konsultasi/';
+        }
     }
     public function dataCacheFile($data = null, $con, $limit = null, $col = null, $alias = null){
         $directory = storage_path('app/database');
@@ -128,17 +135,12 @@ class KonsultasiController extends Controller
             $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
             foreach($jsonData as $key => $item){
                 if (isset($item['uuid']) && $item['uuid'] == $data['uuid']) {
-                    $newData = [
-                        'uuid' => $data['uuid'],
-                        'nama_lengkap' => $data['nama_lengkap'],
-                        'jenis_kelamin' => $data['jenis_kelamin'],
-                        'kategori' => $data['kategori'],
-                        'alamat' => $data['alamat'],
-                        'no_telpon' => $data['no_telpon'],
-                        'email' => $data['email'],
-                        'foto' => $data['foto'],
-                    ];
-                    $jsonData[$key] = $newData;
+                    foreach ($item as $column => $value) {
+                        if (array_key_exists($column, $data)) {
+                            $item[$column] = $data[$column];
+                        }
+                    }
+                    $jsonData[$key] = $item;
                     break;
                 }
             }
@@ -220,9 +222,8 @@ class KonsultasiController extends Controller
         if(!($file->isValid() && in_array($file->extension(), ['pdf', 'jpeg', 'png', 'jpg']))){
             return response()->json(['status'=>'error','message'=>'Format Foto tidak valid. Gunakan format jpeg, png, jpg'], 400);
         }
-        $destinationPath = public_path('img/konsultasi/');
         $fotoName = $file->hashName();
-        $file->move($destinationPath, $fotoName);
+        $file->move(self::$destinationPath, $fotoName);
         $uuid = Str::uuid();
         $ins = Konsultasi::insert([
             'uuid' => $uuid,
@@ -295,7 +296,7 @@ class KonsultasiController extends Controller
         if(empty($kategori)){
             return response()->json(['status'=>'error', 'message'=>'Kategori invalid'], 400);
         }
-        $konsultasi = Konsultasi::select('email')->where('uuid',$request->input('uuid'))->first();
+        $konsultasi = Konsultasi::select('email', 'foto')->where('uuid',$request->input('uuid'))->first();
         if (is_null($konsultasi)) {
             return response()->json(['status' =>'error','message'=>'Data Konsultasi tidak ditemukan'], 400);
         }
@@ -313,13 +314,12 @@ class KonsultasiController extends Controller
             if(!($file->isValid() && in_array($file->extension(), ['jpeg', 'png', 'jpg']))){
                 return response()->json(['status'=>'error','message'=>'Format Foto tidak valid. Gunakan format jpeg, png, jpg'], 400);
             }
-            $destinationPath = public_path('img/konsultasi/');
-            $fileToDelete = $destinationPath . $konsultasi['foto'];
+            $fileToDelete = self::$destinationPath . $konsultasi['foto'];
             if (file_exists($fileToDelete) && !is_dir($fileToDelete)) {
                 unlink($fileToDelete);
             }
             $fotoName = $file->hashName();
-            $file->move($destinationPath, $fotoName);
+            $file->move(self::$destinationPath, $fotoName);
         }
         $edit = Konsultasi::where('uuid',$request->input('uuid'))->update([
             'nama_lengkap' => $request->input('nama_lengkap'),
@@ -364,8 +364,7 @@ class KonsultasiController extends Controller
             return response()->json(['status' => 'error', 'message' => 'Data Konsultasi tidak ditemukan'], 400);
         }
         //delete all photo
-        $destinationPath = public_path('img/konsultasi/');
-        $fileToDelete = $destinationPath . $konsultasi['foto'];
+        $fileToDelete = self::$destinationPath . $konsultasi['foto'];
         if (file_exists($fileToDelete) && !is_dir($fileToDelete)) {
             unlink($fileToDelete);
         }

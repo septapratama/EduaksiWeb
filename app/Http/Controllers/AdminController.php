@@ -138,7 +138,6 @@ class AdminController extends Controller
             ],
             'code' => 'nullable',
             'link' => 'nullable',
-            'description'=>'required'
         ],[
             'email.required'=>'Email wajib di isi',
             'email.email'=>'Email yang anda masukkan invalid',
@@ -150,7 +149,6 @@ class AdminController extends Controller
             'password_confirm.min'=>'Password konfirmasi minimal 8 karakter',
             'password_confirm.max'=>'Password konfirmasi maksimal 25 karakter',
             'password_confirm.regex'=>'Password konfirmasi terdiri dari 1 huruf besar, huruf kecil, angka dan karakter unik',
-            'description.required'=>'Deskripsi wajib di isi',
         ]);
         if ($validator->fails()) {
             $errors = [];
@@ -164,7 +162,6 @@ class AdminController extends Controller
         $pass1 = $request->input("password_confirm");
         $code = $request->input('code');
         $link = $request->input('link');
-        $desc = $request->input('description');
         if($pass !== $pass1){
             return response()->json(['status'=>'error','message'=>'Password Harus Sama'],400);
         }

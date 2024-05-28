@@ -79,7 +79,10 @@ $tPath = app()->environment('local') ? '' : '';
                                             <label for="exampleInputEmail1" class="form-label">Email</label>
                                             <input type="email" id="inpEmail" class="form-control" aria-describedby="emailHelp">
                                         </div>
-                                        <div class="d-flex align-items-center justify-content-between mb-4"></div>
+                                        <div style="display: flex; flex-direction: row; gap:5px; align-items: center; margin-bottom: 20px">
+                                            <p style="margin:0px; font-size: 17px;">Punya Akun ?</p>
+                                            <a href="/password/reset" style="font-size: 17px;">Masuk</a>
+                                        </div>
                                         <input type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2" value="Kirim Lupa Password">
                                     </form>
                                 </div>
@@ -104,7 +107,7 @@ $tPath = app()->environment('local') ? '' : '';
                                         @if(isset($description) && $description == 'createUser')
                                         <label for="newPassword" class="form-label">Password</label>
                                         <div class="input-group has-validation">
-                                            <div style="position: relative">
+                                            <div style="position: relative; width:100%;">
                                                 <input type="password" name="pass" class="form-control" id="password" required style="padding-right: 45px;" oninput="showEyePass('pass')">
                                                 <div id="iconPass1" onclick="showPass('pass')" style="display: none;">
                                                     <img src="{{ asset($tPath.'img/icon/eye-slash.svg') }}" alt="" id="passClose1">
@@ -116,7 +119,7 @@ $tPath = app()->environment('local') ? '' : '';
                                         @else
                                         <label for="newPassword" class="form-label">Password Baru</label>
                                         <div class="input-group has-validation">
-                                            <div style="position: relative">
+                                            <div style="position: relative; width:100%;">
                                                 <input type="password" name="pass" class="form-control" id="password" required style="padding-right: 45px;" oninput="showEyePass('pass')">
                                                 <div id="iconPass1" onclick="showPass('pass')" style="display: none;">
                                                     <img src="{{ asset($tPath.'img/icon/eye-slash.svg') }}" alt="" id="passClose1">
@@ -131,7 +134,7 @@ $tPath = app()->environment('local') ? '' : '';
                                             @if(isset($description) && $description == 'createUser')
                                             <label for="confirmPassword" class="form-label">Konfirmasi Password</label>
                                             <div class="input-group has-validation">
-                                                <div style="position: relative">
+                                                <div style="position: relative; width:100%; ">
                                                     <input type="password" name="pass_new" class="form-control" id="password_new" required style="padding-right: 45px;" oninput="showEyePass('ulangi')">
                                                     <div id="iconPass2" onclick="showPass('ulangi')" style="display: none;">
                                                         <img src="{{ asset($tPath.'img/icon/eye-slash.svg') }}" alt="" id="passClose2">
@@ -143,7 +146,7 @@ $tPath = app()->environment('local') ? '' : '';
                                             @else
                                             <label for="confirmPassword" class="form-label">Konfirmasi Password Baru</label>
                                             <div class="input-group has-validation">
-                                                <div style="position: relative">
+                                                <div style="position: relative; width:100%;">
                                                     <input type="password" name="pass_new" class="form-control" id="password_new" required style="padding-right: 45px;" oninput="showEyePass('ulangi')">
                                                     <div id="iconPass2" onclick="showPass('ulangi')" style="display: none;">
                                                         <img src="{{ asset($tPath.'img/icon/eye-slash.svg') }}" alt="" id="passClose2">

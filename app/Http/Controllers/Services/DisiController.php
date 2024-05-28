@@ -10,8 +10,15 @@ use Carbon\Carbon;
 class DisiController extends Controller
 {
     private static $jsonFile;
+    private static $destinationPath;
     public function __construct(){
         self::$jsonFile = storage_path('app/database/disi.json');
+        if(env('APP_ENV', 'local') == 'local'){
+            self::$destinationPath = public_path('img/digital_literasi/');
+        }else{
+            $path = env('PUBLIC_PATH', '/../public_html/eduaksi');
+            self::$destinationPath = base_path($path == '/../public_html/eduaksi' ? $path : '/../public_html/eduaksi') .'/img/digital_literasi/';
+        }
     }
     public function dataCacheFile($data = null, $con, $limit = null, $col = null, $alias = null, $shuffle = false){
         $directory = storage_path('app/database');
@@ -166,15 +173,12 @@ class DisiController extends Controller
             $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
             foreach($jsonData as $key => $item){
                 if (isset($item['uuid']) && $item['uuid'] == $data['uuid']) {
-                    $newData = [
-                        'uuid' => $data['uuid'],
-                        'judul' => $data['judul'],
-                        'deskripsi' => $data['deskripsi'],
-                        'link_video' => $data['link_video'],
-                        'rentang_usia' => $data['rentang_usia'],
-                        'foto' => $data['foto'],
-                    ];
-                    $jsonData[$key] = $newData;
+                    foreach ($item as $column => $value) {
+                        if (array_key_exists($column, $data)) {
+                            $item[$column] = $data[$column];
+                        }
+                    }
+                    $jsonData[$key] = $item;
                     break;
                 }
             }
@@ -203,7 +207,7 @@ class DisiController extends Controller
             'judul.required' => 'Judul wajib di isi',
             'judul.min' => 'Judul minimal 6 karakter',
             'judul.max' => 'Judul maksimal 50 karakter',
-            'deskripsi.required' => 'deskripsi artikel wajib di isi',
+            'deskripsi.required' => 'deskripsi disi wajib di isi',
             'rentang_usia.required' => 'Rentang usia wajib di isi',
             'foto.required' => 'Foto disi wajib di isi',
             'foto.image' => 'Foto disi harus berupa gambar',
@@ -226,9 +230,8 @@ class DisiController extends Controller
         if(!($file->isValid() && in_array($file->extension(), ['jpeg', 'png', 'jpg']))){
             return response()->json(['status'=>'error','message'=>'Format Foto tidak valid. Gunakan format jpeg, png, jpg'], 400);
         }
-        $destinationPath = public_path('img/digital_literasi/');
         $fotoName = $file->hashName();
-        $file->move($destinationPath, $fotoName);
+        $file->move(self::$destinationPath, $fotoName);
         $now = Carbon::now();
         $uuid = Str::uuid();
         $ins = Disi::insert([
@@ -267,7 +270,7 @@ class DisiController extends Controller
             'judul.required' => 'Judul wajib di isi',
             'judul.min' => 'Judul minimal 6 karakter',
             'judul.max' => 'Judul maksimal 50 karakter',
-            'deskripsi.required' => 'deskripsi artikel wajib di isi',
+            'deskripsi.required' => 'deskripsi disi wajib di isi',
             'rentang_usia.required' => 'Rentang usia wajib di isi',
             'foto.image' => 'Foto disi harus berupa gambar',
             'foto.mimes' => 'Format foto tidak valid. Gunakan format jpeg, png, jpg',
@@ -291,13 +294,12 @@ class DisiController extends Controller
             if(!($file->isValid() && in_array($file->extension(), ['jpeg', 'png', 'jpg']))){
                 return response()->json(['status'=>'error','message'=>'Format Foto tidak valid. Gunakan format jpeg, png, jpg'], 400);
             }
-            $destinationPath = public_path('img/digital_literasi/');
-            $fileToDelete = $destinationPath . $disi['foto'];
+            $fileToDelete = self::$destinationPath . $disi['foto'];
             if (file_exists($fileToDelete) && !is_dir($fileToDelete)) {
                 unlink($fileToDelete);
             }
             $fotoName = $file->hashName();
-            $file->move($destinationPath, $fotoName);
+            $file->move(self::$destinationPath, $fotoName);
         }
         $now = Carbon::now();
         $edit = $disi->where('uuid',$request->input('uuid'))->update([
@@ -341,8 +343,7 @@ class DisiController extends Controller
             return response()->json(['status' =>'error','message'=>'Data Disi tidak ditemukan'], 400);
         }
         //delete all photo
-        $destinationPath = public_path('img/digital_literasi/');
-        $fileToDelete = $destinationPath . $disi['foto'];
+        $fileToDelete = self::$destinationPath . $disi['foto'];
         if (file_exists($fileToDelete) && !is_dir($fileToDelete)) {
             unlink($fileToDelete);
         }

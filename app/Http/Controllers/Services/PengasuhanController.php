@@ -11,8 +11,15 @@ use Exception;
 class PengasuhanController extends Controller
 {
     private static $jsonFile;
+    private static $destinationPath;
     public function __construct(){
         self::$jsonFile = storage_path('app/database/pengasuhan.json');
+        if(env('APP_ENV', 'local') == 'local'){
+            self::$destinationPath = public_path('img/pengasuhan/');
+        }else{
+            $path = env('PUBLIC_PATH', '/../public_html/eduaksi');
+            self::$destinationPath = base_path($path == '/../public_html/eduaksi' ? $path : '/../public_html/eduaksi') .'/img/pengasuhan/';
+        }
     }
     public function dataCacheFile($data = null, $con, $limit = null, $col = null, $alias = null, $shuffle = false){
         $directory = storage_path('app/database');
@@ -171,15 +178,12 @@ class PengasuhanController extends Controller
             $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
             foreach($jsonData as $key => $item){
                 if (isset($item['uuid']) && $item['uuid'] == $data['uuid']) {
-                    $newData = [
-                        'uuid' => $data['uuid'],
-                        'judul' => $data['judul'],
-                        'deskripsi' => $data['deskripsi'],
-                        'link_video' => $data['link_video'],
-                        'rentang_usia' => $data['rentang_usia'],
-                        'foto' => $data['foto'],
-                    ];
-                    $jsonData[$key] = $newData;
+                    foreach ($item as $column => $value) {
+                        if (array_key_exists($column, $data)) {
+                            $item[$column] = $data[$column];
+                        }
+                    }
+                    $jsonData[$key] = $item;
                     break;
                 }
             }
@@ -208,7 +212,7 @@ class PengasuhanController extends Controller
             'judul.required' => 'Judul wajib di isi',
             'judul.min' => 'Judul minimal 6 karakter',
             'judul.max' => 'Judul maksimal 50 karakter',
-            'deskripsi.required' => 'deskripsi artikel wajib di isi',
+            'deskripsi.required' => 'deskripsi pengasuhan wajib di isi',
             'rentang_usia.required' => 'Rentang usia wajib di isi',
             'foto.required' => 'Foto pengasuhan wajib di isi',
             'foto.image' => 'Foto pengasuhan harus berupa gambar',
@@ -231,9 +235,8 @@ class PengasuhanController extends Controller
         if(!($file->isValid() && in_array($file->extension(), ['jpeg', 'png', 'jpg']))){
             return response()->json(['status'=>'error','message'=>'Format Foto tidak valid. Gunakan format jpeg, png, jpg'], 400);
         }
-        $destinationPath = public_path('img/pengasuhan/');
         $fotoName = $file->hashName();
-        $file->move($destinationPath, $fotoName);
+        $file->move(self::$destinationPath, $fotoName);
         $now = Carbon::now();
         $uuid = Str::uuid();
         $ins = Pengasuhan::insertGetId([
@@ -298,13 +301,12 @@ class PengasuhanController extends Controller
             if(!($file->isValid() && in_array($file->extension(), ['jpeg', 'png', 'jpg']))){
                 return response()->json(['status'=>'error','message'=>'Format Foto tidak valid. Gunakan format jpeg, png, jpg'], 400);
             }
-            $destinationPath = public_path('img/pengasuhan/');
-            $fileToDelete = $destinationPath . $pengasuhan['foto'];
+            $fileToDelete = self::$destinationPath . $pengasuhan['foto'];
             if (file_exists($fileToDelete) && !is_dir($fileToDelete)) {
                 unlink($fileToDelete);
             }
             $fotoName = $file->hashName();
-            $file->move($destinationPath, $fotoName);
+            $file->move(self::$destinationPath, $fotoName);
         }
         $now = Carbon::now();
         $edit = $pengasuhan->where('uuid',$request->input('uuid'))->update([
@@ -348,8 +350,7 @@ class PengasuhanController extends Controller
             return response()->json(['status' => 'error', 'message' => 'Data Pengasuhan tidak ditemukan'], 400);
         }
         //delete all photo
-        $destinationPath = public_path('img/pengasuhan/');
-        $fileToDelete = $destinationPath . $pengasuhan['foto'];
+        $fileToDelete = self::$destinationPath . $pengasuhan['foto'];
         if (file_exists($fileToDelete) && !is_dir($fileToDelete)) {
             unlink($fileToDelete);
         }

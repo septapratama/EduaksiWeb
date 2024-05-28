@@ -11,8 +11,15 @@ use Exception;
 class ArtikelController extends Controller
 {
     private static $jsonFile;
+    private static $destinationPath;
     public function __construct(){
         self::$jsonFile = storage_path('app/database/artikel.json');
+        if(env('APP_ENV', 'local') == 'local'){
+            self::$destinationPath = public_path('img/artikel/');
+        }else{
+            $path = env('PUBLIC_PATH', '/../public_html/eduaksi');
+            self::$destinationPath = base_path($path == '/../public_html/eduaksi' ? $path : '/../public_html/eduaksi') .'/img/artikel/';
+        }
     }
     public function dataCacheFile($data = null, $con, $limit = null, $col = null, $alias = null, $shuffle = false){
         $directory = storage_path('app/database');
@@ -129,15 +136,12 @@ class ArtikelController extends Controller
             $jsonData = json_decode(file_get_contents(self::$jsonFile),true);
             foreach($jsonData as $key => $item){
                 if (isset($item['uuid']) && $item['uuid'] == $data['uuid']) {
-                    $newData = [
-                        'uuid' => $data['uuid'],
-                        'judul' => $data['judul'],
-                        'deskripsi' => $data['deskripsi'],
-                        'link_video' => $data['link_video'],
-                        'kategori' => $data['kategori'],
-                        'foto' => $data['foto'],
-                    ];
-                    $jsonData[$key] = $newData;
+                    foreach ($item as $column => $value) {
+                        if (array_key_exists($column, $data)) {
+                            $item[$column] = $data[$column];
+                        }
+                    }
+                    $jsonData[$key] = $item;
                     break;
                 }
             }
@@ -189,9 +193,8 @@ class ArtikelController extends Controller
         if(!($file->isValid() && in_array($file->extension(), ['jpeg', 'png', 'jpg']))){
             return response()->json(['status'=>'error','message'=>'Format Foto tidak valid. Gunakan format jpeg, png, jpg'], 400);
         }
-        $destinationPath = public_path('img/artikel/');
         $fotoName = $file->hashName();
-        $file->move($destinationPath, $fotoName);
+        $file->move(self::$destinationPath, $fotoName);
         $now = Carbon::now();
         $uuid = Str::uuid();
         $ins = Artikel::insert([
@@ -255,13 +258,12 @@ class ArtikelController extends Controller
             if(!($file->isValid() && in_array($file->extension(), ['jpeg', 'png', 'jpg']))){
                 return response()->json(['status'=>'error','message'=>'Format Foto tidak valid. Gunakan format jpeg, png, jpg'], 400);
             }
-            $destinationPath = public_path('img/artikel/');
-            $fileToDelete = $destinationPath . $artikel['foto'];
+            $fileToDelete = self::$destinationPath . $artikel['foto'];
             if (file_exists($fileToDelete) && !is_dir($fileToDelete)) {
                 unlink($fileToDelete);
             }
             $fotoName = $file->hashName();
-            $file->move($destinationPath, $fotoName);
+            $file->move(self::$destinationPath, $fotoName);
         }
         $now = Carbon::now();
         $edit = $artikel->where('uuid',$request->input('uuid'))->update([
@@ -305,8 +307,7 @@ class ArtikelController extends Controller
             return response()->json(['status' => 'error', 'message' => 'Data Artikel tidak ditemukan'], 400);
         }
         //delete all photo
-        $destinationPath = public_path('img/artikel/');
-        $fileToDelete = $destinationPath . $artikel['foto'];
+        $fileToDelete = self::$destinationPath . $artikel['foto'];
         if (file_exists($fileToDelete) && !is_dir($fileToDelete)) {
             unlink($fileToDelete);
         }
