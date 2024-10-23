@@ -5,10 +5,7 @@ use App\Http\Controllers\Services\DisiController AS ServiceDisiController;
 use Illuminate\Http\Request;
 class DisiController extends Controller
 {
-    public function showData(Request $request, $err = null){
-        if(!is_null($err)){
-            return view('page.Disi.data', ['error' => $err]);
-        }
+    public function showData(Request $request){
         $dataShow = [
             'dataDisi' => app()->make(ServiceDisiController::class)->dataCacheFile(null, 'get_limit',null, ['uuid', 'judul','rentang_usia']),
             'userAuth' => $request->input('user_auth'),
@@ -24,7 +21,7 @@ class DisiController extends Controller
     public function showEdit(Request $request, $uuid){
         $disi = app()->make(ServiceDisiController::class)->dataCacheFile(['uuid' => $uuid], 'get_limit', 1, ['uuid', 'judul', 'deskripsi', 'rentang_usia', 'foto', 'link_video']);
         if (is_null($disi)) {
-            return $this->showData($request,'Data Disi tidak ditemukan');
+            return redirect('/disi')->with('error', 'Data Digital Literasi tidak ditemukan');
         }
         $dataShow = [
             'disi' => $disi[0],

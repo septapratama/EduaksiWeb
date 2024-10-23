@@ -5,10 +5,7 @@ use App\Http\Controllers\Services\KonsultasiController AS ServiceKonsultasiContr
 use Illuminate\Http\Request;
 class KonsultasiController extends Controller
 {
-    public function showData(Request $request, $err = null){
-        if(!is_null($err)){
-            return view('page.Konsultasi.data', ['error' => $err]);
-        }
+    public function showData(Request $request){
         $dataShow = [
             'dataKonsultasi' => app()->make(ServiceKonsultasiController::class)->dataCacheFile(null, 'get_limit',null, ['uuid', 'nama_lengkap','no_telpon']),
             'userAuth' => $request->input('user_auth'),
@@ -24,7 +21,7 @@ class KonsultasiController extends Controller
     public function showEdit(Request $request, $uuid){
         $konsultasi = app()->make(ServiceKonsultasiController::class)->dataCacheFile(['uuid' => $uuid], 'get_limit', 1, ['uuid', 'nama_lengkap', 'jenis_kelamin', 'kategori', 'no_telpon', 'alamat', 'email', 'foto']);
         if (is_null($konsultasi)) {
-            return $this->showData($request, 'Data Konsultasi tidak ditemukan');
+            return redirect('/konsultasi')->with('error', 'Data Konsultasi tidak ditemukan');
         }
         $dataShow = [
             'konsultasi' => $konsultasi[0],

@@ -5,10 +5,7 @@ use App\Http\Controllers\Services\NutrisiController AS ServiceNutrisiController;
 use Illuminate\Http\Request;
 class NutrisiController extends Controller
 {
-    public function showData(Request $request, $err = null){
-        if(!is_null($err)){
-            return view('page.Nutrisi.data', ['error' => $err]);
-        }
+    public function showData(Request $request){
         $dataShow = [
             'dataNutrisi' => app()->make(ServiceNutrisiController::class)->dataCacheFile(null, 'get_limit',null, ['uuid', 'judul', 'deskripsi','rentang_usia']),
             'userAuth' => $request->input('user_auth'),
@@ -24,7 +21,7 @@ class NutrisiController extends Controller
     public function showEdit(Request $request, $uuid){
         $nutrisi = app()->make(ServiceNutrisiController::class)->dataCacheFile(['uuid' => $uuid], 'get_limit', 1, ['uuid', 'judul', 'deskripsi', 'rentang_usia', 'foto', 'link_video']);
         if (is_null($nutrisi)) {
-            return $this->showData($request, 'Data Nutrisi tidak ditemukan');
+            return redirect('/nutrisi')->with('error', 'Data Nutrisi tidak ditemukan');
         }
         $dataShow = [
             'nutrisi' => $nutrisi[0],

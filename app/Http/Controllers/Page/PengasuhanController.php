@@ -9,10 +9,7 @@ use App\Models\GaleriPengasuhan;
 use App\Models\Pengasuhan;
 class PengasuhanController extends Controller
 {
-    public function showData(Request $request, $err = null){
-        if(!is_null($err)){
-            return view('page.Pengasuhan.data', ['error' => $err]);
-        }
+    public function showData(Request $request){
         $dataShow = [
             'dataPengasuhan' => app()->make(ServicePengasuhanController::class)->dataCacheFile(null, 'get_limit',null, ['uuid', 'judul', 'deskripsi','rentang_usia']),
             'userAuth' => $request->input('user_auth'),
@@ -28,7 +25,7 @@ class PengasuhanController extends Controller
     public function showEdit(Request $request, $uuid){
         $pengasuhan = app()->make(ServicePengasuhanController::class)->dataCacheFile(['uuid' => $uuid], 'get_limit', 1, ['uuid', 'judul', 'deskripsi', 'rentang_usia', 'foto', 'link_video']);
         if(is_null($pengasuhan)){
-            return $this->showData($request, 'Data Pengasuhan tidak ditemukan');
+            return redirect('/pengasuhan')->with('error', 'Data Pengasuhan tidak ditemukan');
         }
         $dataShow = [
             'pengasuhan' => $pengasuhan[0],

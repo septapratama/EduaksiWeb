@@ -8,8 +8,6 @@ use App\Http\Controllers\Services\NutrisiController;
 use App\Http\Controllers\Services\PengasuhanController;
 use App\Http\Controllers\Services\KonsultasiController;
 use App\Http\Controllers\Services\ArtikelController;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Carbon\Carbon;
@@ -76,6 +74,22 @@ class AdminController extends Controller
         ];
         return view('page.dashboard',$dataShow);
     }
+    public function showRiwayat(Request $request){
+        $disi = app()->make(DisiController::class)->dataCacheFile(null, 'get_riwayat', 3, ['uuid', 'judul', 'created_at']);
+        $emotal = app()->make(EmotalController::class)->dataCacheFile(null, 'get_riwayat', 3, ['uuid', 'judul', 'created_at']);
+        $nutrisi = app()->make(NutrisiController::class)->dataCacheFile(null, 'get_riwayat', 3, ['uuid', 'judul', 'created_at']);
+        $pengasuhan = app()->make(PengasuhanController::class)->dataCacheFile(null, 'get_riwayat', 3, ['uuid', 'judul', 'created_at']);
+        $artikel = app()->make(ArtikelController::class)->dataCacheFile(null, 'get_riwayat', 3, ['uuid', 'judul', 'created_at']);
+        $dataAll = array_merge($disi, $emotal, $nutrisi, $pengasuhan, $artikel);
+        usort($dataAll, function($a, $b) {
+            return strtotime($b['created_at']) - strtotime($a['created_at']);
+        });
+        $dataAll = array_map(function($item){
+            $item['created_at'] = Carbon::parse($item['created_at'])->translatedFormat('l, d F Y');
+            return $item;
+        }, $dataAll ?? []);
+        return view('page.riwayat',['userAuth' => $request->input('user_auth'), 'dataRiwayat' => $dataAll]);
+    }
     public function showProfile(Request $request){
         $userAuth = $request->input('user_auth');
         $dataShow = [
@@ -84,10 +98,7 @@ class AdminController extends Controller
         return view('page.profile',$dataShow);
     }
     //only admin
-    public function showAdmin(Request $request, $err = null){
-        if(!is_null($err)){
-            return view('page.Article.data', ['error' => $err]);
-        }
+    public function showAdmin(Request $request){
         $userAuth = $request->input('user_auth');
         $adminData = User::select('uuid', 'nama_lengkap', 'no_telpon', 'email')->whereNotIn('role',['user', 'super admin'])->get();
         $dataShow = [
@@ -106,7 +117,7 @@ class AdminController extends Controller
     public function showAdminEdit(Request $request, $uuid){
         $adminData = User::select('uuid','nama_lengkap', 'jenis_kelamin', 'no_telpon','role', 'email', 'foto')->whereNotIn('role', ['user'])->whereRaw("BINARY uuid = ?",[$uuid])->first();
         if(is_null($adminData)){
-            return $this->showAdmin($request, 'Data Admin tidak ditemukan');
+            return redirect('/admin')->with('error', 'Data Admin tidak ditemukan');
         }
         $dataShow = [
             'userAuth' => $request->input('user_auth'),

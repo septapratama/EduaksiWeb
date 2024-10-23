@@ -61,7 +61,7 @@ class MailController extends Controller
             }
             $data = ['name'=>$user->nama_lengkap,'email'=>$email,'code'=>$verificationCode,'link'=>urldecode($verificationLink)];
             dispatch(new SendVerifyEmail($data));
-            return ['status'=>'Success','message'=>'Akun Berhasil Dibuat Silahkan verifikasi email','code'=>200,'data'=>['waktu'=>Carbon::now()->addMinutes(self::$conditionOTP[0])]];
+            return ['status'=>'success','message'=>'Akun Berhasil Dibuat Silahkan verifikasi email','code'=>200,'data'=>['waktu'=>Carbon::now()->addMinutes(self::$conditionOTP[0])]];
         }
         //checking if user have create verify email
         $expTime = self::$conditionOTP[($verifyDb['send'] - 1)];

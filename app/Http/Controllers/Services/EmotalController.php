@@ -54,6 +54,7 @@ class EmotalController extends Controller
             return $result;
         }else if($con == 'get_limit'){
             $jsonData = json_decode(file_get_contents(self::$jsonFile), true);
+            //for searching
             if(!empty($data) && !is_null($data)) {
                 $result = null;
                 if (count($data) > 1) {

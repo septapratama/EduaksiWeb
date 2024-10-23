@@ -5,10 +5,7 @@ use App\Http\Controllers\Services\EmotalController AS ServiceEmotalController;
 use Illuminate\Http\Request;
 class EmotalController extends Controller
 {
-    public function showData(Request $request, $err = null){
-        if(!is_null($err)){
-            return view('page.Emotal.data', ['error' => $err]);
-        }
+    public function showData(Request $request){
         $dataShow = [
             'dataEmotal' => app()->make(ServiceEmotalController::class)->dataCacheFile(null, 'get_limit',null, ['uuid', 'judul','rentang_usia']),
             'userAuth' => $request->input('user_auth'),
@@ -24,7 +21,7 @@ class EmotalController extends Controller
     public function showEdit(Request $request, $uuid){
         $emotal = app()->make(ServiceEmotalController::class)->dataCacheFile(['uuid' => $uuid], 'get_limit', 1, ['uuid', 'judul', 'deskripsi', 'rentang_usia', 'foto', 'link_video']);
         if (is_null($emotal)) {
-            return $this->showData($request, 'Data Emotal tidak ditemukan');
+            return redirect('/emotal')->with('error', 'Data Emosi Mental tidak ditemukan');
         }
         $dataShow = [
             'emotal' => $emotal[0],
