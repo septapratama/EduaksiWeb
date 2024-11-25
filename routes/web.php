@@ -24,12 +24,12 @@ use App\Http\Controllers\Auth\LoginController;
 
 Route::group(['middleware'=>['auth','authorized']],function(){
     //artikel public route
-    Route::group(['prefix'=>'/artikel'],function(){
+    Route::group(['prefix'=>'/artikel', 'middleware'=>'throttle:artikel'],function(){
         Route::get('/',[ShowHomeController::class,'showArtikel']);
         Route::get('/{any}',[ShowHomeController::class,'showDetailArtikel']);
     });
     //acara only admin route
-    Route::group(['prefix'=>'/acara'],function(){
+    Route::group(['prefix'=>'/acara', 'middleware'=>'throttle:acara'],function(){
         Route::get('/',[ShowEventController::class, 'showData']);
         Route::get('/tambah',[ShowEventController::class, 'showTambah']);
         Route::get('/edit/{any}',[ShowEventController::class, 'showEdit']);
@@ -41,7 +41,7 @@ Route::group(['middleware'=>['auth','authorized']],function(){
         Route::delete('/delete', [EventController::class, 'deleteEvent']);
     });
     //article only admin route
-    Route::group(['prefix'=>'/article'],function(){
+    Route::group(['prefix'=>'/article', 'middleware'=>'throttle:article'],function(){
         Route::get('/',[ShowArtikelController::class, 'showData']);
         Route::get('/tambah',[ShowArtikelController::class, 'showTambah']);
         Route::get('/edit/{any}',[ShowArtikelController::class, 'showEdit']);
@@ -53,7 +53,7 @@ Route::group(['middleware'=>['auth','authorized']],function(){
         Route::delete('/delete', [ArtikelController::class, 'deleteArtikel']);
     });
     //disi only admin route
-    Route::group(['prefix'=>'/disi'],function(){
+    Route::group(['prefix'=>'/disi', 'middleware'=>'throttle:disi'],function(){
         Route::get('/',[ShowDisiController::class, 'showData']);
         Route::get('/tambah',[ShowDisiController::class, 'showTambah']);
         Route::get('/edit/{any}',[ShowDisiController::class, 'showEdit']);
@@ -65,7 +65,7 @@ Route::group(['middleware'=>['auth','authorized']],function(){
         Route::delete('/delete', [DisiController::class, 'deleteDisi']);
     });
     //emotal only admin route
-    Route::group(['prefix'=>'/emotal'],function(){
+    Route::group(['prefix'=>'/emotal', 'middleware'=>'throttle:emotal'],function(){
         Route::get('/',[ShowEmotalController::class, 'showData']);
         Route::get('/tambah',[ShowEmotalController::class, 'showTambah']);
         Route::get('/edit/{any}',[ShowEmotalController::class, 'showEdit']);
@@ -77,7 +77,7 @@ Route::group(['middleware'=>['auth','authorized']],function(){
         Route::delete('/delete', [EmotalController::class, 'deleteEmotal']);
     });
     //konsultasi only admin route
-    Route::group(['prefix'=>'/konsultasi'],function(){
+    Route::group(['prefix'=>'/konsultasi', 'middleware'=>'throttle:konsultasi'],function(){
         Route::get('/',[ShowKonsultasiController::class, 'showData']);
         Route::get('/tambah',[ShowKonsultasiController::class, 'showTambah']);
         Route::get('/edit/{any}',[ShowKonsultasiController::class, 'showEdit']);
@@ -89,7 +89,7 @@ Route::group(['middleware'=>['auth','authorized']],function(){
         Route::delete('/delete', [KonsultasiController::class, 'deleteKonsultasi']);
     });
     //nutrisi only admin route
-    Route::group(['prefix'=>'/nutrisi'],function(){
+    Route::group(['prefix'=>'/nutrisi', 'middleware'=>'throttle:nutrisi'],function(){
         Route::get('/',[ShowNutrisiController::class, 'showData']);
         Route::get('/tambah',[ShowNutrisiController::class, 'showTambah']);
         Route::get('/edit/{any}',[ShowNutrisiController::class, 'showEdit']);
@@ -101,7 +101,7 @@ Route::group(['middleware'=>['auth','authorized']],function(){
         Route::delete('/delete', [NutrisiController::class, 'deleteNutrisi']);
     });
     //pengasuhan only admin route
-    Route::group(['prefix'=>'/pengasuhan'],function(){
+    Route::group(['prefix'=>'/pengasuhan', 'middleware'=>'throttle:pengasuhan'],function(){
         Route::get('/',[ShowPengasuhanController::class, 'showData']);
         Route::get('/tambah',[ShowPengasuhanController::class, 'showTambah']);
         Route::get('/edit/{any}',[ShowPengasuhanController::class, 'showEdit']);
@@ -112,9 +112,9 @@ Route::group(['middleware'=>['auth','authorized']],function(){
         Route::put('/update', [PengasuhanController::class, 'editPengasuhan']);
         Route::delete('/delete', [PengasuhanController::class, 'deletePengasuhan']);
     });
-    Route::get('/riwayat', [ShowAdminController::class, 'showRiwayat']);
+    Route::get('/riwayat', [ShowAdminController::class, 'showRiwayat'])->middleware('throttle:global');
     //download only for admin
-    Route::group(['prefix'=>'/public'],function(){
+    Route::group(['prefix'=>'/public', 'middleware'=>'throttle:global'],function(){
         Route::group(['prefix'=>'/download'],function(){
             Route::group(['prefix'=>'/foto'],function(){
                 Route::get('/',[AdminController::class,'getFotoProfile'])->name('download.foto');
@@ -124,7 +124,7 @@ Route::group(['middleware'=>['auth','authorized']],function(){
         });
     });
     //API only admin route
-    Route::group(['prefix'=>'/admin'],function(){
+    Route::group(['prefix'=>'/admin', 'middleware'=>'throttle:admin'],function(){
         //page admin
         Route::get('/',[ShowAdminController::class,'showAdmin']);
         Route::get('/tambah',[ShowAdminController::class,'showAdminTambah']);
@@ -143,7 +143,7 @@ Route::group(['middleware'=>['auth','authorized']],function(){
             Route::put('/password', [AdminController::class, 'updatePassword']);
         });
     });
-    Route::group(["prefix"=>"/verify"],function(){
+    Route::group(["prefix"=>"/verify", 'middleware'=>'throttle:global'],function(){
         Route::group(['prefix'=>'/create'],function(){
             Route::post('/password',[MailController::class, 'createForgotPassword']);
         });
@@ -157,17 +157,17 @@ Route::group(['middleware'=>['auth','authorized']],function(){
     });
     Route::get('/password/reset',function (){
         return view('page.forgotPassword', ['title'=>'Lupa password']);
-    });
+    })->middleware('throttle:global');
     Route::get('/login', function () {
         return view('page.login');
-    });
+    })->middleware('throttle:global');
     // Route::get('/testing', function () {
     //     return view('page.testing');
     // });
     // Route::get('/template', function(){
     //     return view('page.template');
     // });
-    Route::get('/dashboard',[ShowAdminController::class,'showDashboard']);
-    Route::get('/profile',[ShowAdminController::class,'showProfile']);
-    Route::get('/',[ShowHomeController::class,'showHome']);
+    Route::get('/dashboard',[ShowAdminController::class,'showDashboard'])->middleware('throttle:global');
+    Route::get('/profile',[ShowAdminController::class,'showProfile'])->middleware('throttle:global');
+    Route::get('/',[ShowHomeController::class,'showHome'])->middleware('throttle:global');
 });
