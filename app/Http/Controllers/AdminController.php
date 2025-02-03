@@ -1,6 +1,6 @@
 <?php
 namespace App\Http\Controllers;
-use App\Http\Controllers\Auth\JwtController;
+use App\Http\Controllers\Auth\JWTController;
 use App\Http\Controllers\Services\MailController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -469,14 +469,8 @@ class AdminController extends Controller
     }
     //update from profile
     public function updatePassword(Request $request){
-        $validator = Validator::make($request->all(), [
-            'password_old' => [
-                'required',
-                'string',
-                'min:8',
-                'max:25',
-                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\p{P}\p{S}])[\p{L}\p{N}\p{P}\p{S}]+$/u',
-            ],
+        $validator = Validator::make($request->only('password_old', 'password', 'password_confirm'), [
+            'password_old' => 'required',
             'password' => [
                 'required',
                 'string',
@@ -492,7 +486,7 @@ class AdminController extends Controller
                 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\p{P}\p{S}])[\p{L}\p{N}\p{P}\p{S}]+$/u',
             ],
         ],[
-            'email.email'=>'Email yang anda masukkan invalid',
+            'password_old.required'=>'Password lama wajib di isi',
             'password.required'=>'Password wajib di isi',
             'password.min'=>'Password minimal 8 karakter',
             'password.max'=>'Password maksimal 25 karakter',

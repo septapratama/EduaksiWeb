@@ -1,7 +1,7 @@
 <?php
 namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Auth\JwtController;
+use App\Http\Controllers\Auth\JWTController;
 use App\Models\User;
 use App\Models\RefreshToken;
 use Illuminate\Http\Request;

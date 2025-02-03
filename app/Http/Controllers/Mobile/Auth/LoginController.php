@@ -3,7 +3,7 @@ namespace App\Http\Controllers\Mobile\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Auth\JwtController;
+use App\Http\Controllers\Auth\JWTController;
 use App\Models\User;
 use App\Models\RefreshToken;
 class LoginController extends Controller

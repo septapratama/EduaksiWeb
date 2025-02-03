@@ -1,7 +1,7 @@
 <?php
 namespace App\Http\Controllers\Mobile;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Auth\JwtController;
+use App\Http\Controllers\Auth\JWTController;
 use App\Http\Controllers\Services\MailController;
 use App\Models\User;
 use App\Models\Verifikasi;
